@@ -1,0 +1,34 @@
+.dpd_address_prefill_block .address_prefill_select {
+    min-width: 100px;
+    max-width: 200px;
+    display: inline-block;
+}
+
+.dpd_prefill_block .btn {
+    vertical-align: inherit;
+}
+
+#sender_id_ws_country_chosen,
+#city_chosen{
+    width: 250px !important;
+}
+
+#sender_phone_code_chosen {
+    width: 80px !important;
+}
+
+.shipment_id_ws_main_service_name div.col-lg-9 {
+    padding: 8px 4px;
+}
+
+.dpd-phone-and-code {
+    display: inline-block !important;
+}
+
+.fixed-width-xlg {
+    width: 167px !important;
+}
+
+div.chosen-container-single {
+    vertical-align: top;
+}

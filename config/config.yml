@@ -1,0 +1,63 @@
+imports:
+  - { resource: service.yml }
+  - { resource: repository.yml }
+  - { resource: factory.yml }
+  - { resource: builder.yml }
+  - { resource: provider.yml }
+  - { resource: validator.yml }
+  - { resource: adapter.yml }
+  - { resource: helper.yml }
+  - { resource: util.yml }
+  - { resource: converter.yml }
+  - { resource: requestFactory.yml }
+  - { resource: export.yml }
+  - { resource: import.yml }
+  - { resource: onBoard.yml }
+  - { resource: command.yml }
+  - { resource: presenter.yml }
+  - { resource: templateRender.yml }
+
+services:
+  dpdbaltics:
+    class: 'DPDBaltics'
+    factory: ['Module', 'getInstanceByName']
+    arguments:
+      - 'dpdbaltics'
+
+  context:
+    class: 'Context'
+    factory: ['Invertus\dpdBaltics\Factory\ContextFactory', 'getContext']
+
+  controller:
+    class: 'Controller'
+    factory: ['Invertus\dpdBaltics\Factory\ContextFactory', 'getController']
+
+  cookie:
+    class: 'Cookie'
+    factory: ['Invertus\dpdBaltics\Factory\ContextFactory', 'getCookie']
+
+  language:
+    class: 'Language'
+    factory: ['Invertus\dpdBaltics\Factory\ContextFactory', 'getLanguage']
+
+  currency:
+    class: 'Currency'
+    factory: ['Invertus\dpdBaltics\Factory\ContextFactory', 'getCurrency']
+
+  smarty:
+    class: 'Smarty'
+    factory: ['Invertus\dpdBaltics\Factory\ContextFactory', 'getSmarty']
+
+  shop:
+    class: 'Shop'
+    factory: ['Invertus\dpdBaltics\Factory\ContextFactory', 'getShop']
+
+  Invertus\dpdBaltics\Config\ApiConfiguration:
+
+  Invertus\dpdBaltics\Install\Installer:
+    arguments:
+      - '@dpdbaltics'
+      - '@Invertus\dpdBaltics\Factory\TabFactory'
+      - '@Invertus\dpdBaltics\Service\Carrier\CreateCarrierService'
+
+  Invertus\dpdBaltics\ORM\EntityManager:

@@ -1,0 +1,36 @@
+/*
+ * NOTICE OF LICENSE
+ *
+ * @author    INVERTUS, UAB www.invertus.eu <support@invertus.eu>
+ * @copyright Copyright (c) permanent, INVERTUS, UAB
+ * @license   Addons PrestaShop license limitation
+ * @see       /LICENSE
+ *
+ *  International Registered Trademark & Property of INVERTUS, UAB
+ */
+
+#dpd_country_id_chosen,
+#dpd_city_id_chosen {
+    width: 250px !important;
+}
+
+#mobile_phone_code_chosen
+{
+    width: 80px !important;
+}
+
+.dpd-phone-and-code {
+    display: inline-block !important;
+}
+
+.fixed-width-xlg {
+    width: 167px !important;
+}
+
+div.chosen-container-single{
+    vertical-align: top;
+}
+
+.empty-input-border {
+    border-color: red !important;
+}

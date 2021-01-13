@@ -1,0 +1,533 @@
+/*
+ * NOTICE OF LICENSE
+ *
+ * @author    INVERTUS, UAB www.invertus.eu <support@invertus.eu>
+ * @copyright Copyright (c) permanent, INVERTUS, UAB
+ * @license   Addons PrestaShop license limitation
+ * @see       /LICENSE
+ *
+ *  International Registered Trademark & Property of INVERTUS, UAB
+ */
+
+.js-contract-delivery-time-lang .chosen-single {
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+}
+
+/*main on-board template*/
+.dpd-on-board-main-container {
+    cursor: all-scroll;
+    position: fixed;
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 28px 20px 55px 50px;
+    /*-webkit-box-shadow: 0px 0px 21px -6px rgba(0,0,0,1);*/
+    /*-moz-box-shadow: 0px 0px 21px -6px rgba(0,0,0,1);*/
+    /*box-shadow: 0px 0px 21px -6px rgba(0,0,0,1);*/
+    width: 400px;
+    min-height: 250px;
+    z-index: 10;
+    -webkit-box-shadow: -30px 12px 50px 6px rgba(0,0,0,0.46);
+    -moz-box-shadow: -30px 12px 50px 6px rgba(0,0,0,0.46);
+    box-shadow: -30px 12px 50px 6px rgba(0,0,0,0.46);
+}
+
+.dpd-on-board-images-container {
+    position: absolute;
+    left: -44px;
+    top: -42px;
+}
+
+.dpd-on-board-images-container img {
+    max-height: 300px;
+}
+
+.dpd-on-board-icons-container {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+}
+
+.dpd-on-board-icons-container > div {
+    padding-left: 8px;
+}
+
+.dpd-on-close-container {
+    position: relative;
+    top: 1px;
+}
+
+.dpd-on-close-container,
+.dpd-on-pause-container,
+.dpd-on-fast-move-container.forward {
+    float: right;
+}
+
+.dpd-on-fast-move-container.backward{
+    float: left;
+}
+
+.dpd-on-board-top-button i{
+    font-size: 20px;
+    color: #0a0a0a;
+}
+
+.dpd-on-board-top-button {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.dpd-on-board-close .leftright{
+    height: 5px;
+    width: 22px;
+    position: absolute;
+    background-color: #0a0a0a;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    transition: all .3s ease-in;
+    top: 7px;
+}
+
+.dpd-on-board-close .rightleft{
+    height: 5px;
+    width: 22px;
+    background-color: #0a0a0a;
+    position: absolute;
+    border-radius: 2px;
+    transform: rotate(-45deg);
+    transition: all .3s ease-in;
+    top: 7px;
+}
+
+.dpd-on-board-close:hover .leftright{
+    transform: rotate(-45deg);
+    background-color: #dc0032;
+}
+
+.dpd-on-board-close:hover .rightleft{
+    transform: rotate(45deg);
+    background-color: #dc0032;
+}
+
+.dpd-on-board-main-container .dpd-on-board-heading {
+    font-size: 24px;
+    font-weight: 600;
+    min-height: 34px;
+}
+
+.dpd-on-board-main-container .dpd-on-board-heading::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.dpd-on-board-main-container .dpd-on-board-button {
+    text-transform: unset !important;
+    bottom: 5px;
+    min-height: 35px;
+    min-width: 140px;
+    max-width: 210px;
+    white-space: unset;
+}
+
+.dpd-on-board-main-container .dpd-on-board-button.small-button {
+    min-width: 100px;
+    width: 100px;
+}
+
+.dpd-on-board-buttons-container {
+    position: absolute;
+    bottom: 15px;
+    width: 328px;
+}
+
+.on-board-border-radius {
+    border-radius: 4px;
+}
+
+#dpd-on-board.on-board-shake {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+.dpd-on-board-main-container.center-top {
+    left: 40%;
+    top: 229px;
+}
+
+.dpd-on-board-main-container.left-top,
+.dpd-on-board-main-container.right-top {
+    top: 125px;
+}
+
+.dpd-on-board-main-container.right-top.zone,
+.dpd-on-board-main-container.right-top.product {
+    top: 70px;
+}
+
+.dpd-on-board-main-container.left-top {
+    left: 35%;
+}
+
+.dpd-on-board-main-container.right-center {
+    top: 31%;
+}
+
+@media (min-width: 1590px) {
+    .dpd-on-board-main-container.right-top,
+    .dpd-on-board-main-container.right-center {
+        right: 18%;
+    }
+}
+
+@media (max-width: 1589px) {
+    .dpd-on-board-main-container.right-top,
+    .dpd-on-board-main-container.right-center {
+        right: 5%;
+    }
+}
+
+@media (max-width: 970px) {
+    .dpd-on-board-main-container.right-center {
+        top: 27%;
+    }
+}
+
+.dpd-on-board-main-container.right-lower-center {
+    top: 48%;
+    right: 6%;
+}
+
+@media (max-width: 1420px) {
+    .dpd-on-board-main-container.right-lower-center {
+        right: 26px;
+    }
+}
+
+
+@media (max-width: 1199px) {
+    .dpd-on-board-main-container.right-lower-center {
+        top: 52%;
+    }
+}
+
+@media (max-width: 1090px) {
+    .dpd-on-board-main-container.right-lower-center {
+        right: 21px;
+    }
+}
+
+#toolbar-nav .on-board-import-export-mod {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.dpd-on-board-main-import-container {
+    padding: 10px 0 20px;
+}
+
+.dpd-on-board-main-import-item i{
+    min-width: 15px;
+}
+
+.on-board-success-color {
+    color: #92d097;
+}
+
+.on-board-primary-color {
+    color: #dc0032;
+}
+
+.on-board-secondary-color {
+    color: #808285;
+}
+
+.button-border {
+    border: 1px solid #797979 !important;
+}
+
+.on-board-border-primary-color {
+    border: 2px solid #ff0000 !important;
+}
+
+.on-board-border-secondary-color {
+    border: 2px solid #808285 !important;
+}
+
+.on-board-text-heading {
+    color: #414042;
+    font-weight: 600;
+}
+
+.on-board-pl-1 {
+    padding-left: 15px;
+}
+
+.on-board-font-weight-bold {
+    font-weight: 600;
+}
+
+#dpd-on-board .dpd-on-board-manual-config-progress {
+    position: absolute;
+    bottom: 11px;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.border-collapse {
+    border-collapse: collapse !important;
+}
+
+/*Bottom progress*/
+.dpd-on-board-bottom-progress-container {
+    position: fixed;
+    bottom: 20px;
+    right: 0;
+    width: 100%;
+    padding-top: 0 !important;
+}
+
+.dpd-on-board-bottom-progress {
+    background-color: #cac4be;
+    border: 2px solid #414042;
+    border-radius: 4px;
+    font-size: 0;
+    width: calc(100% - 40px);
+    margin: 0 20px;
+}
+
+.dpd-on-board-progress-third {
+    display: inline-block;
+    width: 33.3333%;
+    height: 80px;
+    vertical-align: top;
+    position: relative;
+}
+
+.dpd-on-board-progress-third:not(:last-child) {
+    border-right: 2px solid #414042;
+}
+
+.dpd-on-board-checkpoint {
+    float: left;
+    display: inline-block;
+    margin: 15px 0;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: 2px solid #414042;
+    background-color: #e6e7e8;
+    position: relative;
+    left: -26px;
+    font-size: 18px;
+    font-weight: 900;
+    color: #414042;
+    text-align: center;
+    line-height: 46px;
+}
+
+.dpd-on-board-checkpoint.last-checkpoint {
+    float: right;
+    left: unset;
+    right: -26px;
+    border: 2px solid #414042;
+    background-color: #414042;
+}
+
+.dpd-on-board-reward {
+    width: 80%;
+}
+
+.dpd-on-board-truck {
+    position: absolute;
+    display: inline-block;
+    margin: 12px 0;
+}
+
+.dpd-on-board-checkpoint-logo {
+    width: 80%;
+    position: relative;
+    top: -2px;
+}
+
+.dpd-on-board-truck img {
+    height: 54px;
+}
+
+.dpd-on-board-truck.step1-5 {
+    left: 30px;
+}
+
+.dpd-on-board-truck.step2-5 {
+    left: 30%;
+    transform: translateX(-50%);
+}
+
+.dpd-on-board-truck.step3-5 {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dpd-on-board-truck.step4-5 {
+    left: 70%;
+    transform: translateX(-50%);
+}
+
+.dpd-on-board-truck.step5-5 {
+    right: 30px;
+}
+
+.dpd-on-board-truck.step1-8 {
+    left: 30px;
+}
+
+.dpd-on-board-truck.step2-8 {
+    left: 20%;
+    transform: translateX(-50%);
+}
+
+.dpd-on-board-truck.step3-8 {
+    left: 32%;
+    transform: translateX(-50%);
+}
+
+.dpd-on-board-truck.step4-8 {
+    left: 44%;
+    transform: translateX(-50%);
+}
+
+.dpd-on-board-truck.step5-8 {
+    left: 56%;
+    transform: translateX(-50%);
+}
+
+.dpd-on-board-truck.step6-8 {
+    left: 68%;
+    transform: translateX(-50%);
+}
+
+.dpd-on-board-truck.step7-8 {
+    left: 80%;
+    transform: translateX(-50%);
+}
+
+.dpd-on-board-truck.step8-8 {
+    right: 30px;
+}
+
+.on-board-after-primary-color::after {
+    content: "";
+    display: block;
+    border-bottom: 2px solid #ff0000 !important;
+    width: 110px;
+}
+
+@media (max-width: 1400px) {
+    .dpd-on-board-main-container {
+        width: 350px;
+        min-height: 185px;
+        font-size: 12px;
+        padding: 20px 10px 50px 35px;
+    }
+
+    .dpd-on-board-images-container {
+        top: -20px;
+    }
+
+    .dpd-on-board-images-container img {
+        max-height: 237px;
+    }
+
+    .dpd-on-board-top-button i {
+        font-size: 15px;
+    }
+
+    .dpd-on-board-icons-container > div {
+        padding-left: 4px;
+    }
+
+    .dpd-on-close-container {
+        top: -1px;
+    }
+
+    .dpd-on-board-close .rightleft,
+    .dpd-on-board-close .leftright {
+        width: 17px;
+    }
+
+    .dpd-on-board-top-button {
+        width: 17px;
+        height: 17px;
+    }
+
+    .dpd-on-board-icons-container {
+        position: absolute;
+        top: 7px;
+        right: 9px;
+    }
+
+    #dpd-on-board .dpd-on-board-manual-config-progress {
+        font-size: 13px;
+    }
+
+    .dpd-on-board-buttons-container {
+        width: 302px;
+    }
+
+    .dpd-on-board-main-container .dpd-on-board-heading {
+        font-size: 21px;
+        min-height: 21px;
+    }
+
+    .dpd-on-board-main-container .dpd-on-board-button {
+        max-width: 195px;
+    }
+
+    .dpd-on-board-progress-third {
+        height: 60px;
+    }
+
+    .dpd-on-board-truck {
+        margin: 4px 0;
+    }
+
+    .dpd-on-board-checkpoint {
+        margin: 5px 0;
+    }
+
+    .dpd-on-board-main-container.right-lower-center {
+        top: 39%;
+    }
+
+    .dpd-on-board-main-container.right-lower-center.tablet-higher {
+        top: 18%;
+    }
+
+    .dpd-on-board-main-container.center-top {
+        top: 210px;
+    }
+}
+
+#main > #content.bootstrap.with-tabs {
+    padding-bottom: 45px;
+}

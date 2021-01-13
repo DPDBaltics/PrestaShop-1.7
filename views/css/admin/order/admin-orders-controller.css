@@ -1,0 +1,259 @@
+/*
+ * NOTICE OF LICENSE
+ *
+ * @author    INVERTUS, UAB www.invertus.eu <support@invertus.eu>
+ * @copyright Copyright (c) permanent, INVERTUS, UAB
+ * @license   Addons PrestaShop license limitation
+ * @see       /LICENSE
+ *
+ *  International Registered Trademark & Property of INVERTUS, UAB
+ */
+
+.dpd-extra-expand {
+    cursor: pointer;
+}
+
+.extra-shipment-container {
+    display: none;
+}
+
+.dpd-no-padding {
+    padding: 0 !important;
+}
+
+.dpd-form-group {
+    margin-bottom: 5px !important;
+}
+
+.dpd-separator {
+    margin: 20px 0;
+}
+
+.dpd-print-format-input .radio {
+    margin-top: 0;
+}
+
+#shipmentsBlock .dpd-shipment-panel, #shipmentsBlock .dpd-shipment-footer {
+    background-color: #f4f4f4 !important;
+}
+
+.expand-collapse-pudo-extra-info {
+    cursor: pointer;
+}
+
+.dpd-hidden {
+    display: none;
+}
+
+.dpd-services-block {
+    overflow: hidden;
+}
+
+.dpd-services-block > .list-inline {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: inherit;
+}
+
+.dpd-services-block > .list-inline > .list-group-item {
+    min-width: 300px;
+}
+
+.dpd-more-information {
+    cursor: pointer;
+}
+
+.dpd-services-block .dpd-pickup-logo{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.dpd-services-block .dpd-service-type {
+    margin-bottom: 0;
+}
+
+#shipmentsBlock label.control-label span.label-tooltip{
+    margin-left:-5px;
+}
+.form-horizontal #shipmentTemplate .control-label {
+    text-align: left;
+}
+
+@media (max-width: 991px) {
+    .js-parcel td:before {
+        content: attr(data-content);
+        width: 31% !important;
+        left: 5px !important;
+    }
+
+    .js-product td:before {
+        content: attr(data-content);
+        width: 31% !important;
+        left: 5px !important;
+    }
+
+    .print-format-text {
+        display: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .dpd-print-format-input {
+        margin: 0 150px 0 10px;
+    }
+}
+
+.product-actions {
+    background-color: #f4f4f4 !important;
+}
+
+.dpd-more-information {
+    outline: none !important;
+}
+
+.dpd-no-margin {
+    margin: 0 !important;
+}
+
+#shipmentsBlock .dpd-shipment-sender-address {
+    margin-right: 20px;
+}
+
+.pudo-search-button {
+    padding: .5rem 1rem;
+    box-shadow: 2px 2px 4px 0 rgba(0,0,0,.2);
+    color: #232323;
+    background-color: #f6f6f6;
+    border-color: transparent;
+}
+
+.pudo-search-button:hover {
+    color: #232323;
+    background-color: #ddd;
+    border-color: transparent;
+}
+
+.dpd-admin-order-error {
+    border: 1px solid red !important;
+    border-radius: 3px;
+    min-height: 25px !important;
+    padding: 5px 0;
+}
+
+.missing-required-input {
+    border: 1px solid red !important;
+}
+
+.dpd-recipient-detail {
+    padding-top: 7px;
+    font-size: 13px;
+}
+
+.dpd-form-group .dpd-recipient-address-phone-info {
+    margin: 7px 0;
+}
+
+.dpd-parcel-info-table.dpd-parcel-without-cod .js-dpd-parcel-price-td {
+    display: none;
+}
+
+.dpd-static-form label:before {
+    content: "" !important;
+}
+
+.dpd-input-wrapper{
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.dpd-input-wrapper input{
+    border: 1px solid #DADCE0;
+    padding: 15px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.dpd-phone-block.new-version .dpd-input-wrapper input {
+    border-radius: 0;
+}
+
+.dpd-phone-block .dpd-input-wrapper .dpd-input-placeholder{
+    font-size: 13px;
+    position: absolute;
+    /* background: #fff; */
+    bottom: 7px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #80868b;
+    left: 24px;
+    padding: 0 4px;
+    -webkit-transition: transform 150ms cubic-bezier(0.4,0,0.2,1),opacity 150ms cubic-bezier(0.4,0,0.2,1);
+    transition: transform 150ms cubic-bezier(0.4,0,0.2,1),opacity 150ms cubic-bezier(0.4,0,0.2,1);
+    z-index: 1;
+    text-align: left;
+    width: 100%;
+}
+.dpd-phone-block.new-version .dpd-input-wrapper .dpd-input-placeholder {
+    bottom: 28px;
+}
+
+.dpd-input-wrapper .dpd-input-placeholder span{
+    background: #ffffff;
+    padding: 0 8px;
+}
+
+.dpd-input-wrapper input:not([disabled]):focus~.dpd-input-placeholder
+{
+    color:#1A73E8;
+}
+
+.dpd-input-wrapper input:not([disabled]):focus~.dpd-input-placeholder,
+.dpd-input-wrapper.hasValue input:not([disabled])~.dpd-input-placeholder,
+.dpd-input-wrapper.dpd-select-wrapper .dpd-select-placeholder
+{
+    -webkit-transform: scale(.75) translateY(-19px) translateX(-15px);
+    transform: scale(.75) translateY(-19px) translateX(-15px);
+    background-color: white;
+    display: inline-block;
+    width: auto;
+}
+
+.dpd-phone-block{
+    float: left;
+    width: 100%;
+    padding-left: 5px;
+    margin-top: 20px;
+}
+
+@media (min-width: 1200px) {
+    .dpd-phone-block .col-md-12.col-lg-6.no-padding-md-left {
+        width: 25%;
+    }
+
+    .dpd-phone-block .col-md-12.col-lg-6.no-padding-md-left p {
+        text-align: right;
+    }
+}
+
+@media (min-width: 991px) {
+    .dpd-input-wrapper .dpd-input-placeholder{
+        left: 8px;
+    }
+}
+
+.dpd-phone-block .chosen-single:before {
+    content: '+';
+    position: absolute;
+}
+
+.dpd-phone-block .chosen-container-single .chosen-single span {
+    padding: 0 0 0 10px;
+}
+
+.form-control-label span.label-tooltip {
+    color: #25b9d7;
+}
+.adminorders .dpd-pudo-container {
+    width: 100%;
+}

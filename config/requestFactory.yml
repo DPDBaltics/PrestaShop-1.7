@@ -1,0 +1,34 @@
+services:
+  Invertus\dpdBalticsApi\Factory\APIRequest\ClosingManifestFactory:
+    arguments:
+      - '@Invertus\dpdBaltics\Logger\Logger'
+      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+
+  Invertus\dpdBalticsApi\Factory\APIRequest\CollectionRequestFactory:
+    arguments:
+      - '@Invertus\dpdBaltics\Logger\Logger'
+      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+
+
+  Invertus\dpdBalticsApi\Factory\APIRequest\CourierRequestFactory:
+    arguments:
+      - '@Invertus\dpdBaltics\Logger\Logger'
+      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+
+
+  Invertus\dpdBalticsApi\Factory\APIRequest\ParcelPrintFactory:
+    arguments:
+      - '@Invertus\dpdBaltics\Logger\Logger'
+      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+
+
+  Invertus\dpdBalticsApi\Factory\APIRequest\ParcelShopSearchFactory:
+    arguments:
+      - '@Invertus\dpdBaltics\Logger\Logger'
+      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+
+
+  Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory:
+    arguments:
+      - '@Invertus\dpdBaltics\Logger\Logger'
+      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'

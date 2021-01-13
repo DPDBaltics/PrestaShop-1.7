@@ -1,0 +1,47 @@
+services:
+  Invertus\dpdBaltics\Service\Import\SettingsImport:
+    arguments:
+      - '@dpdbaltics'
+
+  Invertus\dpdBaltics\Service\Import\ZoneImport:
+    arguments:
+      - '@dpdbaltics'
+      - '@Invertus\dpdBaltics\ORM\EntityManager'
+      - '@Invertus\dpdBaltics\Adapter\ZoneAdapter'
+      - '@Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate'
+      - '@Invertus\dpdBaltics\Repository\DPDZoneRepository'
+      - '@smarty'
+
+  Invertus\dpdBaltics\Service\Import\ImportMainZone:
+    arguments:
+      - '@Invertus\dpdBaltics\Service\Import\ImportProvider'
+      - '@Invertus\dpdBaltics\Service\Import\ZoneImport'
+
+  Invertus\dpdBaltics\Service\Import\ImportProvider:
+    arguments:
+      - '@dpdbaltics'
+      - '@Invertus\dpdBaltics\Adapter\DPDConfigurationAdapter'
+
+  Invertus\dpdBaltics\Service\Import\ProductImport:
+    arguments:
+      - '@Invertus\dpdBaltics\Repository\ProductRepository'
+      - '@Invertus\dpdBaltics\Repository\ZoneRepository'
+      - '@Invertus\dpdBaltics\Repository\ShopRepository'
+      - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'
+
+  Invertus\dpdBaltics\Service\Import\PriceRulesImport:
+    arguments:
+      - '@dpdbaltics'
+      - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
+      - '@Invertus\dpdBaltics\Repository\DPDZoneRepository'
+      - '@Invertus\dpdBaltics\Repository\CarrierRepository'
+
+  Invertus\dpdBaltics\Service\Import\AddressTemplatesImport:
+    arguments:
+      - '@dpdbaltics'
+      - '@Invertus\dpdBaltics\Repository\ShopRepository'
+
+  Invertus\dpdBaltics\Service\Import\ZipImport:
+    arguments:
+      - '@dpdbaltics'
+      - '@smarty'

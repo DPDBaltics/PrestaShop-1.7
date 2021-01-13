@@ -1,0 +1,45 @@
+{
+  "name": "dpdbaltics",
+  "type": "project",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@bitbucket.org:invertus/dpdbaltics-api.git"
+    },
+    {
+      "type": "git",
+      "url": "git@bitbucket.org:invertus/ps-module-tabs.git"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Invertus\\dpdBaltics\\": "src/"
+    },
+    "classmap":  ["src/Entity"]
+  },
+  "config": {
+    "platform": {
+      "php": "5.6"
+    },
+    "prepend-autoloader": false
+  },
+  "authors": [
+    {
+      "name": "Invertus",
+      "email": "developers@invertus.eu"
+    }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "invertus/dpdBalticsApi":"dev-developer",
+    "invertus/psModuleTabs":"dev-develop",
+    "symfony/console": "^3.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "facebook/webdriver": "dev-master",
+    "squizlabs/php_codesniffer": "*",
+    "vlucas/phpdotenv": "^3.6",
+    "friendsofphp/php-cs-fixer": "*"
+  }
+}

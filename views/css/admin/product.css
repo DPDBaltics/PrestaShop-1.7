@@ -1,0 +1,128 @@
+.products-form-group .col-lg-offset-3 {
+  margin: unset;
+}
+
+.custom-product-row p {
+  text-align: center;
+}
+
+.products-form-group {
+  border: 2px solid #d3d8db;
+  padding: 10px 0;
+}
+
+.custom-product-row {
+  padding: 20px;
+  border-bottom: 1px solid #eaedef;
+}
+
+.custom-product-row.odd-row {
+  background-color: #f4f8fb;
+}
+
+.row.custom-product-row h4 {
+  font-size: 14px;
+}
+
+.row.custom-product-row .help-block {
+  position: absolute;
+  width: 100%;
+  margin: 5px auto auto;
+}
+
+.row.custom-product-row .help-block, .row.custom-product-row .save-button {
+  display: none;
+}
+
+.row.custom-product-row {
+  display: flex;
+  align-items: center;
+}
+
+.row.custom-product-row .btn.btn-default.pull-right {
+  width: 100%;
+  max-width: 50px;
+}
+
+.row.custom-product-row .icon-save {
+  margin-right: 20px;
+}
+
+.row.custom-product-row .checkbox {
+  margin: 0;
+}
+
+.row.custom-product-row .chosen-container {
+  width: 100% !important;
+}
+
+.row.custom-product-row .prestashop-switch {
+  margin: auto;
+}
+
+.row.custom-product-row .icon-save::before {
+  background: url("../../../views/img/icon/icon-save.svg") no-repeat 0 0;
+  content: "";
+  top: -21px;
+  left: -6px;
+  position: absolute;
+  width: 33px;
+  height: 33px;
+}
+
+.row.custom-product-row .icon-pencil::before {
+  left: -2px;
+  top: -17px;
+  width: 25px;
+  height: 25px;
+}
+
+.row.product-header-row {
+  font-size: 14px;
+  border-bottom: 1px solid #a0d0eb;
+}
+
+.products-block.panel {
+  min-width: 1000px;
+}
+
+.bootstrap div.page-head.with-tabs {
+  height: auto;
+}
+
+.bootstrap input[type="radio"][disabled] input + span {
+  cursor: not-allowed;
+}
+
+.products-block .product-header-row {
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #dc0032;
+  color: #ffffff;
+  border-bottom: 1px solid #a0d0eb;
+  border-radius: 5px 5px 0 0;
+}
+
+.products-block .product-header-row p{
+  margin: 0;
+}
+
+@media only screen and (max-width: 1200px) {
+  .delivery-time-input {
+    margin-bottom: 5px;
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  .row.custom-product-row .help-block {
+    font-size: 10px;
+  }
+}
+
+.js-product-availability a.dpd-button-center {
+  width: 100%;
+  max-width: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

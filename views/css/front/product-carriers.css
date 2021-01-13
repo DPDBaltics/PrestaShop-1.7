@@ -1,0 +1,58 @@
+/*
+ * NOTICE OF LICENSE
+ *
+ * @author    INVERTUS, UAB www.invertus.eu <support@invertus.eu>
+ * @copyright Copyright (c) permanent, INVERTUS, UAB
+ * @license   Addons PrestaShop license limitation
+ * @see       /LICENSE
+ *
+ *  International Registered Trademark & Property of INVERTUS, UAB
+ */
+
+#product-page-carriers {
+    max-width: 240px;
+    margin: 20px 0;
+    box-shadow: 2px 2px 8px 0 rgba(0,0,0,.2);
+    background: #fff;
+}
+
+#product-page-carriers .product-carrier-container {
+    padding: 20px 0;
+}
+
+#product-page-carriers .product-carrier-container .row {
+    margin-bottom: 0;
+}
+
+#product-page-carriers .product-carrier-container:not(:last-child) {
+    border-bottom: 1px solid rgba(0,0,0,.25);
+}
+
+#product-page-carriers .image-container {
+    margin-top: 2px;
+    text-align: center;
+}
+
+#product-page-carriers .image-container img {
+    max-width: 40px;
+}
+
+.product-carrier-name {
+    margin-bottom: 4px;
+}
+
+#product-page-carriers .price-container {
+    text-align: center;
+}
+
+#product-page-carriers .product-carrier-container,
+#product-page-carriers .image-container,
+#product-page-carriers .price-container,
+.product-carrier-text {
+    margin-bottom: 0;
+}
+
+.product-carrier-name,
+.product-carrier-text {
+    color: #232323;
+}

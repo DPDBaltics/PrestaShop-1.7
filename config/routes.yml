@@ -1,0 +1,15 @@
+dpdbaltics_download_printed_label:
+  path: /{orderId}/dpdbaltics/generate-dpdbaltics-print-label
+  methods: [GET]
+  defaults:
+    _controller: Invertus\dpdBaltics\Controller\OrderLabelController::printLabelAction
+    _legacy_controller: AdminOrders
+  requirements:
+    orderId: \d+
+
+dpdbaltics_download_multiple_printed_labels:
+  path: /dpdbaltics/generate-dpdbaltics-multiple-labels
+  methods: [POST]
+  defaults:
+    _controller: Invertus\dpdBaltics\Controller\OrderLabelController::printMultipleLabelsAction
+    _legacy_controller: AdminOrders

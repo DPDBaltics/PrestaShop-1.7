@@ -1,0 +1,23 @@
+services:
+  Invertus\dpdBaltics\Factory\ArrayFactory:
+
+  Invertus\dpdBaltics\Factory\ContextFactory:
+
+  Invertus\dpdBaltics\Factory\TabFactory:
+    arguments:
+      - '@Invertus\dpdBaltics\Service\TabService'
+
+  Invertus\dpdBaltics\Factory\APIParamsFactory:
+    arguments:
+      - '@dpdbaltics'
+      - '@Invertus\dpdBaltics\Config\ApiConfiguration'
+
+  Invertus\dpdBaltics\Factory\ShipmentDataFactory:
+    arguments:
+      - '@Invertus\dpdBaltics\Repository\OrderRepository'
+      - '@Invertus\dpdBaltics\Repository\ShipmentRepository'
+      - '@Invertus\dpdBaltics\Repository\PudoRepository'
+
+  Invertus\dpdBaltics\Factory\ShopFactory:
+    arguments:
+      - '@Invertus\dpdBaltics\Repository\ParcelShopRepository'

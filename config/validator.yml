@@ -1,0 +1,27 @@
+services:
+  Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate:
+    arguments:
+      - '@dpdbaltics'
+      - '@language'
+
+  Invertus\dpdBaltics\Validate\Zone\ZoneDeleteValidate:
+    arguments:
+      - '@dpdbaltics'
+      - '@Invertus\dpdBaltics\ORM\EntityManager'
+
+  Invertus\dpdBaltics\Validate\Carrier\CarrierUpdateValidate:
+    arguments:
+      - '@dpdbaltics'
+
+  Invertus\dpdBaltics\Validate\Carrier\PudoValidate:
+    arguments:
+      - '@dpdbaltics'
+      - '@Invertus\dpdBaltics\Repository\PudoRepository'
+      - '@Invertus\dpdBaltics\Repository\ProductRepository'
+
+  Invertus\dpdBaltics\Validate\CourierRequest\CourierRequestValidator:
+
+  Invertus\dpdBaltics\Validate\Weight\CartWeightValidator:
+
+  Invertus\dpdBaltics\Validate\ShipmentData\ShipmentDataValidator:
+      class: Invertus\dpdBaltics\Validate\ShipmentData\ShipmentDataValidator

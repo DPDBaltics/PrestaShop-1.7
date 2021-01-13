@@ -1,0 +1,86 @@
+<?php
+
+namespace Invertus\dpdBaltics\Service\Parcel;
+
+use DPDShop;
+use DPDShopWorkHours;
+use EntityAddException;
+use Exception;
+use Invertus\dpdBaltics\Repository\ParcelShopRepository;
+use Invertus\dpdBalticsApi\Api\DTO\Object\OpeningHours;
+use Invertus\dpdBalticsApi\Api\DTO\Object\ParcelShop;
+
+class ParcelUpdateService
+{
+
+    /**
+     * @var ParcelShopRepository
+     */
+    private $parcelShopRepository;
+
+    public function __construct(ParcelShopRepository $parcelShopRepository)
+    {
+        $this->parcelShopRepository = $parcelShopRepository;
+    }
+
+    public function updateParcels(array $parcels, $countryCode)
+    {
+        $isDeleteSuccess = $this->parcelShopRepository->deleteShopsByCountryCode($countryCode);
+        if (!$isDeleteSuccess) {
+            return false;
+        }
+
+        foreach ($parcels as $parcel) {
+            $this->addParcelShop($parcel);
+        }
+
+        return true;
+    }
+
+    public function addParcelShop(ParcelShop $parcel)
+    {
+        $parcelShop = new DPDShop();
+        $parcelShop->parcel_shop_id = $parcel->getParcelShopId();
+        $parcelShop->company = $parcel->getCompany();
+        $parcelShop->country = $parcel->getCountry();
+        $parcelShop->city = $parcel->getCity();
+        $parcelShop->p_code = $parcel->getPCode();
+        $parcelShop->street = $parcel->getStreet();
+        $parcelShop->email = $parcel->getEmail();
+        $parcelShop->phone = $parcel->getPhone();
+        $parcelShop->longitude = $parcel->getLongitude();
+        $parcelShop->latitude = $parcel->getLatitude();
+
+        try {
+            $parcelShop->add();
+        } catch (Exception $e) {
+            throw new EntityAddException(
+                'Failed to add parcel shop',
+                EntityAddException::DPD_PARCEL_SHOP_EXCEPTION,
+                $e
+            );
+        }
+
+        foreach ($parcel->getOpeningHours() as $openingHours) {
+            $parcelShopWorkHours = new DPDShopWorkHours();
+            $parcelShopWorkHours->parcel_shop_id = $parcel->getParcelShopId();
+            $parcelShopWorkHours->week_day = $openingHours->weekday;
+            $parcelShopWorkHours->open_morning = $openingHours->openMorning;
+            $parcelShopWorkHours->close_morning = $openingHours->closeMorning;
+            $parcelShopWorkHours->open_afternoon = $openingHours->openAfternoon;
+            $parcelShopWorkHours->close_afternoon = $openingHours->closeAfternoon;
+
+            try {
+                $parcelShopWorkHours->add();
+            } catch (Exception $e) {
+                throw new EntityAddException(
+                    'Failed to add parcel shop work hours',
+                    EntityAddException::DPD_PARCEL_SHOP_WORK_HOURS_EXCEPTION,
+                    $e
+                );
+            }
+        }
+
+        return true;
+    }
+}

@@ -1,0 +1,4 @@
+services:
+  Invertus\dpdBaltics\Adapter\DPDConfigurationAdapter:
+
+  Invertus\dpdBaltics\Adapter\ZoneAdapter:

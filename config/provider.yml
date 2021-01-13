@@ -1,0 +1,25 @@
+services:
+  Invertus\dpdBaltics\Provider\ImportExportOptionsProvider:
+    arguments:
+      - '@dpdbaltics'
+
+  Invertus\dpdBaltics\Provider\ImportExportURLProvider:
+    arguments:
+      - '@context'
+
+  Invertus\dpdBaltics\Provider\ProductShippingCostProvider:
+    arguments:
+      - '@dpdbaltics'
+      -  '@Invertus\dpdBaltics\Repository\ProductRepository'
+      -  '@Invertus\dpdBaltics\Repository\ZoneRepository'
+      -  '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
+      -  '@currency'
+
+  Invertus\dpdBaltics\Provider\ZoneRangeProvider:
+    arguments:
+      - '@language'
+
+  Invertus\dpdBaltics\Provider\ProductAvailabilityProvider:
+    arguments:
+      - '@language'
+      - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'

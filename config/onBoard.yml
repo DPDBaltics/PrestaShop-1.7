@@ -1,0 +1,175 @@
+services:
+  Invertus\dpdBaltics\OnBoard\Builder\OnBoardBlockBuilder:
+    arguments:
+      - '@dpdbaltics'
+      - '@smarty'
+
+  Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep:
+    abstract: true
+    arguments:
+      - '@dpdbaltics'
+      - '@Invertus\dpdBaltics\OnBoard\Service\OnBoardStepActionService'
+      - '@Invertus\dpdBaltics\OnBoard\Service\OnBoardStepDataService'
+
+  Invertus\dpdBaltics\OnBoard\Provider\OnBoardStepStrategyProvider:
+    arguments:
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepImport1'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepImport2'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepImportFinish'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepMain1'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepMain2'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepMain3'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepMain3'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualConfigFinish'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules0'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules1'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules2'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules3'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules4'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules5'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules6'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules7'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules8'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts0'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts1'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts2'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts3'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts4'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts5'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts5Shop'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts6'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts7'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts8'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts9'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones0'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones1'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones2'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones3'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones4'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones5'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones6'
+      - '@Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZonesAfterImport'
+
+  Invertus\dpdBaltics\OnBoard\Service\OnBoardStepActionService:
+    arguments:
+      - '@dpdBaltics'
+      - '@controller'
+      - '@cookie'
+
+  Invertus\dpdBaltics\OnBoard\Service\OnBoardStepDataService:
+    arguments:
+      - '@dpdBaltics'
+      - '@cookie'
+      - '@Invertus\dpdBaltics\Repository\ZoneRepository'
+      - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
+      - '@Invertus\dpdBaltics\Repository\ProductRepository'
+
+  Invertus\dpdBaltics\OnBoard\Service\OnBoardService:
+    arguments:
+      - '@Invertus\dpdBaltics\OnBoard\Provider\OnBoardStepStrategyProvider'
+      - '@Invertus\dpdBaltics\OnBoard\Builder\OnBoardBlockBuilder'
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepImport1:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepImport2:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepImportFinish:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepMain1:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepMain2:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepMain3:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualConfigFinish:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules0:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules1:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules2:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules3:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules4:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules5:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules6:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules7:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualPriceRules8:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts0:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts1:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts2:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts3:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts4:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts5:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts5Shop:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts6:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts7:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts8:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts9:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones0:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones1:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones2:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones3:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones4:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones5:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZones6:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
+
+  Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualZonesAfterImport:
+    parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep

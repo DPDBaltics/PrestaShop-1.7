@@ -1,0 +1,80 @@
+/*
+ * NOTICE OF LICENSE
+ *
+ * @author    INVERTUS, UAB www.invertus.eu <support@invertus.eu>
+ * @copyright Copyright (c) permanent, INVERTUS, UAB
+ * @license   Addons PrestaShop license limitation
+ * @see       /LICENSE
+ *
+ *  International Registered Trademark & Property of INVERTUS, UAB
+ */
+
+.label-printing-message{
+    display:none;
+}
+.icon-error-dpd::before, .icon-save-label-dpd::before {
+    content: "";
+    top: -30px;
+    left: -20px;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+}
+
+.icon-error-dpd::before {
+    background: url("../../../../views/img/icon/icon-error.svg") no-repeat 0 0;
+    left: 12px;
+    top: -23px;
+    width: 45px;
+    height: 45px;
+}
+
+.icon-save-label-dpd::before {
+    background: url("../../../../views/img/icon/icon-save-label.svg") no-repeat 0 0;
+}
+
+.download-dpd-label.btn {
+    padding:0;
+}
+.dpd-icon-container{
+    position:relative;
+}
+
+.dpd-print-error-container, .dpd-print-message-container{
+    position: absolute;
+    display: none;
+
+    width: auto;
+    right: 60px;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    top: -30px;
+    z-index:100;
+    min-width:200px;
+}
+.dpd-print-error-container{
+    background-color: #eab3b7;
+}
+.dpd-print-message-container{
+    background-color: #92d097;
+}
+.dpd-print-error-container:before, .dpd-print-message-container:before{
+    position: absolute;
+    content: '';
+    border-width: 10px;
+    border-style: solid;
+    left: 100%;
+    top: 20px;
+}
+
+.dpd-print-error-container:before{
+    border-color: rgba(255,255,255,0) rgba(255,255,255,0) rgba(255,255,255,0) #eab3b7;
+}
+.dpd-print-message-container:before{
+    border-color: rgba(255,255,255,0) rgba(255,255,255,0) rgba(255,255,255,0) #92d097;
+}
+
+.dpd-icon-container:hover .dpd-print-error-container, .dpd-icon-container:hover .dpd-print-message-container{
+    display:block;
+}

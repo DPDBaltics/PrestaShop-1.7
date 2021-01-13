@@ -1,0 +1,50 @@
+services:
+  Invertus\dpdBaltics\Repository\CarrierRepository:
+
+  Invertus\dpdBaltics\Repository\DPDZoneRepository:
+
+  Invertus\dpdBaltics\Repository\OrderRepository:
+
+  Invertus\dpdBaltics\Repository\ProductRepository:
+
+  Invertus\dpdBaltics\Repository\ProductZoneRepository:
+
+  Invertus\dpdBaltics\Repository\ProductShopRepository:
+
+  Invertus\dpdBaltics\Repository\PriceRuleRepository:
+
+  Invertus\dpdBaltics\Repository\PhonePrefixRepository:
+
+  Invertus\dpdBaltics\Repository\ZoneRepository:
+
+  Invertus\dpdBaltics\Repository\ZoneRangeRepository:
+
+  Invertus\dpdBaltics\Repository\PaymentRepository:
+
+  Invertus\dpdBaltics\Repository\ShipmentRepository:
+
+  Invertus\dpdBaltics\Repository\ReceiverAddressRepository:
+
+  Invertus\dpdBaltics\Repository\PhoneRepository:
+
+  Invertus\dpdBaltics\Repository\CodPaymentRepository:
+
+  Invertus\dpdBaltics\Repository\PudoRepository:
+
+  Invertus\dpdBaltics\Repository\LogsRepository:
+
+  Invertus\dpdBaltics\Repository\AddressRepository:
+
+  Invertus\dpdBaltics\Repository\CollectionRequestRepository:
+
+  Invertus\dpdBaltics\Repository\CourierRequestRepository:
+
+  Invertus\dpdBaltics\Repository\AddressTemplateRepository:
+
+  Invertus\dpdBaltics\Repository\ShopRepository:
+
+  Invertus\dpdBaltics\Repository\ParcelShopRepository:
+
+  Invertus\dpdBaltics\Repository\ProductAvailabilityRepository:
+
+  Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository:

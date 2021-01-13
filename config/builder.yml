@@ -1,0 +1,45 @@
+services:
+  Invertus\dpdBaltics\Builder\Template\Admin\InfoBlockBuilder:
+    arguments:
+      - '@dpdbaltics'
+
+  Invertus\dpdBaltics\Builder\Template\Admin\WarningBlockBuilder:
+    arguments:
+      - '@dpdbaltics'
+
+  Invertus\dpdBaltics\Builder\Template\Admin\ProductBlockBuilder:
+    arguments:
+      - '@dpdbaltics'
+      - '@smarty'
+      - '@language'
+      - '@Invertus\dpdBaltics\Repository\ProductRepository'
+      - '@Invertus\dpdBaltics\Repository\ProductZoneRepository'
+      - '@Invertus\dpdBaltics\Repository\ProductShopRepository'
+      - '@Invertus\dpdBaltics\Service\LanguageService'
+      - '@Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder'
+
+  Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder:
+    arguments:
+      - '@context'
+      - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
+      - '@Invertus\dpdBaltics\Provider\ProductShippingCostProvider'
+      - '@=service("dpdbaltics").getLocalPath()'
+      - '@Invertus\dpdBaltics\Repository\CarrierRepository'
+
+  Invertus\dpdBaltics\Builder\CarrierBuilder:
+    arguments:
+      - '@dpdbaltics'
+
+  Invertus\dpdBaltics\Builder\CarrierImageBuilder:
+    arguments:
+      - '@dpdbaltics'
+
+  Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder:
+    arguments:
+      - '@dpdbaltics'
+      - '@smarty'
+
+  Invertus\dpdBaltics\Builder\Template\Admin\PhoneInputBuilder:
+    arguments:
+      - '@dpdbaltics'
+      - '@smarty'

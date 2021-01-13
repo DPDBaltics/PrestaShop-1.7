@@ -1,0 +1,43 @@
+.bootstrap .btn.printout-position-select {
+    color: #555;
+    border: 1px solid #c7d6db;
+    background-color: #f5f8f9;
+    height: 40px;
+    text-align: left
+}
+
+.btn.dropdown-toggle.printout-position-select:active {
+    box-shadow: unset;
+}
+
+.btn.printout-position-select img {
+    height: 30px;
+    width: auto;
+    margin-right: 5px;
+    margin-left: 3px;
+}
+
+.bootstrap .printout-position-select .caret {
+    float: right;
+    line-height: 40px;
+    margin-top: 10px;
+    height: 100%;
+}
+
+.bootstrap .btn.dropdown-toggle.printout-position-select:hover .caret {
+    border-top-color: #333 !important;
+}
+
+.custom-image-select-order .btn.dropdown-toggle.printout-position-select {
+    padding: unset;
+    height: auto;
+}
+
+.printout-position-select + .dropdown-menu {
+    width: 100%;
+}
+
+.bootstrap .custom-image-select-order .caret {
+    margin-right: 4px;
+    margin-top: 12px;
+}
