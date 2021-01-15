@@ -193,3 +193,9 @@ services:
       - '@Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService'
       - '@Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService'
       - '@dpdbaltics'
+
+      # AccessibilityChecker
+  Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker:
+    class: 'Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker'
+    arguments:
+      - '@Invertus\dpdBaltics\Repository\ShipmentRepository'
