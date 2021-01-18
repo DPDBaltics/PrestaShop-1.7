@@ -1,5 +1,6 @@
 <?php
 
+use Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker;
 use Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\ConsoleCommand\UpdateParcelShopsCommand;
@@ -97,7 +98,7 @@ class DPDBaltics extends CarrierModule
         $this->displayName = $this->l('DPDBaltics');
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
-        $this->version = '1.1.8';
+        $this->version = '3.1.1';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -1236,7 +1237,8 @@ class DPDBaltics extends CarrierModule
                         'route' => 'dpdbaltics_download_printed_label',
                         'route_param_name' => 'orderId',
                         'route_param_field' => 'id_order',
-                        'confirm_message' => $this->l('Would you like to print shipping label?')
+                        'confirm_message' => $this->l('Would you like to print shipping label?'),
+                        'accessibility_checker' => $this->getModuleContainer()->get(PrintAccessibilityChecker::class),
                     ])
             );
 
