@@ -98,7 +98,7 @@ class DPDBaltics extends CarrierModule
         $this->displayName = $this->l('DPDBaltics');
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
-        $this->version = '3.1.1';
+        $this->version = '3.1.2';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -431,8 +431,7 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if (!$cartWeightValidator->validate($cart->getTotalWeight(), $countryCode, $serviceCarrier['product_reference']))
-        {
+        if (!$cartWeightValidator->validate($cart->getTotalWeight(), $countryCode, $serviceCarrier['product_reference'])) {
             return false;
         }
 
@@ -688,7 +687,6 @@ class DPDBaltics extends CarrierModule
         if ('AdminOrders' === $currentController &&
             (Tools::isSubmit('vieworder') || Tools::getValue('action') === 'vieworder')
         ) {
-
             $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/order_expand_form.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/shipment.js');
             Media::addJsDef([
@@ -1023,7 +1021,6 @@ class DPDBaltics extends CarrierModule
         foreach ($shipmentIds as $shipmentId) {
             $shipment = new DPDShipment($shipmentId);
             $plNumbers[] = $shipment->pl_number;
-
         }
 
         /** @var LabelApiService $labelApiService */
@@ -1175,11 +1172,13 @@ class DPDBaltics extends CarrierModule
 
         $dpdBaltics->context->smarty->assign('idOrder', $orderId);
 
-        $dpdBaltics->context->smarty->assign('message',
+        $dpdBaltics->context->smarty->assign(
+            'message',
             $dpdBaltics->l('Print label(s) from DPD system. Once label is saved you won\'t be able to modify contents of shipments')
         );
         $icon = $dpdBaltics->context->smarty->fetch(
-            $dpdBaltics->getLocalPath() . 'views/templates/hook/admin/order-list-save-label-icon.tpl');
+            $dpdBaltics->getLocalPath() . 'views/templates/hook/admin/order-list-save-label-icon.tpl'
+        );
 
 
         $dpdBaltics->context->smarty->assign('icon', $icon);
@@ -1214,7 +1213,8 @@ class DPDBaltics extends CarrierModule
             );
 
         $definition->getBulkActions()
-            ->add((new SubmitBulkActionCustom('print_multiple_labels'))
+            ->add(
+                (new SubmitBulkActionCustom('print_multiple_labels'))
                 ->setName($this->l('Print multiple labels'))
                 ->setOptions([
                     'submit_route' => 'dpdbaltics_download_multiple_printed_labels',
@@ -1241,7 +1241,6 @@ class DPDBaltics extends CarrierModule
                         'accessibility_checker' => $this->getModuleContainer()->get(PrintAccessibilityChecker::class),
                     ])
             );
-
     }
 
     private function getShipment($idOrder)
@@ -1255,7 +1254,6 @@ class DPDBaltics extends CarrierModule
         $shipment = new DPDShipment($shipmentId);
 
         if (!Validate::isLoadedObject($shipment)) {
-
             return false;
         }
 
