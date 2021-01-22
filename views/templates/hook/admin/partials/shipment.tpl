@@ -143,6 +143,22 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-2">
+                    <div class="form-row">
+                        <label class="control-label col-lg-12 d-none hidden">
+                            {l s='Reference 4' mod='dpdbaltics'}
+                        </label>
+                        <div class="col-lg-12">
+                            <input type="hidden"
+                                   name="reference4"
+                                   title="{l s='Reference 4' mod='dpdbaltics'}"
+                                   class=" form-control js-shipment-reference-input"
+                                   value="{$shipment->reference4}"
+                            >
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="dpd-separator"></div>
 
