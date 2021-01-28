@@ -1,5 +1,5 @@
 {
-  "name": "dpdbaltics",
+  "name": "invertus/dpdbaltics",
   "type": "project",
   "repositories": [
     {
@@ -31,8 +31,8 @@
   ],
   "require": {
     "php": ">=5.6",
-    "invertus/dpdBalticsApi":"dev-developer",
-    "invertus/psModuleTabs":"dev-develop",
+    "invertus/dpdbalticsapi":"dev-developer",
+    "invertus/psmoduletabs":"dev-develop",
     "symfony/console": "^3.4"
   },
   "require-dev": {
