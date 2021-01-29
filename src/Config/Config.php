@@ -6,9 +6,11 @@ use Configuration;
 use DPDParcel;
 use Invertus\dpdBaltics\Collection\DPDProductInstallCollection;
 use Invertus\dpdBaltics\DTO\DPDProductInstall;
+use Module;
 
 class Config
 {
+
     /** settings tab configuration **/
     const SHIPMENT_TEST_MODE = 'DPD_SHIPMENT_TEST_MODE';
     const WEB_SERVICE_USERNAME = 'DPD_WEB_SERVICE_USERNAME';
@@ -225,6 +227,7 @@ class Config
     const PRODUCT_TYPE_SAME_DAY_DELIVERY = '274';
     const PS_VERSION_1_7_7 = '1.7.7.0';
 
+
     public static function getProducts()
     {
         $collection = new DPDProductInstallCollection();
@@ -250,6 +253,13 @@ class Config
     public static function getCarrierLogo($idCarrier)
     {
         return _THEME_SHIP_DIR_ . $idCarrier . '.jpg';
+    }
+
+    public static function getPsAndModuleVersion()
+    {
+        $module = Module::getInstanceByName('dpdbaltics');
+
+        return 'PS_'._PS_VERSION_.';'. $module->version;
     }
 
 

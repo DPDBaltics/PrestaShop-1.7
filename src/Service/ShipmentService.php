@@ -136,6 +136,7 @@ class ShipmentService
         $shipment->num_of_parcels = $numOfParcels;
         $shipment->weight = $weight;
         $shipment->goods_price = $goodsPrice;
+        $shipment->reference4 = Config::getPsAndModuleVersion();
 
         $shipment->save();
 
