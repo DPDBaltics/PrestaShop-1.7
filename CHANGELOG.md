@@ -24,3 +24,9 @@
 
 ### Changed
 - Show prestashop version in shipment reference
+
+## [3.1.3] - 2021-01-29
+
+### Changed
+- Validations added for back office address form
+- Functionality added, show API error messages at front end
