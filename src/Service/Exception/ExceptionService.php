@@ -55,16 +55,16 @@ class ExceptionService
     {
         $exceptionType = get_class($exception);
         $exceptionCode = $exception->getCode();
-
+        $exceptionMesage = $exception->getMessage();
         if (isset($messages[$exceptionType])) {
             $message = $messages[$exceptionType];
 
             if (is_string($message)) {
-                return $message;
+                return $message. ' - '. $exceptionMesage;
             }
 
             if (is_array($message) && isset($message[$exceptionCode])) {
-                return $message[$exceptionCode];
+                return $message[$exceptionCode]. ' - '. $exceptionMesage;
             }
         }
 
