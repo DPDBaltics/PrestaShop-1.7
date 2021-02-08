@@ -1,5 +1,6 @@
 services:
   Invertus\dpdBaltics\Templating\InfoBlockRender:
+    class: 'Invertus\dpdBaltics\Templating\InfoBlockRender'
     arguments:
       - '@Invertus\dpdBaltics\Builder\Template\Admin\InfoBlockBuilder'
       - '@smarty'

@@ -1,50 +1,75 @@
 services:
   Invertus\dpdBaltics\Repository\CarrierRepository:
+    class: 'Invertus\dpdBaltics\Repository\CarrierRepository'
 
   Invertus\dpdBaltics\Repository\DPDZoneRepository:
+    class: 'Invertus\dpdBaltics\Repository\DPDZoneRepository'
 
   Invertus\dpdBaltics\Repository\OrderRepository:
+    class: 'Invertus\dpdBaltics\Repository\OrderRepository'
 
   Invertus\dpdBaltics\Repository\ProductRepository:
+    class: 'Invertus\dpdBaltics\Repository\ProductRepository'
 
   Invertus\dpdBaltics\Repository\ProductZoneRepository:
+    class: 'Invertus\dpdBaltics\Repository\ProductZoneRepository'
 
   Invertus\dpdBaltics\Repository\ProductShopRepository:
+    class: 'Invertus\dpdBaltics\Repository\ProductShopRepository'
 
   Invertus\dpdBaltics\Repository\PriceRuleRepository:
+    class: 'Invertus\dpdBaltics\Repository\PriceRuleRepository'
 
   Invertus\dpdBaltics\Repository\PhonePrefixRepository:
+    class: 'Invertus\dpdBaltics\Repository\PhonePrefixRepository'
 
   Invertus\dpdBaltics\Repository\ZoneRepository:
+    class: 'Invertus\dpdBaltics\Repository\ZoneRepository'
 
   Invertus\dpdBaltics\Repository\ZoneRangeRepository:
+    class: 'Invertus\dpdBaltics\Repository\ZoneRangeRepository'
 
   Invertus\dpdBaltics\Repository\PaymentRepository:
+    class: 'Invertus\dpdBaltics\Repository\PaymentRepository'
 
   Invertus\dpdBaltics\Repository\ShipmentRepository:
+    class: 'Invertus\dpdBaltics\Repository\ShipmentRepository'
 
   Invertus\dpdBaltics\Repository\ReceiverAddressRepository:
+    class: 'Invertus\dpdBaltics\Repository\ReceiverAddressRepository'
 
   Invertus\dpdBaltics\Repository\PhoneRepository:
+    class: 'Invertus\dpdBaltics\Repository\PhoneRepository'
 
   Invertus\dpdBaltics\Repository\CodPaymentRepository:
+    class: 'Invertus\dpdBaltics\Repository\CodPaymentRepository'
 
   Invertus\dpdBaltics\Repository\PudoRepository:
+    class: 'Invertus\dpdBaltics\Repository\PudoRepository'
 
   Invertus\dpdBaltics\Repository\LogsRepository:
+    class: 'Invertus\dpdBaltics\Repository\LogsRepository'
 
   Invertus\dpdBaltics\Repository\AddressRepository:
+    class: 'Invertus\dpdBaltics\Repository\AddressRepository'
 
   Invertus\dpdBaltics\Repository\CollectionRequestRepository:
+    class: 'Invertus\dpdBaltics\Repository\CollectionRequestRepository'
 
   Invertus\dpdBaltics\Repository\CourierRequestRepository:
+    class: 'Invertus\dpdBaltics\Repository\CourierRequestRepository'
 
   Invertus\dpdBaltics\Repository\AddressTemplateRepository:
+    class: 'Invertus\dpdBaltics\Repository\AddressTemplateRepository'
 
   Invertus\dpdBaltics\Repository\ShopRepository:
+    class: 'Invertus\dpdBaltics\Repository\ShopRepository'
 
   Invertus\dpdBaltics\Repository\ParcelShopRepository:
+    class: 'Invertus\dpdBaltics\Repository\ParcelShopRepository'
 
   Invertus\dpdBaltics\Repository\ProductAvailabilityRepository:
+    class: 'Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'
 
   Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository:
+    class: 'Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository'
