@@ -18,6 +18,8 @@ use Invertus\dpdBaltics\Service\Import\ZipImport;
 use Invertus\dpdBaltics\Service\Import\ZoneImport;
 use Invertus\dpdBaltics\Templating\InfoBlockRender;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsImportExportController extends AbstractAdminController
 {
     public function init()

@@ -1,13 +1,4 @@
 <?php
-
-use Invertus\dpdBaltics\Builder\Template\Admin\ProductBlockBuilder;
-use Invertus\dpdBaltics\Controller\AbstractAdminController;
-use Invertus\dpdBaltics\Exception\ProductUpdateException;
-use Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService;
-use Invertus\dpdBaltics\Service\Product\ProductService;
-use Invertus\dpdBaltics\Service\Product\UpdateProductShopService;
-use Invertus\dpdBaltics\Service\Product\UpdateProductZoneService;
-
 /**
  * NOTICE OF LICENSE
  *
@@ -18,6 +9,16 @@ use Invertus\dpdBaltics\Service\Product\UpdateProductZoneService;
  *
  *  International Registered Trademark & Property of INVERTUS, UAB
  */
+use Invertus\dpdBaltics\Builder\Template\Admin\ProductBlockBuilder;
+use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Exception\ProductUpdateException;
+use Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService;
+use Invertus\dpdBaltics\Service\Product\ProductService;
+use Invertus\dpdBaltics\Service\Product\UpdateProductShopService;
+use Invertus\dpdBaltics\Service\Product\UpdateProductZoneService;
+
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsProductsController extends AbstractAdminController
 {
     public function __construct()

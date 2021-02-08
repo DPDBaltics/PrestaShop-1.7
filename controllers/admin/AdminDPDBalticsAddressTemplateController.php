@@ -10,6 +10,8 @@ use Invertus\dpdBaltics\Repository\ShopRepository;
 use Invertus\dpdBaltics\Service\Address\AddressTemplateService;
 use Invertus\dpdBaltics\Util\CountryUtility;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
 {
 

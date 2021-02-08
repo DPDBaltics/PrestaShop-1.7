@@ -17,6 +17,8 @@ use Invertus\dpdBaltics\OnBoard\Provider\OnBoardStepStrategyProvider;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardService;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardStepActionService;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDAjaxOnBoardController extends AbstractAdminController
 {
     /**

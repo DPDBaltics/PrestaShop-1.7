@@ -12,6 +12,8 @@ use Invertus\dpdBaltics\Service\API\CollectionRequestService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
 {
     public function __construct()
