@@ -152,7 +152,7 @@ services:
     parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
 
   Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts3:
-    clasS: 'Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts3'
+    class: 'Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts3'
     parent: Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep
 
   Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepManualProducts4:
