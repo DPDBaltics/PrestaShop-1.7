@@ -30,3 +30,9 @@
 ### Changed
 - Validations added for back office address form
 - Functionality added, show API error messages at front end
+
+## [3.1.4] - 2021-02-25
+
+### Changed
+- Set parcels from different countries functionality added
+- Bugfix when no idcart in order page to select parcel
