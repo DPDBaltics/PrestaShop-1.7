@@ -16,7 +16,7 @@ class ApiConfiguration implements ApiConfigurationInterface
         } else {
             $apiUrls = ApiConfig::LIVE_URLS;
         }
-        //TODO get delivery address no address in context
+
         $wsCountry = Tools::strtoupper(Configuration::get(Config::WEB_SERVICE_COUNTRY));
 
         if (!$wsCountry || !isset($apiUrls[$wsCountry])) {
