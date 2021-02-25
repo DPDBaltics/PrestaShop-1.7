@@ -1,22 +1,27 @@
 services:
   Invertus\dpdBaltics\Service\Export\ExportProvider:
+    class: 'Invertus\dpdBaltics\Service\Export\ExportProvider'
     arguments:
       - '@dpdbaltics'
 
   Invertus\dpdBaltics\Service\Export\ZoneExport:
+    class: 'Invertus\dpdBaltics\Service\Export\ZoneExport'
     arguments:
       - '@dpdbaltics'
 
   Invertus\dpdBaltics\Service\Export\SettingsExport:
+    class: 'Invertus\dpdBaltics\Service\Export\SettingsExport'
     arguments:
       - '@dpdbaltics'
 
   Invertus\dpdBaltics\Service\Export\AddressTemplatesExport:
+    class: 'Invertus\dpdBaltics\Service\Export\AddressTemplatesExport'
     arguments:
       - '@dpdbaltics'
       - '@Invertus\dpdBaltics\Repository\AddressTemplateRepository'
 
   Invertus\dpdBaltics\Service\Export\ProductExport:
+    class: 'Invertus\dpdBaltics\Service\Export\ProductExport'
     arguments:
       - '@dpdbaltics'
       - '@Invertus\dpdBaltics\Repository\ProductRepository'
@@ -25,6 +30,7 @@ services:
       - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'
 
   Invertus\dpdBaltics\Service\Export\PriceRulesExport:
+    class: 'Invertus\dpdBaltics\Service\Export\PriceRulesExport'
     arguments:
       - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
       - '@dpdbaltics'

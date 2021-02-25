@@ -18,6 +18,8 @@ use Invertus\dpdBaltics\Repository\ShopRepository;
 use Invertus\dpdBaltics\Service\DPDFlashMessageService;
 use Invertus\dpdBaltics\Service\PriceRuleService;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsPriceRulesController extends AbstractAdminController
 {
     /** @var  DPDPriceRule */

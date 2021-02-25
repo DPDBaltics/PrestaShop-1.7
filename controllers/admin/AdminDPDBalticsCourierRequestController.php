@@ -14,6 +14,8 @@ use Invertus\dpdBaltics\Util\TimeZoneUtility;
 use Invertus\dpdBaltics\Validate\CourierRequest\CourierRequestValidator;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsCourierRequestController extends AbstractAdminController
 {
     public function __construct()

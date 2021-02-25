@@ -1,11 +1,4 @@
 <?php
-
-use Invertus\dpdBaltics\Config\Config;
-use Invertus\dpdBaltics\Controller\AbstractAdminController;
-use Invertus\dpdBaltics\Exception\ProductAvailabilityUpdateException;
-use Invertus\dpdBaltics\Provider\ProductAvailabilityProvider;
-use Invertus\dpdBaltics\Service\Product\ProductAvailabilityService;
-
 /**
  * NOTICE OF LICENSE
  *
@@ -16,6 +9,14 @@ use Invertus\dpdBaltics\Service\Product\ProductAvailabilityService;
  *
  *  International Registered Trademark & Property of INVERTUS, UAB
  */
+use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Exception\ProductAvailabilityUpdateException;
+use Invertus\dpdBaltics\Provider\ProductAvailabilityProvider;
+use Invertus\dpdBaltics\Service\Product\ProductAvailabilityService;
+
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminController
 {
     public function __construct()
