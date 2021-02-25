@@ -1,13 +1,16 @@
 services:
   Invertus\dpdBaltics\Builder\Template\Admin\InfoBlockBuilder:
+    class: 'Invertus\dpdBaltics\Builder\Template\Admin\InfoBlockBuilder'
     arguments:
       - '@dpdbaltics'
 
   Invertus\dpdBaltics\Builder\Template\Admin\WarningBlockBuilder:
+    class: 'Invertus\dpdBaltics\Builder\Template\Admin\WarningBlockBuilder'
     arguments:
       - '@dpdbaltics'
 
   Invertus\dpdBaltics\Builder\Template\Admin\ProductBlockBuilder:
+    class: 'Invertus\dpdBaltics\Builder\Template\Admin\ProductBlockBuilder'
     arguments:
       - '@dpdbaltics'
       - '@smarty'
@@ -19,6 +22,7 @@ services:
       - '@Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder'
 
   Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder:
+    class: 'Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder'
     arguments:
       - '@context'
       - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
@@ -27,19 +31,23 @@ services:
       - '@Invertus\dpdBaltics\Repository\CarrierRepository'
 
   Invertus\dpdBaltics\Builder\CarrierBuilder:
+    class: 'Invertus\dpdBaltics\Builder\CarrierBuilder'
     arguments:
       - '@dpdbaltics'
 
   Invertus\dpdBaltics\Builder\CarrierImageBuilder:
+    class: 'Invertus\dpdBaltics\Builder\CarrierImageBuilder'
     arguments:
       - '@dpdbaltics'
 
   Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder:
+    class: 'Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder'
     arguments:
       - '@dpdbaltics'
       - '@smarty'
 
   Invertus\dpdBaltics\Builder\Template\Admin\PhoneInputBuilder:
+    class: 'Invertus\dpdBaltics\Builder\Template\Admin\PhoneInputBuilder'
     arguments:
       - '@dpdbaltics'
       - '@smarty'

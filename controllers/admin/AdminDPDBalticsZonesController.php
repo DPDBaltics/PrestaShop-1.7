@@ -24,6 +24,8 @@ use Invertus\dpdBaltics\Service\Zone\DeleteZoneService;
 use Invertus\dpdBaltics\Service\Zone\UpdateZoneService;
 use Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsZonesController extends AbstractAdminController
 {
     /**

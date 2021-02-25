@@ -1,4 +1,5 @@
 services:
   Invertus\dpdBaltics\Util\FileDownload:
+    class: 'Invertus\dpdBaltics\Util\FileDownload'
     arguments:
       - '@dpdbaltics'

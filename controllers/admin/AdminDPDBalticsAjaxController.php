@@ -19,6 +19,8 @@ use Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService;
 use Invertus\dpdBaltics\Service\PudoService;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsAjaxController extends AbstractAdminController
 {
     public function ajaxProcessImportZones()
