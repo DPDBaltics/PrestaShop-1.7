@@ -8,6 +8,8 @@ use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\PudoRepository;
 use Invertus\dpdBaltics\Service\OrderService;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
 {
     public function postProcess()

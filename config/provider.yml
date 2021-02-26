@@ -1,13 +1,16 @@
 services:
   Invertus\dpdBaltics\Provider\ImportExportOptionsProvider:
+    class: 'Invertus\dpdBaltics\Provider\ImportExportOptionsProvider'
     arguments:
       - '@dpdbaltics'
 
   Invertus\dpdBaltics\Provider\ImportExportURLProvider:
+    class: 'Invertus\dpdBaltics\Provider\ImportExportURLProvider'
     arguments:
       - '@context'
 
   Invertus\dpdBaltics\Provider\ProductShippingCostProvider:
+    class: 'Invertus\dpdBaltics\Provider\ProductShippingCostProvider'
     arguments:
       - '@dpdbaltics'
       -  '@Invertus\dpdBaltics\Repository\ProductRepository'
@@ -16,10 +19,12 @@ services:
       -  '@currency'
 
   Invertus\dpdBaltics\Provider\ZoneRangeProvider:
+    class: 'Invertus\dpdBaltics\Provider\ZoneRangeProvider'
     arguments:
       - '@language'
 
   Invertus\dpdBaltics\Provider\ProductAvailabilityProvider:
+    class: 'Invertus\dpdBaltics\Provider\ProductAvailabilityProvider'
     arguments:
       - '@language'
       - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'

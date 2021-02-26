@@ -34,5 +34,9 @@
 ## [3.1.4] - 2021-02-25
 
 ### Changed
+- Validation added for back office product page on deleted carriers(do not show deleted carrier)
+- Name changed for back office terminal import string
+- Reference 4 for shipments string format changed
 - Set parcels from different countries functionality added
 - Bugfix when no idcart in order page to select parcel
+

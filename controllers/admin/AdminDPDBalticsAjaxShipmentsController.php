@@ -30,6 +30,8 @@ use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ShipmentCreationResponse;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 {
     protected $ajaxActions = ['save', 'save_and_print', 'updateAddressBlock', 'getProductPriceByID', 'print'];

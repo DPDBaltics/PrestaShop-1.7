@@ -1,4 +1,6 @@
 services:
   Invertus\dpdBaltics\Adapter\DPDConfigurationAdapter:
+    class: 'Invertus\dpdBaltics\Adapter\DPDConfigurationAdapter'
 
   Invertus\dpdBaltics\Adapter\ZoneAdapter:
+    class: 'Invertus\dpdBaltics\Adapter\ZoneAdapter'

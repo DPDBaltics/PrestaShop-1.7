@@ -1,23 +1,29 @@
 services:
   Invertus\dpdBaltics\Factory\ArrayFactory:
+    class: 'Invertus\dpdBaltics\Factory\ArrayFactory'
 
   Invertus\dpdBaltics\Factory\ContextFactory:
+    class: 'Invertus\dpdBaltics\Factory\ContextFactory'
 
   Invertus\dpdBaltics\Factory\TabFactory:
+    class: 'Invertus\dpdBaltics\Factory\TabFactory'
     arguments:
       - '@Invertus\dpdBaltics\Service\TabService'
 
   Invertus\dpdBaltics\Factory\APIParamsFactory:
+    class: 'Invertus\dpdBaltics\Factory\APIParamsFactory'
     arguments:
       - '@dpdbaltics'
       - '@Invertus\dpdBaltics\Config\ApiConfiguration'
 
   Invertus\dpdBaltics\Factory\ShipmentDataFactory:
+    class: 'Invertus\dpdBaltics\Factory\ShipmentDataFactory'
     arguments:
       - '@Invertus\dpdBaltics\Repository\OrderRepository'
       - '@Invertus\dpdBaltics\Repository\ShipmentRepository'
       - '@Invertus\dpdBaltics\Repository\PudoRepository'
 
   Invertus\dpdBaltics\Factory\ShopFactory:
+    class: 'Invertus\dpdBaltics\Factory\ShopFactory'
     arguments:
       - '@Invertus\dpdBaltics\Repository\ParcelShopRepository'

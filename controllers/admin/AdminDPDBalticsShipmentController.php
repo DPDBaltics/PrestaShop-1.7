@@ -3,6 +3,8 @@
 
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsShipmentController extends AbstractAdminController
 {
     public function __construct()

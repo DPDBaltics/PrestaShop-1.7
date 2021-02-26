@@ -10,6 +10,8 @@ use Invertus\dpdBaltics\Service\Label\LabelPositionService;
 use Invertus\dpdBaltics\Templating\InfoBlockRender;
 use Invertus\dpdBaltics\Util\CountryUtility;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
 {
     public function __construct()

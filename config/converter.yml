@@ -1,2 +1,3 @@
 services:
   Invertus\dpdBaltics\Converter\FormDataConverter:
+    class: 'Invertus\dpdBaltics\Converter\FormDataConverter'

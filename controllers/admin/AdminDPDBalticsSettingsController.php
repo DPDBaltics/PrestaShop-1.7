@@ -11,6 +11,8 @@ use Invertus\dpdBaltics\Service\LogsService;
 use Invertus\dpdBaltics\Service\Product\ProductService;
 use Invertus\dpdBaltics\Templating\InfoBlockRender;
 
+require_once dirname(__DIR__).'/../vendor/autoload.php';
+
 class AdminDPDBalticsSettingsController extends AbstractAdminController
 {
     public function init()
