@@ -119,6 +119,11 @@ class Installer
             return false;
         }
 
+        if (!$this->uninstallTabs()) {
+            $this->errors[] = $this->module->l('Failed to install tabs', self::FILE_NAME);
+            return false;
+        }
+
         $this->processDeleteCarriers();
 
         if (!$this->processDatabase(self::DB_ACTION_UNINSTALL)) {
@@ -291,6 +296,11 @@ class Installer
         return $tabsInitializer->initializeTabsByPsVersion();
     }
 
+    private function uninstallTabs()
+    {
+        //TODO uninstall tabs
+        return true;
+    }
     private function processDeleteCarriers()
     {
         $sql = 'SHOW TABLES LIKE "ps_dpd_product";';

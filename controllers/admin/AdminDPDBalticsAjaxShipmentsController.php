@@ -47,10 +47,15 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         $action = Tools::getValue('action');
         $idOrder = Tools::getValue('id_order');
         $order = new Order($idOrder);
+        $cartId = Tools::getValue('id_cart');
 
         /** @var FormDataConverter $formDataConverter */
         $formDataConverter = $this->module->getModuleContainer(FormDataConverter::class);
         $data = Tools::getValue('data');
+
+        if (!$cartId && $idOrder) {
+            $cartId = $this->getCartIdByOrderId($idOrder);
+        }
 
         switch ($action) {
             case 'changeReceiverAddressBlock':
@@ -76,7 +81,6 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
             case 'searchPudoServices':
                 $cityName = Tools::getValue('city_name');
                 $productId = Tools::getValue('id_product');
-                $cartId = Tools::getValue('id_cart');
 
                 if ($productId) {
                     $product = new DPDProduct($productId);
@@ -315,5 +319,15 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
             'parcel_name' => $pudoServices[0]->getCompany(),
             'status' => true,
         ];
+    }
+
+    /**
+     * @param $idOrder
+     *
+     * @return int
+     */
+    private function getCartIdByOrderId($idOrder)
+    {
+        return (int) Order::getCartIdStatic($idOrder);
     }
 }

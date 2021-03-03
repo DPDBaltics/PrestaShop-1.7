@@ -3,6 +3,7 @@
 namespace Invertus\dpdBaltics\Service;
 
 use Carrier;
+use Cart;
 use Configuration;
 use Country;
 use DPDBaltics;
@@ -11,12 +12,14 @@ use DPDPudo;
 use DPDShop;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Factory\ShopFactory;
+use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Invertus\dpdBaltics\Repository\PudoRepository;
 use Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService;
 use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBalticsApi\Api\DTO\Object\OpeningHours;
 use Invertus\dpdBalticsApi\Api\DTO\Object\ParcelShop;
+use Invertus\ViaBill\Adapter\Context;
 use Language;
 use Smarty;
 use Tools;
@@ -161,7 +164,14 @@ class PudoService
 
     public function searchPudoServices($city, $carrierId, $cartId)
     {
-        $countryCode = Configuration::get(Config::WEB_SERVICE_COUNTRY);
+        $cart = null;
+
+        if ($cartId) {
+            $cart = new Cart($cartId);
+        }
+        /** @var CurrentCountryProvider $currentCountryProvider */
+        $currentCountryProvider = $this->module->getModuleContainer(CurrentCountryProvider::class);
+        $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
 
         /** @var ParcelShopService $parcelShopService */
         /** @var PudoService $pudoService */

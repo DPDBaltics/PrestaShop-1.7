@@ -7,7 +7,6 @@ $(document).ready(function () {
      */
     function searchPudoServicesEvent() {
         var $this = $(this);
-
         var $originalText = $this.attr('data-original-text');
         var $loadingText = $this.attr('data-loading-text');
 
@@ -29,12 +28,14 @@ $(document).ready(function () {
         if (isPageOrderAdd()) {
             var id_cart = sharedIdCart;
         }
+
         var data = {
             'id_country': $idCountry,
             'city_name': $cityName,
             'zip_code': $zipCode,
             'street': $street,
             'id_cart': id_cart,
+            'id_order': id_order,
             'ajax': 1,
             'id_service': $idService,
             'action': 'searchPudoServices',

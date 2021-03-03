@@ -28,3 +28,7 @@ services:
     arguments:
       - '@language'
       - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'
+
+  Invertus\dpdBaltics\Provider\CurrentCountryProvider:
+    arguments:
+      - '@context'
