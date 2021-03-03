@@ -11,6 +11,7 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\PudoRepository;
@@ -76,8 +77,10 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
 
     public function postProcess()
     {
+
         $action = Tools::getValue('action');
-        $countryCode = Configuration::get(Config::WEB_SERVICE_COUNTRY);
+        $currentCountryProvider = $this->module->getModuleContainer(CurrentCountryProvider::class);
+        $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
         $city = Tools::getValue('city_name');
         $carrierId = (int)Tools::getValue('id_carrier');
         switch ($action) {
@@ -102,7 +105,6 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                 break;
             case 'updateStreetSelect':
                 $city = Tools::getValue('city');
-                $countryCode = Configuration::get(Config::WEB_SERVICE_COUNTRY);
                 $this->updateStreetSelect($countryCode, $city);
                 break;
             case 'updateParcelBlock':
@@ -125,7 +127,6 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
             case 'saveSelectedStreet':
                 $city = Tools::getValue('city');
                 $street = Tools::getValue('street');
-                $countryCode = Configuration::get(Config::WEB_SERVICE_COUNTRY);
                 $this->saveParcelShop($countryCode, $city, $street);
                 break;
             default:

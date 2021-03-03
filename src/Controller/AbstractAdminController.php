@@ -7,6 +7,7 @@ use DPDBaltics;
 use Exception;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardStepActionService;
+use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Provider\ImportExportURLProvider;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Media;
@@ -168,9 +169,15 @@ class AbstractAdminController extends ModuleAdminController
         if ($isSecretTestModeEnabled) {
             $this->warnings[] = $this->module->l('Please note: secret test mode is enabled', self::FILENAME);
         }
+
         /** @var ParcelShopRepository $parcelShopRepo */
         $parcelShopRepo = $this->module->getModuleContainer(ParcelShopRepository::class);
-        $countryCode = Configuration::get(Config::WEB_SERVICE_COUNTRY);
+
+        /** @var CurrentCountryProvider $currentCountryProvider */
+        $currentCountryProvider = $this->module->getModuleContainer(CurrentCountryProvider::class);
+
+        $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
+
         if (!$parcelShopRepo->hasAnyParcelShops($countryCode)) {
             $this->warnings[] = $this->context->smarty->fetch(
                 $this->module->getLocalPath() . 'views/templates/admin/warning-message-with-link.tpl',
