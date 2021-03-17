@@ -81,6 +81,6 @@ class UpdateCarrierService
             $carrier->update();
         } catch (Exception $e) {
             throw new ProductUpdateException($e->getMessage());
-        };
+        }
     }
 }

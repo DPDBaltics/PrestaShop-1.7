@@ -99,21 +99,27 @@ class ProductService
 
     public function updateCarriersOnCountryChange($newCountryIsoCode)
     {
-        $productId = $this->productRepository->getProductIdByProductReference(Config::PRODUCT_TYPE_PUDO_COD);
+        $productId = $this->productRepository->getProductIdByProductReference(
+            Config::PRODUCT_TYPE_PUDO_COD
+        );
         if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
             $this->deleteProduct(Config::PRODUCT_TYPE_PUDO_COD);
         } elseif (!$productId) {
             $this->addProduct(Config::PRODUCT_TYPE_PUDO_COD, $newCountryIsoCode);
         }
 
-        $productId = $this->productRepository->getProductIdByProductReference(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY);
+        $productId = $this->productRepository->getProductIdByProductReference(
+            Config::PRODUCT_TYPE_SAME_DAY_DELIVERY
+        );
         if ($newCountryIsoCode !== Config::LATVIA_ISO_CODE) {
             $this->deleteProduct(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY);
         } elseif (!$productId) {
             $this->addProduct(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY, $newCountryIsoCode);
         }
 
-        $productId = $this->productRepository->getProductIdByProductReference(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
+        $productId = $this->productRepository->getProductIdByProductReference(
+            Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD
+        );
         if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
             $this->deleteProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
         } elseif (!$productId) {
