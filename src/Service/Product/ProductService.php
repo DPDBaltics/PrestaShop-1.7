@@ -50,6 +50,12 @@ class ProductService
         }
     }
 
+    /**
+     * @param $productId
+     * @param $name
+     *
+     * @throws ProductUpdateException
+     */
     public function updateProductName($productId, $name)
     {
 

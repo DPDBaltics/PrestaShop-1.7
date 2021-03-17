@@ -237,7 +237,6 @@ services:
     arguments:
       - '@Invertus\dpdBaltics\Repository\ShipmentRepository'
 
-
   Invertus\dpdBaltics\Service\Carrier\CarrierUpdateHandler:
     class: 'Invertus\dpdBaltics\Service\Carrier\CarrierUpdateHandler'
     arguments:
