@@ -47,7 +47,22 @@ class ProductService
             $dpdProduct->update();
         } catch (Exception $e) {
             throw new ProductUpdateException($e->getMessage());
-        };
+        }
+    }
+
+    public function updateProductName($productId, $name)
+    {
+
+        try {
+            $dpdProduct = new DPDProduct($productId);
+            if (!\Validate::isLoadedObject($dpdProduct)) {
+                return;
+            }
+            $dpdProduct->name = $name;
+            $dpdProduct->update();
+        } catch (Exception $e) {
+            throw new ProductUpdateException($e->getMessage());
+        }
     }
 
     public function deleteProduct($productReference)

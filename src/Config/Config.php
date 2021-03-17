@@ -228,21 +228,21 @@ class Config
     const PS_VERSION_1_7_7 = '1.7.7.0';
 
     const PRODUCT_NAME_B2B = [
-        'LT' => 'DPD B2C',
+        'LT' => 'DPD kurjeris',
         'EE' => 'DPD kuller',
         'LV' => 'DPD B2C',
         'EN' => 'DPD B2C',
     ];
 
     const PRODUCT_NAME_PUDO = [
-        'LT' => 'DPD Pickup',
+        'LT' => 'DPD Paštomatas',
         'EE' => 'DPD pakiautomaat',
         'LV' => 'DPD Pickup',
         'EN' => 'DPD Pickup',
     ];
 
     const PRODUCT_NAME_B2B_COD = [
-        'LT' => 'DPD B2C COD',
+        'LT' => 'DPD Kurjeris, atsiskaitymas grynaisiais',
         'EE' => 'Lunamakse',
         'LV' => 'DPD B2C COD',
         'EN' => 'DPD B2C COD',
@@ -250,50 +250,62 @@ class Config
 
 
     const PRODUCT_NAME_PUDO_COD = [
-        'LT' => 'DPD Pickup COD',
+        'LT' => 'DPD Paštomatas, atsiskaitymas grynaisiais',
         'EE' => 'Lunamakse DPD pakiautomaat ',
         'LV' => 'DPD Pickup COD',
         'EN' => 'DPD Pickup COD',
     ];
 
     const PRODUCT_NAME_SATURDAY_DELIVERY = [
-        'LT' => 'Saturday Delivery',
+        'LT' => 'Pristatymas Šestadienį',
         'EE' => 'DPD kuller laupäeval',
         'LV' => 'Saturday Delivery',
         'EN' => 'Saturday Delivery',
     ];
 
     const PRODUCT_NAME_SATURDAY_DELIVERY_COD = [
-        'LT' => 'Saturday Delivery COD',
+        'LT' => 'Pristatymas Šestadienį, atsiskaitymas grynaisiais',
         'EE' => 'Lunamakse DPD kuller laupäeval',
         'LV' => 'Saturday Delivery COD',
         'EN' => 'Saturday Delivery COD',
     ];
 
     const PRODUCT_NAME_SAME_DAY_DELIVERY = [
-        'LT' => 'Same day Delivery',
+        'LT' => 'Pristatymas tą pačią dieną',
         'EE' => 'Samal päeval kohaletoimetamine',
         'LV' => 'Same day Delivery',
         'EN' => 'Same day Delivery',
     ];
 
-    public static function getProducts()
+    public static function getProducts($webServiceCountry = 'EN')
     {
         $collection = new DPDProductInstallCollection();
 
-        $product = self::getProductByReference(self::PRODUCT_TYPE_B2B);
+        $product = self::getProductByReference(self::PRODUCT_TYPE_B2B, $webServiceCountry);
         $collection->add($product);
 
-        $product = self::getProductByReference(self::PRODUCT_TYPE_PUDO);
+        $product = self::getProductByReference(self::PRODUCT_TYPE_PUDO, $webServiceCountry);
         $collection->add($product);
 
-        $product = self::getProductByReference(self::PRODUCT_TYPE_B2B_COD);
+        $product = self::getProductByReference(self::PRODUCT_TYPE_B2B_COD, $webServiceCountry);
         $collection->add($product);
 
-        $product = self::getProductByReference(self::PRODUCT_TYPE_SATURDAY_DELIVERY);
+        $product = self::getProductByReference(
+            self::PRODUCT_TYPE_SATURDAY_DELIVERY,
+            $webServiceCountry
+        );
         $collection->add($product);
 
-        $product = self::getProductByReference(self::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
+        $product = self::getProductByReference(
+            self::PRODUCT_TYPE_PUDO_COD,
+            $webServiceCountry
+        );
+        $collection->add($product);
+
+        $product = self::getProductByReference(
+            self::PRODUCT_TYPE_SATURDAY_DELIVERY_COD,
+            $webServiceCountry
+        );
         $collection->add($product);
 
         return $collection;
