@@ -59,4 +59,28 @@ class UpdateCarrierService
             throw new ProductUpdateException($e->getMessage());
         };
     }
+
+    /**
+     * @param int $productId
+     * @param $name
+     *
+     * @throws ProductUpdateException
+     */
+    public function updateCarrierName($productId, $name)
+    {
+        try {
+            $dpdProduct = new DPDProduct($productId);
+
+            $this->carrierUpdateValidate->validateCarrierName($name);
+            $carrier = Carrier::getCarrierByReference($dpdProduct->id_reference);
+
+            if (!$carrier) {
+                return;
+            }
+            $carrier->name = $name;
+            $carrier->update();
+        } catch (Exception $e) {
+            throw new ProductUpdateException($e->getMessage());
+        }
+    }
 }

@@ -7,6 +7,8 @@ use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\DTO\DPDProductInstall;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Service\Carrier\CreateCarrierService;
+use Invertus\dpdBaltics\Service\Carrier\CarrierUpdateHandler;
+use Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService;
 use Invertus\dpdBaltics\Service\LogsService;
 use Invertus\dpdBaltics\Service\Product\ProductService;
 use Invertus\dpdBaltics\Templating\InfoBlockRender;
@@ -149,10 +151,13 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         if (Tools::isSubmit('submitOptionsconfiguration')) {
             /** @var ProductService $productService */
             $productService = $this->module->getModuleContainer()->get(ProductService::class);
+            /** @var CarrierUpdateHandler $carrierService */
+            $carrierService = $this->module->getModuleContainer()->get(CarrierUpdateHandler::class);
 
             $newCountry = Tools::getValue(Config::WEB_SERVICE_COUNTRY);
             Configuration::updateValue(Config::DPD_PARCEL_IMPORT_COUNTRY_SELECTOR, Country::getByIso($newCountry));
             $productService->updateCarriersOnCountryChange($newCountry);
+            $carrierService->updateCarrierName($newCountry);
         }
 
         $parentReturn = parent::postProcess();
