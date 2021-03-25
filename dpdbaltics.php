@@ -672,8 +672,8 @@ class DPDBaltics extends CarrierModule
                Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames(true)]);
                $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
            }
-
         }
+
         if ('AdminOrders' === $currentController) {
             $this->handleLabelPrintService();
 
@@ -727,7 +727,6 @@ class DPDBaltics extends CarrierModule
                 'currentController' => $currentController,
 
             ]);
-
 
             $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/carrier_phone.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/custom_select.js');
