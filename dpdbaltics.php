@@ -663,6 +663,20 @@ class DPDBaltics extends CarrierModule
     {
         $currentController = Tools::getValue('controller');
 
+        if (Config::isPrestashopVersionBelow174()) {
+            /** @var  $tabs TabService*/
+           $tabs = $this->getModuleContainer()->get(TabService::class);
+           $visibleClasses = $tabs->getVisibleTabsClassNames();
+
+           if (in_array($currentController, $visibleClasses)) {
+               Media::addJsDef([
+                       'visibleTabs' => $visibleClasses,
+                       ]
+               );
+               $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
+           }
+
+        }
         if ('AdminOrders' === $currentController) {
             $this->handleLabelPrintService();
 
@@ -716,6 +730,7 @@ class DPDBaltics extends CarrierModule
                 'currentController' => $currentController,
 
             ]);
+
 
             $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/carrier_phone.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/custom_select.js');
