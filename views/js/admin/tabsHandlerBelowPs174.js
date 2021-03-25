@@ -19,8 +19,7 @@ $(document).ready(function (){
     });
 
     function getUrlParam( name, url ) {
-        if (!url) url = location.href;
-        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+
         var regexS = "[\\?&]"+name+"=([^&#]*)";
         var regex = new RegExp( regexS );
         var results = regex.exec( url );
