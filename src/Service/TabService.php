@@ -176,13 +176,15 @@ class TabService
     /**
      * Filter visible tabs to handle in javascript for ps versiosns below 1704
      */
-    public function getVisibleTabsClassNames()
+    public function getTabsClassNames($visible = true)
     {
         $filtered = [];
         $tabs = $this->getTabs();
 
         foreach ($tabs as $tab) {
-            if (isset($tab['visible']) && $tab['visible']) {
+            if ($visible && isset($tab['visible']) && $tab['visible']) {
+                $filtered[] = $tab['class_name'];
+            } else {
                 $filtered[] = $tab['class_name'];
             }
         }

@@ -40,8 +40,9 @@
 - Set parcels from different countries functionality added
 - Bugfix when no idcart in order page to select parcel
 
-## [3.1.5] - 2021-03-08
+## [3.1.5] - 2021-03-25
 ### Changed
 - Added shipping cost to dpd shipment
 - Translations added for carriers on webservice change
+- Module tab install/uninstall dublication on module tab titles, all invisible titles are showing bug fixes added
 

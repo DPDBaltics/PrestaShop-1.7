@@ -666,13 +666,10 @@ class DPDBaltics extends CarrierModule
         if (Config::isPrestashopVersionBelow174()) {
             /** @var  $tabs TabService*/
            $tabs = $this->getModuleContainer()->get(TabService::class);
-           $visibleClasses = $tabs->getVisibleTabsClassNames();
+           $visibleClasses = $tabs->getTabsClassNames(false);
 
            if (in_array($currentController, $visibleClasses, true)) {
-               Media::addJsDef([
-                       'visibleTabs' => $visibleClasses,
-                       ]
-               );
+               Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames(true)]);
                $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
            }
 
