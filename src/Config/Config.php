@@ -575,4 +575,12 @@ class Config
 
         return false;
     }
+
+    /**
+     * @return bool
+     */
+    public static function isPrestashopVersionBelow174()
+    {
+        return (bool) version_compare(_PS_VERSION_, '1.7.4', '<');
+    }
 }

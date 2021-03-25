@@ -15,8 +15,10 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Service\Carrier\CreateCarrierService;
 use Invertus\dpdBaltics\Factory\TabFactory;
 use Invertus\dpdBaltics\Service\Label\LabelPositionService;
+use Invertus\dpdBaltics\Uninstaller\ModuleTabs\ModuleTabsUninstaller;
 use Invertus\psModuleTabs\Object\TabsCollection;
 use Invertus\psModuleTabs\Service\TabsInitializer;
+use Invertus\psModuleTabs\Service\TabsUninstaller;
 use Symfony\Component\Validator\Constraints\Count;
 use Tools;
 use Validate;
@@ -120,7 +122,7 @@ class Installer
         }
 
         if (!$this->uninstallTabs()) {
-            $this->errors[] = $this->module->l('Failed to install tabs', self::FILE_NAME);
+            $this->errors[] = $this->module->l('Failed to uninstall tabs', self::FILE_NAME);
             return false;
         }
 
@@ -288,9 +290,12 @@ class Installer
 
     private function installTabs()
     {
+        if (!Config::isPrestashopVersionBelow174()) {
+            return true;
+        }
         /** @var TabsCollection $tabCollection */
         $tabCollection = $this->tabFactory->getTabsCollection();
-
+        print_r($tabCollection);
         $tabsInitializer = new TabsInitializer(_PS_VERSION_, $tabCollection);
 
         return $tabsInitializer->initializeTabsByPsVersion();
@@ -298,8 +303,16 @@ class Installer
 
     private function uninstallTabs()
     {
-        //TODO uninstall tabs
-        return true;
+        if (!Config::isPrestashopVersionBelow174()) {
+            return true;
+        }
+
+        /** @var TabsCollection $tabCollection */
+        $tabCollection = $this->tabFactory->getTabsCollection()->getTabsCollection();
+
+        $tabsUninstaller = new ModuleTabsUninstaller($tabCollection);
+
+        return $tabsUninstaller->uninstallTabs();
     }
     private function processDeleteCarriers()
     {
