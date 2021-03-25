@@ -668,7 +668,7 @@ class DPDBaltics extends CarrierModule
            $tabs = $this->getModuleContainer()->get(TabService::class);
            $visibleClasses = $tabs->getVisibleTabsClassNames();
 
-           if (in_array($currentController, $visibleClasses)) {
+           if (in_array($currentController, $visibleClasses, true)) {
                Media::addJsDef([
                        'visibleTabs' => $visibleClasses,
                        ]
