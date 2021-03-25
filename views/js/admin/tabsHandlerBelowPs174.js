@@ -19,7 +19,6 @@ $(document).ready(function (){
     });
 
     function getUrlParam( name, url ) {
-
         var regexS = "[\\?&]"+name+"=([^&#]*)";
         var regex = new RegExp( regexS );
         var results = regex.exec( url );
