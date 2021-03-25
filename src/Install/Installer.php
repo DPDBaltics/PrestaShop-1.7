@@ -295,7 +295,6 @@ class Installer
         }
         /** @var TabsCollection $tabCollection */
         $tabCollection = $this->tabFactory->getTabsCollection();
-        print_r($tabCollection);
         $tabsInitializer = new TabsInitializer(_PS_VERSION_, $tabCollection);
 
         return $tabsInitializer->initializeTabsByPsVersion();
