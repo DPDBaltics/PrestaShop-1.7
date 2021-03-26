@@ -4,6 +4,7 @@ $(document).ready(function (){
     var visible = visibleTabs;
     var seen = {};
     $( tabs ).each(function() {
+        //Extracts distinct value from module tab names as ps version < 174 cannot handle lang
         var txt = $(this).text();
         if (seen[txt]) {
             $(this).remove();
@@ -19,8 +20,10 @@ $(document).ready(function (){
     });
 
     function getUrlParam( name, url ) {
-        var regexS = "[\\?&]"+name+"=([^&#]*)";
-        var regex = new RegExp( regexS );
+
+        //Extracs param value from href link
+        var extractedParamValue = "[\\?&]"+name+"=([^&#]*)";
+        var regex = new RegExp( extractedParamValue );
         var results = regex.exec( url );
         return results == null ? null : results[1];
     }
