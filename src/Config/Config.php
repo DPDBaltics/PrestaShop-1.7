@@ -228,24 +228,24 @@ class Config
     const PS_VERSION_1_7_7 = '1.7.7.0';
 
     const PRODUCT_NAME_B2B = [
-        'LT' => 'DPD kurjeris',
+        'LT' => 'Pristatymas privatiems asmenims',
         'EE' => 'DPD kuller',
-        'LV' => 'DPD B2C',
-        'EN' => 'DPD B2C',
+        'LV' => 'Kurjerpiegādes Privātpersonām',
+        'EN' => 'DPD courier',
     ];
 
     const PRODUCT_NAME_PUDO = [
-        'LT' => 'DPD Paštomatas',
+        'LT' => 'Pristatymas į paštomatą',
         'EE' => 'DPD pakiautomaat',
-        'LV' => 'DPD Pickup',
-        'EN' => 'DPD Pickup',
+        'LV' => 'Piegādes uz Paku Skapjiem un Paku Bodēm',
+        'EN' => 'DPD Pickup points',
     ];
 
     const PRODUCT_NAME_B2B_COD = [
-        'LT' => 'DPD Kurjeris, atsiskaitymas grynaisiais',
+        'LT' => 'Atsiskaitymas pristatymo metu',
         'EE' => 'Lunamakse',
-        'LV' => 'DPD B2C COD',
-        'EN' => 'DPD B2C COD',
+        'LV' => 'Naudas iekasēšana piegādes brīdī',
+        'EN' => 'Cash on Delivery',
     ];
 
 
@@ -257,10 +257,10 @@ class Config
     ];
 
     const PRODUCT_NAME_SATURDAY_DELIVERY = [
-        'LT' => 'Pristatymas Šestadienį',
+        'LT' => 'Pristatymas šeštadienį',
         'EE' => 'DPD kuller laupäeval',
-        'LV' => 'Saturday Delivery',
-        'EN' => 'Saturday Delivery',
+        'LV' => 'Sestdienas piegāde',
+        'EN' => 'DPD Saturday',
     ];
 
     const PRODUCT_NAME_SATURDAY_DELIVERY_COD = [
