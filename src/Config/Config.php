@@ -236,14 +236,14 @@ class Config
 
     const PRODUCT_NAME_PUDO = [
         'LT' => 'Pristatymas į paštomatą',
-        'EE' => 'DPD pakiautomaat',
+        'EE' => 'DPD pakiautomaat lunamaksega',
         'LV' => 'Piegādes uz Paku Skapjiem un Paku Bodēm',
         'EN' => 'DPD Pickup points',
     ];
 
     const PRODUCT_NAME_B2B_COD = [
         'LT' => 'Atsiskaitymas pristatymo metu',
-        'EE' => 'Lunamakse',
+        'EE' => 'DPD kuller lunamaksega',
         'LV' => 'Naudas iekasēšana piegādes brīdī',
         'EN' => 'Cash on Delivery',
     ];
@@ -251,7 +251,7 @@ class Config
 
     const PRODUCT_NAME_PUDO_COD = [
         'LT' => 'DPD Paštomatas, atsiskaitymas grynaisiais',
-        'EE' => 'Lunamakse DPD pakiautomaat ',
+        'EE' => 'DPD pakiautomaat lunamaksega',
         'LV' => 'DPD Pickup COD',
         'EN' => 'DPD Pickup COD',
     ];
@@ -265,7 +265,7 @@ class Config
 
     const PRODUCT_NAME_SATURDAY_DELIVERY_COD = [
         'LT' => 'Pristatymas Šestadienį, atsiskaitymas grynaisiais',
-        'EE' => 'Lunamakse DPD kuller laupäeval',
+        'EE' => 'DPD kuller laupäeval lunamaksega',
         'LV' => 'Saturday Delivery COD',
         'EN' => 'Saturday Delivery COD',
     ];
