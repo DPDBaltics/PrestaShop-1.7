@@ -23,11 +23,13 @@ var dpdMap = {};
 
 var infoWindow;
 
-if (typeof google !== 'undefined') {
-    infoWindow = new google.maps.InfoWindow();
-}
 
 $(document).ready(function () {
+
+    if (typeof google !== 'undefined') {
+        infoWindow = new google.maps.InfoWindow();
+    }
+
     $(".dpd-input-wrapper .dpd-input-placeholder").on("click", function () {
         $(this).closest(".dpd-input-wrapper").find("input").focus();
     });
