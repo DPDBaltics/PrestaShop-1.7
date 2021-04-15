@@ -98,7 +98,7 @@ class DPDBaltics extends CarrierModule
         $this->displayName = $this->l('DPDBaltics');
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
-        $this->version = '3.1.4';
+        $this->version = '3.1.5';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -662,6 +662,17 @@ class DPDBaltics extends CarrierModule
     public function hookActionAdminControllerSetMedia($params)
     {
         $currentController = Tools::getValue('controller');
+
+        if (Config::isPrestashopVersionBelow174()) {
+            /** @var  $tabs TabService*/
+           $tabs = $this->getModuleContainer()->get(TabService::class);
+           $visibleClasses = $tabs->getTabsClassNames(false);
+
+           if (in_array($currentController, $visibleClasses, true)) {
+               Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames(true)]);
+               $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
+           }
+        }
 
         if ('AdminOrders' === $currentController) {
             $this->handleLabelPrintService();

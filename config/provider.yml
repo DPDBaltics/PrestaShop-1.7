@@ -30,5 +30,6 @@ services:
       - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'
 
   Invertus\dpdBaltics\Provider\CurrentCountryProvider:
+    class: 'Invertus\dpdBaltics\Provider\CurrentCountryProvider'
     arguments:
       - '@context'
