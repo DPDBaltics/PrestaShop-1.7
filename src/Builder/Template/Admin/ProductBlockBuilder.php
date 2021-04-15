@@ -116,6 +116,11 @@ class ProductBlockBuilder
             }
 
             $carrier = Carrier::getCarrierByReference($product->id_reference);
+
+            if (!$carrier) {
+                continue;
+            }
+
             $delays = [];
             foreach ($carrier->delay as $key => $item) {
                 $delays[Language::getIsoById($key)] = $item;

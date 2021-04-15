@@ -47,7 +47,28 @@ class ProductService
             $dpdProduct->update();
         } catch (Exception $e) {
             throw new ProductUpdateException($e->getMessage());
-        };
+        }
+    }
+
+    /**
+     * @param $productId
+     * @param $name
+     *
+     * @throws ProductUpdateException
+     */
+    public function updateProductName($productId, $name)
+    {
+
+        try {
+            $dpdProduct = new DPDProduct($productId);
+            if (!\Validate::isLoadedObject($dpdProduct)) {
+                return;
+            }
+            $dpdProduct->name = $name;
+            $dpdProduct->update();
+        } catch (Exception $e) {
+            throw new ProductUpdateException($e->getMessage());
+        }
     }
 
     public function deleteProduct($productReference)
@@ -66,10 +87,10 @@ class ProductService
         return $this->productRepository->deleteByProductReference($product->getProductReference());
     }
 
-    public function addProduct($productReference)
+    public function addProduct($productReference, $countryCode = null)
     {
         $collection = new DPDProductInstallCollection();
-        $product = Config::getProductByReference($productReference);
+        $product = Config::getProductByReference($productReference, $countryCode);
         $collection->add($product);
 
         return $this->createCarrierService->createCarriers($collection);
@@ -78,25 +99,31 @@ class ProductService
 
     public function updateCarriersOnCountryChange($newCountryIsoCode)
     {
-        $productId = $this->productRepository->getProductIdByProductReference(Config::PRODUCT_TYPE_PUDO_COD);
+        $productId = $this->productRepository->getProductIdByProductReference(
+            Config::PRODUCT_TYPE_PUDO_COD
+        );
         if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
             $this->deleteProduct(Config::PRODUCT_TYPE_PUDO_COD);
         } elseif (!$productId) {
-            $this->addProduct(Config::PRODUCT_TYPE_PUDO_COD);
+            $this->addProduct(Config::PRODUCT_TYPE_PUDO_COD, $newCountryIsoCode);
         }
 
-        $productId = $this->productRepository->getProductIdByProductReference(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY);
+        $productId = $this->productRepository->getProductIdByProductReference(
+            Config::PRODUCT_TYPE_SAME_DAY_DELIVERY
+        );
         if ($newCountryIsoCode !== Config::LATVIA_ISO_CODE) {
             $this->deleteProduct(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY);
         } elseif (!$productId) {
-            $this->addProduct(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY);
+            $this->addProduct(Config::PRODUCT_TYPE_SAME_DAY_DELIVERY, $newCountryIsoCode);
         }
 
-        $productId = $this->productRepository->getProductIdByProductReference(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
+        $productId = $this->productRepository->getProductIdByProductReference(
+            Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD
+        );
         if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
             $this->deleteProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
         } elseif (!$productId) {
-            $this->addProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
+            $this->addProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD, $newCountryIsoCode);
         }
 
         return true;

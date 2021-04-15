@@ -236,3 +236,10 @@ services:
     class: 'Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker'
     arguments:
       - '@Invertus\dpdBaltics\Repository\ShipmentRepository'
+
+  Invertus\dpdBaltics\Service\Carrier\CarrierUpdateHandler:
+    class: 'Invertus\dpdBaltics\Service\Carrier\CarrierUpdateHandler'
+    arguments:
+      - '@Invertus\dpdBaltics\Repository\ProductRepository'
+      - '@Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService'
+      - '@Invertus\dpdBaltics\Service\Product\ProductService'
