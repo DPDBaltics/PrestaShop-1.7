@@ -46,4 +46,5 @@
 - Translations added for carriers on webservice change
 - Module tab install/uninstall dublication on module tab titles, all invisible titles are showing bug fixes added
 - Maps loading sequence fixed
+- Pudo service weights changed, Portugal and other countries added
 
