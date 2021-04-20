@@ -47,3 +47,8 @@
 - Module tab install/uninstall dublication on module tab titles, all invisible titles are showing bug fixes added
 - Maps loading sequence fixed
 
+## [3.1.6] - 2021-04-20
+### Changed
+- Pudo service weights changed, Portugal and other countries added
+
+
