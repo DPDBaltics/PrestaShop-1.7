@@ -50,5 +50,8 @@
 ## [3.1.6] - 2021-04-20
 ### Changed
 - Pudo service weights changed, Portugal and other countries added
+- Bugfix for old prestashop versions when smarty does not read function
+- Bugfix on tab fix for old prestashop versions
+- Feature added, calculate parcel weight by distribution
 
 
