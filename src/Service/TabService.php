@@ -7,7 +7,7 @@ use DPDBaltics;
 class TabService
 {
     const FILE_NAME = 'TabService';
-    
+
     /**
      * @var DPDBaltics
      */
@@ -181,10 +181,13 @@ class TabService
         $filtered = [];
         $tabs = $this->getTabs();
 
+
         foreach ($tabs as $tab) {
-            if ($visible && isset($tab['visible']) && $tab['visible']) {
+
+            if (!$visible) {
                 $filtered[] = $tab['class_name'];
-            } else {
+            }
+            if (isset($tab['visible']) && $tab['visible']) {
                 $filtered[] = $tab['class_name'];
             }
         }
