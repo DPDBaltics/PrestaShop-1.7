@@ -1,4 +1,3 @@
-{assign var='isAbove177' value=Invertus\dpdBaltics\Config\Config::isPrestashopVersionAbove177()}
 <div class="container dpd-checkout-phone-container dpd-phone-block{if $isAbove177} new-version {/if}">
     <div class="row form-group">
         <div class="col-lg-5 col-12 ">
