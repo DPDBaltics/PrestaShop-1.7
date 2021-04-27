@@ -432,7 +432,7 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if (!$cartWeightValidator->validate($cart->getTotalWeight(), $countryCode, $serviceCarrier['product_reference'])) {
+        if (!$cartWeightValidator->validate($cart, $countryCode, $serviceCarrier['product_reference'])) {
             return false;
         }
 
