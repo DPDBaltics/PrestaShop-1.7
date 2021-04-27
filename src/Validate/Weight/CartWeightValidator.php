@@ -16,6 +16,10 @@ class CartWeightValidator
             return true;
         }
 
+        if (!Validate::isLoadedObject($cart)) {
+            return false;
+        }
+
         switch ($parcelDistribution) {
             case \DPDParcel::DISTRIBUTION_NONE:
                 return $maxAllowedWeight >= $cart->getTotalWeight();
@@ -26,18 +30,12 @@ class CartWeightValidator
             default :
                 return true;
         }
-
-
     }
 
     private function isProductQuantityDistributionWeightValid($cart, $maxAllowedWeight)
     {
         $cartProducts = $cart->getProducts();
         $isValid = false;
-
-        if (!Validate::isLoadedObject($cart)) {
-            return false;
-        }
 
         if (!$cartProducts) {
             return false;
@@ -60,14 +58,6 @@ class CartWeightValidator
     {
         $cartProducts = $cart->getProducts();
         $isValid = false;
-
-        if (!Validate::isLoadedObject($cart)) {
-            return false;
-        }
-
-        if (!$cartProducts) {
-            return false;
-        }
 
         foreach ($cartProducts as $product) {
             if ($product['weight'] && $product['weight'] > 0) {
