@@ -432,7 +432,10 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if (!$cartWeightValidator->validate($cart, $countryCode, $serviceCarrier['product_reference'])) {
+        $parcelDistribution = \Configuration::get(Config::PARCEL_DISTRIBUTION);
+        $maxAllowedWeight = Config::getDefaultServiceWeights($countryCode, $serviceCarrier['product_reference']);
+
+        if (!$cartWeightValidator->validate($cart, $parcelDistribution ,$maxAllowedWeight)) {
             return false;
         }
 

@@ -5,31 +5,33 @@ namespace Invertus\dpdBaltics\Validate\Weight;
 use Invertus\dpdBaltics\Config\Config;
 use PrestaShop\PrestaShop\Adapter\Validate;
 
+
+
 class CartWeightValidator
 {
-    public function validate($cart, $countryIso, $productReference)
-    {
-        $parcelDistribution = \Configuration::get(Config::PARCEL_DISTRIBUTION);
-        $maxAllowedWeight = Config::getDefaultServiceWeights($countryIso, $productReference);
+    const DISTRIBUTION_NONE = 'none';
+    const DISTRIBUTION_PARCEL_PRODUCT = 'parcel_product';
+    const DISTRIBUTION_PARCEL_QUANTITY = 'parcel_quantity';
 
+    public function validate($cart, $parcelDistribution, $maxAllowedWeight)
+    {
         if (!$maxAllowedWeight) {
             return true;
         }
 
-        if (!Validate::isLoadedObject($cart)) {
-            return false;
+        switch ($parcelDistribution) {
+            case self::DISTRIBUTION_NONE:
+                return $maxAllowedWeight >= $cart->getTotalWeight();
+
+            case self::DISTRIBUTION_PARCEL_QUANTITY:
+                return $this->isProductQuantityDistributionWeightValid($cart, $maxAllowedWeight);
+
+            case self::DISTRIBUTION_PARCEL_PRODUCT:
+                return $this->isProductDistributionWeightValid($cart, $maxAllowedWeight);
+
         }
 
-        switch ($parcelDistribution) {
-            case \DPDParcel::DISTRIBUTION_NONE:
-                return $maxAllowedWeight >= $cart->getTotalWeight();
-            case \DPDParcel::DISTRIBUTION_PARCEL_QUANTITY:
-                return $this->isProductQuantityDistributionWeightValid($cart, $maxAllowedWeight);
-            case \DPDParcel::DISTRIBUTION_PARCEL_PRODUCT:
-                return $this->isProductDistributionWeightValid($cart, $maxAllowedWeight);
-            default :
-                return true;
-        }
+        return false;
     }
 
     private function isProductQuantityDistributionWeightValid($cart, $maxAllowedWeight)
@@ -42,11 +44,11 @@ class CartWeightValidator
         }
 
         foreach ($cartProducts as $product) {
-            if ($product['weight'] && $product['weight'] > 0) {
+            if ((int) $product['weight'] > 0) {
                 $isValid = $maxAllowedWeight >= $product['weight'];
             }
 
-            if ($isValid) {
+            if (!$isValid) {
                 break;
             }
         }
@@ -60,12 +62,12 @@ class CartWeightValidator
         $isValid = false;
 
         foreach ($cartProducts as $product) {
-            if ($product['weight'] && $product['weight'] > 0) {
+            if ((int) $product['weight'] > 0) {
                 $weight = $product['weight'] * $product['quantity'];
                 $isValid = $maxAllowedWeight >= $weight;
             }
 
-            if ($isValid) {
+            if (!$isValid) {
                 break;
             }
         }
