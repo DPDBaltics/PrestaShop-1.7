@@ -37,7 +37,7 @@ class CartWeightValidator
     private function isProductQuantityDistributionWeightValid($cart, $maxAllowedWeight)
     {
         $cartProducts = $cart->getProducts();
-        $isValid = false;
+        $isValid = true;
 
         if (!$cartProducts) {
             return false;
@@ -46,6 +46,7 @@ class CartWeightValidator
         foreach ($cartProducts as $product) {
             if ((int) $product['weight'] > 0) {
                 $isValid = $maxAllowedWeight >= $product['weight'];
+
             }
 
             if (!$isValid) {
@@ -59,7 +60,7 @@ class CartWeightValidator
     private function isProductDistributionWeightValid($cart, $maxAllowedWeight)
     {
         $cartProducts = $cart->getProducts();
-        $isValid = false;
+        $isValid = true;
 
         foreach ($cartProducts as $product) {
             if ((int) $product['weight'] > 0) {
