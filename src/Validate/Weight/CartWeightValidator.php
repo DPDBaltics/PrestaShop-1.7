@@ -63,7 +63,7 @@ class CartWeightValidator
 
         foreach ($cartProducts as $product) {
             if ((int) $product['weight'] > 0) {
-                $weight = $product['weight'] * $product['quantity'];
+                $weight = (int) $product['weight'] * (int) $product['quantity'];
                 $isValid = $maxAllowedWeight >= $weight;
             }
 
