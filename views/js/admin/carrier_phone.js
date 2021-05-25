@@ -50,7 +50,7 @@ $(document).ready(function() {
             }).appendTo(cartForm);
         }
 
-        if (!$(event.target).find('input[name="dpd-phone-area"]').length) {
+        if ($('body').find('input[name="dpd-phone-area"]').length) {
             $('<input>', {
                 type: 'hidden',
                 name: 'dpd-phone-area',
