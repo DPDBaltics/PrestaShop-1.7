@@ -462,15 +462,6 @@ class DPDBaltics extends CarrierModule
             }
         }
 
-        if ($serviceCarrier['is_pudo']) {
-            /** @var ParcelShopService $parcelShopsService */
-            $parcelShopsService = $this->getModuleContainer()->get(ParcelShopService::class);
-            $shops = $parcelShopsService->getParcelShopsByCountryAndCity($countryCode, $deliveryAddress->city);
-            if (!$shops) {
-                return false;
-            }
-        }
-
         /** @var PriceRuleRepository $priceRuleRepository */
         $priceRuleRepository = $this->getModuleContainer()->get(PriceRuleRepository::class);
 
@@ -541,6 +532,7 @@ class DPDBaltics extends CarrierModule
 
             $selectedCity = null;
             $selectedStreet = null;
+
             try {
                 if (Validate::isLoadedObject($selectedPudo) && !$isSameDayDelivery) {
                     $selectedCity = $selectedPudo->city;
@@ -552,6 +544,9 @@ class DPDBaltics extends CarrierModule
                     $selectedStreet = $deliveryAddress->address1;
                     $parcelShops = $parcelShopService->getParcelShopsByCountryAndCity($countryCode, $selectedCity);
                     $parcelShops = $parcelShopService->moveSelectedShopToFirst($parcelShops, $selectedStreet);
+                    if (!$parcelShops) {
+                        $selectedCity = null;
+                    }
                 }
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
@@ -605,6 +600,17 @@ class DPDBaltics extends CarrierModule
             if (!in_array($selectedCity, $cityList) && isset($parcelShops[0])) {
                 $selectedCity = $parcelShops[0]->getCity();
             }
+
+            if (!$selectedCity) {
+                $tplVars = [
+                    'displayMessage' => true,
+                    'messages' => [$this->l("Your delivery address city is not in a list of pickup cities, please select closest pickup point city below manually")],
+                    'messageType_pudo' => 'danger'
+
+                ];
+                $this->context->smarty->assign($tplVars);
+            }
+
             $streetList = $parcelShopRepo->getAllAddressesByCountryCodeAndCity($countryCode, $selectedCity);
             $this->context->smarty->assign(
                 [

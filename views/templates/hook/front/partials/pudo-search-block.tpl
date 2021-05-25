@@ -18,9 +18,12 @@
         <select name="dpd-city" style="display: none">
         {/if}
             {if !empty($city_list)}
+            {if !$selected_city}
+                <option selected value=""> {l s='Please select a city' mod='dpdbaltics'}</option>
+                {/if}
                 {foreach from=$city_list item=city}
-                    <option {if strtolower($selected_city) === strtolower($city)}selected{/if}
-                            value="{$city|escape:'htmlall':'UTF-8'}">{$city|escape:'htmlall':'UTF-8'}</option>
+                <option {if strtolower($selected_city) === strtolower($city)}selected{/if}
+                        value="{$city|escape:'htmlall':'UTF-8'}">{$city|escape:'htmlall':'UTF-8'}</option>
                 {/foreach}
             {/if}
         </select>
