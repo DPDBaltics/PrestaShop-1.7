@@ -604,7 +604,7 @@ class DPDBaltics extends CarrierModule
             if (!$selectedCity) {
                 $tplVars = [
                     'displayMessage' => true,
-                    'messages' => [$this->l("Your selected city is not in a list, please select closes pickup point city below")],
+                    'messages' => [$this->l("Your delivery address city is not in a list of pickup cities, please select closest pickup point city below manually")],
                     'messageType_pudo' => 'danger'
 
                 ];
