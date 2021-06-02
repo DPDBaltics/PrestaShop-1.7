@@ -53,5 +53,7 @@
 - Bugfix for old prestashop versions when smarty does not read function
 - Bugfix on tab fix for old prestashop versions
 - Feature added, calculate parcel weight by distribution
+- Show parcel terminal even tough delivery city is not correct
+- Carrier translation update
 
 
