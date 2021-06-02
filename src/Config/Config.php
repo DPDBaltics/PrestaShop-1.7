@@ -237,7 +237,7 @@ class Config
 
     const PRODUCT_NAME_PUDO = [
         'LT' => 'Pristatymas į paštomatą',
-        'EE' => 'DPD pakiautomaat lunamaksega',
+        'EE' => 'DPD pakiautomaat',
         'LV' => 'Piegādes uz Paku Skapjiem un Paku Bodēm',
         'EN' => 'DPD Pickup points',
     ];
