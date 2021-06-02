@@ -20,11 +20,11 @@ var zoomLevel = 12;
  */
 var googleMarkers = [];
 var dpdMap = {};
-
 var infoWindow;
-
+var isPudoPointSelected = false;
 
 $(document).ready(function () {
+
 
     if (typeof google !== 'undefined') {
         infoWindow = new google.maps.InfoWindow();
@@ -36,6 +36,11 @@ $(document).ready(function () {
 
     $(document).on('change', 'input[name^="delivery_option"]', function(){
         searchPudoServicesEvent($('select[name="dpd-city"]'));
+        var savedPudoId = $('input[name="saved_pudo_id"]').val();
+
+        if (savedPudoId !== undefined) {
+            initMap(false, true, savedPudoId, true);
+        }
     });
 
     $(document).on('change', 'input[name="dpd-phone"]', function(){
@@ -325,6 +330,7 @@ $(document).ready(function () {
                 $(this).find('span').text($(this).data('select'));
             }
         });
+        isPudoPointSelected = true;
         if (typeof dpdMap[$idReference] !== 'undefined') {
             DPDinitMarkers(dpdMap[$idReference], infoWindow, false, false, $pudoId, true, false);
         }

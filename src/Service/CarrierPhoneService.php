@@ -90,6 +90,7 @@ class CarrierPhoneService
                 'dpdPhone' => $phone,
                 'dpdPhoneArea' => $phoneData['mobile_phone_code_list'],
                 'contextPrefix' => Config::PHONE_CODE_PREFIX . $phonePrefix,
+                'isAbove177' => Config::isPrestashopVersionAbove177(),
             ]
         );
 

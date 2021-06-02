@@ -47,3 +47,16 @@
 - Module tab install/uninstall dublication on module tab titles, all invisible titles are showing bug fixes added
 - Maps loading sequence fixed
 
+## [3.1.6] - 2021-06-02
+### Changed
+- Pudo service weights changed, Portugal and other countries added
+- Bugfix for old prestashop versions when smarty does not read function
+- Bugfix on tab fix for old prestashop versions
+- Feature added, calculate parcel weight by distribution
+- Show parcel terminal even tough delivery city is not correct
+- Carrier translation update
+- Vendor zip updated, port removed from api
+- Map fix, do not load map script when off
+- Bugfix map does not load when address is changed
+
+

@@ -8,9 +8,8 @@
  *
  *  International Registered Trademark & Property of INVERTUS, UAB
  *}
-
 <div class="dpd-message-container">
-    <div class="alert alert-{$messageType|escape:'htmlall':'UTF-8'} {if !isset($displayMessage)}dpd-hidden{/if}" role="alert">
+    <div class="alert alert-{$messageType|escape:'htmlall':'UTF-8'} {if isset($messageType_pudo)} alert-danger{/if} {if !isset($displayMessage)}dpd-hidden{/if}" role="alert">
         <p>&nbsp;</p>
         <ol>
             {if isset($messages) && !empty($messages)}

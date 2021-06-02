@@ -98,7 +98,7 @@ class DPDBaltics extends CarrierModule
         $this->displayName = $this->l('DPDBaltics');
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
-        $this->version = '3.1.5';
+        $this->version = '3.1.6';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -221,16 +221,16 @@ class DPDBaltics extends CarrierModule
                     'position' => 150
                 ]
             );
-            /** @var GoogleApiService $googleApiService */
-            $googleApiService = $this->getModuleContainer(GoogleApiService::class);
-            $this->context->controller->registerJavascript(
-                'dpdbaltics-google-api',
-                $googleApiService->getFormattedGoogleMapsUrl(),
-                [
-                    'server' => 'remote'
-                ]
-            );
-
+            if (Configuration::get(\Invertus\dpdBaltics\Config\Config::PICKUP_MAP)) {
+                /** @var GoogleApiService $googleApiService */
+                $googleApiService = $this->getModuleContainer(GoogleApiService::class);
+                $this->context->controller->registerJavascript(
+                    'dpdbaltics-google-api',
+                    $googleApiService->getFormattedGoogleMapsUrl(), [
+                        'server' => 'remote'
+                    ]
+                );
+            }
             $this->context->controller->registerJavascript(
                 'dpdbaltics-pudo',
                 'modules/' . $this->name . '/views/js/front/pudo.js',
@@ -432,7 +432,10 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if (!$cartWeightValidator->validate($cart->getTotalWeight(), $countryCode, $serviceCarrier['product_reference'])) {
+        $parcelDistribution = \Configuration::get(Config::PARCEL_DISTRIBUTION);
+        $maxAllowedWeight = Config::getDefaultServiceWeights($countryCode, $serviceCarrier['product_reference']);
+
+        if (!$cartWeightValidator->validate($cart, $parcelDistribution ,$maxAllowedWeight)) {
             return false;
         }
 
@@ -455,15 +458,6 @@ class DPDBaltics extends CarrierModule
             );
 
             if (!$isSameDayAvailable) {
-                return false;
-            }
-        }
-
-        if ($serviceCarrier['is_pudo']) {
-            /** @var ParcelShopService $parcelShopsService */
-            $parcelShopsService = $this->getModuleContainer()->get(ParcelShopService::class);
-            $shops = $parcelShopsService->getParcelShopsByCountryAndCity($countryCode, $deliveryAddress->city);
-            if (!$shops) {
                 return false;
             }
         }
@@ -538,6 +532,7 @@ class DPDBaltics extends CarrierModule
 
             $selectedCity = null;
             $selectedStreet = null;
+
             try {
                 if (Validate::isLoadedObject($selectedPudo) && !$isSameDayDelivery) {
                     $selectedCity = $selectedPudo->city;
@@ -549,6 +544,9 @@ class DPDBaltics extends CarrierModule
                     $selectedStreet = $deliveryAddress->address1;
                     $parcelShops = $parcelShopService->getParcelShopsByCountryAndCity($countryCode, $selectedCity);
                     $parcelShops = $parcelShopService->moveSelectedShopToFirst($parcelShops, $selectedStreet);
+                    if (!$parcelShops) {
+                        $selectedCity = null;
+                    }
                 }
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
@@ -602,6 +600,17 @@ class DPDBaltics extends CarrierModule
             if (!in_array($selectedCity, $cityList) && isset($parcelShops[0])) {
                 $selectedCity = $parcelShops[0]->getCity();
             }
+
+            if (!$selectedCity) {
+                $tplVars = [
+                    'displayMessage' => true,
+                    'messages' => [$this->l("Your delivery address city is not in a list of pickup cities, please select closest pickup point city below manually")],
+                    'messageType_pudo' => 'danger'
+
+                ];
+                $this->context->smarty->assign($tplVars);
+            }
+
             $streetList = $parcelShopRepo->getAllAddressesByCountryCodeAndCity($countryCode, $selectedCity);
             $this->context->smarty->assign(
                 [
