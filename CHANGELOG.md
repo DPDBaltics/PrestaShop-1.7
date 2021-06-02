@@ -55,5 +55,7 @@
 - Feature added, calculate parcel weight by distribution
 - Show parcel terminal even tough delivery city is not correct
 - Carrier translation update
+- Vendor zip updated, port removed from api
+- Map fix, do not load map script when off
 
 

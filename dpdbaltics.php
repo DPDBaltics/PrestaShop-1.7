@@ -221,16 +221,16 @@ class DPDBaltics extends CarrierModule
                     'position' => 150
                 ]
             );
-            /** @var GoogleApiService $googleApiService */
-            $googleApiService = $this->getModuleContainer(GoogleApiService::class);
-            $this->context->controller->registerJavascript(
-                'dpdbaltics-google-api',
-                $googleApiService->getFormattedGoogleMapsUrl(),
-                [
-                    'server' => 'remote'
-                ]
-            );
-
+            if (Configuration::get(\Invertus\dpdBaltics\Config\Config::PICKUP_MAP)) {
+                /** @var GoogleApiService $googleApiService */
+                $googleApiService = $this->getModuleContainer(GoogleApiService::class);
+                $this->context->controller->registerJavascript(
+                    'dpdbaltics-google-api',
+                    $googleApiService->getFormattedGoogleMapsUrl(), [
+                        'server' => 'remote'
+                    ]
+                );
+            }
             $this->context->controller->registerJavascript(
                 'dpdbaltics-pudo',
                 'modules/' . $this->name . '/views/js/front/pudo.js',
