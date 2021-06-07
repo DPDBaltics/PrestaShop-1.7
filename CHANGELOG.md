@@ -61,4 +61,5 @@
 ## [3.1.7] - 2021-06-07
 ### Changed
 - Import parcels function changed on cron parcel update, take countries only from zone range functionality added.
+- Shipment price bug fix when product customizations are used
 

@@ -184,7 +184,12 @@ class ShipmentService
         $parcelWeight = 0;
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
         foreach ($products as $product) {
-            $parcelPrice += round($product['total_wt'], 2);
+            if ($product['total_customization_wt'] && $product['total_customization_wt'] !== 0) {
+                $parcelPrice += round($product['total_customization_wt'], 2);
+            } else {
+                $parcelPrice += round($product['total_wt'], 2);
+            }
+
             $parcelWeight += $product['weight'] * $product['product_quantity'];
         }
         $parcelPrice += $orderShippingCost;
@@ -206,7 +211,11 @@ class ShipmentService
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
 
         foreach ($products as $product) {
-            $parcelPrice += round($product['total_wt'], 2);
+            if ($product['total_customization_wt'] && $product['total_customization_wt'] !== 0) {
+                $parcelPrice += round($product['total_customization_wt'], 2);
+            } else {
+                $parcelPrice += round($product['total_wt'], 2);
+            }
             $parcelPrice += $orderShippingCost;
             $parcelWeight += $product['weight'] * $product['product_quantity'];
             $parcelsNum++;
@@ -229,7 +238,11 @@ class ShipmentService
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
 
         foreach ($products as $product) {
-            $parcelPrice += round($product['total_wt'], 2);
+            if ($product['total_customization_wt'] && $product['total_customization_wt'] !== 0) {
+                $parcelPrice += round($product['total_customization_wt'], 2);
+            } else {
+                $parcelPrice += round($product['total_wt'], 2);
+            }
             $parcelWeight += $product['weight'] * $product['product_quantity'];
             $parcelsNum += $product['product_quantity'];
         }
