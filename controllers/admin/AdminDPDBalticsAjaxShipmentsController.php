@@ -60,8 +60,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         switch ($action) {
             case 'changeReceiverAddressBlock':
                 $receiverAddressData = json_decode(Tools::getValue('dpdReceiverAddress'));
-                $orderId = Tools::getValue('id_order');
-                $this->changeReceiverAddressBlock($receiverAddressData, $orderId);
+                $this->changeReceiverAddressBlock($receiverAddressData, $idOrder);
                 break;
             case 'updateAddressBlock':
                 $idAddressDelivery = (int)Tools::getValue('id_address_delivery');
@@ -74,9 +73,10 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $this->returnResponse($this->printLabel($shipmentId, $labelFormat, $labelPosition));
                 break;
             case 'save':
-            case 'save_and_print':
                 $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
-                $this->returnResponse($this->saveShipment($order, $shipmentData, $action == 'save_and_print'));
+                $this->returnResponse($this->saveShipment($order, $shipmentData, false));
+            case 'save_and_print':
+                $this->returnResponse($this->printLabelFromList($idOrder));
                 break;
             case 'searchPudoServices':
                 $cityName = Tools::getValue('city_name');
