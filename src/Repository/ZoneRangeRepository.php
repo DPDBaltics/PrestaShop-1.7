@@ -31,4 +31,12 @@ class ZoneRangeRepository extends AbstractEntityRepository
 
         return $result ? $result : [];
     }
+
+    public function findAllZoneRangeCountryIds()
+    {
+        return \Db::getInstance()->executeS('
+            SELECT DISTINCT `id_country`
+            FROM `'._DB_PREFIX_.'dpd_zone_range`
+        ');
+    }
 }

@@ -58,5 +58,7 @@
 - Vendor zip updated, port removed from api
 - Map fix, do not load map script when off
 - Bugfix map does not load when address is changed
-
+## [3.1.7] - 2021-06-07
+### Changed
+- Import parcels function changed on cron parcel update, take countries only from zone range functionality added.
 
