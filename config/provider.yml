@@ -22,6 +22,7 @@ services:
     class: 'Invertus\dpdBaltics\Provider\ZoneRangeProvider'
     arguments:
       - '@language'
+      - '@Invertus\dpdBaltics\Repository\ZoneRangeRepository'
 
   Invertus\dpdBaltics\Provider\ProductAvailabilityProvider:
     class: 'Invertus\dpdBaltics\Provider\ProductAvailabilityProvider'
