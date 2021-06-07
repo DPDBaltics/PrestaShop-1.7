@@ -184,7 +184,7 @@ class ShipmentService
         $parcelWeight = 0;
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
         foreach ($products as $product) {
-            $parcelPrice += round($product['total_wt'], 2);
+            $parcelPrice += $this->calculateProductsPrice($product);
             $parcelWeight += $product['weight'] * $product['product_quantity'];
         }
         $parcelPrice += $orderShippingCost;
@@ -206,7 +206,7 @@ class ShipmentService
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
 
         foreach ($products as $product) {
-            $parcelPrice += round($product['total_wt'], 2);
+            $parcelPrice += $this->calculateProductsPrice($product);
             $parcelPrice += $orderShippingCost;
             $parcelWeight += $product['weight'] * $product['product_quantity'];
             $parcelsNum++;
@@ -229,7 +229,7 @@ class ShipmentService
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
 
         foreach ($products as $product) {
-            $parcelPrice += round($product['total_wt'], 2);
+            $parcelPrice += $this->calculateProductsPrice($product);
             $parcelWeight += $product['weight'] * $product['product_quantity'];
             $parcelsNum += $product['product_quantity'];
         }
@@ -264,6 +264,13 @@ class ShipmentService
         return $dpdShipment;
     }
 
+    private function calculateProductsPrice($product)
+    {
+        if (!empty($product['total_customization_wt'])) {
+            return round($product['total_customization_wt'], 2);
+        }
+        return round($product['total_wt'], 2);
+    }
     /**
      * @param Order $order
      * @param ShipmentData $shipmentData
