@@ -55,7 +55,7 @@ services:
   Invertus\dpdBaltics\Config\ApiConfiguration:
     class: 'Invertus\dpdBaltics\Config\ApiConfiguration'
 
-  Invertus\dpdBaltics\Install\Installer:
+  invertus\dpdbaltics\install\installer:
     class: 'Invertus\dpdBaltics\Install\Installer'
     arguments:
       - '@dpdbaltics'

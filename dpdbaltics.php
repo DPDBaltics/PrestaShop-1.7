@@ -7,7 +7,7 @@ use Invertus\dpdBaltics\ConsoleCommand\UpdateParcelShopsCommand;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Grid\LinkRowActionCustom;
 use Invertus\dpdBaltics\Grid\SubmitBulkActionCustom;
-use Invertus\dpdBaltics\Install\Installer;
+use invertus\dpdbaltics\install\installer;
 use Invertus\dpdBaltics\Logger\Logger;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardService;
 use Invertus\dpdBaltics\Repository\AddressTemplateRepository;
@@ -1110,10 +1110,12 @@ class DPDBaltics extends CarrierModule
 
     public function hookDisplayOrderDetail($params)
     {
+
         $isReturnServiceEnabled = Configuration::get(Config::PARCEL_RETURN);
-        if (!$isReturnServiceEnabled) {
-            return;
-        }
+//        if (!$isReturnServiceEnabled) {
+//            return;
+//        }
+
         if (CountryUtility::isEstonia()) {
             return;
         }
