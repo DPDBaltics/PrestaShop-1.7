@@ -243,3 +243,9 @@ services:
       - '@Invertus\dpdBaltics\Repository\ProductRepository'
       - '@Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService'
       - '@Invertus\dpdBaltics\Service\Product\ProductService'
+
+  Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler:
+    class: 'Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler'
+    arguments:
+      - '@Invertus\dpdBaltics\Install\Installer'
+

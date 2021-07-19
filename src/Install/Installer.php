@@ -313,13 +313,18 @@ class Installer
 
         return $tabsUninstaller->uninstallTabs();
     }
-    private function processDeleteCarriers()
+
+    /**
+     * @throws \PrestaShopDatabaseException
+     * @throws \PrestaShopException
+     */
+    public function processDeleteCarriers()
     {
         $sql = 'SHOW TABLES LIKE "ps_dpd_product";';
         $carrierTable = Db::getInstance()->executeS($sql);
 
         if (!$carrierTable) {
-            return;
+            return false;
         }
         $query = new DbQuery();
         $query->select('`id_reference`');
@@ -327,7 +332,7 @@ class Installer
         $idReferences = Db::getInstance()->executeS($query);
 
         if (empty($idReferences)) {
-            return;
+            return false;
         }
         foreach ($idReferences as $id) {
             $carrier = Carrier::getCarrierByReference($id['id_reference']);
@@ -336,6 +341,8 @@ class Installer
                 $carrier->update();
             }
         }
+
+        return true;
     }
 
     private function getDefaultWSCountry()
