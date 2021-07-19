@@ -5,6 +5,7 @@ services:
       - '@language'
       - '@Invertus\dpdBaltics\Builder\CarrierBuilder'
       - '@Invertus\dpdBaltics\Builder\CarrierImageBuilder'
+      - '@Invertus\dpdBaltics\Repository\ProductRepository'
 
   Invertus\dpdBaltics\Service\CarrierPhoneService:
     class: 'Invertus\dpdBaltics\Service\CarrierPhoneService'

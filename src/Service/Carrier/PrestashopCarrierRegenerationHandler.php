@@ -23,7 +23,7 @@ class PrestashopCarrierRegenerationHandler
      */
     public function handle(): void
     {
-        if (!$this->moduleInstaller->processDeleteCarriers()) {
+        if (!$this->moduleInstaller->deleteModuleCarriers()) {
             throw new DpdCarrierException('There was an error while deleting carriers', 500);
         }
 
