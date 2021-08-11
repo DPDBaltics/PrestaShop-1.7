@@ -71,6 +71,7 @@ class Config
     const IMPORT_PARCEL_INFO_BLOCK_FIELD = 'DPD_PARCEL_IMPORT_INFO_BLOCK_FIELD';
     const DPD_PARCEL_IMPORT_COUNTRY_SELECTOR = 'DPD_PARCEL_IMPORT_COUNTRY_SELECTOR';
     const IMPORT_FILE = 'DPD_IMPORT_FILE';
+    const PRESTASHOP_DPD_CARRIER_REGENERATE = 'PRESTASHOP_DPD_CARRIER_REGENERATE';
 
     /**
      * Please note those are also used as file names for exports, so they must be without spaces

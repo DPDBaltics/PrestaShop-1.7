@@ -10,6 +10,7 @@ use Invertus\dpdBaltics\Builder\CarrierBuilder;
 use Invertus\dpdBaltics\Builder\CarrierImageBuilder;
 use Invertus\dpdBaltics\Collection\DPDProductInstallCollection;
 use Invertus\dpdBaltics\DTO\DPDProductInstall;
+use Invertus\dpdBaltics\Repository\ProductRepository;
 use Language;
 use PrestaShopDatabaseException;
 use PrestaShopException;
@@ -50,6 +51,11 @@ class CreateCarrierService
     private $language;
 
     /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
      * DPDCreateCarriersService constructor.
      *
      * @param Language $language
@@ -59,11 +65,13 @@ class CreateCarrierService
     public function __construct(
         Language $language,
         CarrierBuilder $carrierBuilder,
-        CarrierImageBuilder $carrierImageBuilder
+        CarrierImageBuilder $carrierImageBuilder,
+        ProductRepository $productRepository
     ) {
         $this->language = $language;
         $this->carrierBuilder = $carrierBuilder;
         $this->carrierImageBuilder = $carrierImageBuilder;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -100,16 +108,20 @@ class CreateCarrierService
             if (Validate::isLoadedObject($carrier)) {
                 $updateAction = true;
             }
-
+            $currentSavedProduct = $this->productRepository->findProductByProductReference($product->getId());
+            if ($currentSavedProduct) {
+                $carrierBuilder->setActive($currentSavedProduct['active']);
+                $carrierBuilder->setName($currentSavedProduct['name']);
+            } else {
+                $carrierBuilder->setActive(0);
+                $carrierBuilder->setName($product->getName());
+            }
             $carrierBuilder->setIdCarrier($idCarrier);
-            $carrierBuilder->setActive(0);
             $carrierBuilder->setShippingMethod(Carrier::SHIPPING_METHOD_WEIGHT);
             $carrierBuilder->setDelay($this->fillCarrierMultilangField($product->getDelay()));
-            $carrierBuilder->setName($product->getName());
             $carrierBuilder->setShippingExternal(1);
             $carrierBuilder->setZones($psZones);
             $carrierBuilder->setGroups($psGroupIds);
-
             $carrierBuilder->setIsModule(true);
             $carrierBuilder->setNeedRange(true);
 
@@ -118,7 +130,6 @@ class CreateCarrierService
             foreach ($carrierBuilder->getErrors() as $error) {
                 $this->errors[] = $error;
             }
-
             // Can use ID as reference because we just added the carrier
             // but if carrier is being updated we use the id reference
             $carrierReference = (new Carrier($carrier->id))->id_reference;
@@ -127,17 +138,22 @@ class CreateCarrierService
             $carrierImageBuilder->setIsPickupCarrier(false);
             $carrierImageBuilder->save();
 
-            $dpdProduct = new DPDProduct();
-            $dpdProduct->name = $product->getName();
-            $dpdProduct->product_reference = $product->getId();
-            $dpdProduct->id_reference = $carrierReference;
-            $dpdProduct->is_home_collection = 0;
-            $dpdProduct->active = 0;
-            $dpdProduct->all_zones = 0;
-            $dpdProduct->all_shops = 0;
-            $dpdProduct->is_pudo = $product->getIsPudo();
-            $dpdProduct->is_cod = $product->getIsCod();
 
+            if (isset($currentSavedProduct)) {
+                $dpdProduct = new DPDProduct((int)$currentSavedProduct['id_dpd_product']);
+                $dpdProduct->id_reference = $carrierReference;
+            } else {
+                $dpdProduct = new DPDProduct();
+                $dpdProduct->name = $product->getName();
+                $dpdProduct->product_reference = $product->getId();
+                $dpdProduct->id_reference = $carrierReference;
+                $dpdProduct->is_home_collection = 0;
+                $dpdProduct->active = 0;
+                $dpdProduct->all_zones = 0;
+                $dpdProduct->all_shops = 0;
+                $dpdProduct->is_pudo = $product->getIsPudo();
+                $dpdProduct->is_cod = $product->getIsCod();
+            }
             $dpdProduct->save();
         }
 
