@@ -147,6 +147,7 @@ services:
     arguments:
       - '@Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory'
       - '@Invertus\dpdBaltics\Repository\CodPaymentRepository'
+      - '@invertus-dpdbaltics-repository-parceltrackingemailhandler'
 
   Invertus\dpdBaltics\Service\API\LabelApiService:
     class: 'Invertus\dpdBaltics\Service\API\LabelApiService'
@@ -243,3 +244,11 @@ services:
       - '@Invertus\dpdBaltics\Repository\ProductRepository'
       - '@Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService'
       - '@Invertus\dpdBaltics\Service\Product\ProductService'
+
+  invertus-dpdbaltics-repository-parceltrackingemailhandler:
+    class: 'Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler'
+    arguments:
+      - '@invertus-dpdbaltics-factory-parceltrackingurlfactory'
+      - '@dpdbaltics'
+
+

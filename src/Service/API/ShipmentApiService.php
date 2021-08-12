@@ -11,11 +11,11 @@ use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Repository\CodPaymentRepository;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ShipmentCreationRequest;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory;
+use Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler;
 use Message;
 
 class ShipmentApiService
 {
-
     /**
      * @var ShipmentCreationFactory
      */
@@ -24,15 +24,26 @@ class ShipmentApiService
      * @var CodPaymentRepository
      */
     private $codPaymentRepository;
+    /**
+     * @var ParcelTrackingEmailHandler
+     */
+    private $emailHandler;
 
     public function __construct(
         ShipmentCreationFactory $shipmentCreationFactory,
-        CodPaymentRepository $codPaymentRepository
+        CodPaymentRepository $codPaymentRepository,
+        ParcelTrackingEmailHandler $emailHandler
     ) {
         $this->shipmentCreationFactory = $shipmentCreationFactory;
         $this->codPaymentRepository = $codPaymentRepository;
+        $this->emailHandler = $emailHandler;
     }
 
+    /**
+     * @throws \PrestaShopDatabaseException
+     * @throws \PrestaShopException
+     * @throws \Invertus\dpdBaltics\Exception\ParcelEmailException
+     */
     public function createShipment($addressId, ShipmentData $shipmentData, $orderId)
     {
         $address = new Address($addressId);
@@ -91,7 +102,14 @@ class ShipmentApiService
         }
         $shipmentCreator = $this->shipmentCreationFactory->makeShipmentCreation();
 
-        return $shipmentCreator->createShipment($shipmentCreationRequest);
+        $shipmentResponse = $shipmentCreator->createShipment($shipmentCreationRequest);
+
+        if ($shipmentResponse->getStatus() === "ok") {
+            $this->emailHandler->handle($orderId, $shipmentResponse->getPlNumber());
+        }
+
+        //TODO Send email with tracking code here retrieve parcels
+        return $shipmentResponse;
     }
 
     public function createReturnServiceShipment($addressTemplateId)

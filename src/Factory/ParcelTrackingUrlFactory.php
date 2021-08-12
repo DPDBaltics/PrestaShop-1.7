@@ -17,10 +17,10 @@ class ParcelTrackingUrlFactory
     {
         $this->countryProvider = $countryProvider;
     }
-    public function createTrackingUrl($order, $parcelNumber)
+    public function createTrackingUrl($cart, $parcelNumber)
     {
 
-        $currentCountry = $this->countryProvider->getCurrentCountryIsoCode();
+        $currentCountry = $this->countryProvider->getCurrentCountryIsoCode($cart);
 
         if (in_array($currentCountry, Config::VALID_TRACKING_URL_COUNTRIES, true)) {
             $countryIsoCode = CountryUtility::toLowerCase($currentCountry);
@@ -29,5 +29,19 @@ class ParcelTrackingUrlFactory
         }
 
         return "https://www.dpdgroup.com/lt/mydpd/tmp/basicsearch?lang=en&parcel_id={$parcelNumber}";
+    }
+
+    public function createTrackingUrls($cart, $parcelNumbers)
+    {
+        if (empty($parcelNumbers)) {
+            return [];
+        }
+        $urls = [];
+
+        foreach ($parcelNumbers as $parcelNumber) {
+            $urls[] = $this->createTrackingUrl($cart, $parcelNumber);
+        }
+
+        return $urls;
     }
 }
