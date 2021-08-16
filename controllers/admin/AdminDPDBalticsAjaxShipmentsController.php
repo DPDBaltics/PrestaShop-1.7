@@ -50,7 +50,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         $cartId = Tools::getValue('id_cart');
 
         /** @var FormDataConverter $formDataConverter */
-        $formDataConverter = $this->module->getModuleContainer(FormDataConverter::class);
+        $formDataConverter = $this->module->getModuleContainer('invertus.dpdbaltics.converter.form_data_converter');
         $data = Tools::getValue('data');
 
         if (!$cartId && $idOrder) {
@@ -90,7 +90,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                     $carrier = new Carrier($carrierId);
                 }
                 /** @var PudoService $pudoService */
-                $pudoService = $this->module->getModuleContainer(PudoService::class);
+                $pudoService = $this->module->getModuleContainer('invertus.dpdbaltics.service.pudo_service');
                 try {
                     $this->returnResponse(
                         $pudoService->searchPudoServices(
@@ -156,7 +156,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                     $this->ajaxDie($response);
                 }
                 /** @var \Invertus\dpdBaltics\Service\CarrierPhoneService $carrierPhoneService */
-                $carrierPhoneService = $this->module->getModuleContainer(\Invertus\dpdBaltics\Service\CarrierPhoneService::class);
+                $carrierPhoneService = $this->module->getModuleContainer('invertus.dpdbaltics.service.carrier_phone_service');
 
                 $response = [
                     'carrierPhoneTemplate' => $carrierPhoneService->getCarrierPhoneTemplate($idCart)
@@ -174,14 +174,14 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 
     private function printLabelFromList($orderId)
     {
-        $shipmentService = $this->module->getModuleContainer(ShipmentService::class);
+        $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
         return $shipmentService->formatLabelShipmentPrintResponse($orderId);
     }
 
     public function printMultipleLabelsFromList($orderIds)
     {
-        $shipmentService = $this->module->getModuleContainer(ShipmentService::class);
+        $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
         return $shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds);
 

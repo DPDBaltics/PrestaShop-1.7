@@ -1,5 +1,5 @@
 services:
-  invertus\dpdbaltics\templating\info_block_render:
+  invertus.dpdbaltics.templating.info_block_render:
     class: 'Invertus\dpdBaltics\Templating\InfoBlockRender'
     arguments:
       - '@invertus.dpdbaltics.builder.template.admin.info_block_builder'

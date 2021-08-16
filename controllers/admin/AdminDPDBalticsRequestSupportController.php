@@ -31,7 +31,7 @@ class AdminDPDBalticsRequestSupportController extends AbstractAdminController
             /**
              * @var LogsService $logService
              */
-            $logService = $this->module->getModuleContainer(LogsService::class);
+            $logService = $this->module->getModuleContainer('invertus.dpdbaltics.service.logs_service');
             if (!$logService->downloadLogsCsv()) {
                 $this->errors[] = $this->l('No logs to download.');
             }

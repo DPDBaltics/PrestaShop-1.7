@@ -67,7 +67,7 @@ class AdminDPDBalticsProductsController extends AbstractAdminController
         parent::initContent();
 
         /** @var ProductBlockBuilder $productBlockBuilder */
-        $productBlockBuilder = $this->module->getModuleContainer()->get(ProductBlockBuilder::class);
+        $productBlockBuilder = $this->module->getModuleContainer()->get('invertus.dpdbaltics.builder.template.admin.product_block_builder');
         $this->content .= $productBlockBuilder->renderProducts();
 
         $this->context->smarty->assign('content', $this->content);
@@ -95,10 +95,10 @@ class AdminDPDBalticsProductsController extends AbstractAdminController
         /** @var UpdateProductZoneService $updateProductZoneService */
         /** @var UpdateProductShopService $updateProductShopService */
         /** @var UpdateCarrierService $updateCarrierService */
-        $updateProductService = $this->module->getModuleContainer()->get(ProductService::class);
-        $updateProductZoneService = $this->module->getModuleContainer()->get(UpdateProductZoneService::class);
-        $updateProductShopService = $this->module->getModuleContainer()->get(UpdateProductShopService::class);
-        $updateCarrierService = $this->module->getModuleContainer()->get(UpdateCarrierService::class);
+        $updateProductService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
+        $updateProductZoneService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.update_product_zone_service');
+        $updateProductShopService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.update_product_shop_service');
+        $updateCarrierService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.carrier.update_carrier_service');
 
         $productId = $params['id-product'];
 

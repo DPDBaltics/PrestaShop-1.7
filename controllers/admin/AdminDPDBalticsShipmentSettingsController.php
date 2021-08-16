@@ -41,7 +41,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
         }
 
         /** @var CodPaymentRepository $codPaymentRepo */
-        $codPaymentRepo = $this->module->getModuleContainer(CodPaymentRepository::class);
+        $codPaymentRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.cod_payment_repository');
 
         if (!$codPaymentRepo->removeCodPaymentModules()) {
             $this->errors[] = $this->l('Failed to delete COD payment methods');
@@ -102,9 +102,9 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
     protected function initOptions()
     {
         /** @var AddressTemplateRepository $addressTemplateRepo */
-        $addressTemplateRepo = $this->module->getModuleContainer(AddressTemplateRepository::class);
+        $addressTemplateRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.address_template_repository');
         /** @var InfoBlockRender $infoBlockRender */
-        $infoBlockRender = $this->module->getModuleContainer()->get(InfoBlockRender::class);
+        $infoBlockRender = $this->module->getModuleContainer()->get('invertus.dpdbaltics.templating.info_block_render');
 
         $infoBlockText = $this->module->l('Please move COD modules to the right, non-COD modules leave on the left');
         $returnServiceAddresses = $addressTemplateRepo->getReturnServiceAddressTemplates();
@@ -128,10 +128,10 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
         }
 
         /** @var LabelPositionService $labelPositionService */
-        $labelPositionService = $this->module->getModuleContainer(LabelPositionService::class);
+        $labelPositionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.label.label_position_service');
 
         /** @var CodPaymentRepository $codPaymentRepo */
-        $codPaymentRepo = $this->module->getModuleContainer(CodPaymentRepository::class);
+        $codPaymentRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.cod_payment_repository');
         $codPaymentModules = $codPaymentRepo->getCodPaymentModules();
         $this->context->smarty->assign('swap', [
             'name' => 'payments',

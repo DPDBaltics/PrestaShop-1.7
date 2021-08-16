@@ -76,7 +76,7 @@ services:
       - '@invertus.dpdbaltics.on_board.builder.on_board_block_builder'
 
   invertus.dpdbaltics.on_board.on_board_steps.step_import_1:
-    class: 'invertus\dpdbaltics\on_board\on_board_steps\step_import_1'
+    class: 'Invertus\dpdBaltics\OnBoard\OnBoardSteps\StepImport1'
     parent: 'invertus.dpdbaltics.on_board.abstract_on_board_step'
 
   invertus.dpdbaltics.on_board.on_board_steps.step_import_2:

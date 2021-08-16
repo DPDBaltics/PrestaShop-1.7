@@ -4,7 +4,7 @@ services:
     arguments:
       - '@dpdbaltics'
 
-  invertus.dpdbaltics.provider.import_export_urlprovider:
+  invertus.dpdbaltics.provider.import_export_url_provider:
     class: 'Invertus\dpdBaltics\Provider\ImportExportURLProvider'
     arguments:
       - '@context'

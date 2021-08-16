@@ -44,7 +44,7 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
         parent::setMedia($isNewTheme);
 
         /** @var ProductAvailabilityProvider $productAvailabilityProvider */
-        $productAvailabilityProvider = $this->module->getModuleContainer(ProductAvailabilityProvider::class);
+        $productAvailabilityProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.product_availability_provider');
 
         Media::addJsDef([
             'dpdbaltics' => [
@@ -155,7 +155,7 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
         $response['status'] = 1;
 
         /** @var $productAvailabilityService ProductAvailabilityService */
-        $productAvailabilityService = $this->module->getModuleContainer(ProductAvailabilityService::class);
+        $productAvailabilityService = $this->module->getModuleContainer('invertus.dpdbaltics.service.product.product_availability_service');
 
         try {
             $productAvailabilityService->updateProductAvailabilities($product->product_reference, $timeRanges);

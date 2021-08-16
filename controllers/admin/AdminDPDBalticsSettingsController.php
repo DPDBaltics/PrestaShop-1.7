@@ -32,7 +32,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
     protected function initOptions()
     {
         /** @var InfoBlockRender $infoBlockRender */
-        $infoBlockRender = $this->module->getModuleContainer()->get(InfoBlockRender::class);
+        $infoBlockRender = $this->module->getModuleContainer()->get('invertus.dpdbaltics.templating.info_block_render');
         $infoBlockText = $this->module->l('Here you can restart DPD on-board feature.');
 
         $this->context->smarty->assign('googleMapsApiKeyLink', Config::GOOGLE_MAPS_API_KEY_LINK);
@@ -150,9 +150,9 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
     {
         if (Tools::isSubmit('submitOptionsconfiguration')) {
             /** @var ProductService $productService */
-            $productService = $this->module->getModuleContainer()->get(ProductService::class);
+            $productService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
             /** @var CarrierUpdateHandler $carrierService */
-            $carrierService = $this->module->getModuleContainer()->get(CarrierUpdateHandler::class);
+            $carrierService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.carrier.carrier_update_handler');
 
             $newCountry = Tools::getValue(Config::WEB_SERVICE_COUNTRY);
             Configuration::updateValue(Config::DPD_PARCEL_IMPORT_COUNTRY_SELECTOR, Country::getByIso($newCountry));
@@ -193,7 +193,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         /**
          * @var LogsService $logService
          */
-        $logService = $this->module->getModuleContainer(LogsService::class);
+        $logService = $this->module->getModuleContainer('invertus.dpdbaltics.service.logs_service');
         if (!$logService->downloadLogsCsv()) {
             $this->errors[] = $this->l('No logs to download.');
         }
