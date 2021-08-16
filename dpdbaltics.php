@@ -1021,7 +1021,7 @@ class DPDBaltics extends CarrierModule
 
         try {
             /** @var ParcelPrintResponse $parcelPrintResponse */
-            $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position);
+            $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->getModuleContainer(ExceptionService::class);
@@ -1059,7 +1059,7 @@ class DPDBaltics extends CarrierModule
 
         try {
             /** @var ParcelPrintResponse $parcelPrintResponse */
-            $parcelPrintResponse = $labelApiService->printLabel(implode('|', $plNumbers), $format, $position);
+            $parcelPrintResponse = $labelApiService->printLabel(implode('|', $plNumbers), $format, $position, false);
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->getModuleContainer(ExceptionService::class);

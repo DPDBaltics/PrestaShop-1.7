@@ -33,13 +33,13 @@
     "php": ">=5.6",
     "invertus/dpdbalticsapi":"dev-developer",
     "invertus/psmoduletabs":"dev-develop",
-    "symfony/console": "^3.4"
+    "symfony/console": "^3.4",
+    "friendsofphp/php-cs-fixer": "^2.19"
   },
   "require-dev": {
     "phpunit/phpunit": "*",
     "facebook/webdriver": "dev-master",
     "squizlabs/php_codesniffer": "*",
-    "vlucas/phpdotenv": "^3.6",
-    "friendsofphp/php-cs-fixer": "*"
+    "vlucas/phpdotenv": "^3.6"
   }
 }
