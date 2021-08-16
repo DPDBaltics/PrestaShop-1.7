@@ -5,8 +5,10 @@ namespace Invertus\dpdBaltics\Service\Email\Handler;
 use Invertus\dpdBaltics\Exception\ParcelEmailException;
 use Invertus\dpdBaltics\Factory\ContextFactory;
 use Invertus\dpdBaltics\Factory\ParcelTrackingUrlFactory;
+use Invertus\IscalaIntegration\Infrastructure\Adapter\Tools;
 use Mail;
 use Module;
+use PrestaShop\PrestaShop\Adapter\MailTemplate\MailPartialTemplateRenderer;
 use PrestaShop\PrestaShop\Adapter\Shop\Context;
 use PrestaShop\PrestaShop\Adapter\Validate;
 
@@ -22,8 +24,10 @@ class ParcelTrackingEmailHandler
      */
     private $module;
 
-    public function __construct(ParcelTrackingUrlFactory $trackingUrlFactory, Module $module)
-    {
+    public function __construct(
+        ParcelTrackingUrlFactory $trackingUrlFactory,
+        Module $module
+    ) {
         $this->trackingUrlFactory = $trackingUrlFactory;
         $this->module = $module;
     }
@@ -34,7 +38,6 @@ class ParcelTrackingEmailHandler
      */
     public function handle($idOrder, $parcelNumbers)
     {
-
         if (!$idOrder) {
             throw new ParcelEmailException('Could not retrieve order');
         }
@@ -55,20 +58,23 @@ class ParcelTrackingEmailHandler
 
        $parcelUrlTemplate = ContextFactory::getSmarty()
            ->fetch(
-           $this->module->getLocalPath().'views/templates/admin/email/parcel-tracking-links.tpl'
+           $this->module->getLocalPath() . 'views/templates/admin/email/parcel-tracking-links.tpl'
        );
-
-       $template_vars = [
-           '{tracking_links}' => $parcelUrlTemplate
-       ];
         $customer = $order->getCustomer();
 
-        Mail::send(
+        $template_vars = [
+           '{firstname}' => $customer->firstname,
+           '{lastname}' => $customer->lastname,
+           '{order_reference}' => $order->reference,
+           '{tracking_links}' => $parcelUrlTemplate
+       ];
+
+        $mail = Mail::send(
             1,
             'parcel-tracking',
             Mail::l('DPD parcel tracking link'),
             $template_vars,
-            'arturas.ubie@gmail.com',
+            $customer->email,
             $customer->firstname.' '.$customer->lastname,
             null,
             null,
@@ -76,7 +82,6 @@ class ParcelTrackingEmailHandler
             null,
             $this->module->getPathUri() . 'mails/'
         );
-        die('sssss');
     }
 
     private function getCartByOrderId($idOrder)
