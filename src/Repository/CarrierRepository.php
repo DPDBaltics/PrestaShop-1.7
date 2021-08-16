@@ -68,6 +68,20 @@ class CarrierRepository extends AbstractEntityRepository
         return $carriers;
     }
 
+    public function getDpdModuleCarrierReferences()
+    {
+        $q = new DbQuery();
+        $q->select('c.id_reference');
+        $q->from('carrier', 'c');
+        $q->leftJoin('carrier_shop', 'cs', 'cs.id_carrier = c.id_carrier');
+        $q->where('c.`deleted`=0');
+        $q->where('c.`external_module_name`="dpdbaltics"');
+
+        $carriers = $this->db->executeS($q);
+
+        return array_column($carriers, 'id_reference');
+    }
+
     public function getDpdCarriers($shopId = null, $langId = null)
     {
         $query = new DbQuery();
