@@ -43,6 +43,7 @@ class ShipmentApiService
      * @throws \PrestaShopDatabaseException
      * @throws \PrestaShopException
      * @throws \Invertus\dpdBaltics\Exception\ParcelEmailException
+     * @throws \SmartyException
      */
     public function createShipment($addressId, ShipmentData $shipmentData, $orderId)
     {
@@ -104,7 +105,7 @@ class ShipmentApiService
 
         $shipmentResponse = $shipmentCreator->createShipment($shipmentCreationRequest);
 
-        if ($shipmentResponse->getStatus() === "ok") {
+        if ($shipmentResponse->getStatus() === "ok" && $this->isTrackingEmailAllowed()) {
             $this->emailHandler->handle($orderId, $shipmentResponse->getPlNumber());
         }
 
@@ -155,5 +156,10 @@ class ShipmentApiService
         $shipmentCreationRequest->setParcelShopId($shipmentData->getSelectedPudoId());
 
         return $shipmentCreationRequest;
+    }
+
+    private function isTrackingEmailAllowed()
+    {
+        return (bool) \Configuration::get(Config::SEND_EMAIL_ON_PARCEL_CREATION);
     }
 }

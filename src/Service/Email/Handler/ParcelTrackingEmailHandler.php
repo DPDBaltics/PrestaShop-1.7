@@ -5,11 +5,8 @@ namespace Invertus\dpdBaltics\Service\Email\Handler;
 use Invertus\dpdBaltics\Exception\ParcelEmailException;
 use Invertus\dpdBaltics\Factory\ContextFactory;
 use Invertus\dpdBaltics\Factory\ParcelTrackingUrlFactory;
-use Invertus\IscalaIntegration\Infrastructure\Adapter\Tools;
 use Mail;
 use Module;
-use PrestaShop\PrestaShop\Adapter\MailTemplate\MailPartialTemplateRenderer;
-use PrestaShop\PrestaShop\Adapter\Shop\Context;
 use PrestaShop\PrestaShop\Adapter\Validate;
 
 class ParcelTrackingEmailHandler
@@ -69,7 +66,7 @@ class ParcelTrackingEmailHandler
            '{tracking_links}' => $parcelUrlTemplate
        ];
 
-        $mail = Mail::send(
+        return Mail::send(
             1,
             'parcel-tracking',
             Mail::l('DPD parcel tracking link'),
@@ -93,5 +90,4 @@ class ParcelTrackingEmailHandler
     {
         return new \Order((int) $idOrder);
     }
-
 }
