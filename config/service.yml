@@ -1,245 +1,260 @@
 services:
-  Invertus\dpdBaltics\Service\Carrier\CreateCarrierService:
+  invertus.dpdbaltics.service.carrier.create_carrier_service:
     class: 'Invertus\dpdBaltics\Service\Carrier\CreateCarrierService'
     arguments:
       - '@language'
-      - '@Invertus\dpdBaltics\Builder\CarrierBuilder'
-      - '@Invertus\dpdBaltics\Builder\CarrierImageBuilder'
+      - '@invertus.dpdbaltics.builder.carrier_builder'
+      - '@invertus.dpdbaltics.builder.carrier_image_builder'
+      - '@invertus.dpdbaltics.repository.product_repository'
 
-  Invertus\dpdBaltics\Service\CarrierPhoneService:
+  invertus.dpdbaltics.service.carrier_phone_service:
     class: 'Invertus\dpdBaltics\Service\CarrierPhoneService'
     arguments:
       - '@dpdbaltics'
       - '@context'
-      - '@Invertus\dpdBaltics\ORM\EntityManager'
-      - '@Invertus\dpdBaltics\Repository\PhonePrefixRepository'
-      - '@Invertus\dpdBaltics\Repository\OrderRepository'
+      - '@invertus.dpdbaltics.orm.entity_manager'
+      - '@invertus.dpdbaltics.repository.phone_prefix_repository'
+      - '@invertus.dpdbaltics.repository.order_repository'
 
-  Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService:
+  invertus.dpdbaltics.service.carrier.update_carrier_service:
     class: 'Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService'
     arguments:
-      - '@Invertus\dpdBaltics\Service\LanguageService'
-      - '@Invertus\dpdBaltics\Validate\Carrier\CarrierUpdateValidate'
+      - '@invertus.dpdbaltics.service.language_service'
+      - '@invertus.dpdbaltics.validate.carrier.carrier_update_validate'
 
-  Invertus\dpdBaltics\Service\DPDFlashMessageService:
+  invertus.dpdbaltics.service.dpdflash_message_service:
     class: 'Invertus\dpdBaltics\Service\DPDFlashMessageService'
     arguments:
       - '@context'
 
-  Invertus\dpdBaltics\Service\LanguageService:
+  invertus.dpdbaltics.service.language_service:
     class: 'Invertus\dpdBaltics\Service\LanguageService'
 
-  Invertus\dpdBaltics\Service\Product\ProductService:
+  invertus.dpdbaltics.service.product.product_service:
     class: 'Invertus\dpdBaltics\Service\Product\ProductService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ProductRepository'
-      - '@Invertus\dpdBaltics\Service\Carrier\CreateCarrierService'
+      - '@invertus.dpdbaltics.repository.product_repository'
+      - '@invertus.dpdbaltics.service.carrier.create_carrier_service'
 
-  Invertus\dpdBaltics\Service\Product\ProductAvailabilityService:
+  invertus.dpdbaltics.service.product.product_availability_service:
     class: 'Invertus\dpdBaltics\Service\Product\ProductAvailabilityService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'
-      - '@Invertus\dpdBaltics\Repository\ProductRepository'
+      - '@invertus.dpdbaltics.repository.product_availability_repository'
+      - '@invertus.dpdbaltics.repository.product_repository'
 
-  Invertus\dpdBaltics\Service\Product\UpdateProductZoneService:
+  invertus.dpdbaltics.service.product.update_product_zone_service:
     class: 'Invertus\dpdBaltics\Service\Product\UpdateProductZoneService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ProductZoneRepository'
+      - '@invertus.dpdbaltics.repository.product_zone_repository'
 
-  Invertus\dpdBaltics\Service\Product\UpdateProductShopService:
+  invertus.dpdbaltics.service.product.update_product_shop_service:
     class: 'Invertus\dpdBaltics\Service\Product\UpdateProductShopService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ProductShopRepository'
+      - '@invertus.dpdbaltics.repository.product_shop_repository'
 
-  Invertus\dpdBaltics\Service\PriceRuleService:
+  invertus.dpdbaltics.service.price_rule_service:
     class: 'Invertus\dpdBaltics\Service\PriceRuleService'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
-      - '@Invertus\dpdBaltics\Repository\ProductRepository'
-      - '@Invertus\dpdBaltics\Repository\DPDZoneRepository'
-      - '@Invertus\dpdBaltics\Repository\PaymentRepository'
-      - '@Invertus\dpdBaltics\Repository\CarrierRepository'
-      - '@Invertus\dpdBaltics\Repository\ShopRepository'
+      - '@invertus.dpdbaltics.repository.price_rule_repository'
+      - '@invertus.dpdbaltics.repository.product_repository'
+      - '@invertus.dpdbaltics.repository.dpdzone_repository'
+      - '@invertus.dpdbaltics.repository.payment_repository'
+      - '@invertus.dpdbaltics.repository.carrier_repository'
+      - '@invertus.dpdbaltics.repository.shop_repository'
       - '@smarty'
       - '@language'
       - '@shop'
 
-  Invertus\dpdBaltics\Service\TabService:
+  invertus.dpdbaltics.service.tab_service:
     class: 'Invertus\dpdBaltics\Service\TabService'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\Zone\DeleteZoneService:
+  invertus.dpdbaltics.service.zone.delete_zone_service:
     class: 'Invertus\dpdBaltics\Service\Zone\DeleteZoneService'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Repository\CarrierRepository'
-      - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
-      - '@Invertus\dpdBaltics\Factory\ArrayFactory'
+      - '@invertus.dpdbaltics.repository.carrier_repository'
+      - '@invertus.dpdbaltics.repository.price_rule_repository'
+      - '@invertus.dpdbaltics.factory.array_factory'
 
-  Invertus\dpdBaltics\Service\Zone\UpdateZoneService:
+  invertus.dpdbaltics.service.zone.update_zone_service:
     class: 'Invertus\dpdBaltics\Service\Zone\UpdateZoneService'
 
-  Invertus\dpdBaltics\Service\ShipmentService:
+  invertus.dpdbaltics.service.shipment_service:
     class: 'Invertus\dpdBaltics\Service\ShipmentService'
     arguments:
     - '@dpdbaltics'
     - '@language'
-    - '@Invertus\dpdBaltics\Repository\ShipmentRepository'
-    - '@Invertus\dpdBaltics\Helper\ShipmentHelper'
-    - '@Invertus\dpdBaltics\Service\API\ShipmentApiService'
-    - '@Invertus\dpdBaltics\Validate\ShipmentData\ShipmentDataValidator'
-    - '@Invertus\dpdBaltics\Service\Exception\ExceptionService'
-    - '@Invertus\dpdBaltics\Service\Label\LabelPrintingService'
-    - '@Invertus\dpdBaltics\Service\PudoService'
-    - '@Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository'
-    - '@Invertus\dpdBaltics\Factory\ShipmentDataFactory'
+    - '@invertus.dpdbaltics.repository.shipment_repository'
+    - '@invertus.dpdbaltics.helper.shipment_helper'
+    - '@invertus.dpdbaltics.service.api.shipment_api_service'
+    - '@invertus.dpdbaltics.validate.shipment_data.shipment_data_validator'
+    - '@invertus.dpdbaltics.service.exception.exception_service'
+    - '@invertus.dpdbaltics.service.label.label_printing_service'
+    - '@invertus.dpdbaltics.service.pudo_service'
+    - '@invertus.dpdbaltics.repository.order_delivery_time_repository'
+    - '@invertus.dpdbaltics.factory.shipment_data_factory'
 
 
-  Invertus\dpdBaltics\Service\Label\LabelPrintingService:
+  invertus.dpdbaltics.service.label.label_printing_service:
     class: 'Invertus\dpdBaltics\Service\Label\LabelPrintingService'
     arguments:
     - '@dpdbaltics'
-    - '@Invertus\dpdBaltics\Service\API\ShipmentApiService'
-    - '@Invertus\dpdBaltics\Service\Exception\ExceptionService'
+    - '@invertus.dpdbaltics.service.api.shipment_api_service'
+    - '@invertus.dpdbaltics.service.exception.exception_service'
 
-  Invertus\dpdBaltics\Service\Address\ReceiverAddressService:
+  invertus.dpdbaltics.service.address.receiver_address_service:
     class: 'Invertus\dpdBaltics\Service\Address\ReceiverAddressService'
     arguments:
       - '@dpdbaltics'
       - '@smarty'
       - '@language'
-      - '@Invertus\dpdBaltics\Repository\ReceiverAddressRepository'
-      - '@Invertus\dpdBaltics\Repository\OrderRepository'
-      - '@Invertus\dpdBaltics\Service\ShipmentService'
-      - '@Invertus\dpdBaltics\Repository\PhonePrefixRepository'
-      - '@Invertus\dpdBaltics\Service\OrderService'
+      - '@invertus.dpdbaltics.repository.receiver_address_repository'
+      - '@invertus.dpdbaltics.repository.order_repository'
+      - '@invertus.dpdbaltics.service.shipment_service'
+      - '@invertus.dpdbaltics.repository.phone_prefix_repository'
+      - '@invertus.dpdbaltics.service.order_service'
 
-  Invertus\dpdBaltics\Service\Address\AddressTemplateService:
+  invertus.dpdbaltics.service.address.address_template_service:
     class: 'Invertus\dpdBaltics\Service\Address\AddressTemplateService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ShopRepository'
+      - '@invertus.dpdbaltics.repository.shop_repository'
 
-  Invertus\dpdBaltics\Service\Label\LabelPositionService:
+  invertus.dpdbaltics.service.label.label_position_service:
     class: 'Invertus\dpdBaltics\Service\Label\LabelPositionService'
     arguments:
       - '@dpdbaltics'
       - '@Smarty'
 
-  Invertus\dpdBaltics\Service\OrderService:
+  invertus.dpdbaltics.service.order_service:
     class: 'Invertus\dpdBaltics\Service\OrderService'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\Payment\PaymentService:
+  invertus.dpdbaltics.service.payment.payment_service:
     class: 'Invertus\dpdBaltics\Service\Payment\PaymentService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\CodPaymentRepository'
-      - '@Invertus\dpdBaltics\Repository\PudoRepository'
+      - '@invertus.dpdbaltics.repository.cod_payment_repository'
+      - '@invertus.dpdbaltics.repository.pudo_repository'
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Repository\ProductRepository'
-      - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
+      - '@invertus.dpdbaltics.repository.product_repository'
+      - '@invertus.dpdbaltics.repository.price_rule_repository'
       - '@shop'
 
-  Invertus\dpdBaltics\Service\API\ShipmentApiService:
+  invertus.dpdbaltics.service.api.shipment_api_service:
     class: 'Invertus\dpdBaltics\Service\API\ShipmentApiService'
     arguments:
-      - '@Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory'
-      - '@Invertus\dpdBaltics\Repository\CodPaymentRepository'
+      - '@invertus.dpdbaltics_api.factory.apirequest.shipment_creation_factory'
+      - '@invertus.dpdbaltics.repository.cod_payment_repository'
+      - '@invertus.dpdbaltics.repository.parcel_tracking_email_handler'
 
-  Invertus\dpdBaltics\Service\API\LabelApiService:
+
+  invertus.dpdbaltics.service.api.label_api_service:
     class: 'Invertus\dpdBaltics\Service\API\LabelApiService'
     arguments:
-      - '@Invertus\dpdBaltics\Util\FileDownload'
-      - '@Invertus\dpdBalticsApi\Factory\APIRequest\ParcelPrintFactory'
+      - '@invertus.dpdbaltics.util.file_download'
+      - '@invertus.dpdbaltics_api.factory.apirequest.parcel_print_factory'
 
-  Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService:
+  invertus.dpdbaltics.service.api.parcel_shop_search_api_service:
     class: 'Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService'
     arguments:
-      - '@Invertus\dpdBalticsApi\Factory\APIRequest\ParcelShopSearchFactory'
+      - '@invertus.dpdbaltics_api.factory.apirequest.parcel_shop_search_factory'
 
-  Invertus\dpdBaltics\Service\PudoService:
+  invertus.dpdbaltics.service.pudo_service:
     class: 'Invertus\dpdBaltics\Service\PudoService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\PudoRepository'
+      - '@invertus.dpdbaltics.repository.pudo_repository'
       - '@smarty'
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService'
+      - '@invertus.dpdbaltics.service.api.parcel_shop_search_api_service'
       - '@language'
-      - '@Invertus\dpdBaltics\Service\GoogleApiService'
-      - '@Invertus\dpdBaltics\Repository\ParcelShopRepository'
-      - '@Invertus\dpdBaltics\Factory\ShopFactory'
+      - '@invertus.dpdbaltics.service.google_api_service'
+      - '@invertus.dpdbaltics.repository.parcel_shop_repository'
+      - '@invertus.dpdbaltics.factory.shop_factory'
 
-  Invertus\dpdBaltics\Service\GoogleApiService:
+  invertus.dpdbaltics.service.google_api_service:
     class: 'Invertus\dpdBaltics\Service\GoogleApiService'
     arguments:
       - '@language'
       - '@shop'
 
-  Invertus\dpdBaltics\Logger\Logger:
+  invertus.dpdbaltics.logger.logger:
     class: 'Invertus\dpdBaltics\Logger\Logger'
     arguments:
-      - '@Invertus\dpdBaltics\Service\LogsService'
+      - '@invertus.dpdbaltics.service.logs_service'
 
-  Invertus\dpdBaltics\Service\LogsService:
+  invertus.dpdbaltics.service.logs_service:
     class: 'Invertus\dpdBaltics\Service\LogsService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\LogsRepository'
+      - '@invertus.dpdbaltics.repository.logs_repository'
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\API\CollectionRequestService:
+  invertus.dpdbaltics.service.api.collection_request_service:
     class: 'Invertus\dpdBaltics\Service\API\CollectionRequestService'
     arguments:
-      - '@Invertus\dpdBalticsApi\Factory\APIRequest\CollectionRequestFactory'
+      - '@invertus.dpdbaltics_api.factory.apirequest.collection_request_factory'
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\API\CourierRequestService:
+  invertus.dpdbaltics.service.api.courier_request_service:
     class: 'Invertus\dpdBaltics\Service\API\CourierRequestService'
     arguments:
-      - '@Invertus\dpdBalticsApi\Factory\APIRequest\CourierRequestFactory'
+      - '@invertus.dpdbaltics_api.factory.apirequest.courier_request_factory'
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService:
+  invertus.dpdbaltics.service.parcel.parcel_update_service:
     class: 'Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ParcelShopRepository'
+      - '@invertus.dpdbaltics.repository.parcel_shop_repository'
 
-  Invertus\dpdBaltics\Service\Parcel\ParcelShopService:
+  invertus.dpdbaltics.service.parcel.parcel_shop_service:
     class: 'Invertus\dpdBaltics\Service\Parcel\ParcelShopService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ParcelShopRepository'
-      - '@Invertus\dpdBaltics\Factory\ShopFactory'
+      - '@invertus.dpdbaltics.repository.parcel_shop_repository'
+      - '@invertus.dpdbaltics.factory.shop_factory'
 
-  Invertus\dpdBaltics\Service\OrderDeliveryTimeService:
+  invertus.dpdbaltics.service.order_delivery_time_service:
     class: 'Invertus\dpdBaltics\Service\OrderDeliveryTimeService'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository'
+      - '@invertus.dpdbaltics.repository.order_delivery_time_repository'
 
-  Invertus\dpdBaltics\Service\TrackingService:
+  invertus.dpdbaltics.service.tracking_service:
     class: 'Invertus\dpdBaltics\Service\TrackingService'
 
-  Invertus\dpdBaltics\Service\Exception\ExceptionService:
+  invertus.dpdbaltics.service.exception.exception_service:
     class: 'Invertus\dpdBaltics\Service\Exception\ExceptionService'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\Import\API\ParcelShopImport:
+  invertus.dpdbaltics.service.import.api.parcel_shop_import:
     class: 'Invertus\dpdBaltics\Service\Import\API\ParcelShopImport'
     arguments:
-      - '@Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService'
-      - '@Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService'
+      - '@invertus.dpdbaltics.service.api.parcel_shop_search_api_service'
+      - '@invertus.dpdbaltics.service.parcel.parcel_update_service'
       - '@dpdbaltics'
 
       # AccessibilityChecker
-  Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker:
+  invertus.dpdbaltics.grid.row.print_accessibility_checker:
     class: 'Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ShipmentRepository'
+      - '@invertus.dpdbaltics.repository.shipment_repository'
 
-  Invertus\dpdBaltics\Service\Carrier\CarrierUpdateHandler:
+  invertus.dpdbaltics.service.carrier.carrier_update_handler:
     class: 'Invertus\dpdBaltics\Service\Carrier\CarrierUpdateHandler'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ProductRepository'
-      - '@Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService'
-      - '@Invertus\dpdBaltics\Service\Product\ProductService'
+      - '@invertus.dpdbaltics.repository.product_repository'
+      - '@invertus.dpdbaltics.service.carrier.update_carrier_service'
+      - '@invertus.dpdbaltics.service.product.product_service'
+
+  invertus.dpdbaltics.repository.parcel_tracking_email_handler:
+    class: 'Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler'
+    arguments:
+      - '@invertus.dpdbaltics.factory.parcel_tracking_url_factory'
+      - '@dpdbaltics'
+
+  invertus.dpdbaltics.service.carrier.prestashop_carrier_regeneration_handler:
+    class: 'Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler'
+    arguments:
+      - '@invertus.dpdbaltics.install.installer'
+

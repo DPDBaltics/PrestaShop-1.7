@@ -1,11 +1,11 @@
 services:
-  Invertus\dpdBaltics\Presenter\DeliveryTimePresenter:
+  invertus.dpdbaltics.presenter.delivery_time_presenter:
     class: 'Invertus\dpdBaltics\Presenter\DeliveryTimePresenter'
     arguments:
       - '@context'
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Presenter\SameDayDeliveryMessagePresenter:
+  invertus.dpdbaltics.presenter.same_day_delivery_message_presenter:
     class: 'Invertus\dpdBaltics\Presenter\SameDayDeliveryMessagePresenter'
     arguments:
       - '@context'

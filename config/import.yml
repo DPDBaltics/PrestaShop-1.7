@@ -1,54 +1,54 @@
 services:
-  Invertus\dpdBaltics\Service\Import\SettingsImport:
+  invertus.dpdbaltics.service.import.settings_import:
     class: 'Invertus\dpdBaltics\Service\Import\SettingsImport'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\Import\ZoneImport:
+  invertus.dpdbaltics.service.import.zone_import:
     class: 'Invertus\dpdBaltics\Service\Import\ZoneImport'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\ORM\EntityManager'
-      - '@Invertus\dpdBaltics\Adapter\ZoneAdapter'
-      - '@Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate'
-      - '@Invertus\dpdBaltics\Repository\DPDZoneRepository'
+      - '@invertus.dpdbaltics.orm.entity_manager'
+      - '@invertus.dpdbaltics.adapter.zone_adapter'
+      - '@invertus.dpdbaltics.validate.zone.zone_range_validate'
+      - '@invertus.dpdbaltics.repository.dpdzone_repository'
       - '@smarty'
 
-  Invertus\dpdBaltics\Service\Import\ImportMainZone:
+  invertus.dpdbaltics.service.import.import_main_zone:
     class: 'Invertus\dpdBaltics\Service\Import\ImportMainZone'
     arguments:
-      - '@Invertus\dpdBaltics\Service\Import\ImportProvider'
-      - '@Invertus\dpdBaltics\Service\Import\ZoneImport'
+      - '@invertus.dpdbaltics.service.import.import_provider'
+      - '@invertus.dpdbaltics.service.import.zone_import'
 
-  Invertus\dpdBaltics\Service\Import\ImportProvider:
+  invertus.dpdbaltics.service.import.import_provider:
     class: 'Invertus\dpdBaltics\Service\Import\ImportProvider'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Adapter\DPDConfigurationAdapter'
+      - '@invertus.dpdbaltics.adapter.dpdconfiguration_adapter'
 
-  Invertus\dpdBaltics\Service\Import\ProductImport:
+  invertus.dpdbaltics.service.import.product_import:
     class: 'Invertus\dpdBaltics\Service\Import\ProductImport'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ProductRepository'
-      - '@Invertus\dpdBaltics\Repository\ZoneRepository'
-      - '@Invertus\dpdBaltics\Repository\ShopRepository'
-      - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'
+      - '@invertus.dpdbaltics.repository.product_repository'
+      - '@invertus.dpdbaltics.repository.zone_repository'
+      - '@invertus.dpdbaltics.repository.shop_repository'
+      - '@invertus.dpdbaltics.repository.product_availability_repository'
 
-  Invertus\dpdBaltics\Service\Import\PriceRulesImport:
+  invertus.dpdbaltics.service.import.price_rules_import:
     class: 'Invertus\dpdBaltics\Service\Import\PriceRulesImport'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
-      - '@Invertus\dpdBaltics\Repository\DPDZoneRepository'
-      - '@Invertus\dpdBaltics\Repository\CarrierRepository'
+      - '@invertus.dpdbaltics.repository.price_rule_repository'
+      - '@invertus.dpdbaltics.repository.dpdzone_repository'
+      - '@invertus.dpdbaltics.repository.carrier_repository'
 
-  Invertus\dpdBaltics\Service\Import\AddressTemplatesImport:
+  invertus.dpdbaltics.service.import.address_templates_import:
     class: 'Invertus\dpdBaltics\Service\Import\AddressTemplatesImport'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Repository\ShopRepository'
+      - '@invertus.dpdbaltics.repository.shop_repository'
 
-  Invertus\dpdBaltics\Service\Import\ZipImport:
+  invertus.dpdbaltics.service.import.zip_import:
     class: 'Invertus\dpdBaltics\Service\Import\ZipImport'
     arguments:
       - '@dpdbaltics'

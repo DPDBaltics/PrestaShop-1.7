@@ -1,36 +1,36 @@
 services:
-  Invertus\dpdBaltics\Service\Export\ExportProvider:
+  invertus.dpdbaltics.service.export.export_provider:
     class: 'Invertus\dpdBaltics\Service\Export\ExportProvider'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\Export\ZoneExport:
+  invertus.dpdbaltics.service.export.zone_export:
     class: 'Invertus\dpdBaltics\Service\Export\ZoneExport'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\Export\SettingsExport:
+  invertus.dpdbaltics.service.export.settings_export:
     class: 'Invertus\dpdBaltics\Service\Export\SettingsExport'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\Export\AddressTemplatesExport:
+  invertus.dpdbaltics.service.export.address_templates_export:
     class: 'Invertus\dpdBaltics\Service\Export\AddressTemplatesExport'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Repository\AddressTemplateRepository'
+      - '@invertus.dpdbaltics.repository.address_template_repository'
 
-  Invertus\dpdBaltics\Service\Export\ProductExport:
+  invertus.dpdbaltics.service.export.product_export:
     class: 'Invertus\dpdBaltics\Service\Export\ProductExport'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Repository\ProductRepository'
-      - '@Invertus\dpdBaltics\Repository\ZoneRepository'
-      - '@Invertus\dpdBaltics\Repository\ProductShopRepository'
-      - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'
+      - '@invertus.dpdbaltics.repository.product_repository'
+      - '@invertus.dpdbaltics.repository.zone_repository'
+      - '@invertus.dpdbaltics.repository.product_shop_repository'
+      - '@invertus.dpdbaltics.repository.product_availability_repository'
 
-  Invertus\dpdBaltics\Service\Export\PriceRulesExport:
+  invertus.dpdbaltics.service.export.price_rules_export:
     class: 'Invertus\dpdBaltics\Service\Export\PriceRulesExport'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
+      - '@invertus.dpdbaltics.repository.price_rule_repository'
       - '@dpdbaltics'

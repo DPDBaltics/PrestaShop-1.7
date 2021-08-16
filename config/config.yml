@@ -52,15 +52,16 @@ services:
     class: 'Shop'
     factory: ['Invertus\dpdBaltics\Factory\ContextFactory', 'getShop']
 
-  Invertus\dpdBaltics\Config\ApiConfiguration:
+  invertus.dpdbaltics.config.api_configuration:
     class: 'Invertus\dpdBaltics\Config\ApiConfiguration'
 
-  Invertus\dpdBaltics\Install\Installer:
+  invertus.dpdbaltics.install.installer:
     class: 'Invertus\dpdBaltics\Install\Installer'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Factory\TabFactory'
-      - '@Invertus\dpdBaltics\Service\Carrier\CreateCarrierService'
+      - '@invertus.dpdbaltics.factory.tab_factory'
+      - '@invertus.dpdbaltics.service.carrier.create_carrier_service'
+      - '@invertus.dpdbaltics.repository.carrier_repository'
 
-  Invertus\dpdBaltics\ORM\EntityManager:
+  invertus.dpdbaltics.orm.entity_manager:
     class: 'Invertus\dpdBaltics\ORM\EntityManager'

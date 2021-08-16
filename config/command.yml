@@ -1,8 +1,8 @@
 services:
-  Invertus\dpdBaltics\ConsoleCommand\UpdateParcelShopsCommand:
+  invertus.dpdbaltics.console_command.update_parcel_shops_command:
     class : 'Invertus\dpdBaltics\ConsoleCommand\UpdateParcelShopsCommand'
     arguments:
-      - '@Invertus\dpdBaltics\Logger\Logger'
-      - '@Invertus\dpdBaltics\Service\Import\API\ParcelShopImport'
+      - '@invertus.dpdbaltics.logger.logger'
+      - '@invertus.dpdbaltics.service.import.api.parcel_shop_import'
     tags:
       - { name: 'console.command', command: 'dpdbaltics:update-parcel-shops'}
