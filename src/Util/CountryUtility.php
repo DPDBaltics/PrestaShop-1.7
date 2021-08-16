@@ -18,9 +18,4 @@ class CountryUtility
 
         return $countryProvider->getCurrentCountryIsoCode() === Config::ESTONIA_ISO_CODE;
     }
-
-    public static function toLowerCase($string)
-    {
-        return strtolower($string);
-    }
 }

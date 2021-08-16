@@ -5,6 +5,7 @@ namespace Invertus\dpdBaltics\Factory;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Util\CountryUtility;
+use Invertus\dpdBaltics\Util\StringUtility;
 
 class ParcelTrackingUrlFactory
 {
@@ -23,7 +24,7 @@ class ParcelTrackingUrlFactory
         $currentCountry = $this->countryProvider->getCurrentCountryIsoCode($cart);
 
         if (in_array($currentCountry, Config::VALID_TRACKING_URL_COUNTRIES, true)) {
-            $countryIsoCode = CountryUtility::toLowerCase($currentCountry);
+            $countryIsoCode = StringUtility::toLowerCase($currentCountry);
 
             return "https://www.dpdgroup.com/{$countryIsoCode}/mydpd/tmp/basicsearch?lang={$countryIsoCode}&parcel_id={$parcelNumber}";
         }
