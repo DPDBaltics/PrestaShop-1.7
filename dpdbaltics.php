@@ -98,7 +98,7 @@ class DPDBaltics extends CarrierModule
         $this->displayName = $this->l('DPDBaltics');
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
-        $this->version = '3.1.6';
+        $this->version = '3.2.6';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -1021,7 +1021,7 @@ class DPDBaltics extends CarrierModule
 
         try {
             /** @var ParcelPrintResponse $parcelPrintResponse */
-            $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position);
+            $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
@@ -1059,7 +1059,7 @@ class DPDBaltics extends CarrierModule
 
         try {
             /** @var ParcelPrintResponse $parcelPrintResponse */
-            $parcelPrintResponse = $labelApiService->printLabel(implode('|', $plNumbers), $format, $position);
+            $parcelPrintResponse = $labelApiService->printLabel(implode('|', $plNumbers), $format, $position, false);
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');

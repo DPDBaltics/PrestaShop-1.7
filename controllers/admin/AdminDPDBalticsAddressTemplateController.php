@@ -92,7 +92,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
     private function getFieldFormVars()
     {
         /** @var ShopRepository $shopRepository */
-        $shopRepository = $this->module->getModuleContainer()->get('invertus.dpdbaltics.repository.product_shop_repository');
+        $shopRepository = $this->module->getModuleContainer()->get('invertus.dpdbaltics.repository.shop_repository');
         $priceRuleShops = $shopRepository->getAddressTemplateShops($this->object->id);
 
         $shops = Shop::getShops(true);
@@ -249,7 +249,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
             $phoneData['mobile_phone'] = Tools::getValue('mobile_phone');
         } elseif (Tools::getIsset('id_dpd_address_template')) {
             /** @var AddressRepository $addressRepo */
-            $addressRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.receiver_address_repository');
+            $addressRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.address_repository');
             $phoneData = $addressRepo->getAddressPhonesAndCodes(Tools::getValue('id_dpd_address_template'));
         }
 

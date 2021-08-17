@@ -35,7 +35,7 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
         $labelApiService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
         if ($dpdShipment->return_pl_number) {
             try {
-                $response = $labelApiService->printLabel($dpdShipment->return_pl_number);
+                $response = $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
                 $this->validateLabel($response->getStatus(), $response->getErrLog(), $orderId);
                 exit();
             } catch (Exception $e) {
@@ -56,7 +56,7 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
             /** @var ShipmentService $shipmentService */
             $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
             $dpdShipment = $shipmentService->createReturnServiceShipment($returnTemplateId, $orderId);
-            $response = $labelApiService->printLabel($dpdShipment->return_pl_number);
+            $response = $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
             $this->validateLabel($response->getStatus(), $response->getErrLog(), $orderId);
             exit();
         } catch (DPDBalticsAPIException $e) {

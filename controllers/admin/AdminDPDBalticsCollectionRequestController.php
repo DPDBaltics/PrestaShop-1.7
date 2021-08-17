@@ -335,7 +335,7 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
     private function renderPrefillSelect($prefix)
     {
         /** @var AddressRepository $addressRepository */
-        $addressRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.receiver_address_repository');
+        $addressRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.address_repository');
         $addresses = $addressRepository->findAllByShop();
 
         $this->context->smarty->assign('address_templates', $addresses);

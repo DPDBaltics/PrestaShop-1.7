@@ -27,8 +27,9 @@ class LabelApiService
         $this->parcelPrintFactory = $parcelPrintFactory;
     }
 
-    public function printLabel($plNumbers, $format = false, $position = false)
+    public function printLabel($plNumbers, $format = false, $position = false, $isReturn = false)
     {
+        //TODO setup sending logic here in this functionw
         $parcelPrintRequest = new ParcelPrintRequest(
             $plNumbers
         );

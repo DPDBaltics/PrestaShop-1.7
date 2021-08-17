@@ -33,6 +33,7 @@ class OrderLabelController extends FrameworkBundleAdminController
      */
     public function printLabelAction($orderId)
     {
+        /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
         $response = $shipmentService->formatLabelShipmentPrintResponse($orderId);
 

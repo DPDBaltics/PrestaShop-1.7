@@ -46,7 +46,7 @@
                                     <br>
                                 {/foreach}
                             {else}
-                                {$value['tooltip']|escape:'htmlall':'UTF-8'}    
+                                {$value['tooltip']|escape:'htmlall':'UTF-8'}
                             {/if}"
                         >
                         {/if}

@@ -284,6 +284,13 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                         'identifier' => 'value',
                         'form_group_class' => 'DPD_DEFAULT_LABEL_POSITION'
                     ],
+                    Config::SEND_EMAIL_ON_PARCEL_CREATION => [
+                        'title' => $this->l('Email on shipment creation'),
+                        'hint' => $this->l('Send email with tracking information to customer when label is generated'),
+                        'type' => 'bool',
+                        'validation' => 'isBool',
+                        'cast' => 'intval'
+                    ],
                 ],
                 'submit' => [
                     'title' => $this->l('Save'),

@@ -23,6 +23,7 @@ class Config
     const LATVIA_ISO_CODE = 'LV';
     const ESTONIA_ISO_CODE = 'EE';
     const PORTUGAL_ISO_CODE = 'PT';
+    const VALID_TRACKING_URL_COUNTRIES = ['LT', 'EE', 'LV'];
 
     const AVAILABLE_PUDO_COD_IDS = [
         'EE90',
@@ -71,6 +72,7 @@ class Config
     const IMPORT_PARCEL_INFO_BLOCK_FIELD = 'DPD_PARCEL_IMPORT_INFO_BLOCK_FIELD';
     const DPD_PARCEL_IMPORT_COUNTRY_SELECTOR = 'DPD_PARCEL_IMPORT_COUNTRY_SELECTOR';
     const IMPORT_FILE = 'DPD_IMPORT_FILE';
+    const PRESTASHOP_DPD_CARRIER_REGENERATE = 'PRESTASHOP_DPD_CARRIER_REGENERATE';
 
     /**
      * Please note those are also used as file names for exports, so they must be without spaces
@@ -89,7 +91,7 @@ class Config
     const LABEL_PRINT_OPTION = 'DPD_LABEL_PRINT_OPTION';
     const DEFAULT_LABEL_FORMAT = 'DPD_DEFAULT_LABEL_FORMAT';
     const DEFAULT_LABEL_POSITION = 'DPD_DEFAULT_LABEL_POSITION';
-
+    const SEND_EMAIL_ON_PARCEL_CREATION = 'DPD_SEND_EMAIL_TO_CUSTOMER';
     const MULTIPLE_LABEL_NAME_MAX_SIZE = 44;
 
     const PHONE_CODE_PREFIX = '+';
