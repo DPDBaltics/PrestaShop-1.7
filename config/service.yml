@@ -256,19 +256,15 @@ services:
     class: 'Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler'
     arguments:
       - '@invertus.dpdbaltics.install.installer'
-      - '@Invertus\dpdBaltics\Repository\ProductRepository'
-      - '@Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService'
-      - '@Invertus\dpdBaltics\Service\Product\ProductService'
+      - '@invertus.dpdbaltics.repository.product_repository'
+      - '@invertus.dpdbaltics.service.carrier.update_carrier_service'
+      - '@invertus.dpdbaltics.service.product.product_service'
 
   invertus-dpdbaltics-repository-parceltrackingemailhandler:
     class: 'Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler'
     arguments:
-      - '@invertus-dpdbaltics-factory-parceltrackingurlfactory'
+      - '@invertus.dpdbaltics.factory.parcel_tracking_url_factory'
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler:
-    class: 'Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler'
-    arguments:
-      - '@Invertus\dpdBaltics\Install\Installer'
 
 

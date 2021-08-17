@@ -26,17 +26,17 @@ services:
   invertus.dpdbaltics.factory.shop_factory:
     class: 'Invertus\dpdBaltics\Factory\ShopFactory'
     arguments:
-      - '@invertus.dpdbaltics.repository.parcel_shop_repository'
+    - '@invertus.dpdbaltics.repository.parcel_shop_repository'
 
   invertus.dpdbaltics.factory.parcel_tracking_url_factory:
     class: 'Invertus\dpdBaltics\Factory\ParcelTrackingUrlFactory'
     arguments:
       - '@invertus.dpdbaltics.provider.current_country_provider'
-      - '@Invertus\dpdBaltics\Repository\ParcelShopRepository'
+      - '@invertus.dpdbaltics.repository.parcel_shop_repository'
 
-  invertus-dpdbaltics-factory-parceltrackingurlfactory:
+  invertus-dpdbaltics-factory-parcel_tracking_url_factory:
     class: 'Invertus\dpdBaltics\Factory\ParcelTrackingUrlFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Provider\CurrentCountryProvider'
+      - '@invertus.dpdbaltics.provider.current_country_provider'
 
 
