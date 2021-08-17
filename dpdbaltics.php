@@ -492,9 +492,9 @@ class DPDBaltics extends CarrierModule
         /** @var CarrierPhoneService $carrierPhoneService */
         /** @var \Invertus\dpdBaltics\Presenter\DeliveryTimePresenter $deliveryTimePresenter */
         /** @var ProductRepository $productRepo */
-        $carrierPhoneService = $this->getModuleContainer()->get(CarrierPhoneService::class);
+        $carrierPhoneService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.carrier_phone_service');
         $deliveryTimePresenter = $this->getModuleContainer()->get('invertus.dpdbaltics.presenter.delivery_time_presenter');
-        $productRepo = $this->getModuleContainer()->get(ProductRepository::class);
+        $productRepo = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.product_repository');
 
         $productId = $productRepo->getProductIdByCarrierReference($carrier->id_reference);
         $dpdProduct = new DPDProduct($productId);

@@ -66,7 +66,7 @@ class DPDZone extends ObjectModel
         $module = Module::getInstanceByName('dpdbaltics');
 
         /** @var ZoneRangeRepository $zoneRangeRepo */
-        $zoneRangeRepo = $module->getModuleContainer()->get(ZoneRangeRepository::class);
+        $zoneRangeRepo = $module->getModuleContainer()->get('invertus.dpdbaltics.repository.zone_range_repository');
 
         foreach ($zones as $zone) {
             // Get ranges by zone and country

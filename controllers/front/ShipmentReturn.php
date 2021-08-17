@@ -28,11 +28,11 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
         $response['status'] = false;
 
         /** @var ShipmentRepository $shipmentRepo */
-        $shipmentRepo = $this->module->getModuleContainer(ShipmentRepository::class);
+        $shipmentRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.shipment_repository');
         $dpdShipmentId = $shipmentRepo->getIdByOrderId($orderId);
         $dpdShipment = new DPDShipment($dpdShipmentId);
         /** @var LabelApiService $labelApiService */
-        $labelApiService = $this->module->getModuleContainer(LabelApiService::class);
+        $labelApiService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
         if ($dpdShipment->return_pl_number) {
             try {
                 $response = $labelApiService->printLabel($dpdShipment->return_pl_number);
@@ -54,14 +54,14 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
         }
         try {
             /** @var ShipmentService $shipmentService */
-            $shipmentService = $this->module->getModuleContainer(ShipmentService::class);
+            $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
             $dpdShipment = $shipmentService->createReturnServiceShipment($returnTemplateId, $orderId);
             $response = $labelApiService->printLabel($dpdShipment->return_pl_number);
             $this->validateLabel($response->getStatus(), $response->getErrLog(), $orderId);
             exit();
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
-            $exceptionService = $this->module->getModuleContainer(ExceptionService::class);
+            $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
             $errorMessage = $exceptionService->getErrorMessageForException(
                 $e,
                 $exceptionService->getAPIErrorMessages()

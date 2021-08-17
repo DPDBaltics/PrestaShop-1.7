@@ -33,7 +33,7 @@ class OrderLabelController extends FrameworkBundleAdminController
      */
     public function printLabelAction($orderId)
     {
-        $shipmentService = $this->module->getModuleContainer(ShipmentService::class);
+        $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
         $response = $shipmentService->formatLabelShipmentPrintResponse($orderId);
 
         if (!$response['status'] || !$response['id_dpd_shipment']) {
@@ -65,7 +65,7 @@ class OrderLabelController extends FrameworkBundleAdminController
 
             return $this->redirectToRoute('admin_orders_index');
         }
-        $shipmentService = $this->module->getModuleContainer(ShipmentService::class);
+        $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
         $response = $shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds);
 
         if (!$response) {

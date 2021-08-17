@@ -34,13 +34,13 @@ if (!defined('_PS_VERSION_')) {
 function upgrade_module_1_1_2(DPDBaltics $module)
 {
     /** @var CurrentCountryProvider $currentCountryProvider */
-    $currentCountryProvider = $this->module->getModuleContainer(CurrentCountryProvider::class);
+    $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
     $newCountryIsoCode = $currentCountryProvider->getCurrentCountryIsoCode();
 
     /** @var ProductRepository $productRepository */
-    $productRepository = $module->getModuleContainer(ProductRepository::class);
+    $productRepository = $module->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
     /** @var ProductService $productService */
-    $productService = $module->getModuleContainer(ProductService::class);
+    $productService = $module->getModuleContainer('invertus.dpdbaltics.service.product.product_service');
     $productId = $productRepository->getProductIdByProductReference(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
     if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
         $productService->deleteProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
