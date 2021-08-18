@@ -83,7 +83,7 @@ class ExportProvider
         switch ($exportOption) {
             case Config::IMPORT_EXPORT_OPTION_ZONES:
                 /** @var ZoneRepository $zonesRepo */
-                $zonesRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.dpdzone_repository');
+                $zonesRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.zone_repository');
                 $zones = $zonesRepo->findAllZonesIds();
                 if (empty($zones)) {
                     $this->warnings[] = $this->module->l('No zones found for export', self::FILE_NAME);

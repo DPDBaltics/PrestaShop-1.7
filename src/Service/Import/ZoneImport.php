@@ -312,7 +312,7 @@ class ZoneImport implements ImportableInterface
     public function deleteOldData()
     {
         /** @var ZoneRepository $zoneRepository */
-        $zoneRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.dpdzone_repository');
+        $zoneRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.zone_repository');
         $idZones = $zoneRepository->findAllZonesIds();
 
         if (!$this->zonesValidateDeletion($idZones)) {

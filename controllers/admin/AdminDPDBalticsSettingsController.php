@@ -195,9 +195,9 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
         if (Tools::isSubmit('submitRegenerateCarriers')) {
             /** @var  PrestashopCarrierRegenerationHandler $regenerationHandler */
-            $regenerationHandler = $this->module->getModuleContainer()->get(PrestashopCarrierRegenerationHandler::class);
+            $regenerationHandler = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.carrier.prestashop_carrier_regeneration_handler');
             /** @var  Invertus\dpdBaltics\Logger\Logger $logger */
-            $logger = $this->module->getModuleContainer()->get(Invertus\dpdBaltics\Logger\Logger::class);
+            $logger = $this->module->getModuleContainer()->get('invertus.dpdbaltics.logger.logger');
             try {
                 $regenerationHandler->handle();
                 $this->confirmations[] = $this->l('Prestashop carriers regenerated successfully');

@@ -407,7 +407,7 @@ class DPDBaltics extends CarrierModule
         /** @var \Invertus\dpdBaltics\Validate\Weight\CartWeightValidator $cartWeightValidator */
         /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
         $productRepo = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.product_repository');
-        $zoneRepo = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.dpdzone_repository');
+        $zoneRepo = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.zone_repository');
         $productAvailabilityService = $this->getModuleContainer('invertus.dpdbaltics.service.product.product_availability_service');
         $cartWeightValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.weight.cart_weight_validator');
         $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');

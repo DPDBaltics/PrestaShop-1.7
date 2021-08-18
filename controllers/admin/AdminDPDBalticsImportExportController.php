@@ -350,7 +350,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
 
         if ($importOption == Config::IMPORT_EXPORT_OPTION_ALL_ZIP) {
             /* @var ZipImport $zipImport */
-            $zipImport = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.export_provider');
+            $zipImport = $this->module->getModuleContainer('invertus.dpdbaltics.service.import.zip_import');
 
             if (!$zipImport->importAllFromZip()) {
                 $this->errors = array_merge($this->errors, $zipImport->errors);

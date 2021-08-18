@@ -1,0 +1,4 @@
+Name;"Address type";"Full name.";"GSM code";"Mobile phone";"Email address";"Country id";"Zip code";"City name";Address;"All shops";Shops
+"Arturas Bespalovas";return_service;TEST;+370;67875044;arturas.ubie@gmail.com;8;50352;Kaunas;"Partizanų g. 74-14";1;
+"Arturas Bespalovas";collection_request;asdf;+49;+33867875044;arturas.ubie@gmail.com;8;50352;Kaunas;"Partizanų g. 74-14";1;
+test;collection_request;dsdasf;+49;867875044;artazzs@yahoo.com;130;50352;Kaunas;"Partizanų g. 74-14";1;
