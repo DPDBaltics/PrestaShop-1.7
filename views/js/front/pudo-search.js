@@ -20,6 +20,10 @@ $(document).ready(function () {
         var street = $('input[name="dpd-street"]').val();
         updateParcelBlock(city, street);
     });
+
+    if ($('.dpd-checkout-pickup-container').is(':visible')) {
+        updateStreet();
+    }
 });
 
 function updateStreet() {
@@ -28,6 +32,21 @@ function updateStreet() {
         updateStreetSelect(city);
     }
 }
+
+$( document ).ajaxComplete(function( event, request, settings ) {
+    if (currentController !== 'order') {
+        return;
+    }
+    if (!settings.url) {
+        return;
+    }
+
+    var method = DPDgetUrlParam('action', settings.url)
+
+    if ( method === 'selectDeliveryOption') {
+        updateStreet();
+    }
+});
 
 function updateStreetSelect(city) {
     $.ajax(dpdHookAjaxUrl, {
@@ -139,4 +158,20 @@ function DPDdisplayMessage(parent, template) {
 function DPDremoveMessage(parent) {
     var $messageContainer = parent.find('.dpd-message-container');
     $messageContainer.html('');
+}
+
+function DPDgetUrlParam(sParam, string)
+{
+    var sPageURL = decodeURIComponent(string),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
 }

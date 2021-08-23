@@ -64,3 +64,4 @@
 - Shipment price bug fix when product customizations are used
 - Functionality to regenerate prestashop carriers in backoffice
 - Functionality to send email with parcel tracking links on shipment creation
+- Bugfix, when on first load parcel is not selected.
