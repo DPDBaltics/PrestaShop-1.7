@@ -61,6 +61,7 @@ services:
       - '@dpdbaltics'
       - '@Invertus\dpdBaltics\Factory\TabFactory'
       - '@Invertus\dpdBaltics\Service\Carrier\CreateCarrierService'
+      - '@Invertus\dpdBaltics\Repository\CarrierRepository'
 
   Invertus\dpdBaltics\ORM\EntityManager:
     class: 'Invertus\dpdBaltics\ORM\EntityManager'

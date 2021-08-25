@@ -205,4 +205,18 @@ class ProductRepository extends AbstractEntityRepository
             '`product_reference`= "' . pSQL($productReference) . '"'
         );
     }
+
+    /**
+     * @param $carrierId
+     * @return array|bool|object|null
+     */
+    public function findProductByProductReference($carrierReference)
+    {
+        $query = new DbQuery();
+        $query->select('*');
+        $query->from('dpd_product', 'dsc');
+        $query->where('dsc.product_reference = "'. pSQL($carrierReference).'"');
+
+        return $this->db->getRow($query) ?: null;
+    }
 }

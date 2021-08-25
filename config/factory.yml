@@ -27,3 +27,10 @@ services:
     class: 'Invertus\dpdBaltics\Factory\ShopFactory'
     arguments:
       - '@Invertus\dpdBaltics\Repository\ParcelShopRepository'
+
+  invertus-dpdbaltics-factory-parceltrackingurlfactory:
+    class: 'Invertus\dpdBaltics\Factory\ParcelTrackingUrlFactory'
+    arguments:
+      - '@Invertus\dpdBaltics\Provider\CurrentCountryProvider'
+
+

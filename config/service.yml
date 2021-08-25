@@ -5,6 +5,7 @@ services:
       - '@language'
       - '@Invertus\dpdBaltics\Builder\CarrierBuilder'
       - '@Invertus\dpdBaltics\Builder\CarrierImageBuilder'
+      - '@Invertus\dpdBaltics\Repository\ProductRepository'
 
   Invertus\dpdBaltics\Service\CarrierPhoneService:
     class: 'Invertus\dpdBaltics\Service\CarrierPhoneService'
@@ -147,6 +148,7 @@ services:
     arguments:
       - '@Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory'
       - '@Invertus\dpdBaltics\Repository\CodPaymentRepository'
+      - '@invertus-dpdbaltics-repository-parceltrackingemailhandler'
 
   Invertus\dpdBaltics\Service\API\LabelApiService:
     class: 'Invertus\dpdBaltics\Service\API\LabelApiService'
@@ -243,3 +245,16 @@ services:
       - '@Invertus\dpdBaltics\Repository\ProductRepository'
       - '@Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService'
       - '@Invertus\dpdBaltics\Service\Product\ProductService'
+
+  invertus-dpdbaltics-repository-parceltrackingemailhandler:
+    class: 'Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler'
+    arguments:
+      - '@invertus-dpdbaltics-factory-parceltrackingurlfactory'
+      - '@dpdbaltics'
+
+  Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler:
+    class: 'Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler'
+    arguments:
+      - '@Invertus\dpdBaltics\Install\Installer'
+
+
