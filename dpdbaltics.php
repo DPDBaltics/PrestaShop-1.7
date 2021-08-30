@@ -1112,9 +1112,9 @@ class DPDBaltics extends CarrierModule
     {
 
         $isReturnServiceEnabled = Configuration::get(Config::PARCEL_RETURN);
-//        if (!$isReturnServiceEnabled) {
-//            return;
-//        }
+        if (!$isReturnServiceEnabled) {
+            return;
+        }
 
         if (CountryUtility::isEstonia()) {
             return;
