@@ -75,8 +75,12 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
             case 'save':
                 $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
                 $this->returnResponse($this->saveShipment($order, $shipmentData, false));
+                break;
             case 'save_and_print':
+                $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
+                $this->saveShipment($order, $shipmentData, false);
                 $this->returnResponse($this->printLabelFromList($idOrder));
+                header("Refresh:0");
                 break;
             case 'searchPudoServices':
                 $cityName = Tools::getValue('city_name');
@@ -174,6 +178,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 
     private function printLabelFromList($orderId)
     {
+        /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
         return $shipmentService->formatLabelShipmentPrintResponse($orderId);
