@@ -180,10 +180,10 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
             ],
         ];
         /** @var PhonePrefixRepository $phonePrefixRepository */
-        $phonePrefixRepository = $this->module->getModuleContainer(PhonePrefixRepository::class);
+        $phonePrefixRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.phone_prefix_repository');
 
         /** @var PhoneInputBuilder $phoneInputBuilder */
-        $phoneInputBuilder = $this->module->getModuleContainer(PhoneInputBuilder::class);
+        $phoneInputBuilder = $this->module->getModuleContainer('invertus.dpdbaltics.builder.template.admin.phone_input_builder');
 
         $saveBtnClasses = 'btn btn-default pull-right js-col-request-save';
 
@@ -203,7 +203,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
         } elseif (Tools::getIsset('id_dpd_courier_request')) {
 
             /** @var CourierRequestRepository $courierRequestRepository */
-            $courierRequestRepository = $this->module->getModuleContainer(CourierRequestRepository::class);
+            $courierRequestRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.courier_request_repository');
             $phoneData = $courierRequestRepository->getPhonesAndCodes(
                 Tools::getValue('id_dpd_courier_request')
             );
@@ -294,7 +294,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
     private function renderPrefillSelect($prefix)
     {
         /** @var AddressRepository $addressRepository */
-        $addressRepository = $this->module->getModuleContainer(AddressRepository::class);
+        $addressRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.address_repository');
         $addresses = $addressRepository->findAllByShop();
 
         $this->context->smarty->assign('address_templates', $addresses);
@@ -311,8 +311,8 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
         if (Tools::isSubmit('submitAdddpd_courier_request')) {
             /** @var FormDataConverter $formDataConverter */
             /** @var CourierRequestValidator $courierRequestValidator */
-            $formDataConverter = $this->module->getModuleContainer(FormDataConverter::class);
-            $courierRequestValidator = $this->module->getModuleContainer(CourierRequestValidator::class);
+            $formDataConverter = $this->module->getModuleContainer('invertus.dpdbaltics.converter.form_data_converter');
+            $courierRequestValidator = $this->module->getModuleContainer('invertus.dpdbaltics.validate.courier_request.courier_request_validator');
             $data = Tools::getAllValues();
 
             /** @var CourierRequestData $courierRequestObj */
@@ -328,12 +328,12 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
             }
 
             /** @var CourierRequestService $courierRequestService */
-            $courierRequestService = $this->module->getModuleContainer(CourierRequestService::class);
+            $courierRequestService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.courier_request_service');
             try {
                 $response = $courierRequestService->createCourierRequest($courierRequestObj);
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
-                $exceptionService = $this->module->getModuleContainer(ExceptionService::class);
+                $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
                 $this->errors[] = $exceptionService->getErrorMessageForException(
                     $e,
                     $exceptionService->getAPIErrorMessages()

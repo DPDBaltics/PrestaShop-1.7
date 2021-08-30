@@ -66,7 +66,7 @@ class CarrierPhoneService
         $phone = '';
 
         /** @var OrderRepository $orderRepository */
-        $orderRepository = $this->module->getModuleContainer()->get(OrderRepository::class);
+        $orderRepository = $this->module->getModuleContainer()->get('invertus.dpdbaltics.repository.order_repository');
 
         $dpdOrderPhone = $orderRepository->getPhoneByIdCart($cart->id);
 

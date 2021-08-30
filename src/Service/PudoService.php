@@ -170,13 +170,13 @@ class PudoService
             $cart = new Cart($cartId);
         }
         /** @var CurrentCountryProvider $currentCountryProvider */
-        $currentCountryProvider = $this->module->getModuleContainer(CurrentCountryProvider::class);
+        $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
         $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
 
         /** @var ParcelShopService $parcelShopService */
         /** @var PudoService $pudoService */
-        $parcelShopService= $this->module->getModuleContainer(ParcelShopService::class);
-        $pudoService = $this->module->getModuleContainer(PudoService::class);
+        $parcelShopService= $this->module->getModuleContainer('invertus.dpdbaltics.service.parcel.parcel_shop_service');
+        $pudoService = $this->module->getModuleContainer('invertus.dpdbaltics.service.pudo_service');
 
         /** @var ParcelShop[] $parcelShops */
         $parcelShops = $parcelShopService->getParcelShopsByCountryAndCity($countryCode, $city);
@@ -185,7 +185,7 @@ class PudoService
         $pudoServices = $pudoService->formatPudoServicesWorkHours($pudoServices);
 
         /** @var PudoRepository $pudoRepo */
-        $pudoRepo = $this->module->getModuleContainer(PudoRepository::class);
+        $pudoRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.pudo_repository');
         $pudoId = $pudoRepo->getIdByCart($cartId);
         $selectedPudo = new DPDPudo($pudoId);
 

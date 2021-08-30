@@ -26,7 +26,7 @@ class AdminDPDBalticsAjaxController extends AbstractAdminController
     public function ajaxProcessImportZones()
     {
         /** @var ImportMainZone $importOnLoginService */
-        $importOnLoginService = $this->module->getModuleContainer()->get(ImportMainZone::class);
+        $importOnLoginService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.import.import_main_zone');
 
         $selectedCountry = Tools::getValue('country');
         switch ($selectedCountry) {
@@ -45,7 +45,7 @@ class AdminDPDBalticsAjaxController extends AbstractAdminController
     public function ajaxProcessImportParcels()
     {
         /** @var ParcelShopImport $parcelShopImport */
-        $parcelShopImport = $this->module->getModuleContainer(ParcelShopImport::class);
+        $parcelShopImport = $this->module->getModuleContainer('invertus.dpdbaltics.service.import.api.parcel_shop_import');
 
         $countryId = Tools::getValue('countryId');
         $countryIso = Country::getIsoById($countryId);

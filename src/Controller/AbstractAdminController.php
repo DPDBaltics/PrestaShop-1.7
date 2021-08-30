@@ -60,7 +60,7 @@ class AbstractAdminController extends ModuleAdminController
         }
 
         /** @var ImportExportURLProvider $importExportURLProvider */
-        $importExportURLProvider = $this->module->getModuleContainer(ImportExportURLProvider::class);
+        $importExportURLProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.import_export_url_provider');
         $importExportUrl = $importExportURLProvider->getImportExportUrl();
 
         $this->page_header_toolbar_btn['logs'] = [
@@ -86,7 +86,7 @@ class AbstractAdminController extends ModuleAdminController
     {
         if (Tools::isSubmit('resumeOnBoard')) {
             /** @var OnBoardStepActionService $onBoardActionService */
-            $onBoardActionService = $this->module->getModuleContainer(OnBoardStepActionService::class);
+            $onBoardActionService = $this->module->getModuleContainer('invertus.dpdbaltics.on_board.service.on_board_step_action_service');
             $onBoardActionService->enableOnBoarding();
             $onBoardActionService->resumeOnBoarding();
 
@@ -171,10 +171,10 @@ class AbstractAdminController extends ModuleAdminController
         }
 
         /** @var ParcelShopRepository $parcelShopRepo */
-        $parcelShopRepo = $this->module->getModuleContainer(ParcelShopRepository::class);
+        $parcelShopRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.parcel_shop_repository');
 
         /** @var CurrentCountryProvider $currentCountryProvider */
-        $currentCountryProvider = $this->module->getModuleContainer(CurrentCountryProvider::class);
+        $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
 
         $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
 

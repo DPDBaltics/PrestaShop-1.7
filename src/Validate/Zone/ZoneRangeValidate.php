@@ -161,7 +161,7 @@ class ZoneRangeValidate
         }
 
         /** @var DPDZoneRepository $zoneRepository */
-        $zoneRepository = $this->module->getModuleContainer()->get(DPDZoneRepository::class);
+        $zoneRepository = $this->module->getModuleContainer()->get('invertus.dpdbaltics.repository.dpdzone_repository');
         $foundZoneId = $zoneRepository->getByName($zoneName, $exclude);
 
         if ($foundZoneId) {

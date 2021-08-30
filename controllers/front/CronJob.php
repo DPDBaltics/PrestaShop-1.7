@@ -20,9 +20,9 @@ class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
         switch ($action) {
             case 'updateParcelShops':
                 /** @var ParcelShopImport $parcelShopImport */
-                $parcelShopImport = $this->module->getModuleContainer(ParcelShopImport::class);
+                $parcelShopImport = $this->module->getModuleContainer('invertus.dpdbaltics.service.import.api.parcel_shop_import');
                 /** @var  ZoneRangeProvider $zoneRangeProvider */
-                $zoneRangeProvider = $this->module->getModuleContainer(ZoneRangeProvider::class);
+                $zoneRangeProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.zone_range_provider');
                 $countriesInZoneRange = $zoneRangeProvider->getAllZoneRangesCountryIsoCodes();
 
                 if ($countriesInZoneRange) {

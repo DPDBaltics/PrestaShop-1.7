@@ -83,34 +83,34 @@ class ExportProvider
         switch ($exportOption) {
             case Config::IMPORT_EXPORT_OPTION_ZONES:
                 /** @var ZoneRepository $zonesRepo */
-                $zonesRepo = $this->module->getModuleContainer(ZoneRepository::class);
+                $zonesRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.zone_repository');
                 $zones = $zonesRepo->findAllZonesIds();
                 if (empty($zones)) {
                     $this->warnings[] = $this->module->l('No zones found for export', self::FILE_NAME);
                     return '';
                 }
                 /** @var ZoneExport $exportable */
-                $exportable = $this->module->getModuleContainer(ZoneExport::class);
+                $exportable = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.zone_export');
                 $exportable->setZonesToExport($zones);
                 return $exportable;
             case Config::IMPORT_EXPORT_OPTION_SETTINGS:
                 /** @var SettingsExport $exportable */
-                $exportable = $this->module->getModuleContainer(SettingsExport::class);
+                $exportable = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.settings_export');
                 return $exportable;
                 break;
             case Config::IMPORT_EXPORT_OPTION_PRODUCTS:
                 /** @var ProductExport $exportable */
-                $exportable = $this->module->getModuleContainer(ProductExport::class);
+                $exportable = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.product_export');
                 return $exportable;
                 break;
             case Config::IMPORT_EXPORT_OPTION_PRICE_RULES:
                 /** @var PriceRulesExport $exportable */
-                $exportable = $this->module->getModuleContainer(PriceRulesExport::class);
+                $exportable = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.price_rules_export');
                 return $exportable;
                 break;
             case Config::IMPORT_EXPORT_OPTION_ADDRESS_TEMPLATES:
                 /** @var AddressTemplatesExport $exportable */
-                $exportable = $this->module->getModuleContainer(AddressTemplatesExport::class);
+                $exportable = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.address_templates_export');
                 return $exportable;
                 break;
             default:

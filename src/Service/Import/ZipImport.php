@@ -309,7 +309,7 @@ class ZipImport
 
         try {
             /** @var ImportProvider $importProvider */
-            $importProvider = $this->module->getModuleContainer(ImportProvider::class);
+            $importProvider = $this->module->getModuleContainer('invertus.dpdbaltics.service.import.import_provider');
             if (Configuration::get(Config::IMPORT_DELETE_OLD_DATA)) {
                 $importProvider->deleteBeforeImport();
             }
@@ -356,19 +356,19 @@ class ZipImport
             switch ($importOption) {
                 case Config::IMPORT_EXPORT_OPTION_ZONES:
                     /** @var ZoneImport $importable */
-                    return $this->module->getModuleContainer(ZoneImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.zone_import');
                 case Config::IMPORT_EXPORT_OPTION_SETTINGS:
                     /** @var SettingsImport $importable */
-                    return $this->module->getModuleContainer(SettingsImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.settings_import');
                 case Config::IMPORT_EXPORT_OPTION_PRICE_RULES:
                     /** @var PriceRulesImport $importable */
-                    return $this->module->getModuleContainer(PriceRulesImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.price_rules_import');
                 case Config::IMPORT_EXPORT_OPTION_ADDRESS_TEMPLATES:
                     /** @var AddressTemplatesImport $importable */
-                    return $this->module->getModuleContainer(AddressTemplatesImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.address_templates_import');
                 case Config::IMPORT_EXPORT_OPTION_PRODUCTS:
                     /** @var ProductImport $importable */
-                    return $this->module->getModuleContainer(ProductImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.product_import');
                 default:
                     $this->errors[] = $this->module->l('Invalid export option selected');
             }
