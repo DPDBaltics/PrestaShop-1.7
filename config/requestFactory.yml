@@ -1,39 +1,39 @@
 services:
-  Invertus\dpdBalticsApi\Factory\APIRequest\ClosingManifestFactory:
+  invertus.dpdbaltics_api.factory.apirequest.closing_manifest_factory:
     class: 'Invertus\dpdBalticsApi\Factory\APIRequest\ClosingManifestFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Logger\Logger'
-      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+      - '@invertus.dpdbaltics.logger.logger'
+      - '@invertus.dpdbaltics.factory.apiparams_factory'
 
-  Invertus\dpdBalticsApi\Factory\APIRequest\CollectionRequestFactory:
+  invertus.dpdbaltics_api.factory.apirequest.collection_request_factory:
     class: 'Invertus\dpdBalticsApi\Factory\APIRequest\CollectionRequestFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Logger\Logger'
-      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+      - '@invertus.dpdbaltics.logger.logger'
+      - '@invertus.dpdbaltics.factory.apiparams_factory'
 
 
-  Invertus\dpdBalticsApi\Factory\APIRequest\CourierRequestFactory:
+  invertus.dpdbaltics_api.factory.apirequest.courier_request_factory:
     class: 'Invertus\dpdBalticsApi\Factory\APIRequest\CourierRequestFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Logger\Logger'
-      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+      - '@invertus.dpdbaltics.logger.logger'
+      - '@invertus.dpdbaltics.factory.apiparams_factory'
 
 
-  Invertus\dpdBalticsApi\Factory\APIRequest\ParcelPrintFactory:
+  invertus.dpdbaltics_api.factory.apirequest.parcel_print_factory:
     class: 'Invertus\dpdBalticsApi\Factory\APIRequest\ParcelPrintFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Logger\Logger'
-      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+      - '@invertus.dpdbaltics.logger.logger'
+      - '@invertus.dpdbaltics.factory.apiparams_factory'
 
 
-  Invertus\dpdBalticsApi\Factory\APIRequest\ParcelShopSearchFactory:
+  invertus.dpdbaltics_api.factory.apirequest.parcel_shop_search_factory:
     class: 'Invertus\dpdBalticsApi\Factory\APIRequest\ParcelShopSearchFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Logger\Logger'
-      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+      - '@invertus.dpdbaltics.logger.logger'
+      - '@invertus.dpdbaltics.factory.apiparams_factory'
 
-  Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory:
+  invertus.dpdbaltics_api.factory.apirequest.shipment_creation_factory:
     class: 'Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Logger\Logger'
-      - '@Invertus\dpdBaltics\Factory\APIParamsFactory'
+      - '@invertus.dpdbaltics.logger.logger'
+      - '@invertus.dpdbaltics.factory.apiparams_factory'

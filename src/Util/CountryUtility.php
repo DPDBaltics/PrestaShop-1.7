@@ -14,7 +14,7 @@ class CountryUtility
         $module = \Module::getInstanceByName('dpdbaltics');
 
         /** @var CurrentCountryProvider $countryProvider */
-        $countryProvider = $module->getModuleContainer(CurrentCountryProvider::class);
+        $countryProvider = $module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
 
         return $countryProvider->getCurrentCountryIsoCode() === Config::ESTONIA_ISO_CODE;
     }

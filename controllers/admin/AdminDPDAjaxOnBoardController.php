@@ -65,7 +65,7 @@ class AdminDPDAjaxOnBoardController extends AbstractAdminController
         }
 
         /** @var OnBoardService $onBoardService */
-        $onBoardService = $this->module->getModuleContainer(OnBoardService::class);
+        $onBoardService = $this->module->getModuleContainer('invertus.dpdbaltics.on_board.service.on_board_service');
         $onBoardTemplateData = $onBoardService->makeStepActionWithTemplateReturn(true);
         $currentOnBoardStep = Configuration::get(Config::ON_BOARD_STEP);
 
@@ -81,7 +81,7 @@ class AdminDPDAjaxOnBoardController extends AbstractAdminController
     private function stopOnBoard()
     {
         /** @var OnBoardStepActionService $stepActionService */
-        $stepActionService = $this->module->getModuleContainer(OnBoardStepActionService::class);
+        $stepActionService = $this->module->getModuleContainer('invertus.dpdbaltics.on_board.service.on_board_step_action_service');
         $disableOnBoardResponse = $stepActionService->disableOnBoarding();
 
         if (Tools::getIsset('pauseOnBoard') && Tools::getValue('pauseOnBoard')) {

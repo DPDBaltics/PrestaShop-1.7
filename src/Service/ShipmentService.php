@@ -146,9 +146,9 @@ class ShipmentService
     public function createShipmentFromOrder(Order $order)
     {
         /** @var ShipmentRepository $shipmentRepository */
-        $shipmentRepository = $this->module->getModuleContainer(ShipmentRepository::class);
+        $shipmentRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.shipment_repository');
         /** @var ProductRepository $productRepository */
-        $productRepository = $this->module->getModuleContainer(ProductRepository::class);
+        $productRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
 
         if ($shipmentRepository->hasAnyShipments($order->id)) {
             return true;

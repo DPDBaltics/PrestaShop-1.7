@@ -36,7 +36,7 @@ class OrderService
         $customerAddresses = $customer->getAddresses($idLang);
 
         /** @var OrderRepository $orderRepository */
-        $orderRepository = $this->module->getModuleContainer(OrderRepository::class);
+        $orderRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.order_repository');
         $dpdOrderPhone = $orderRepository->getPhoneByIdCart($order->id_cart);
 
         $details['customer'] = (array) $customer;

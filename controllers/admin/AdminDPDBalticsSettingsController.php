@@ -34,7 +34,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
     protected function initOptions()
     {
         /** @var InfoBlockRender $infoBlockRender */
-        $infoBlockRender = $this->module->getModuleContainer()->get(InfoBlockRender::class);
+        $infoBlockRender = $this->module->getModuleContainer()->get('invertus.dpdbaltics.templating.info_block_render');
         $infoBlockText = $this->module->l('Here you can restart DPD on-board feature.');
         $blockRegenerateCarrierText = $this->module->l('Here you can regenerate prestashop carriers if they were accidentally deleted in back office or carriers are not visible in front end of the shop');
 
@@ -174,9 +174,9 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
     {
         if (Tools::isSubmit('submitOptionsconfiguration')) {
             /** @var ProductService $productService */
-            $productService = $this->module->getModuleContainer()->get(ProductService::class);
+            $productService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
             /** @var CarrierUpdateHandler $carrierService */
-            $carrierService = $this->module->getModuleContainer()->get(CarrierUpdateHandler::class);
+            $carrierService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.carrier.carrier_update_handler');
 
             $newCountry = Tools::getValue(Config::WEB_SERVICE_COUNTRY);
             Configuration::updateValue(Config::DPD_PARCEL_IMPORT_COUNTRY_SELECTOR, Country::getByIso($newCountry));
@@ -195,9 +195,9 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
 
         if (Tools::isSubmit('submitRegenerateCarriers')) {
             /** @var  PrestashopCarrierRegenerationHandler $regenerationHandler */
-            $regenerationHandler = $this->module->getModuleContainer()->get(PrestashopCarrierRegenerationHandler::class);
+            $regenerationHandler = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.carrier.prestashop_carrier_regeneration_handler');
             /** @var  Invertus\dpdBaltics\Logger\Logger $logger */
-            $logger = $this->module->getModuleContainer()->get(Invertus\dpdBaltics\Logger\Logger::class);
+            $logger = $this->module->getModuleContainer()->get('invertus.dpdbaltics.logger.logger');
             try {
                 $regenerationHandler->handle();
                 $this->confirmations[] = $this->l('Prestashop carriers regenerated successfully');
@@ -231,7 +231,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         /**
          * @var LogsService $logService
          */
-        $logService = $this->module->getModuleContainer(LogsService::class);
+        $logService = $this->module->getModuleContainer('invertus.dpdbaltics.service.logs_service');
         if (!$logService->downloadLogsCsv()) {
             $this->errors[] = $this->l('No logs to download.');
         }

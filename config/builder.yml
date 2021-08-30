@@ -1,52 +1,52 @@
 services:
-  Invertus\dpdBaltics\Builder\Template\Admin\InfoBlockBuilder:
+  invertus.dpdbaltics.builder.template.admin.info_block_builder:
     class: 'Invertus\dpdBaltics\Builder\Template\Admin\InfoBlockBuilder'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Builder\Template\Admin\WarningBlockBuilder:
+  invertus.dpdbaltics.builder.template.admin.warning_block_builder:
     class: 'Invertus\dpdBaltics\Builder\Template\Admin\WarningBlockBuilder'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Builder\Template\Admin\ProductBlockBuilder:
+  invertus.dpdbaltics.builder.template.admin.product_block_builder:
     class: 'Invertus\dpdBaltics\Builder\Template\Admin\ProductBlockBuilder'
     arguments:
       - '@dpdbaltics'
       - '@smarty'
       - '@language'
-      - '@Invertus\dpdBaltics\Repository\ProductRepository'
-      - '@Invertus\dpdBaltics\Repository\ProductZoneRepository'
-      - '@Invertus\dpdBaltics\Repository\ProductShopRepository'
-      - '@Invertus\dpdBaltics\Service\LanguageService'
-      - '@Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder'
+      - '@invertus.dpdbaltics.repository.product_repository'
+      - '@invertus.dpdbaltics.repository.product_zone_repository'
+      - '@invertus.dpdbaltics.repository.product_shop_repository'
+      - '@invertus.dpdbaltics.service.language_service'
+      - '@invertus.dpdbaltics.builder.template.search_box_builder'
 
-  Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder:
+  invertus.dpdbaltics.builder.template.front.carrier_options_builder:
     class: 'Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder'
     arguments:
       - '@context'
-      - '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
-      - '@Invertus\dpdBaltics\Provider\ProductShippingCostProvider'
+      - '@invertus.dpdbaltics.repository.price_rule_repository'
+      - '@invertus.dpdbaltics.provider.product_shipping_cost_provider'
       - '@=service("dpdbaltics").getLocalPath()'
-      - '@Invertus\dpdBaltics\Repository\CarrierRepository'
+      - '@invertus.dpdbaltics.repository.carrier_repository'
 
-  Invertus\dpdBaltics\Builder\CarrierBuilder:
+  invertus.dpdbaltics.builder.carrier_builder:
     class: 'Invertus\dpdBaltics\Builder\CarrierBuilder'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Builder\CarrierImageBuilder:
+  invertus.dpdbaltics.builder.carrier_image_builder:
     class: 'Invertus\dpdBaltics\Builder\CarrierImageBuilder'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder:
+  invertus.dpdbaltics.builder.template.search_box_builder:
     class: 'Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder'
     arguments:
       - '@dpdbaltics'
       - '@smarty'
 
-  Invertus\dpdBaltics\Builder\Template\Admin\PhoneInputBuilder:
+  invertus.dpdbaltics.builder.template.admin.phone_input_builder:
     class: 'Invertus\dpdBaltics\Builder\Template\Admin\PhoneInputBuilder'
     arguments:
       - '@dpdbaltics'
