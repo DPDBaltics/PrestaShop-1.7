@@ -77,7 +77,7 @@ class DPDBaltics extends CarrierModule
     const ADMIN_COURIER_REQUEST_CONTROLLER = 'AdminDPDBalticsCourierRequest';
     const ADMIN_AJAX_ON_BOARD_CONTROLLER = 'AdminDPDAjaxOnBoard';
 
-    const DISABLE_CACHE = true;
+    const DISABLE_CACHE = false;
 
     /**
      * Symfony DI Container
