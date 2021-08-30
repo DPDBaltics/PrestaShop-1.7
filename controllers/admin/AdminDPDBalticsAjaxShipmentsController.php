@@ -80,7 +80,6 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
                 $this->saveShipment($order, $shipmentData, false);
                 $this->returnResponse($this->printLabelFromList($idOrder));
-                header("Refresh:0");
                 break;
             case 'searchPudoServices':
                 $cityName = Tools::getValue('city_name');
