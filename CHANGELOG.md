@@ -58,10 +58,11 @@
 - Vendor zip updated, port removed from api
 - Map fix, do not load map script when off
 - Bugfix map does not load when address is changed
-## [3.2.6] - 2021-08-16
+## [3.2.7] - 2021-08-30
 ### Changed
 - Import parcels function changed on cron parcel update, take countries only from zone range functionality added.
 - Shipment price bug fix when product customizations are used
 - Functionality to regenerate prestashop carriers in backoffice
 - Functionality to send email with parcel tracking links on shipment creation
 - Bugfix, when on first load parcel is not selected.
+- Bugfix, when carrier cannot be changed in back office order view and label is not printed
