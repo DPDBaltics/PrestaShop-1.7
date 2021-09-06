@@ -96,7 +96,8 @@ services:
     - '@invertus.dpdbaltics.service.pudo_service'
     - '@invertus.dpdbaltics.repository.order_delivery_time_repository'
     - '@invertus.dpdbaltics.factory.shipment_data_factory'
-
+    - '@invertus.dpdbaltics.service.order_service'
+    - '@invertus.dpdbaltics.validate.carrier.carrier_update_validate'
 
   invertus.dpdbaltics.service.label.label_printing_service:
     class: 'Invertus\dpdBaltics\Service\Label\LabelPrintingService'

@@ -89,6 +89,7 @@ class ShipmentDataFactory
 
         /** Pudo */
         $dpdProduct = new DPDProduct($shipment->id_service);
+
         $shipmentData->setIsPudo($dpdProduct->is_pudo);
         if ($dpdProduct->is_pudo) {
             $carrier = new Carrier($order->id_carrier);

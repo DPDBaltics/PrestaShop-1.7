@@ -11,6 +11,7 @@ use DPDAddressTemplate;
 use DPDBaltics;
 use DPDOrderDeliveryTime;
 use DPDParcel;
+use DPDProduct;
 use DPDShipment;
 use Exception;
 use Invertus\dpdBaltics\Config\Config;
@@ -25,6 +26,7 @@ use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Invertus\dpdBaltics\Service\API\ShipmentApiService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
+use Invertus\dpdBaltics\Validate\Carrier\CarrierUpdateValidate;
 use Invertus\dpdBaltics\Validate\ShipmentData\Exception\InvalidShipmentDataField;
 use Invertus\dpdBaltics\Validate\ShipmentData\ShipmentDataValidator;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ShipmentCreationRequest;
@@ -91,6 +93,14 @@ class ShipmentService
      * @var ShipmentDataFactory
      */
     private $shipmentDataFactory;
+    /**
+     * @var OrderService
+     */
+    private $orderService;
+    /**
+     * @var CarrierUpdateValidate
+     */
+    private $carrierUpdateValidate;
 
     public function __construct(
         DPDBaltics $module,
@@ -103,7 +113,9 @@ class ShipmentService
         LabelPrintingService $labelPrintingService,
         PudoService $pudoService,
         OrderDeliveryTimeRepository $orderDeliveryTimeRepository,
-        ShipmentDataFactory $shipmentDataFactory
+        ShipmentDataFactory $shipmentDataFactory,
+        OrderService $orderService,
+        CarrierUpdateValidate $carrierUpdateValidate
     ) {
         $this->module = $module;
         $this->language = $language;
@@ -116,6 +128,8 @@ class ShipmentService
         $this->pudoService = $pudoService;
         $this->orderDeliveryTimeRepository = $orderDeliveryTimeRepository;
         $this->shipmentDataFactory = $shipmentDataFactory;
+        $this->orderService = $orderService;
+        $this->carrierUpdateValidate = $carrierUpdateValidate;
     }
 
     public function createShipment(Order $order, $idProduct, $isTestMode, $numOfParcels, $weight, $goodsPrice)
@@ -271,13 +285,16 @@ class ShipmentService
         }
         return round($product['total_wt'], 2);
     }
+
     /**
      * @param Order $order
      * @param ShipmentData $shipmentData
      * @param false $print
+     *
      * @return array
      * @throws \PrestaShopDatabaseException
-     * @throws \PrestaShopException
+     * @throws \PrestaShopException*@throws \Invertus\dpdBaltics\Exception\DpdCarrierException
+     * @throws \Invertus\dpdBaltics\Exception\DpdCarrierException
      */
     public function saveShipment(Order $order, ShipmentData $shipmentData, $print = false)
     {
@@ -345,6 +362,15 @@ class ShipmentService
             $deliveryTime = new DPDOrderDeliveryTime($deliveryTimeId);
             $deliveryTime->delivery_time = $shipmentData->getDeliveryTime();
             $deliveryTime->update();
+        }
+
+        if ($shipmentData->getProduct()) {
+            $product = new DPDProduct($shipmentData->getProduct());
+            $productCarrier = Carrier::getCarrierByReference($product->id_reference);
+
+            if (!$this->carrierUpdateValidate->isOrderCarrierMatchesDpdProductCarrier($order->id_carrier, $productCarrier->id)) {
+                $this->orderService->updateOrderCarrier($order, $productCarrier->id);
+            }
         }
 
         if ($print) {

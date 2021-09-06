@@ -7,7 +7,7 @@ use Invertus\dpdBaltics\ConsoleCommand\UpdateParcelShopsCommand;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Grid\LinkRowActionCustom;
 use Invertus\dpdBaltics\Grid\SubmitBulkActionCustom;
-use Invertus\dpdBaltics\Install\Installer;
+use invertus\dpdbaltics\install\installer;
 use Invertus\dpdBaltics\Logger\Logger;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardService;
 use Invertus\dpdBaltics\Repository\AddressTemplateRepository;
@@ -77,7 +77,7 @@ class DPDBaltics extends CarrierModule
     const ADMIN_COURIER_REQUEST_CONTROLLER = 'AdminDPDBalticsCourierRequest';
     const ADMIN_AJAX_ON_BOARD_CONTROLLER = 'AdminDPDAjaxOnBoard';
 
-    const DISABLE_CACHE = true;
+    const DISABLE_CACHE = false;
 
     /**
      * Symfony DI Container
@@ -98,7 +98,7 @@ class DPDBaltics extends CarrierModule
         $this->displayName = $this->l('DPDBaltics');
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
-        $this->version = '3.2.6';
+        $this->version = '3.2.7';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -1110,10 +1110,12 @@ class DPDBaltics extends CarrierModule
 
     public function hookDisplayOrderDetail($params)
     {
+
         $isReturnServiceEnabled = Configuration::get(Config::PARCEL_RETURN);
         if (!$isReturnServiceEnabled) {
             return;
         }
+
         if (CountryUtility::isEstonia()) {
             return;
         }

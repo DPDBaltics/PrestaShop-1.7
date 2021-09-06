@@ -18,14 +18,12 @@
             {/if}
         </div>
         <div class="panel-body">
-            <input name="id_pudo" hidden class="hidden d-none form-control">
             <input name="is_pudo" hidden class="hidden d-none form-control" value="{$is_pudo}">
             {include file='../../admin/partials/pudo-info.tpl'}
             <div class="col-lg-12 hidden search-container">
                 <div class="dpd-pudo-container">
                     {include file='../../admin/partials/dpd-message.tpl' messageType='error'}
                     {include file='../../admin/partials/pudo-search-block.tpl'}
-                    <div class="clearfix">&nbsp;</div>
                     <div class="clearfix">&nbsp;</div>
                     <div class="dpd-services-block"></div>
                 </div>

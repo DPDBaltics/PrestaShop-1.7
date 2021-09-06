@@ -14,8 +14,10 @@ namespace Invertus\dpdBaltics\Validate\Carrier;
 
 use Configuration;
 use DPDBaltics;
+use DPDProduct;
 use Invertus\dpdBaltics\Exception\ProductUpdateException;
 use Language;
+use Square\Models\Order;
 use Validate;
 
 class CarrierUpdateValidate
@@ -56,4 +58,10 @@ class CarrierUpdateValidate
             );
         }
     }
+
+    public function isOrderCarrierMatchesDpdProductCarrier($orderCarrierId, $productCarrierId)
+    {
+        return (int) $orderCarrierId === (int) $productCarrierId;
+    }
 }
+
