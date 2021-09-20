@@ -288,7 +288,7 @@ class ShipmentService
             return $currentPrice;
         }
 
-        return $currentPrice -= $order->total_discounts;
+        return $currentPrice - $order->total_discounts;
     }
 
     private function calculateProductsPrice($product)
