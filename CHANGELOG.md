@@ -66,3 +66,4 @@
 - Functionality to send email with parcel tracking links on shipment creation
 - Bugfix, when on first load parcel is not selected.
 - Bugfix, when carrier cannot be changed in back office order view and label is not printed
+- Bugfix, when order is using voucher, recalculate parcel total to match order total(shipping discount excluded)
