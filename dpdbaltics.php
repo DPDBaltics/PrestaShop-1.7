@@ -1295,13 +1295,13 @@ class DPDBaltics extends CarrierModule
         if (Tools::isSubmit('print_label')) {
             $idShipment = Tools::getValue('id_dpd_shipment');
             $this->printLabel($idShipment);
-            return;
+            exit;
         }
 
         if (Tools::isSubmit('print_multiple_labels')) {
             $shipmentIds = json_decode(Tools::getValue('shipment_ids'));
             $this->printMultipleLabels($shipmentIds);
-            return;
+            exit;
         }
     }
 }
