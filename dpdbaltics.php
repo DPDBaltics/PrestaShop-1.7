@@ -704,7 +704,8 @@ class DPDBaltics extends CarrierModule
             Media::addJsDef(
                 [
                     'shipment' => $shipment,
-                    'id_order' => $orderId
+                    'id_order' => $orderId,
+                    'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download'
                 ]
             );
         }

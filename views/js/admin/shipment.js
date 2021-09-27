@@ -95,13 +95,18 @@ $(document).ready(function () {
      */
     function processSavingEvent(event) {
         event.preventDefault();
-
+        //TODO check if download is used, if used do not open new window, other case, open blank
         var $clickedBtn = $(this);
         var action = $clickedBtn.data('action');
         var data = $(this).closest('form').serializeArray();
+        var labelWindow;
         addButtonLoadingAnimation();
+        if (!is_label_download_option) {
+            labelWindow = window.open('', '_blank');
+        }
         $.ajax(dpdAjaxShipmentsUrl, {
             method: 'POST',
+            async: false,
             data: {
                 id_order: id_order,
                 id_address_delivery: parseInt($('.js-recipient-address-select option:selected').val()),
@@ -147,7 +152,12 @@ $(document).ready(function () {
                             '&id_dpd_shipment=' + encodeURIComponent(response.id_dpd_shipment);
 
                         disableInputs(false);
-                        window.open(location, '_blank');
+                        if (!is_label_download_option) {
+                            labelWindow.location.href = location;
+                        } else {
+                            window.location.href = location;
+                        }
+
                         return;
                     }
 
@@ -229,6 +239,10 @@ $(document).ready(function () {
         var shipmentId = $clickedBtn.data('shipment-id');
         var labelFormat = $('select[name="label_format"]').val();
         var labelPosition = $('input[name="label_position"]').val();
+        var labelWindow;
+        if (!is_label_download_option) {
+            labelWindow = window.open('', '_blank');
+        }
 
         $.ajax(dpdAjaxShipmentsUrl, {
             method: 'POST',
@@ -252,7 +266,12 @@ $(document).ready(function () {
                         '&id_dpd_shipment=' + encodeURIComponent(shipmentId);
 
                     disableInputs(false);
-                    window.open(location);
+
+                    if (!is_label_download_option) {
+                        labelWindow.location.href = location;
+                    } else {
+                        window.location.href = location;
+                    }
 
                 } else {
                     DPDshowError(response.message);
