@@ -106,7 +106,6 @@ $(document).ready(function () {
         }
         $.ajax(dpdAjaxShipmentsUrl, {
             method: 'POST',
-            async: false,
             data: {
                 id_order: id_order,
                 id_address_delivery: parseInt($('.js-recipient-address-select option:selected').val()),
