@@ -49,8 +49,7 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
             $isAjaxParameter &&
             $isTokenValid &&
             $isParent &&
-            $isAjaxRequest &&
-            $isCustomer;
+            $isAjaxRequest;
 
         if (!$isAccessGranted) {
             $error = $this->module->l('Unauthorized access', self::FILENAME);

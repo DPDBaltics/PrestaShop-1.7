@@ -171,21 +171,10 @@ class DPDBaltics extends CarrierModule
 
     public function hookActionFrontControllerSetMedia()
     {
+        $applicableControlelrs = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
         $currentController = $this->context->controller->php_self !== null ?
             $this->context->controller->php_self :
             Tools::getValue('controller');
-
-        if ('order' === $currentController) {
-            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
-            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
-            $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/order-input.css');
-            /** @var PaymentService $paymentService */
-            $paymentService = $this->getModuleContainer('invertus.dpdbaltics.service.payment.payment_service');
-
-            $cart = Context::getContext()->cart;
-            $paymentService->filterPaymentMethods($cart);
-            $paymentService->filterPaymentMethodsByCod($cart);
-        }
 
         if ('product' === $currentController) {
             $this->context->controller->registerStylesheet(
@@ -198,7 +187,22 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if (in_array($currentController, ['order', 'order-opc', 'ShipmentReturn'])) {
+        if ($currentController === 'supercheckout') {
+            $this->context->controller->addJqueryPlugin('chosen');
+        }
+
+        if (in_array($currentController, $applicableControlelrs, true)) {
+
+            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
+            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
+            $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/order-input.css');
+            /** @var PaymentService $paymentService */
+            $paymentService = $this->getModuleContainer('invertus.dpdbaltics.service.payment.payment_service');
+
+            $cart = Context::getContext()->cart;
+            $paymentService->filterPaymentMethods($cart);
+            $paymentService->filterPaymentMethodsByCod($cart);
+
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
             Media::addJsDef([

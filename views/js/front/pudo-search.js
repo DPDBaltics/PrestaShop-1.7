@@ -1,3 +1,5 @@
+var ajaxTriggered = false;
+
 $(document).ready(function () {
     if ($('input[name="saved_pudo_id"]').val() === undefined) {
         updateStreet();
@@ -34,7 +36,10 @@ function updateStreet() {
 }
 
 $( document ).ajaxComplete(function( event, request, settings ) {
-    if (currentController !== 'order') {
+
+    var applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
+    if (!$.inArray(currentController, applicableControllers)) {
+
         return;
     }
     if (!settings.url) {
@@ -42,13 +47,28 @@ $( document ).ajaxComplete(function( event, request, settings ) {
     }
 
     var method = DPDgetUrlParam('action', settings.url)
-
+    if (!method) {
+        method = DPDgetUrlParam('module', settings.url);
+    }
     if ( method === 'selectDeliveryOption') {
-        updateStreet();
+    }
+
+    if (method === 'supercheckout') {
+        if (ajaxTriggered === false) {
+            updateStreet();
+            ajaxTriggered = true;
+        }
     }
 });
 
 function updateStreetSelect(city) {
+
+    var $this = $(this);
+    var $pudoId = $this.data('id');
+    var $container = $this.closest('.dpd-pudo-container');
+    var $submitInput = $container.find('input[name="dpd-pudo-id"]');
+    var $idReference = $container.data('id');
+
     $.ajax(dpdHookAjaxUrl, {
         type: 'POST',
         data: {
