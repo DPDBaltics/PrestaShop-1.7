@@ -73,13 +73,9 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $this->returnResponse($this->printLabel($shipmentId, $labelFormat, $labelPosition));
                 break;
             case 'save':
-                $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
-                $this->returnResponse($this->saveShipment($order, $shipmentData, false));
-                break;
             case 'save_and_print':
                 $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
-                $this->saveShipment($order, $shipmentData, false);
-                $this->returnResponse($this->printLabelFromList($idOrder));
+                $this->returnResponse($this->saveShipment($order, $shipmentData, $action == 'save_and_print'));
                 break;
             case 'searchPudoServices':
                 $cityName = Tools::getValue('city_name');
