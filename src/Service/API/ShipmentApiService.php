@@ -70,11 +70,11 @@ class ShipmentApiService
         if ((!$postCode || !$firstName || !$address->city || !Country::getIsoById($address->id_country)) && $shipmentData->isPudo()) {
             $parcel = $this->parcelShopService->getParcelShopByShopId($shipmentData->getSelectedPudoId());
             $selectedParcel = is_array($parcel) ? reset($parcel) : $parcel;
-            $firstName = $selectedParcel['company'];
-            $postCode = $selectedParcel['p_code'];
-            $address->address1 = $selectedParcel['street'];
-            $address->city = $selectedParcel['city'];
-            $country = $selectedParcel['country'];
+            $firstName = $selectedParcel->getCompany();
+            $postCode = $selectedParcel->getPCode();
+            $address->address1 = $selectedParcel->getStreet();
+            $address->city = $selectedParcel->getCity();
+            $country = $selectedParcel->getCountry();
         }
 
         $shipmentCreationRequest = new ShipmentCreationRequest(
