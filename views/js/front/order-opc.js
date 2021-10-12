@@ -54,32 +54,6 @@ function saveSelectedPhoneNumber(phoneNumber, phoneArea) {
     });
 }
 
-function isPudoValid() {
-
-    var pudoContainer = $('.dpd-pudo-container');
-    if (!pudoContainer.is(':visible')) {
-        return true;
-    }
-    var pudoSelect = pudoContainer.find('.dpd-pudo-select');
-    //If map and map parcel is selected
-    if (( pudoSelect && pudoSelect.hasClass('button-medium'))
-        && isPudoPointSelected ) {
-        return true;
-    }
-
-    return false;
-}
-
-function uncheckSelectedPudoOnReload() {
-    $('.dpd-pudo-container').find('.dpd-pudo-select').each(function () {
-            $(this)
-                .removeClass('button-medium')
-                .addClass('button-small')
-                .attr('disabled', false);
-            $(this).find('span').text($(this).data('select'));
-        });
-}
-
 function DPDdisplayMessage(parent, template) {
     var $messageContainer = parent.find('.dpd-message-container');
     console.log(template);

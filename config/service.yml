@@ -267,7 +267,3 @@ services:
     arguments:
       - '@invertus.dpdbaltics.factory.parcel_tracking_url_factory'
       - '@dpdbaltics'
-
-
-
-

@@ -72,3 +72,6 @@
 - Render Shipping price even though customer is not logged in
 - Allow select pudo points if customer is missing
 - Render select with search(jquery choosen lib) on delivery method select(supercheckout applicable)
+- Setup logic to save phone number dynamically
+- Validations added for phone number
+- Init logic to handle parcel without address
