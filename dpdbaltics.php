@@ -171,10 +171,10 @@ class DPDBaltics extends CarrierModule
 
     public function hookActionFrontControllerSetMedia()
     {
+        //TODO fillup this array when more modules are compatible with OPC
+        $onePageCheckoutControllers = ['supercheckout'];
         $applicableControlelrs = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
-        $currentController = $this->context->controller->php_self !== null ?
-            $this->context->controller->php_self :
-            Tools::getValue('controller');
+        $currentController = $this->context->controller->php_self ?? Tools::getValue('controller');
 
         if ('product' === $currentController) {
             $this->context->controller->registerStylesheet(
@@ -187,8 +187,18 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if ($currentController === 'supercheckout') {
+        if (in_array($currentController, $onePageCheckoutControllers, true)) {
             $this->context->controller->addJqueryPlugin('chosen');
+
+            $this->context->controller->registerJavascript(
+                'dpdbaltics-opc',
+                'modules/' . $this->name . '/views/js/front/order-opc.js',
+                [
+                    'position' => 'bottom',
+                    'priority' => 130
+                ]
+            );
+
         }
 
         if (in_array($currentController, $applicableControlelrs, true)) {

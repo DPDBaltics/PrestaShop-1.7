@@ -10,4 +10,9 @@ class StringUtility
     {
         return \Tools::strtolower($string);
     }
+
+    public static function isWordInString($prefix, $number)
+    {
+        return (bool) strpos($number, $prefix) !== false;
+    }
 }

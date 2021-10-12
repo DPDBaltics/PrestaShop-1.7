@@ -16,6 +16,7 @@ use Address;
 use Cart;
 use Context;
 use DPDBaltics;
+use Invertus\dpdBaltics\Exception\DpdCarrierException;
 use Invertus\dpdBaltics\ORM\EntityManager;
 use Invertus\dpdBaltics\Repository\OrderRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
@@ -109,12 +110,15 @@ class CarrierPhoneService
             $dpdOrderPhone = new DPDOrderPhone($idDpdOrderPhone);
         }
 
-        $dpdOrderPhone->phone = $dpdPhone;
+        $dpdOrderPhone->phone = $this->removePhonePrefix($dpdPhone, $dpdPhoneCode);
         $dpdOrderPhone->phone_area = $dpdPhoneCode;
         $dpdOrderPhone->id_cart = $idCart;
 
         if (!$dpdOrderPhone->save()) {
-            return false;
+           throw new DpdCarrierException(
+               'Could not save phone number',
+               500
+           );
         }
 
         return true;
@@ -135,4 +139,5 @@ class CarrierPhoneService
 
         return $phone;
     }
+
 }

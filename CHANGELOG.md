@@ -58,7 +58,7 @@
 - Vendor zip updated, port removed from api
 - Map fix, do not load map script when off
 - Bugfix map does not load when address is changed
-## [3.2.7] - 2021-08-30
+## [3.2.7] - 2021-10-11
 ### Changed
 - Import parcels function changed on cron parcel update, take countries only from zone range functionality added.
 - Shipment price bug fix when product customizations are used
@@ -67,3 +67,8 @@
 - Bugfix, when on first load parcel is not selected.
 - Bugfix, when carrier cannot be changed in back office order view and label is not printed
 - Bugfix, when order is using voucher, recalculate parcel total to match order total(shipping discount excluded)
+- Bugfix, mobile view, bad styles fixed
+- Alpha version on compatability with SuperCheckout module
+- Render Shipping price even though customer is not logged in
+- Allow select pudo points if customer is missing
+- Render select with search(jquery choosen lib) on delivery method select(supercheckout applicable)

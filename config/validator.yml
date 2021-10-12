@@ -32,3 +32,8 @@ services:
 
   invertus.dpdbaltics.validate.shipment_data.shipment_data_validator:
     class: 'Invertus\dpdBaltics\Validate\ShipmentData\ShipmentDataValidator'
+
+  invertus.dpdbaltics.validate.phone.phone_number_validator:
+    class: 'Invertus\dpdBaltics\Validate\Phone\PhoneNumberValidator'
+    arguments:
+      - '@dpdbaltics'

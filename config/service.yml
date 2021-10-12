@@ -150,6 +150,7 @@ services:
       - '@invertus.dpdbaltics_api.factory.apirequest.shipment_creation_factory'
       - '@invertus.dpdbaltics.repository.cod_payment_repository'
       - '@invertus.dpdbaltics.repository.parcel_tracking_email_handler'
+      - '@invertus.dpdbaltics.service.parcel.parcel_shop_service'
 
   invertus.dpdbaltics.service.api.label_api_service:
     class: 'Invertus\dpdBaltics\Service\API\LabelApiService'
@@ -266,6 +267,7 @@ services:
     arguments:
       - '@invertus.dpdbaltics.factory.parcel_tracking_url_factory'
       - '@dpdbaltics'
+
 
 
 

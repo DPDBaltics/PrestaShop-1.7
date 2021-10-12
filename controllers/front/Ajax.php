@@ -11,6 +11,7 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Exception\DpdCarrierException;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
@@ -105,6 +106,29 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
             case 'updateStreetSelect':
                 $city = Tools::getValue('city');
                 $this->updateStreetSelect($countryCode, $city);
+                break;
+            case 'saveSelectedPhoneNumber':
+                $cartId = Context::getContext()->cart->id;
+                /** @var  \Invertus\dpdBaltics\Service\CarrierPhoneService $phoneService */
+                $phoneService = $this->module->getModuleContainer('invertus.dpdbaltics.service.carrier_phone_service');
+                /** @var  \Invertus\dpdBaltics\Validate\Phone\PhoneNumberValidator $phoneNumberValidator */
+                $phoneNumberValidator = $this->module->getModuleContainer('invertus.dpdbaltics.validate.phone.phone_number_validator');
+                $response = false;
+                try {
+                    $prefix = Tools::getValue('phone_area');
+                    $phone = Tools::getValue('phone_number');
+                    $phoneNumberValidator->isPhoneValid($prefix, $phone);
+                    $response = $phoneService->saveCarrierPhone($cartId, $phone, $prefix);
+                } catch (DpdCarrierException $exception) {
+                    $this->messages[] = $exception->getMessage();
+                    $this->ajaxDie(json_encode(
+                        [
+                            'status' => false,
+                            'template' => $this->getMessageTemplate('danger'),
+                        ]
+                    ));
+                }
+                $this->ajaxDie(json_encode($response));
                 break;
             case 'updateParcelBlock':
                 $street = Tools::getValue('street');
