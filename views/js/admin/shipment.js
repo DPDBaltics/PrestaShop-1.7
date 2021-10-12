@@ -102,12 +102,13 @@ $(document).ready(function () {
         var labelWindow;
         addButtonLoadingAnimation();
         if (!is_label_download_option) {
-            labelWindow = window.open('', '_blank');
+            labelWindow = window.open(loader_url, '_blank');
         }
         $.ajax(dpdAjaxShipmentsUrl, {
             method: 'POST',
             data: {
                 id_order: id_order,
+                async: false,
                 id_address_delivery: parseInt($('.js-recipient-address-select option:selected').val()),
                 action: action,
                 data: data,
@@ -156,7 +157,6 @@ $(document).ready(function () {
                         } else {
                             window.location.href = location;
                         }
-
                         return;
                     }
 
@@ -166,6 +166,9 @@ $(document).ready(function () {
                 } catch (e) {
                     DPDshowError(dpdMessages.unexpectedError);
                     removeButtonLoadingAnimation();
+                    if (!is_label_download_option) {
+                        labelWindow.html('<div class="alert alert-danger">dpdMessages.unexpectedError</div>')
+                    }
                 }
             }
         });
@@ -240,7 +243,7 @@ $(document).ready(function () {
         var labelPosition = $('input[name="label_position"]').val();
         var labelWindow;
         if (!is_label_download_option) {
-            labelWindow = window.open('', '_blank');
+            labelWindow = window.open(loader_url, '_blank');
         }
 
         $.ajax(dpdAjaxShipmentsUrl, {
@@ -249,6 +252,7 @@ $(document).ready(function () {
                 id_order: id_order,
                 shipment_id: shipmentId,
                 action: action,
+                async: false,
                 labelFormat: labelFormat,
                 labelPosition: labelPosition
             },
@@ -274,7 +278,9 @@ $(document).ready(function () {
 
                 } else {
                     DPDshowError(response.message);
-
+                    if (!is_label_download_option) {
+                        labelWindow.html('<div class="alert alert-danger">dpdMessages.unexpectedError</div>')
+                    }
                 }
             }
         })
