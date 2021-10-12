@@ -700,12 +700,13 @@ class DPDBaltics extends CarrierModule
 
             $orderId = Tools::getValue('id_order');
             $shipment = $this->getShipment($orderId);
-
+            $baseUrl = $this->context->link->getAdminBaseLink();
             Media::addJsDef(
                 [
                     'shipment' => $shipment,
                     'id_order' => $orderId,
-                    'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download'
+                    'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
+                    'loader_url' => "{$baseUrl}modules/dpdbaltics/views/templates/admin/loader/loader.html"
                 ]
             );
         }
