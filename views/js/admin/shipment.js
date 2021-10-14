@@ -101,9 +101,11 @@ $(document).ready(function () {
         var data = $(this).closest('form').serializeArray();
         var labelWindow;
         addButtonLoadingAnimation();
-        if (!is_label_download_option) {
+
+        if (!is_label_download_option && is_ps_above_177) {
             labelWindow = window.open(loader_url, '_blank');
         }
+
         $.ajax(dpdAjaxShipmentsUrl, {
             method: 'POST',
             data: {
@@ -152,7 +154,12 @@ $(document).ready(function () {
                             '&id_dpd_shipment=' + encodeURIComponent(response.id_dpd_shipment);
 
                         disableInputs(false);
-                        if (!is_label_download_option) {
+
+                        if (!is_label_download_option && !is_ps_above_177) {
+                            labelWindow = window.open(loader_url, '_blank');
+                        }
+
+                        if (!is_label_download_option && action !== 'save') {
                             labelWindow.location.href = location;
                         } else {
                             window.location.href = location;
@@ -242,7 +249,8 @@ $(document).ready(function () {
         var labelFormat = $('select[name="label_format"]').val();
         var labelPosition = $('input[name="label_position"]').val();
         var labelWindow;
-        if (!is_label_download_option) {
+
+        if (!is_label_download_option && is_ps_above_177) {
             labelWindow = window.open(loader_url, '_blank');
         }
 
@@ -257,20 +265,35 @@ $(document).ready(function () {
                 labelPosition: labelPosition
             },
             success: function (response) {
+
                 try {
                     response = JSON.parse(response);
                 } catch (e) {
                     DPDshowError(dpdMessages.unexpectedError);
                     return;
                 }
+
                 if (response.status) {
                     var location = window.location +
                         '&print_label=1' +
                         '&id_dpd_shipment=' + encodeURIComponent(shipmentId);
+                    if (is_ps_above_177 && action === 'print') {
+                        location = print_url
+                            .replace('shipmentId_', shipmentId)
+                            .replace('labelFormat_', labelFormat)
+                            .replace('labelPosition_', labelPosition);
+                    } else if (is_ps_above_177 && action === 'save_and_print') {
+
+                    }
 
                     disableInputs(false);
 
-                    if (!is_label_download_option) {
+                    if (!is_label_download_option && !is_ps_above_177) {
+                        labelWindow = window.open(loader_url, '_blank');
+                    }
+
+                    if (!is_label_download_option && action !== 'save') {
+
                         labelWindow.location.href = location;
                     } else {
                         window.location.href = location;

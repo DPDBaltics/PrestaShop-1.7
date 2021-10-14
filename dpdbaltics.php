@@ -701,11 +701,24 @@ class DPDBaltics extends CarrierModule
             $orderId = Tools::getValue('id_order');
             $shipment = $this->getShipment($orderId);
             $baseUrl = $this->context->link->getAdminBaseLink();
+            $isAbove177 = Config::isPrestashopVersionAbove177();
+            $labelPrintUrl = $isAbove177 ? Link::getUrlSmarty([
+                'entity' => 'sf',
+                'route' => 'dpdbaltics_print_label',
+                'sf-params' => [
+                    'shipmentId' => 'shipmentId_',
+                    'labelFormat' => 'labelFormat_',
+                    'labelPosition' => 'labelPosition_'
+                ]
+            ]) : null;
+
             Media::addJsDef(
                 [
+                    'print_url' => $labelPrintUrl ? $baseUrl.$labelPrintUrl : $labelPrintUrl,
                     'shipment' => $shipment,
                     'id_order' => $orderId,
                     'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
+                    'is_ps_above_177' => Config::isPrestashopVersionAbove177(),
                     'loader_url' => "{$baseUrl}modules/dpdbaltics/views/templates/admin/loader/loader.html"
                 ]
             );
@@ -936,9 +949,20 @@ class DPDBaltics extends CarrierModule
                 ]);
             }
         }
+        //TODO refactor this functionality
+        $labePrintAndSaveUrl = Link::getUrlSmarty(array(
+            'entity' => 'sf',
+            'route' => 'dpdbaltics_download_printed_label',
+            'sf-params' => array(
+                'orderId' => $order->id,
+            )
+        ));
 
         $tplVars = [
             'dpdLogoUrl' => $this->getPathUri() . 'views/img/DPDLogo.gif',
+            'print_and_save_url' => $labePrintAndSaveUrl,
+            'is_ps_above_177' => Config::isPrestashopVersionAbove177(),
+            'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
             'shipment' => $shipment,
             'testOrder' => $shipment->is_test,
             'total_products' => 1,
@@ -1294,6 +1318,7 @@ class DPDBaltics extends CarrierModule
 
     private function handleLabelPrintService()
     {
+        $a = 0;
         if (Tools::isSubmit('print_label')) {
             $idShipment = Tools::getValue('id_dpd_shipment');
             $this->printLabel($idShipment);
