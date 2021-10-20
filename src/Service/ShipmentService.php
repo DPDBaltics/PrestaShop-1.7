@@ -115,7 +115,7 @@ class ShipmentService
         OrderDeliveryTimeRepository $orderDeliveryTimeRepository,
         ShipmentDataFactory $shipmentDataFactory,
         OrderService $orderService,
-        CarrierUpdateValidate $carrierUpdateValidate
+        CarrierUpdateValidate $carrierUpdateValidate,
     ) {
         $this->module = $module;
         $this->language = $language;
@@ -312,6 +312,7 @@ class ShipmentService
      */
     public function saveShipment(Order $order, ShipmentData $shipmentData, $print = false)
     {
+        //TODO setup module logger to track printing issues Get trace of errors and set for module logger
         $response['status'] = false;
 
         try {
@@ -333,9 +334,11 @@ class ShipmentService
             return $response;
         }
 
+        //TODO why not validated if loaded
         $shipmentId = $this->shipmentRepository->getIdByOrderId($order->id);
         $shipment = new DPDShipment($shipmentId);
 
+        //TODO why sets default if label already printed?
         if ($shipment->printed_label) {
             $labelFormat = Configuration::get(Config::DEFAULT_LABEL_FORMAT);
             $labelPosition = Configuration::get(Config::DEFAULT_LABEL_POSITION);
@@ -347,6 +350,7 @@ class ShipmentService
         $dateWithZeroValues = date('Y-m-d h:i:s', strtotime($shipmentData->getDateShipment()));
         $shipmentData->setDateShipment($dateWithZeroValues);
 
+
         try {
             $this->shipmentRepository->saveShipment($shipmentData, $shipmentId);
         } catch (Exception $e) {
@@ -354,8 +358,8 @@ class ShipmentService
 
             return $response;
         }
+        //Tries to updaye pudo order
         if ($shipmentData->isPudo()) {
-
             $productId = $shipmentData->getProduct();
             $pudoId = $shipmentData->getSelectedPudoId();
             $isoCode = $shipmentData->getSelectedPudoIsoCode();
@@ -370,7 +374,7 @@ class ShipmentService
                 return $response;
             }
         }
-
+        //Tries to update carrier order
         if ($shipmentData->getDeliveryTime()) {
             $deliveryTimeId = $this->orderDeliveryTimeRepository->getOrderDeliveryIdByCartId($order->id_cart);
             $deliveryTime = new DPDOrderDeliveryTime($deliveryTimeId);
@@ -378,6 +382,7 @@ class ShipmentService
             $deliveryTime->update();
         }
 
+        //Tries to retrieve carrier id by product functionality bugfix for order view shipment change
         if ($shipmentData->getProduct()) {
             $product = new DPDProduct($shipmentData->getProduct());
             $productCarrier = Carrier::getCarrierByReference($product->id_reference);
@@ -387,6 +392,7 @@ class ShipmentService
             }
         }
 
+        //Checks if print option goes to printing stuff
         if ($print) {
             return $this->labelPrintingService->printAndSaveLabel($shipmentData, $shipmentId, $order->id);
         }

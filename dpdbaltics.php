@@ -709,6 +709,7 @@ class DPDBaltics extends CarrierModule
             Media::addJsDef(
                 [
                     'print_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelPrintUrl() : null,
+                    'print_and_save_label_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsPrintLabel() : null,
                     'shipment' => $shipment,
                     'id_order' => $orderId,
                     'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
@@ -946,7 +947,7 @@ class DPDBaltics extends CarrierModule
         //TODO refactor this functionality
         $labePrintAndSaveUrl = Link::getUrlSmarty(array(
             'entity' => 'sf',
-            'route' => 'dpdbaltics_download_printed_label',
+            'route' => 'dpdbaltics_save_and_download_printed_label_order_list',
             'sf-params' => array(
                 'orderId' => $order->id,
             )
@@ -1267,7 +1268,7 @@ class DPDBaltics extends CarrierModule
                 (new SubmitBulkActionCustom('print_multiple_labels'))
                 ->setName($this->l('Print multiple labels'))
                 ->setOptions([
-                    'submit_route' => 'dpdbaltics_download_multiple_printed_labels',
+                    'submit_route' => 'dpdbaltics_save_and_download_printed_labels_order_list_multiple',
                 ])
             )
         ;
@@ -1284,7 +1285,7 @@ class DPDBaltics extends CarrierModule
                     ->setName($this->l('Print label(s) from DPD system. Once label is saved you won\'t be able to modify contents of shipments'))
                     ->setIcon('print')
                     ->setOptions([
-                        'route' => 'dpdbaltics_download_printed_label',
+                        'route' => 'dpdbaltics_save_and_download_printed_label_order_list',
                         'route_param_name' => 'orderId',
                         'route_param_field' => 'id_order',
                         'confirm_message' => $this->l('Would you like to print shipping label?'),

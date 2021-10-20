@@ -66,6 +66,7 @@ class LabelPrintingService
         $response['status'] = false;
 
         try {
+            //Creates shipment in DPP platform
             /** @var ShipmentCreationResponse $shipmentCreationResponse */
             $shipmentCreationResponse = $this->shipmentApiService->createShipment(
                 $shipmentData->getAddressId(),
@@ -95,7 +96,8 @@ class LabelPrintingService
 
             return $response;
         }
-
+        //Sets pudo ID from response
+        //TODO could be related by missing pudo here
         $shipment = new DPDShipment($shipmentId);
         $shipment->pl_number = $shipmentCreationResponse->getPlNumbersAsString();
         try {
@@ -110,7 +112,7 @@ class LabelPrintingService
 
         $response['status'] = true;
         $response['id_dpd_shipment'] = $shipmentId;
-
+        //Returns response and possibly fetches print function in main module class
         return $response;
     }
 }

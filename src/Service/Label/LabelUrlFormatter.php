@@ -20,11 +20,34 @@ class LabelUrlFormatter
     {
         return $this->linkAdapter->getUrlSmarty([
             'entity' => 'sf',
-            'route' => 'dpdbaltics_print_label',
+            'route' => 'dpdbaltics_print_label_order_view',
             'sf-params' => [
                 'shipmentId' => 'shipmentId_',
                 'labelFormat' => 'labelFormat_',
                 'labelPosition' => 'labelPosition_'
+            ]
+        ]);
+    }
+
+    public function formatJsLabelSaveAndPrintUrl()
+    {
+        return $this->linkAdapter->getUrlSmarty([
+            'entity' => 'sf',
+            'route' => 'dpdbaltics_save_and_download_printed_label_order_view',
+            'sf-params' => [
+                'orderId' => 'orderId_',
+                'isPrint' => 'isPrint_',
+            ]
+        ]);
+    }
+
+    public function formatJsPrintLabel()
+    {
+        return $this->linkAdapter->getUrlSmarty([
+            'entity' => 'sf',
+            'route' => 'dpdbaltics_save_and_download_printed_label_order_list',
+            'sf-params' => [
+                'orderId' => 'orderId_',
             ]
         ]);
     }

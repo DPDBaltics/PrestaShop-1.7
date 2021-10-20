@@ -101,8 +101,7 @@ $(document).ready(function () {
         var data = $(this).closest('form').serializeArray();
         var labelWindow;
         addButtonLoadingAnimation();
-
-        if (!is_label_download_option && is_ps_above_177) {
+        if (!is_label_download_option && is_ps_above_177 && action != 'save') {
             labelWindow = window.open(loader_url, '_blank');
         }
 
@@ -120,7 +119,6 @@ $(document).ready(function () {
                     response = JSON.parse(response);
                     removeButtonLoadingAnimation();
                     DPDhideError();
-
                     if (response.status == false) {
                         DPDshowError(response.message);
 
@@ -149,10 +147,15 @@ $(document).ready(function () {
                     }
 
                     if ('save_and_print' === $clickedBtn.data('action')) {
+
                         var location = window.location +
                             '&print_label=1' +
                             '&id_dpd_shipment=' + encodeURIComponent(response.id_dpd_shipment);
 
+                        if (is_ps_above_177 && action === 'save_and_print' && print_and_save_label_url) {
+                            location = print_and_save_label_url
+                                .replace('orderId_', id_order);
+                        }
                         disableInputs(false);
 
                         if (!is_label_download_option && !is_ps_above_177) {
@@ -253,7 +256,6 @@ $(document).ready(function () {
         if (!is_label_download_option && is_ps_above_177) {
             labelWindow = window.open(loader_url, '_blank');
         }
-
         $.ajax(dpdAjaxShipmentsUrl, {
             method: 'POST',
             data: {
@@ -265,7 +267,6 @@ $(document).ready(function () {
                 labelPosition: labelPosition
             },
             success: function (response) {
-
                 try {
                     response = JSON.parse(response);
                 } catch (e) {
@@ -277,23 +278,23 @@ $(document).ready(function () {
                     var location = window.location +
                         '&print_label=1' +
                         '&id_dpd_shipment=' + encodeURIComponent(shipmentId);
-                    if (is_ps_above_177 && action === 'print') {
+                    if (is_ps_above_177 && action === 'print' && print_url) {
                         location = print_url
                             .replace('shipmentId_', shipmentId)
                             .replace('labelFormat_', labelFormat)
                             .replace('labelPosition_', labelPosition);
-                    } else if (is_ps_above_177 && action === 'save_and_print') {
-
+                    } else if (is_ps_above_177 && action === 'save_and_print' && print_and_save_label_url) {
+                        location = print_and_save_label_url
+                            .replace('orderId_', id_order)
+                            .replace('isPrint_', true)
                     }
 
                     disableInputs(false);
-
                     if (!is_label_download_option && !is_ps_above_177) {
                         labelWindow = window.open(loader_url, '_blank');
                     }
 
                     if (!is_label_download_option && action !== 'save') {
-
                         labelWindow.location.href = location;
                     } else {
                         window.location.href = location;
