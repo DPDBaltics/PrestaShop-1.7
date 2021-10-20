@@ -52,9 +52,9 @@
                                 <td class="text-center">{$total_products|intval}</td>
                                 <td class="text-center">{if $shipment->printed_label}{l s='Yes' mod='dpdbaltics'}{else}{l s='No' mod='dpdbaltics'}{/if}</td>
                                 <td>
-                                    <a {if !$is_label_download_option} target="_blank" {/if} href="{if $is_ps_above_177}{$print_and_save_url}{else}#{/if}"
-                                       class="btn btn-default pull-right {if !$is_ps_above_177}js-print-label-btn{/if}"
-                                       style="{if !$is_ps_above_177}display: none{/if}"
+                                    <a href="#"
+                                       class="btn btn-default pull-right js-print-label-btn"
+                                       style="display: none"
                                        data-action="print"
                                        data-shipment-id={$shipment->id}
                                     >
