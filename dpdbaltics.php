@@ -702,19 +702,13 @@ class DPDBaltics extends CarrierModule
             $shipment = $this->getShipment($orderId);
             $baseUrl = $this->context->link->getAdminBaseLink();
             $isAbove177 = Config::isPrestashopVersionAbove177();
-            $labelPrintUrl = $isAbove177 ? Link::getUrlSmarty([
-                'entity' => 'sf',
-                'route' => 'dpdbaltics_print_label',
-                'sf-params' => [
-                    'shipmentId' => 'shipmentId_',
-                    'labelFormat' => 'labelFormat_',
-                    'labelPosition' => 'labelPosition_'
-                ]
-            ]) : null;
+
+            /** @var \Invertus\dpdBaltics\Service\Label\LabelUrlFormatter $labelUrlService */
+            $labelUrlService = $isAbove177 ? $this->getModuleContainer('invertus.dpdbaltics.service.label.label_url_formatter') : null;
 
             Media::addJsDef(
                 [
-                    'print_url' => $labelPrintUrl ? $baseUrl.$labelPrintUrl : $labelPrintUrl,
+                    'print_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelPrintUrl() : null,
                     'shipment' => $shipment,
                     'id_order' => $orderId,
                     'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
@@ -1318,7 +1312,6 @@ class DPDBaltics extends CarrierModule
 
     private function handleLabelPrintService()
     {
-        $a = 0;
         if (Tools::isSubmit('print_label')) {
             $idShipment = Tools::getValue('id_dpd_shipment');
             $this->printLabel($idShipment);
