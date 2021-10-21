@@ -350,6 +350,7 @@ class ShipmentService
                 )
             );
             $this->logger->error($response['message']);
+
             return $response;
         }
         $shipment = new DPDShipment($shipmentId);

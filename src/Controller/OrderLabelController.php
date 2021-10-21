@@ -61,24 +61,21 @@ class OrderLabelController extends FrameworkBundleAdminController
      * @param $isPrint
      * @return Response
      */
-    public function saveAndPrintLabelOrderViewAction($orderId, $isPrint)
+    public function saveAndPrintLabelOrderViewAction($orderId)
     {
-        /** @var FormDataConverter $formDataConverter */
-        $formDataConverter = $this->module->getModuleContainer('invertus.dpdbaltics.converter.form_data_converter');
-        $order = new Order($orderId);
-        $data = Tools::getValue('data');
-        $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
         /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
-        $response = $shipmentService->saveShipment($order, $shipmentData, $isPrint);
+        $response = $shipmentService->formatLabelShipmentPrintResponse($orderId);
 
         if (!$response['status'] || !$response['id_dpd_shipment']) {
             $this->addFlash('error', $response['message']);
 
             return $this->redirectToRoute('admin_orders_index');
         }
-        //$this->module->printLabel($response['id_dpd_shipment']);
+        $this->module->printLabel($response['id_dpd_shipment']);
+
+        //This part should never be reached
         exit;
     }
 

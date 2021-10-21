@@ -106,6 +106,7 @@ services:
     - '@dpdbaltics'
     - '@invertus.dpdbaltics.service.api.shipment_api_service'
     - '@invertus.dpdbaltics.service.exception.exception_service'
+    - '@invertus.dpdbaltics.logger.logger'
 
   invertus.dpdbaltics.service.label.label_url_formatter:
     class: 'Invertus\dpdBaltics\Service\Label\LabelUrlFormatter'
