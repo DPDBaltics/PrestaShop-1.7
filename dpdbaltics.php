@@ -649,23 +649,13 @@ class DPDBaltics extends CarrierModule
 
     private function compile()
     {
-        $containerCache = $this->getLocalPath() . 'var/cache/container.php';
-        $containerConfigCache = new ConfigCache($containerCache, self::DISABLE_CACHE);
-        $containerClass = get_class($this) . 'Container';
-        if (!$containerConfigCache->isFresh()) {
-            $containerBuilder = new ContainerBuilder();
-            $locator = new FileLocator($this->getLocalPath() . 'config');
-            $loader = new YamlFileLoader($containerBuilder, $locator);
-            $loader->load('config.yml');
-            $containerBuilder->compile();
-            $dumper = new PhpDumper($containerBuilder);
-            $containerConfigCache->write(
-                $dumper->dump(['class' => $containerClass]),
-                $containerBuilder->getResources()
-            );
-        }
-        require_once $containerCache;
-        $this->moduleContainer = new $containerClass();
+        $containerBuilder = new ContainerBuilder();
+        $locator = new FileLocator($this->getLocalPath() . 'config');
+        $loader = new YamlFileLoader($containerBuilder, $locator);
+        $loader->load('config.yml');
+        $containerBuilder->compile();
+
+        $this->moduleContainer = $containerBuilder;
     }
 
     public function hookActionAdminControllerSetMedia($params)
