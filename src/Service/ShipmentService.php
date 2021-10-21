@@ -18,6 +18,7 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Factory\ShipmentDataFactory;
 use Invertus\dpdBaltics\Helper\ShipmentHelper;
+use Invertus\dpdBaltics\Logger\Logger;
 use Invertus\dpdBaltics\Repository\AddressTemplateRepository;
 use Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository;
 use Invertus\dpdBaltics\Repository\OrderRepository;
@@ -101,6 +102,10 @@ class ShipmentService
      * @var CarrierUpdateValidate
      */
     private $carrierUpdateValidate;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     public function __construct(
         DPDBaltics $module,
@@ -116,6 +121,7 @@ class ShipmentService
         ShipmentDataFactory $shipmentDataFactory,
         OrderService $orderService,
         CarrierUpdateValidate $carrierUpdateValidate,
+        Logger $logger
     ) {
         $this->module = $module;
         $this->language = $language;
@@ -130,6 +136,7 @@ class ShipmentService
         $this->shipmentDataFactory = $shipmentDataFactory;
         $this->orderService = $orderService;
         $this->carrierUpdateValidate = $carrierUpdateValidate;
+        $this->logger = $logger;
     }
 
     public function createShipment(Order $order, $idProduct, $isTestMode, $numOfParcels, $weight, $goodsPrice)
@@ -319,26 +326,34 @@ class ShipmentService
             $this->shipmentDataValidator->validate($shipmentData);
 
         } catch (InvalidShipmentDataField $e) {
-
             $response['message'] = $this->exceptionService->getErrorMessageForException(
                 $e,
                 $this->exceptionService->getShipmentFieldErrorMessages()
             );
+            $this->logger->error($response['message']);
+
             return $response;
 
         } catch (Exception $e) {
             $response['message'] = $this->module->l(
-                sprintf('Failed to save shipment data. Error: %s', $e->getMessage())
+                sprintf('Failed to save shipment data. Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
             );
-
+            $this->logger->error($response['message']);
             return $response;
         }
 
-        //TODO why not validated if loaded
-        $shipmentId = $this->shipmentRepository->getIdByOrderId($order->id);
+        try {
+            $shipmentId = $this->shipmentRepository->getIdByOrderId($order->id);
+        } catch (Exception $e) {
+            $response['message'] = $this->module->l(
+                sprintf('Could not fetch shipment order ID Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart
+                )
+            );
+            $this->logger->error($response['message']);
+            return $response;
+        }
         $shipment = new DPDShipment($shipmentId);
 
-        //TODO why sets default if label already printed?
         if ($shipment->printed_label) {
             $labelFormat = Configuration::get(Config::DEFAULT_LABEL_FORMAT);
             $labelPosition = Configuration::get(Config::DEFAULT_LABEL_POSITION);
@@ -354,11 +369,14 @@ class ShipmentService
         try {
             $this->shipmentRepository->saveShipment($shipmentData, $shipmentId);
         } catch (Exception $e) {
-            $response['message'] = $this->module->l('Failed to save shipment');
+            $response['message'] = $this->module->l(
+                sprintf('Failed to save shipment to database Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
+            );
+            $this->logger->error($response['message']);
 
             return $response;
         }
-        //Tries to updaye pudo order
+        //High probability exception is thrown here for missing pudo ID, as its being saved to database
         if ($shipmentData->isPudo()) {
             $productId = $shipmentData->getProduct();
             $pudoId = $shipmentData->getSelectedPudoId();
@@ -369,26 +387,48 @@ class ShipmentService
             try {
                 $this->pudoService->savePudoOrder($productId, $pudoId, $isoCode, $cartId, $city, $street);
             } catch (Exception $e) {
-                $response['message'] = $e->getMessage();
+                $response['message'] = $this->module->l(
+                    sprintf('Failed to save pudo order to database Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
+                );
+                $this->logger->error($response['message']);
 
                 return $response;
             }
         }
-        //Tries to update carrier order
+
         if ($shipmentData->getDeliveryTime()) {
-            $deliveryTimeId = $this->orderDeliveryTimeRepository->getOrderDeliveryIdByCartId($order->id_cart);
-            $deliveryTime = new DPDOrderDeliveryTime($deliveryTimeId);
-            $deliveryTime->delivery_time = $shipmentData->getDeliveryTime();
-            $deliveryTime->update();
+            try {
+                $deliveryTimeId = $this->orderDeliveryTimeRepository->getOrderDeliveryIdByCartId($order->id_cart);
+                $deliveryTime = new DPDOrderDeliveryTime($deliveryTimeId);
+                $deliveryTime->delivery_time = $shipmentData->getDeliveryTime();
+                $deliveryTime->update();
+            } catch (Exception $e) {
+                $response['message'] = $this->module->l(
+                    sprintf('Failed to save delivery time to database Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
+                );
+                $this->logger->error($response['message']);
+
+                return $response;
+            }
+
         }
 
         //Tries to retrieve carrier id by product functionality bugfix for order view shipment change
         if ($shipmentData->getProduct()) {
-            $product = new DPDProduct($shipmentData->getProduct());
-            $productCarrier = Carrier::getCarrierByReference($product->id_reference);
+            try {
+                $product = new DPDProduct($shipmentData->getProduct());
+                $productCarrier = Carrier::getCarrierByReference($product->id_reference);
 
-            if (!$this->carrierUpdateValidate->isOrderCarrierMatchesDpdProductCarrier($order->id_carrier, $productCarrier->id)) {
-                $this->orderService->updateOrderCarrier($order, $productCarrier->id);
+                if (!$this->carrierUpdateValidate->isOrderCarrierMatchesDpdProductCarrier($order->id_carrier, $productCarrier->id)) {
+                    $this->orderService->updateOrderCarrier($order, $productCarrier->id);
+                }
+            } catch (Exception $e) {
+                $response['message'] = $this->module->l(
+                    sprintf('Failed to update order carrier Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
+                );
+                $this->logger->error($response['message']);
+
+                return $response;
             }
         }
 

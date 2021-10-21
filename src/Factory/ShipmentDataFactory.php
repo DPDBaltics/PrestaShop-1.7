@@ -90,6 +90,7 @@ class ShipmentDataFactory
         /** Pudo */
         $dpdProduct = new DPDProduct($shipment->id_service);
 
+        //TODO check if this place can cause problem with missing pudo id on order creation, as it is the only place to handle it
         $shipmentData->setIsPudo($dpdProduct->is_pudo);
         if ($dpdProduct->is_pudo) {
             $carrier = new Carrier($order->id_carrier);
