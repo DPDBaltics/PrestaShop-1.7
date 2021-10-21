@@ -379,12 +379,21 @@ class ShipmentService
         }
         //High probability exception is thrown here for missing pudo ID, as its being saved to database
         if ($shipmentData->isPudo()) {
+            $cartId = $order->id_cart;
+            if (!$this->shipmentDataValidator->validateShipmentPudoFields($shipmentData)) {
+                //if missing, refill data, with pudo created shipment.
+                $selectedPudo = $this->pudoService->getPudoOrderByCartId($cartId);
+                $shipmentData->setCity($selectedPudo->city);
+                $shipmentData->setDpdStreet($selectedPudo->street);
+                $shipmentData->setSelectedPudoId($selectedPudo->pudo_id);
+                $shipmentData->setSelectedPudoIsoCode($selectedPudo->country_code);
+            }
+
             $productId = $shipmentData->getProduct();
             $pudoId = $shipmentData->getSelectedPudoId();
             $isoCode = $shipmentData->getSelectedPudoIsoCode();
             $city = $shipmentData->getCity();
             $street = $shipmentData->getDpdStreet();
-            $cartId = $order->id_cart;
             try {
                 $this->pudoService->savePudoOrder($productId, $pudoId, $isoCode, $cartId, $city, $street);
             } catch (Exception $e) {

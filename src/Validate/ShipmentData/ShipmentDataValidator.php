@@ -34,4 +34,17 @@ class ShipmentDataValidator
     {
         return !empty($productValue);
     }
+
+    /**
+     * @param ShipmentData $shipmentData
+     *
+     * @return bool
+     */
+    public function validateShipmentPudoFields($shipmentData)
+    {
+        return !empty($shipmentData->getSelectedPudoId()) &&
+            !empty($shipmentData->getSelectedPudoIsoCode()) &&
+            !empty($shipmentData->getCity()) &&
+            !empty($shipmentData->getDpdStreet());
+    }
 }

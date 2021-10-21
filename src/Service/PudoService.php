@@ -11,6 +11,7 @@ use DPDProduct;
 use DPDPudo;
 use DPDShop;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Factory\ShopFactory;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
@@ -235,6 +236,20 @@ class PudoService
         $pudoOrder->city = $city;
         $pudoOrder->street = $street;
         $pudoOrder->save();
+    }
+
+    /**
+     * @param $idCart
+     *
+     * @return DPDPudo
+     * @throws \PrestaShopDatabaseException
+     * @throws \PrestaShopException
+     */
+    public function getPudoOrderByCartId($cartId)
+    {
+        $pudoOrderId = $this->pudoRepository->getIdByCart($cartId);
+
+        return new DPDPudo($pudoOrderId);
     }
 
     public function saveSelectedParcel($cartId, $city, $street, $countryCode, $idCarrier)
