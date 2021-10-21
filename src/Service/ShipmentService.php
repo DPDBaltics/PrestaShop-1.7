@@ -394,6 +394,7 @@ class ShipmentService
             $isoCode = $shipmentData->getSelectedPudoIsoCode();
             $city = $shipmentData->getCity();
             $street = $shipmentData->getDpdStreet();
+
             try {
                 $this->pudoService->savePudoOrder($productId, $pudoId, $isoCode, $cartId, $city, $street);
             } catch (Exception $e) {
