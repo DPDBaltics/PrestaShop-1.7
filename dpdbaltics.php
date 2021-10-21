@@ -697,7 +697,7 @@ class DPDBaltics extends CarrierModule
             Media::addJsDef(
                 [
                     'print_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelPrintUrl() : null,
-                    'print_and_save_label_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsPrintLabel() : null,
+                    'print_and_save_label_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelSaveAndPrintUrl() : null,
                     'shipment' => $shipment,
                     'id_order' => $orderId,
                     'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',

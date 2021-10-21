@@ -36,18 +36,6 @@ class LabelUrlFormatter
             'route' => 'dpdbaltics_save_and_download_printed_label_order_view',
             'sf-params' => [
                 'orderId' => 'orderId_',
-                'isPrint' => 'isPrint_',
-            ]
-        ]);
-    }
-
-    public function formatJsPrintLabel()
-    {
-        return $this->linkAdapter->getUrlSmarty([
-            'entity' => 'sf',
-            'route' => 'dpdbaltics_save_and_download_printed_label_order_list',
-            'sf-params' => [
-                'orderId' => 'orderId_',
             ]
         ]);
     }

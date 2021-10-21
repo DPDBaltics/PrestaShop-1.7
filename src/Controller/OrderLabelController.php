@@ -65,8 +65,7 @@ class OrderLabelController extends FrameworkBundleAdminController
     {
         /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
-
-        $response = $shipmentService->formatLabelShipmentPrintResponse($orderId);
+        $response = $shipmentService->formatLabelAndCreateShipmentByOrderId($orderId);
 
         if (!$response['status'] || !$response['id_dpd_shipment']) {
             $this->addFlash('error', $response['message']);

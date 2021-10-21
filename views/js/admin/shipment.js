@@ -145,7 +145,6 @@ $(document).ready(function () {
                         hideShipmentError(response.id_dpd_shipment);
 
                     }
-
                     if ('save_and_print' === $clickedBtn.data('action')) {
 
                         var location = window.location +

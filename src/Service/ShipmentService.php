@@ -319,7 +319,6 @@ class ShipmentService
      */
     public function saveShipment(Order $order, ShipmentData $shipmentData, $print = false)
     {
-        //TODO setup module logger to track printing issues Get trace of errors and set for module logger
         $response['status'] = false;
 
         try {
@@ -353,6 +352,7 @@ class ShipmentService
 
             return $response;
         }
+
         $shipment = new DPDShipment($shipmentId);
 
         if ($shipment->printed_label) {
@@ -366,7 +366,6 @@ class ShipmentService
         $dateWithZeroValues = date('Y-m-d h:i:s', strtotime($shipmentData->getDateShipment()));
         $shipmentData->setDateShipment($dateWithZeroValues);
 
-
         try {
             $this->shipmentRepository->saveShipment($shipmentData, $shipmentId);
         } catch (Exception $e) {
@@ -379,16 +378,17 @@ class ShipmentService
         }
 
         if ($shipmentData->isPudo()) {
-            $selectedPudo = null;
             $cartId = $order->id_cart;
             $productId = $shipmentData->getProduct();
-            
+
             //Fills up missing data(BUG fix for missing pudo ID while creating label)
             $this->pudoService->repopulatePudoDataInShipment($shipmentData, $cartId);
+
             $pudoId = $shipmentData->getSelectedPudoId();
             $isoCode = $shipmentData->getSelectedPudoIsoCode();
             $city = $shipmentData->getCity();
             $street = $shipmentData->getDpdStreet();
+
             try {
                 $this->pudoService->savePudoOrder($productId, $pudoId, $isoCode, $cartId, $city, $street);
             } catch (Exception $e) {
@@ -460,6 +460,20 @@ class ShipmentService
         $shipmentData = $this->shipmentDataFactory->getShipmentDataByIdOrder($orderId);
 
         return $this->saveShipment($order, $shipmentData, true);
+    }
+
+    /**
+     * @param $orderId
+     * @return array
+     * @throws \PrestaShopDatabaseException
+     * @throws \PrestaShopException
+     */
+    public function formatLabelAndCreateShipmentByOrderId($orderId)
+    {
+        $shipmentData = $this->shipmentDataFactory->getShipmentDataByIdOrder($orderId);
+        $shipmentId = $this->shipmentRepository->getIdByOrderId($orderId);
+
+        return $this->labelPrintingService->printAndSaveLabel($shipmentData, $shipmentId, $orderId);
     }
 
     /**
