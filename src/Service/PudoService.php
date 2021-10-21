@@ -239,17 +239,27 @@ class PudoService
     }
 
     /**
+     * @param $shipmentData
      * @param $idCart
      *
      * @return DPDPudo
      * @throws \PrestaShopDatabaseException
      * @throws \PrestaShopException
      */
-    public function getPudoOrderByCartId($cartId)
+    public function repopulatePudoDataInShipment($shipmentData, $idCart)
     {
-        $pudoOrderId = $this->pudoRepository->getIdByCart($cartId);
+        $pudoOrderId = $this->pudoRepository->getIdByCart($idCart);
+        $selectedPudo = new DPDPudo($pudoOrderId);
 
-        return new DPDPudo($pudoOrderId);
+        if (!$shipmentData->getSelectedPudoId() && !empty($selectedPudo->pudo_id)) {
+            $shipmentData->setSelectedPudoId($selectedPudo->pudo_id);
+        } elseif (!$shipmentData->getSelectedPudoIsoCode() && !empty($selectedPudo->country_code)) {
+            $shipmentData->setSelectedPudoIsoCode($selectedPudo->country_code);
+        } elseif (!$shipmentData->getCity() && !empty($selectedPudo->city)) {
+            $shipmentData->setCity($selectedPudo->city);
+        } elseif (!$shipmentData->getDpdStreet() && !empty($selectedPudo->street)) {
+            $shipmentData->setDpdStreet($selectedPudo->street);
+        }
     }
 
     public function saveSelectedParcel($cartId, $city, $street, $countryCode, $idCarrier)
