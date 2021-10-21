@@ -1276,6 +1276,7 @@ class DPDBaltics extends CarrierModule
                         'route' => 'dpdbaltics_save_and_download_printed_label_order_list',
                         'route_param_name' => 'orderId',
                         'route_param_field' => 'id_order',
+                        'is_label_download' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
                         'confirm_message' => $this->l('Would you like to print shipping label?'),
                         'accessibility_checker' => $this->getModuleContainer()->get('invertus.dpdbaltics.grid.row.print_accessibility_checker'),
                     ])
