@@ -19,7 +19,6 @@ class LabelPrintingService
      * @var DPDBaltics
      */
     private $module;
-
     /**
      * @var ShipmentApiService
      */
@@ -28,7 +27,6 @@ class LabelPrintingService
      * @var ExceptionService
      */
     private $exceptionService;
-
     /**
      * @var Logger
      */

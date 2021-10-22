@@ -2,7 +2,7 @@
     <div class="row form-group">
         <div class="col-lg-5 col-12 ">
             <p class="form-control-label">{l s='This a phone number that will be used for deliveries' mod='dpdbaltics'}</p></div>
-        <div class="col-lg-3 col-4 col-sm-2 dpd-input-wrapper dpd-select-wrapper hasValue small-padding-sm-right css-dpd-phone-prefix">
+        <div class="col-lg-3 col-4 col-sm-3 dpd-input-wrapper dpd-select-wrapper hasValue small-padding-sm-right css-dpd-phone-prefix">
             <select
                     class="chosen-select form-control form-control-chosen"
                     name="dpd-phone-area"

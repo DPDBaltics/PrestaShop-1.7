@@ -239,17 +239,17 @@ class PudoService
     }
 
     /**
-     * @param $shipmentData
-     * @param $idCart
+     * @param ShipmentData $shipmentData
+     * @param integer $idCart
      *
-     * @return DPDPudo
+     * @return ShipmentData
      * @throws \PrestaShopDatabaseException
      * @throws \PrestaShopException
      */
     public function repopulatePudoDataInShipment($shipmentData, $idCart)
     {
         $pudoOrderId = $this->pudoRepository->getIdByCart($idCart);
-        $selectedPudo = new DPDPudo($pudoOrderId);
+        $selectedPudo = $this->pudoRepository->getDPDPudo($pudoOrderId);
 
         if (!$shipmentData->getSelectedPudoId() && !empty($selectedPudo->pudo_id)) {
             $shipmentData->setSelectedPudoId($selectedPudo->pudo_id);
@@ -260,6 +260,8 @@ class PudoService
         } elseif (!$shipmentData->getDpdStreet() && !empty($selectedPudo->street)) {
             $shipmentData->setDpdStreet($selectedPudo->street);
         }
+
+        return $shipmentData;
     }
 
     public function saveSelectedParcel($cartId, $city, $street, $countryCode, $idCarrier)

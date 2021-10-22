@@ -382,7 +382,7 @@ class ShipmentService
             $productId = $shipmentData->getProduct();
 
             //Fills up missing data(BUG fix for missing pudo ID while creating label)
-            $this->pudoService->repopulatePudoDataInShipment($shipmentData, $cartId);
+            $shipmentData = $this->pudoService->repopulatePudoDataInShipment($shipmentData, $cartId);
 
             $pudoId = $shipmentData->getSelectedPudoId();
             $isoCode = $shipmentData->getSelectedPudoIsoCode();

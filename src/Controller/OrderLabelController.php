@@ -31,9 +31,9 @@ class OrderLabelController extends FrameworkBundleAdminController
      *
      * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      *
-     * @param $shipmentId
-     * @param $labelFormat
-     * @param $labelPosition
+     * @param int $shipmentId
+     * @param string $labelFormat
+     * @param string $labelPosition
      *
      * @return Response
      */
@@ -57,8 +57,7 @@ class OrderLabelController extends FrameworkBundleAdminController
     /**
      *
      * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
-     * @param $orderId
-     * @param $isPrint
+     * @param integer $orderId
      * @return Response
      */
     public function saveAndPrintLabelOrderViewAction($orderId)
@@ -83,7 +82,7 @@ class OrderLabelController extends FrameworkBundleAdminController
      *
      * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      *
-     * @param int $orderId
+     * @param integer $orderId
      *
      * @return Response
      */
