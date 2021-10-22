@@ -27,5 +27,3 @@ dpdbaltics_save_and_download_printed_label_order_view:
   defaults:
     _controller: Invertus\dpdBaltics\Controller\OrderLabelController::saveAndPrintLabelOrderViewAction
     _legacy_controller: AdminOrders
-  requirements:
-    orderId: \d+
