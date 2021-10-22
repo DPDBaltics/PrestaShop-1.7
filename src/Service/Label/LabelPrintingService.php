@@ -112,8 +112,7 @@ class LabelPrintingService
             return $response;
         }
 
-        //Sets pudo ID from response
-        //TODO could be related by missing pudo here
+        //Sets pudo terminal from response
         $shipment = new DPDShipment($shipmentId);
         $shipment->pl_number = $shipmentCreationResponse->getPlNumbersAsString();
         try {

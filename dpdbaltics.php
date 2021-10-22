@@ -932,20 +932,9 @@ class DPDBaltics extends CarrierModule
                 ]);
             }
         }
-        //TODO refactor this functionality
-        $labePrintAndSaveUrl = Link::getUrlSmarty(array(
-            'entity' => 'sf',
-            'route' => 'dpdbaltics_save_and_download_printed_label_order_list',
-            'sf-params' => array(
-                'orderId' => $order->id,
-            )
-        ));
 
         $tplVars = [
             'dpdLogoUrl' => $this->getPathUri() . 'views/img/DPDLogo.gif',
-            'print_and_save_url' => $labePrintAndSaveUrl,
-            'is_ps_above_177' => Config::isPrestashopVersionAbove177(),
-            'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
             'shipment' => $shipment,
             'testOrder' => $shipment->is_test,
             'total_products' => 1,
