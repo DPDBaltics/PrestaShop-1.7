@@ -58,7 +58,7 @@
 - Vendor zip updated, port removed from api
 - Map fix, do not load map script when off
 - Bugfix map does not load when address is changed
-## [3.2.7] - 2021-08-30
+## [3.2.7] - 2021-10-22
 ### Changed
 - Import parcels function changed on cron parcel update, take countries only from zone range functionality added.
 - Shipment price bug fix when product customizations are used
@@ -68,3 +68,7 @@
 - Bugfix, when carrier cannot be changed in back office order view and label is not printed
 - Bugfix, when order is using voucher, recalculate parcel total to match order total(shipping discount excluded)
 - Feature change, remove cache from symfony container compilation(fixes problems for clients which does not have permissions for folder write inside module)
+- Print label changes on old prestashop versions(do not open new tab when download option selected)
+- Shipment creation and label print rewrok for prestashop versions above 177, use of symfony routing to trigger label service
+- DPD log message improvements on shipment creation, log errors while creating shipment and printing labels
+- Missing pudo ID fix, when parcel is not reselected in frontend

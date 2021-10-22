@@ -98,6 +98,7 @@ services:
     - '@invertus.dpdbaltics.factory.shipment_data_factory'
     - '@invertus.dpdbaltics.service.order_service'
     - '@invertus.dpdbaltics.validate.carrier.carrier_update_validate'
+    - '@invertus.dpdbaltics.logger.logger'
 
   invertus.dpdbaltics.service.label.label_printing_service:
     class: 'Invertus\dpdBaltics\Service\Label\LabelPrintingService'
@@ -105,6 +106,12 @@ services:
     - '@dpdbaltics'
     - '@invertus.dpdbaltics.service.api.shipment_api_service'
     - '@invertus.dpdbaltics.service.exception.exception_service'
+    - '@invertus.dpdbaltics.logger.logger'
+
+  invertus.dpdbaltics.service.label.label_url_formatter:
+    class: 'Invertus\dpdBaltics\Service\Label\LabelUrlFormatter'
+    arguments:
+      - '@invertus.dpdbaltics.adapter.link_adapter'
 
   invertus.dpdbaltics.service.address.receiver_address_service:
     class: 'Invertus\dpdBaltics\Service\Address\ReceiverAddressService'

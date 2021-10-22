@@ -4,3 +4,6 @@ services:
 
   invertus.dpdbaltics.adapter.zone_adapter:
     class: 'Invertus\dpdBaltics\Adapter\ZoneAdapter'
+
+  invertus.dpdbaltics.adapter.link_adapter:
+    class: 'Invertus\dpdBaltics\Adapter\LinkAdapter'

@@ -2,9 +2,13 @@
 
 namespace Invertus\dpdBaltics\Controller;
 
+use Invertus\dpdBaltics\Converter\FormDataConverter;
+use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
 use Invertus\dpdBaltics\Service\ShipmentService;
+use Order;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tools;
 
@@ -23,15 +27,66 @@ class OrderLabelController extends FrameworkBundleAdminController
     }
 
     /**
-     * Generates print label PDF for given dpd carrier order
+     * Generates print label for given dpd order(when order shipment is already saved)
      *
      * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      *
-     * @param int $orderId
+     * @param int $shipmentId
+     * @param string $labelFormat
+     * @param string $labelPosition
      *
      * @return Response
      */
-    public function printLabelAction($orderId)
+    public function printLabelOrderViewAction($shipmentId, $labelFormat, $labelPosition)
+    {
+        /** @var LabelPrintingService $shipmentService */
+        $printingService = $this->module->getModuleContainer('invertus.dpdbaltics.service.label.label_printing_service');
+        $response = $printingService->setLabelOptions($shipmentId, $labelFormat, $labelPosition);
+
+        if (!$response['status'] || !$response['id_dpd_shipment']) {
+            $this->addFlash('error', $response['message']);
+
+            return $this->redirectToRoute('admin_orders_index');
+        }
+        $this->module->printLabel($response['id_dpd_shipment']);
+
+        //This part should never be reached
+        exit;
+    }
+
+    /**
+     *
+     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
+     * @param integer $orderId
+     * @return Response
+     */
+    public function saveAndPrintLabelOrderViewAction($orderId)
+    {
+        /** @var ShipmentService $shipmentService */
+        $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
+        $response = $shipmentService->formatLabelAndCreateShipmentByOrderId($orderId);
+
+        if (!$response['status'] || !$response['id_dpd_shipment']) {
+            $this->addFlash('error', $response['message']);
+
+            return $this->redirectToRoute('admin_orders_index');
+        }
+        $this->module->printLabel($response['id_dpd_shipment']);
+
+        //This part should never be reached
+        exit;
+    }
+
+    /**
+     * Generates and prints label in order list
+     *
+     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
+     *
+     * @param integer $orderId
+     *
+     * @return Response
+     */
+    public function printAndSaveLabelFromOrderListAction($orderId)
     {
         /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
@@ -49,7 +104,7 @@ class OrderLabelController extends FrameworkBundleAdminController
     }
 
     /**
-     * Generates print labels PDF for given dpd carrier orders
+     * Generates print multiple lables in order list
      *
      * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute="admin_orders_index")
      *
@@ -57,7 +112,7 @@ class OrderLabelController extends FrameworkBundleAdminController
      *
      * @return Response
      */
-    public function printMultipleLabelsAction()
+    public function printMultipleLabelsFromOrderListAction()
     {
         $orderIds = Tools::getValue('order_orders_bulk');
 

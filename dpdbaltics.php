@@ -689,11 +689,19 @@ class DPDBaltics extends CarrierModule
             $orderId = Tools::getValue('id_order');
             $shipment = $this->getShipment($orderId);
             $baseUrl = $this->context->link->getAdminBaseLink();
+            $isAbove177 = Config::isPrestashopVersionAbove177();
+
+            /** @var \Invertus\dpdBaltics\Service\Label\LabelUrlFormatter $labelUrlService */
+            $labelUrlService = $isAbove177 ? $this->getModuleContainer('invertus.dpdbaltics.service.label.label_url_formatter') : null;
+
             Media::addJsDef(
                 [
+                    'print_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelPrintUrl() : null,
+                    'print_and_save_label_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelSaveAndPrintUrl() : null,
                     'shipment' => $shipment,
                     'id_order' => $orderId,
                     'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
+                    'is_ps_above_177' => Config::isPrestashopVersionAbove177(),
                     'loader_url' => "{$baseUrl}modules/dpdbaltics/views/templates/admin/loader/loader.html"
                 ]
             );
@@ -1237,7 +1245,7 @@ class DPDBaltics extends CarrierModule
                 (new SubmitBulkActionCustom('print_multiple_labels'))
                 ->setName($this->l('Print multiple labels'))
                 ->setOptions([
-                    'submit_route' => 'dpdbaltics_download_multiple_printed_labels',
+                    'submit_route' => 'dpdbaltics_save_and_download_printed_labels_order_list_multiple',
                 ])
             )
         ;
@@ -1254,9 +1262,10 @@ class DPDBaltics extends CarrierModule
                     ->setName($this->l('Print label(s) from DPD system. Once label is saved you won\'t be able to modify contents of shipments'))
                     ->setIcon('print')
                     ->setOptions([
-                        'route' => 'dpdbaltics_download_printed_label',
+                        'route' => 'dpdbaltics_save_and_download_printed_label_order_list',
                         'route_param_name' => 'orderId',
                         'route_param_field' => 'id_order',
+                        'is_label_download' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
                         'confirm_message' => $this->l('Would you like to print shipping label?'),
                         'accessibility_checker' => $this->getModuleContainer()->get('invertus.dpdbaltics.grid.row.print_accessibility_checker'),
                     ])

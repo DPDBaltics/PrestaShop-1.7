@@ -38,7 +38,11 @@ $(document).ready(function () {
                     var location = window.location +
                         '&print_label=1' +
                         '&id_dpd_shipment=' + encodeURIComponent(response.id_dpd_shipment);
-                    window.open(location, '_blank');
+                    if (!is_label_download_option) {
+                        window.open(location, '_blank');
+                    } else {
+                        window.location.href = location;
+                    }
                     hideMessageBoxPrinted()
                 }
 

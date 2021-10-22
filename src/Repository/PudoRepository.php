@@ -13,6 +13,7 @@
 namespace Invertus\dpdBaltics\Repository;
 
 use DbQuery;
+use DPDPudo;
 
 class PudoRepository extends AbstractEntityRepository
 {
@@ -35,5 +36,15 @@ class PudoRepository extends AbstractEntityRepository
         $query->where('c.`id_cart`="' . (int)$cartId . '"');
 
         return $this->db->getValue($query);
+    }
+
+    /**
+     * @param integer $pudoOrderId
+     *
+     * @return DPDPudo
+     */
+    public function getDPDPudo($pudoOrderId)
+    {
+        return new DPDPudo($pudoOrderId);
     }
 }
