@@ -77,8 +77,6 @@ class DPDBaltics extends CarrierModule
     const ADMIN_COURIER_REQUEST_CONTROLLER = 'AdminDPDBalticsCourierRequest';
     const ADMIN_AJAX_ON_BOARD_CONTROLLER = 'AdminDPDAjaxOnBoard';
 
-    const DISABLE_CACHE = false;
-
     /**
      * Symfony DI Container
      **/
@@ -663,23 +661,13 @@ class DPDBaltics extends CarrierModule
 
     private function compile()
     {
-        $containerCache = $this->getLocalPath() . 'var/cache/container.php';
-        $containerConfigCache = new ConfigCache($containerCache, self::DISABLE_CACHE);
-        $containerClass = get_class($this) . 'Container';
-        if (!$containerConfigCache->isFresh()) {
-            $containerBuilder = new ContainerBuilder();
-            $locator = new FileLocator($this->getLocalPath() . 'config');
-            $loader = new YamlFileLoader($containerBuilder, $locator);
-            $loader->load('config.yml');
-            $containerBuilder->compile();
-            $dumper = new PhpDumper($containerBuilder);
-            $containerConfigCache->write(
-                $dumper->dump(['class' => $containerClass]),
-                $containerBuilder->getResources()
-            );
-        }
-        require_once $containerCache;
-        $this->moduleContainer = new $containerClass();
+        $containerBuilder = new ContainerBuilder();
+        $locator = new FileLocator($this->getLocalPath() . 'config');
+        $loader = new YamlFileLoader($containerBuilder, $locator);
+        $loader->load('config.yml');
+        $containerBuilder->compile();
+
+        $this->moduleContainer = $containerBuilder;
     }
 
     public function hookActionAdminControllerSetMedia($params)
@@ -714,11 +702,21 @@ class DPDBaltics extends CarrierModule
 
             $orderId = Tools::getValue('id_order');
             $shipment = $this->getShipment($orderId);
+            $baseUrl = $this->context->link->getAdminBaseLink();
+            $isAbove177 = Config::isPrestashopVersionAbove177();
+
+            /** @var \Invertus\dpdBaltics\Service\Label\LabelUrlFormatter $labelUrlService */
+            $labelUrlService = $isAbove177 ? $this->getModuleContainer('invertus.dpdbaltics.service.label.label_url_formatter') : null;
 
             Media::addJsDef(
                 [
+                    'print_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelPrintUrl() : null,
+                    'print_and_save_label_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelSaveAndPrintUrl() : null,
                     'shipment' => $shipment,
-                    'id_order' => $orderId
+                    'id_order' => $orderId,
+                    'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
+                    'is_ps_above_177' => Config::isPrestashopVersionAbove177(),
+                    'loader_url' => "{$baseUrl}modules/dpdbaltics/views/templates/admin/loader/loader.html"
                 ]
             );
         }
@@ -1261,7 +1259,7 @@ class DPDBaltics extends CarrierModule
                 (new SubmitBulkActionCustom('print_multiple_labels'))
                 ->setName($this->l('Print multiple labels'))
                 ->setOptions([
-                    'submit_route' => 'dpdbaltics_download_multiple_printed_labels',
+                    'submit_route' => 'dpdbaltics_save_and_download_printed_labels_order_list_multiple',
                 ])
             )
         ;
@@ -1278,9 +1276,10 @@ class DPDBaltics extends CarrierModule
                     ->setName($this->l('Print label(s) from DPD system. Once label is saved you won\'t be able to modify contents of shipments'))
                     ->setIcon('print')
                     ->setOptions([
-                        'route' => 'dpdbaltics_download_printed_label',
+                        'route' => 'dpdbaltics_save_and_download_printed_label_order_list',
                         'route_param_name' => 'orderId',
                         'route_param_field' => 'id_order',
+                        'is_label_download' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
                         'confirm_message' => $this->l('Would you like to print shipping label?'),
                         'accessibility_checker' => $this->getModuleContainer()->get('invertus.dpdbaltics.grid.row.print_accessibility_checker'),
                     ])
@@ -1309,13 +1308,13 @@ class DPDBaltics extends CarrierModule
         if (Tools::isSubmit('print_label')) {
             $idShipment = Tools::getValue('id_dpd_shipment');
             $this->printLabel($idShipment);
-            return;
+            exit;
         }
 
         if (Tools::isSubmit('print_multiple_labels')) {
             $shipmentIds = json_decode(Tools::getValue('shipment_ids'));
             $this->printMultipleLabels($shipmentIds);
-            return;
+            exit;
         }
     }
 }

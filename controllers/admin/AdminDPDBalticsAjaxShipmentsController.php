@@ -48,6 +48,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         $idOrder = Tools::getValue('id_order');
         $order = new Order($idOrder);
         $cartId = Tools::getValue('id_cart');
+        $isAbove177 = Config::isPrestashopVersionAbove177();
 
         /** @var FormDataConverter $formDataConverter */
         $formDataConverter = $this->module->getModuleContainer('invertus.dpdbaltics.converter.form_data_converter');
@@ -67,19 +68,21 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $this->updateAddressBlock($order, $idAddressDelivery);
                 break;
             case 'print':
+                //Prevent printing in old controller, set printing from Symfony service, as it does not cause corrupted PDF issue
+                if ($isAbove177) {
+                    $this->returnResponse(['status' => true]);
+                }
                 $shipmentId = (int)Tools::getValue('shipment_id');
                 $labelFormat = Tools::getValue('labelFormat');
                 $labelPosition = Tools::getValue('labelPosition');
                 $this->returnResponse($this->printLabel($shipmentId, $labelFormat, $labelPosition));
                 break;
             case 'save':
-                $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
-                $this->returnResponse($this->saveShipment($order, $shipmentData, false));
-                break;
             case 'save_and_print':
                 $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
-                $this->saveShipment($order, $shipmentData, false);
-                $this->returnResponse($this->printLabelFromList($idOrder));
+                //Prevent printing in old controller, set printing from Symfony service, as it does not cause corrupted PDF issue
+                $isPrint = (bool) $action == 'save_and_print' && !$isAbove177;
+                $this->returnResponse($this->saveShipment($order, $shipmentData, $isPrint));
                 break;
             case 'searchPudoServices':
                 $cityName = Tools::getValue('city_name');

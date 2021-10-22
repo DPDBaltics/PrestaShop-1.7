@@ -95,15 +95,21 @@ $(document).ready(function () {
      */
     function processSavingEvent(event) {
         event.preventDefault();
-
+        //TODO check if download is used, if used do not open new window, other case, open blank
         var $clickedBtn = $(this);
         var action = $clickedBtn.data('action');
         var data = $(this).closest('form').serializeArray();
+        var labelWindow;
         addButtonLoadingAnimation();
+        if (!is_label_download_option && is_ps_above_177 && action != 'save') {
+            labelWindow = window.open(loader_url, '_blank');
+        }
+
         $.ajax(dpdAjaxShipmentsUrl, {
             method: 'POST',
             data: {
                 id_order: id_order,
+                async: false,
                 id_address_delivery: parseInt($('.js-recipient-address-select option:selected').val()),
                 action: action,
                 data: data,
@@ -113,7 +119,6 @@ $(document).ready(function () {
                     response = JSON.parse(response);
                     removeButtonLoadingAnimation();
                     DPDhideError();
-
                     if (response.status == false) {
                         DPDshowError(response.message);
 
@@ -140,14 +145,27 @@ $(document).ready(function () {
                         hideShipmentError(response.id_dpd_shipment);
 
                     }
-
                     if ('save_and_print' === $clickedBtn.data('action')) {
+
                         var location = window.location +
                             '&print_label=1' +
                             '&id_dpd_shipment=' + encodeURIComponent(response.id_dpd_shipment);
 
+                        if (is_ps_above_177 && action === 'save_and_print' && print_and_save_label_url) {
+                            location = print_and_save_label_url
+                                .replace('orderId_', id_order);
+                        }
                         disableInputs(false);
-                        window.open(location, '_blank');
+
+                        if (!is_label_download_option && !is_ps_above_177) {
+                            labelWindow = window.open(loader_url, '_blank');
+                        }
+
+                        if (!is_label_download_option && action !== 'save') {
+                            labelWindow.location.href = location;
+                        } else {
+                            window.location.href = location;
+                        }
                         return;
                     }
 
@@ -157,6 +175,9 @@ $(document).ready(function () {
                 } catch (e) {
                     DPDshowError(dpdMessages.unexpectedError);
                     removeButtonLoadingAnimation();
+                    if (!is_label_download_option) {
+                        labelWindow.html('<div class="alert alert-danger">dpdMessages.unexpectedError</div>')
+                    }
                 }
             }
         });
@@ -229,13 +250,18 @@ $(document).ready(function () {
         var shipmentId = $clickedBtn.data('shipment-id');
         var labelFormat = $('select[name="label_format"]').val();
         var labelPosition = $('input[name="label_position"]').val();
+        var labelWindow;
 
+        if (!is_label_download_option && is_ps_above_177) {
+            labelWindow = window.open(loader_url, '_blank');
+        }
         $.ajax(dpdAjaxShipmentsUrl, {
             method: 'POST',
             data: {
                 id_order: id_order,
                 shipment_id: shipmentId,
                 action: action,
+                async: false,
                 labelFormat: labelFormat,
                 labelPosition: labelPosition
             },
@@ -246,17 +272,38 @@ $(document).ready(function () {
                     DPDshowError(dpdMessages.unexpectedError);
                     return;
                 }
+
                 if (response.status) {
                     var location = window.location +
                         '&print_label=1' +
                         '&id_dpd_shipment=' + encodeURIComponent(shipmentId);
+                    if (is_ps_above_177 && action === 'print' && print_url) {
+                        location = print_url
+                            .replace('shipmentId_', shipmentId)
+                            .replace('labelFormat_', labelFormat)
+                            .replace('labelPosition_', labelPosition);
+                    } else if (is_ps_above_177 && action === 'save_and_print' && print_and_save_label_url) {
+                        location = print_and_save_label_url
+                            .replace('orderId_', id_order)
+                            .replace('isPrint_', true)
+                    }
 
                     disableInputs(false);
-                    window.open(location);
+                    if (!is_label_download_option && !is_ps_above_177) {
+                        labelWindow = window.open(loader_url, '_blank');
+                    }
+
+                    if (!is_label_download_option && action !== 'save') {
+                        labelWindow.location.href = location;
+                    } else {
+                        window.location.href = location;
+                    }
 
                 } else {
                     DPDshowError(response.message);
-
+                    if (!is_label_download_option) {
+                        labelWindow.html('<div class="alert alert-danger">dpdMessages.unexpectedError</div>')
+                    }
                 }
             }
         })
