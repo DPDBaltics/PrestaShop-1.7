@@ -49,7 +49,7 @@ function saveSelectedPhoneNumber(phoneNumber, phoneArea) {
             }
         },
         error: function (response) {
-
+            console.error('Errror while saving DPD phone number')
         }
     });
 }

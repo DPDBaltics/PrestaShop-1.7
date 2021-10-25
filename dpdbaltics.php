@@ -206,7 +206,7 @@ class DPDBaltics extends CarrierModule
             $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/order-input.css');
             /** @var PaymentService $paymentService */
             $paymentService = $this->getModuleContainer('invertus.dpdbaltics.service.payment.payment_service');
-
+            $isPickupMap = Configuration::get(\Invertus\dpdBaltics\Config\Config::PICKUP_MAP);
             $cart = Context::getContext()->cart;
             $paymentService->filterPaymentMethods($cart);
             $paymentService->filterPaymentMethodsByCod($cart);
@@ -216,6 +216,7 @@ class DPDBaltics extends CarrierModule
             Media::addJsDef([
                 'pudoCarriers' => Tools::jsonEncode($productRepo->getPudoProducts()),
                 'currentController' => $currentController,
+                'is_pickup_map'  => $isPickupMap,
                 'id_language' => $this->context->language->id,
                 'id_shop' => $this->context->shop->id,
                 'dpdAjaxLoaderPath' => $this->getPathUri() . 'views/img/ajax-loader-big.gif',
@@ -233,7 +234,7 @@ class DPDBaltics extends CarrierModule
                     'position' => 150
                 ]
             );
-            if (Configuration::get(\Invertus\dpdBaltics\Config\Config::PICKUP_MAP)) {
+            if ($isPickupMap) {
                 /** @var GoogleApiService $googleApiService */
                 $googleApiService = $this->getModuleContainer('invertus.dpdbaltics.service.google_api_service');
                 $this->context->controller->registerJavascript(

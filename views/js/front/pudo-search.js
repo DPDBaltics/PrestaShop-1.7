@@ -39,7 +39,6 @@ $( document ).ajaxComplete(function( event, request, settings ) {
 
     var applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
     if (!$.inArray(currentController, applicableControllers)) {
-
         return;
     }
     if (!settings.url) {
@@ -47,17 +46,17 @@ $( document ).ajaxComplete(function( event, request, settings ) {
     }
 
     var method = DPDgetUrlParam('action', settings.url)
-    if (!method) {
-        method = DPDgetUrlParam('module', settings.url);
-    }
+
     if ( method === 'selectDeliveryOption') {
+        updateStreet()
     }
 
-    if (method === 'supercheckout') {
-        if (ajaxTriggered === false) {
-            updateStreet();
-            ajaxTriggered = true;
-        }
+    if (!method) {
+        method = DPDgetUrlParam('method', settings.data)
+    }
+
+    if (method === 'updateCarrier') {
+        updateStreet();
     }
 });
 
