@@ -26,10 +26,10 @@ class ParcelTrackingUrlFactory
         if (in_array($currentCountry, Config::VALID_TRACKING_URL_COUNTRIES, true)) {
             $countryIsoCode = StringUtility::toLowerCase($currentCountry);
 
-            return "https://www.dpdgroup.com/{$countryIsoCode}/mydpd/tmp/basicsearch?lang={$countryIsoCode}&parcel_id={$parcelNumber}";
+            return "https://www.dpdgroup.com/{$countryIsoCode}/mydpd/my-parcels/track?lang={$countryIsoCode}&parcelNumber={$parcelNumber}";
         }
 
-        return "https://www.dpdgroup.com/lt/mydpd/tmp/basicsearch?lang=en&parcel_id={$parcelNumber}";
+        return "https://www.dpdgroup.com/lt/mydpd/my-parcels/track?lang=en&parcelNumber={$parcelNumber}";
     }
 
     public function createTrackingUrls($cart, $parcelNumbers)
@@ -40,7 +40,7 @@ class ParcelTrackingUrlFactory
         $urls = [];
 
         foreach ($parcelNumbers as $parcelNumber) {
-            $urls[] = $this->createTrackingUrl($cart, $parcelNumber);
+            $urls[$parcelNumber] = $this->createTrackingUrl($cart, $parcelNumber);
         }
 
         return $urls;
