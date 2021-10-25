@@ -13,6 +13,8 @@ $( document ).ajaxComplete(function( event, request, settings ) {
     var method = DPDgetUrlParam('method', settings.data)
         console.log(method)
     if (method == 'updateCheckoutBehaviour') {
+        //Handles phone number on payment method load on supercheckout
+        handlePhoneNumber($('.dpd-phone-block'));
         $.ajax(dpdHookAjaxUrl, {
             type: 'POST',
             data: {
