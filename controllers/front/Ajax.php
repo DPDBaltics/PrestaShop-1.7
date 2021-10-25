@@ -103,6 +103,30 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                 $pudoId = Tools::getValue('id_pudo');
                 $this->savePudoPickupPoint($pudoId, $countryCode);
                 break;
+            case 'validateOrderCustom':
+
+                $response = false;
+                /** @var \Invertus\dpdBaltics\Validate\Carrier\PudoValidate $pudoValidate */
+                $pudoValidator = $this->module->getModuleContainer('invertus.dpdbaltics.validate.carrier.pudo_validate');
+                /** @var  \Invertus\dpdBaltics\Validate\Phone\PhoneNumberValidator $phoneNumberValidator */
+                $phoneNumberValidator = $this->module->getModuleContainer('invertus.dpdbaltics.validate.phone.phone_number_validator');
+                try {
+                    $carrier = new Carrier($carrierId);
+                    $cartId = Context::getContext()->cart->id;
+
+                    $phoneNumberValidator->isPhoneAddedInOrder($cartId);
+                    $pudoValidator->isPudoSelected($cartId, $carrier->id_reference);
+                } catch (DpdCarrierException $exception) {
+                    $this->messages[] = $exception->getMessage();
+                    $this->ajaxDie(json_encode(
+                        [
+                            'status' => false,
+                            'template' => $this->getMessageTemplate('danger'),
+                        ]
+                    ));
+                }
+                $this->ajaxDie(json_encode(['status' => true]));
+                break;
             case 'updateStreetSelect':
                 $city = Tools::getValue('city');
                 $this->updateStreetSelect($countryCode, $city);

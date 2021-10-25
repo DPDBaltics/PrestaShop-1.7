@@ -197,6 +197,15 @@ class DPDBaltics extends CarrierModule
                 ]
             );
 
+            $this->context->controller->registerJavascript(
+                'dpdbaltics-supercheckout',
+                'modules/' . $this->name . '/views/js/front/modules/supercheckout.js',
+                [
+                    'position' => 'bottom',
+                    'priority' => 130
+                ]
+            );
+
         }
 
         if (in_array($currentController, $applicableControlelrs, true)) {

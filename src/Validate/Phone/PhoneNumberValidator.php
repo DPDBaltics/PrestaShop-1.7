@@ -4,6 +4,7 @@ namespace Invertus\dpdBaltics\Validate\Phone;
 
 use DPDBaltics;
 use Invertus\dpdBaltics\Exception\DpdCarrierException;
+use Invertus\dpdBaltics\Repository\PhoneRepository;
 use Invertus\dpdBaltics\Util\NumberUtility;
 use Invertus\dpdBaltics\Util\StringUtility;
 
@@ -12,9 +13,12 @@ class PhoneNumberValidator
 
     private $module;
 
-    public function __construct(DPDBaltics $module)
+    private $phoneRepository;
+
+    public function __construct(DPDBaltics $module, PhoneRepository $phoneRepository)
     {
         $this->module = $module;
+        $this->phoneRepository = $phoneRepository;
     }
 
     public function isPhoneValid($prefix, $phone)
@@ -46,6 +50,14 @@ class PhoneNumberValidator
        }
 
         return true;
+    }
+
+    public function isPhoneAddedInOrder($idCart)
+    {
+        $id = $this->phoneRepository->getOrderPhoneIdByCartId($idCart);
+        $dpdPhone = $this->phoneRepository->findDpdOrderPhone($id);
+
+        return $this->isPhoneValid($dpdPhone->phone_area, $dpdPhone->phone);
     }
 }
 

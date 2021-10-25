@@ -5,6 +5,7 @@ namespace Invertus\dpdBaltics\Validate\Carrier;
 use DPDBaltics;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\PudoRepository;
+use PrestaShop\PrestaShop\Core\Foundation\IoC\Exception;
 
 class PudoValidate
 {
@@ -40,5 +41,12 @@ class PudoValidate
         }
 
         return true;
+    }
+
+    public function isPudoSelected($cartId, $carrierReference)
+    {
+        if (!$this->validatePickupPoints($cartId, $carrierReference)) {
+            throw new Exception($this->module->l('Pudo point is missing, please select valid terminal point'));
+        }
     }
 }

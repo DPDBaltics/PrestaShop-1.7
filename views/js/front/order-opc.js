@@ -56,6 +56,5 @@ function saveSelectedPhoneNumber(phoneNumber, phoneArea) {
 
 function DPDdisplayMessage(parent, template) {
     var $messageContainer = parent.find('.dpd-message-container');
-    console.log(template);
     $messageContainer.replaceWith(template);
 }

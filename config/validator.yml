@@ -37,3 +37,4 @@ services:
     class: 'Invertus\dpdBaltics\Validate\Phone\PhoneNumberValidator'
     arguments:
       - '@dpdbaltics'
+      - '@invertus.dpdbaltics.repository.phone_repository'
