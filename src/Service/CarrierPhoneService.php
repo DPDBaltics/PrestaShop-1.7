@@ -85,6 +85,7 @@ class CarrierPhoneService
 
         $phonePrefix = $this->context->country->call_prefix;
         $this->context->controller->addJqueryPlugin('chosen');
+        //Formats phone number, removes prefix when added on main field
         $phone = $this->removePhonePrefix($phone, $phonePrefix);
         $this->context->smarty->assign(
             [
@@ -109,14 +110,14 @@ class CarrierPhoneService
         } else {
             $dpdOrderPhone = new DPDOrderPhone($idDpdOrderPhone);
         }
-
+        //Formats phone number, removes prefix when added on main field
         $dpdOrderPhone->phone = $this->removePhonePrefix($dpdPhone, $dpdPhoneCode);
         $dpdOrderPhone->phone_area = $dpdPhoneCode;
         $dpdOrderPhone->id_cart = $idCart;
 
         if (!$dpdOrderPhone->save()) {
            throw new DpdCarrierException(
-               'Could not save phone number',
+               $this->module->l('Could not save phone number'),
                500
            );
         }

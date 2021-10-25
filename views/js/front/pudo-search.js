@@ -1,5 +1,3 @@
-var ajaxTriggered = false;
-
 $(document).ready(function () {
     if ($('input[name="saved_pudo_id"]').val() === undefined) {
         updateStreet();
