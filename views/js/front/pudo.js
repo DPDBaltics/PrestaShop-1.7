@@ -452,6 +452,7 @@ function initMap(coordinates, loadMarkers, selectedPudoId, firstLoad, referenceI
  * @param {boolean} enableBounding - sets the zoom level according to points
  * @param {string|boolean} selectedPudoId
  * @param {boolean} removeMarkers
+ * @param firstLoad
  */
 function DPDinitMarkers(map, infoWindow, coordinates, enableBounding, selectedPudoId, removeMarkers, firstLoad) {
     var $parent = map.getDiv().closest('.panel-body');
@@ -467,21 +468,22 @@ function DPDinitMarkers(map, infoWindow, coordinates, enableBounding, selectedPu
 
     var $pudoServices = $($parent).find('.dpd-services-block .list-group-item');
     var bounds = new google.maps.LatLngBounds();
+
     $pudoServices.each(function () {
         var extraInfoHtml = getListGroupItemExtraInfoHtml($(this), selectedPudoId);
         var latitude = parseFloat($(this).find('input[name="pudo-lat"]').val());
         var longitude = parseFloat($(this).find('input[name="pudo-lng"]').val());
         var type = $(this).find('input[name="pudo-type"]').val();
-
-        var latlng = new google.maps.LatLng(
-            latitude,
-            longitude
-        );
-
-        var pudoId = $(this).data('listid');
-        DPDcreateMarker(map, infoWindow, latlng, extraInfoHtml, pudoId, selectedPudoId, type);
-        if (enableBounding) {
-            bounds.extend(latlng);
+        if (latitude || longitude) {
+            var latlng = new google.maps.LatLng(
+                latitude,
+                longitude
+            );
+            var pudoId = $(this).data('listid');
+            DPDcreateMarker(map, infoWindow, latlng, extraInfoHtml, pudoId, selectedPudoId, type);
+            if (enableBounding) {
+                bounds.extend(latlng);
+            }
         }
     });
 
