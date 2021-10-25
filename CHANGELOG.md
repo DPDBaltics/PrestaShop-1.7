@@ -81,4 +81,5 @@
 - Shipment creation and label print rewrok for prestashop versions above 177, use of symfony routing to trigger label service
 - DPD log message improvements on shipment creation, log errors while creating shipment and printing labels
 - Missing pudo ID fix, when parcel is not reselected in frontend
+- Parcel tracking email template changed, URL changes, show only parcel number in tracking email template
 

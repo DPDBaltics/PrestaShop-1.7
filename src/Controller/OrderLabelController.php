@@ -5,6 +5,7 @@ namespace Invertus\dpdBaltics\Controller;
 use Invertus\dpdBaltics\Converter\FormDataConverter;
 use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
 use Invertus\dpdBaltics\Service\ShipmentService;
+use Invertus\dpdBaltics\Util\ServerGlobalsUtility;
 use Order;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
@@ -46,6 +47,12 @@ class OrderLabelController extends FrameworkBundleAdminController
         if (!$response['status'] || !$response['id_dpd_shipment']) {
             $this->addFlash('error', $response['message']);
 
+            $redirectLink = ServerGlobalsUtility::getHttpReferer();
+
+            if ($redirectLink) {
+                return $this->redirect($_SERVER['HTTP_REFERER'], 302);
+            }
+
             return $this->redirectToRoute('admin_orders_index');
         }
         $this->module->printLabel($response['id_dpd_shipment']);
@@ -68,6 +75,12 @@ class OrderLabelController extends FrameworkBundleAdminController
 
         if (!$response['status'] || !$response['id_dpd_shipment']) {
             $this->addFlash('error', $response['message']);
+
+            $redirectLink = ServerGlobalsUtility::getHttpReferer();
+
+            if ($redirectLink) {
+                return $this->redirect($_SERVER['HTTP_REFERER'], 302);
+            }
 
             return $this->redirectToRoute('admin_orders_index');
         }
@@ -94,6 +107,12 @@ class OrderLabelController extends FrameworkBundleAdminController
 
         if (!$response['status'] || !$response['id_dpd_shipment']) {
             $this->addFlash('error', $response['message']);
+
+            $redirectLink = ServerGlobalsUtility::getHttpReferer();
+
+            if ($redirectLink) {
+                return $this->redirect($_SERVER['HTTP_REFERER'], 302);
+            }
 
             return $this->redirectToRoute('admin_orders_index');
         }
@@ -127,12 +146,24 @@ class OrderLabelController extends FrameworkBundleAdminController
         if (!$response) {
             $this->addFlash('error', $this->module->l('Could not print labels, bad response'));
 
+            $redirectLink = ServerGlobalsUtility::getHttpReferer();
+
+            if ($redirectLink) {
+                return $this->redirect($_SERVER['HTTP_REFERER'], 302);
+            }
+
             return $this->redirectToRoute('admin_orders_index');
         }
         $shipmentIds = json_decode($response['shipment_ids']);
 
         if (!$response['status'] || empty($shipmentIds)) {
             $this->addFlash('error', $response['message']);
+
+            $redirectLink = ServerGlobalsUtility::getHttpReferer();
+
+            if ($redirectLink) {
+                return $this->redirect($_SERVER['HTTP_REFERER'], 302);
+            }
 
             return $this->redirectToRoute('admin_orders_index');
         }

@@ -20,10 +20,6 @@ dpdbaltics_print_label_order_view:
   defaults:
     _controller: Invertus\dpdBaltics\Controller\OrderLabelController::printLabelOrderViewAction
     _legacy_controller: AdminOrders
-  requirements:
-    shipmentId: \d+
-    labelPosition: LeftTop|LeftDown|RightTop|RightDown
-    labelFormat: A4_PDF|A5_PDF|A6_PDF|ZPL|EPL
 
 dpdbaltics_save_and_download_printed_label_order_view:
   path: /{orderId}/dpdbaltics/save-and-print-label-order-view
@@ -31,5 +27,3 @@ dpdbaltics_save_and_download_printed_label_order_view:
   defaults:
     _controller: Invertus\dpdBaltics\Controller\OrderLabelController::saveAndPrintLabelOrderViewAction
     _legacy_controller: AdminOrders
-  requirements:
-    orderId: \d+
