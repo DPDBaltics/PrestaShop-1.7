@@ -1,8 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
+
 namespace Invertus\dpdBaltics\Util;
+
 
 class StringUtility
 {
@@ -10,4 +11,5 @@ class StringUtility
     {
         return \Tools::strtolower($string);
     }
+
 }

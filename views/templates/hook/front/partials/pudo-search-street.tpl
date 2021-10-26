@@ -6,7 +6,7 @@
         </div>
     </div>
 {else}
-    <div>
+    <div class="dpd-select-wrapper">
         <select name="dpd-street" class="chosen-select form-control-chosen">
             {if !empty($street_list)}
                 {foreach from=$street_list key=company item=street}

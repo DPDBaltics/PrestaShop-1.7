@@ -58,7 +58,8 @@
 - Vendor zip updated, port removed from api
 - Map fix, do not load map script when off
 - Bugfix map does not load when address is changed
-## [3.2.7] - 2021-10-22
+
+## [3.2.7] - 2021-10-25
 ### Changed
 - Import parcels function changed on cron parcel update, take countries only from zone range functionality added.
 - Shipment price bug fix when product customizations are used
@@ -67,9 +68,21 @@
 - Bugfix, when on first load parcel is not selected.
 - Bugfix, when carrier cannot be changed in back office order view and label is not printed
 - Bugfix, when order is using voucher, recalculate parcel total to match order total(shipping discount excluded)
+- Bugfix, mobile view, bad styles fixed
+- Beta version on compatability with SuperCheckout module
+- Render Shipping price even though customer is not logged in functionality added
+- Allow select pudo points if customer is missing(not logged in user)
+- Render select with search(jquery choosen lib) on delivery method select(supercheckout applicable)
+- Setup logic to save phone number dynamically(on ajax event trigger), prevents missing phone number in specific cases
+- Validations added for phone number, while saving
+- Format phone number while saving(removes phone prefix while saving phone number example +370123456789 turns to 123456789 on input field)
+- Initiate logic to handle parcel terminals without address added on prestashop
+- Ajax added to validate missing pudo or phone number on supercheckout module
+- CSS fixes for phone inputs and mobile view
 - Feature change, remove cache from symfony container compilation(fixes problems for clients which does not have permissions for folder write inside module)
 - Print label changes on old prestashop versions(do not open new tab when download option selected)
 - Shipment creation and label print rewrok for prestashop versions above 177, use of symfony routing to trigger label service
 - DPD log message improvements on shipment creation, log errors while creating shipment and printing labels
 - Missing pudo ID fix, when parcel is not reselected in frontend
 - Parcel tracking email template changed, URL changes, show only parcel number in tracking email template
+

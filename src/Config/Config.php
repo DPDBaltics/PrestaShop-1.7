@@ -280,6 +280,13 @@ class Config
         'EN' => 'Same day Delivery',
     ];
 
+    const ERROR_COULD_NOT_SAVE_PHONE_NUMBER = 501;
+    const ERROR_BAD_PHONE_NUMBER_PREFIX = 502;
+    const ERROR_PHONE_EMPTY = 505;
+    const ERROR_PHONE_HAS_INVALID_CHARACTERS = 506;
+    const ERROR_PHONE_HAS_INVALID_LENGTH = 507;
+    const ERROR_INVALID_PUDO_TERMINAL = 508;
+
     public static function getProducts($webServiceCountry = 'EN')
     {
         $collection = new DPDProductInstallCollection();

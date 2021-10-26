@@ -9,6 +9,7 @@ use DPDProduct;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Repository\CodPaymentRepository;
+use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ShipmentCreationRequest;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory;
 use Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler;
@@ -28,15 +29,21 @@ class ShipmentApiService
      * @var ParcelTrackingEmailHandler
      */
     private $emailHandler;
+    /**
+     * @var ParcelShopService
+     */
+    private $parcelShopService;
 
     public function __construct(
         ShipmentCreationFactory $shipmentCreationFactory,
         CodPaymentRepository $codPaymentRepository,
-        ParcelTrackingEmailHandler $emailHandler
+        ParcelTrackingEmailHandler $emailHandler,
+        ParcelShopService $parcelShopService
     ) {
         $this->shipmentCreationFactory = $shipmentCreationFactory;
         $this->codPaymentRepository = $codPaymentRepository;
         $this->emailHandler = $emailHandler;
+        $this->parcelShopService = $parcelShopService;
     }
 
     /**
@@ -56,13 +63,26 @@ class ShipmentApiService
         $phoneNumber = $shipmentData->getPhoneArea() . $shipmentData->getPhone();
         $dpdProduct = new DPDProduct($shipmentData->getProduct());
         $parcelType = $dpdProduct->getProductReference();
-
+        $country = Country::getIsoById($address->id_country);
         $postCode = preg_replace('/[^0-9]/', '', $address->postcode);
+        $hasAddressFields = (bool) !$postCode || !$firstName || !$address->city || !$country;
+
+        // IF prestashop allows, we take selected parcel terminal address in case information is missing in checkout address in specific cases.
+        if (($hasAddressFields) && $shipmentData->isPudo()) {
+            $parcel = $this->parcelShopService->getParcelShopByShopId($shipmentData->getSelectedPudoId());
+            $selectedParcel = is_array($parcel) ? reset($parcel) : $parcel;
+            $firstName = $selectedParcel->getCompany();
+            $postCode = $selectedParcel->getPCode();
+            $address->address1 = $selectedParcel->getStreet();
+            $address->city = $selectedParcel->getCity();
+            $country = $selectedParcel->getCountry();
+        }
+
         $shipmentCreationRequest = new ShipmentCreationRequest(
             $firstName,
             $address->address1,
             $address->city,
-            Country::getIsoById($address->id_country),
+            $country,
             $postCode,
             $shipmentData->getParcelAmount(),
             $parcelType,
@@ -109,7 +129,6 @@ class ShipmentApiService
             $this->emailHandler->handle($orderId, $shipmentResponse->getPlNumber());
         }
 
-        //TODO Send email with tracking code here retrieve parcels
         return $shipmentResponse;
     }
 

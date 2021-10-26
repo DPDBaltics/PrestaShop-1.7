@@ -169,21 +169,10 @@ class DPDBaltics extends CarrierModule
 
     public function hookActionFrontControllerSetMedia()
     {
-        $currentController = $this->context->controller->php_self !== null ?
-            $this->context->controller->php_self :
-            Tools::getValue('controller');
-
-        if ('order' === $currentController) {
-            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
-            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
-            $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/order-input.css');
-            /** @var PaymentService $paymentService */
-            $paymentService = $this->getModuleContainer('invertus.dpdbaltics.service.payment.payment_service');
-
-            $cart = Context::getContext()->cart;
-            $paymentService->filterPaymentMethods($cart);
-            $paymentService->filterPaymentMethodsByCod($cart);
-        }
+        //TODO fillup this array when more modules are compatible with OPC
+        $onePageCheckoutControllers = ['supercheckout'];
+        $applicableControlelrs = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
+        $currentController = $this->context->controller->php_self ?? Tools::getValue('controller');
 
         if ('product' === $currentController) {
             $this->context->controller->registerStylesheet(
@@ -196,12 +185,47 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if (in_array($currentController, ['order', 'order-opc', 'ShipmentReturn'])) {
+        if (in_array($currentController, $onePageCheckoutControllers, true)) {
+            $this->context->controller->addJqueryPlugin('chosen');
+
+            $this->context->controller->registerJavascript(
+                'dpdbaltics-opc',
+                'modules/' . $this->name . '/views/js/front/order-opc.js',
+                [
+                    'position' => 'bottom',
+                    'priority' => 130
+                ]
+            );
+
+            $this->context->controller->registerJavascript(
+                'dpdbaltics-supercheckout',
+                'modules/' . $this->name . '/views/js/front/modules/supercheckout.js',
+                [
+                    'position' => 'bottom',
+                    'priority' => 130
+                ]
+            );
+
+        }
+
+        if (in_array($currentController, $applicableControlelrs, true)) {
+
+            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
+            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
+            $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/order-input.css');
+            /** @var PaymentService $paymentService */
+            $paymentService = $this->getModuleContainer('invertus.dpdbaltics.service.payment.payment_service');
+            $isPickupMap = Configuration::get(\Invertus\dpdBaltics\Config\Config::PICKUP_MAP);
+            $cart = Context::getContext()->cart;
+            $paymentService->filterPaymentMethods($cart);
+            $paymentService->filterPaymentMethodsByCod($cart);
+
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
             Media::addJsDef([
                 'pudoCarriers' => Tools::jsonEncode($productRepo->getPudoProducts()),
                 'currentController' => $currentController,
+                'is_pickup_map'  => $isPickupMap,
                 'id_language' => $this->context->language->id,
                 'id_shop' => $this->context->shop->id,
                 'dpdAjaxLoaderPath' => $this->getPathUri() . 'views/img/ajax-loader-big.gif',
@@ -219,7 +243,7 @@ class DPDBaltics extends CarrierModule
                     'position' => 150
                 ]
             );
-            if (Configuration::get(\Invertus\dpdBaltics\Config\Config::PICKUP_MAP)) {
+            if ($isPickupMap) {
                 /** @var GoogleApiService $googleApiService */
                 $googleApiService = $this->getModuleContainer('invertus.dpdbaltics.service.google_api_service');
                 $this->context->controller->registerJavascript(
@@ -313,16 +337,18 @@ class DPDBaltics extends CarrierModule
         /** @var CarrierPhoneService $carrierPhoneService */
         $carrierPhoneService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.carrier_phone_service');
 
-        if (!$carrierPhoneService->saveCarrierPhone(
-            $this->context->cart->id,
-            Tools::getValue('dpd-phone'),
-            Tools::getValue('dpd-phone-area')
-        )
-        ) {
-            $this->context->controller->errors[] = $this->l('Phone data is not saved');
-            $params['completed'] = false;
-        };
-
+        try {
+            $carrierPhoneService->saveCarrierPhone(
+                $this->context->cart->id,
+                Tools::getValue('dpd-phone'),
+                Tools::getValue('dpd-phone-area')
+            );
+        } catch (Exception $exception) {
+            if ($exception->getCode() === Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER) {
+                $this->context->controller->errors[] = $this->l('Phone data is not saved');
+                $params['completed'] = false;
+            }
+        }
         /** @var \Invertus\dpdBaltics\Service\OrderDeliveryTimeService $orderDeliveryService */
         $orderDeliveryService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.order_delivery_time_service');
 
@@ -983,9 +1009,17 @@ class DPDBaltics extends CarrierModule
             $carrierPhoneService = $this->getModuleContainer('invertus.dpdbaltics.service.carrier_phone_service');
 
             if (!empty($dpdPhone) && !empty($dpdPhoneArea)) {
-                if (!$carrierPhoneService->saveCarrierPhone($this->context->cart->id, $dpdPhone, $dpdPhoneArea)) {
-                    $error = $this->l('Phone data is not saved');
-                    die($error);
+                try {
+                    $carrierPhoneService->saveCarrierPhone(
+                        $this->context->cart->id,
+                        $dpdPhone,
+                        $dpdPhoneArea
+                    );
+                } catch (Exception $exception) {
+                    if ($exception->getCode() === Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER) {
+                        $error = $this->l('Phone data is not saved');
+                        die($error);
+                    }
                 }
             }
 

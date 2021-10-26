@@ -34,7 +34,9 @@ function updateStreet() {
 }
 
 $( document ).ajaxComplete(function( event, request, settings ) {
-    if (currentController !== 'order') {
+
+    var applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
+    if (!$.inArray(currentController, applicableControllers)) {
         return;
     }
     if (!settings.url) {
@@ -44,11 +46,26 @@ $( document ).ajaxComplete(function( event, request, settings ) {
     var method = DPDgetUrlParam('action', settings.url)
 
     if ( method === 'selectDeliveryOption') {
+        updateStreet()
+    }
+
+    if (!method) {
+        method = DPDgetUrlParam('method', settings.data)
+    }
+
+    if (method === 'updateCarrier') {
         updateStreet();
     }
 });
 
 function updateStreetSelect(city) {
+
+    var $this = $(this);
+    var $pudoId = $this.data('id');
+    var $container = $this.closest('.dpd-pudo-container');
+    var $submitInput = $container.find('input[name="dpd-pudo-id"]');
+    var $idReference = $container.data('id');
+
     $.ajax(dpdHookAjaxUrl, {
         type: 'POST',
         data: {
