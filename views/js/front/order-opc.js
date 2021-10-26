@@ -45,16 +45,18 @@ function saveSelectedPhoneNumber(phoneNumber, phoneArea) {
             response = JSON.parse(response);
             var $parent = $('.dpd-checkout-phone-container');
             if (!response.status) {
-                DPDdisplayMessage($parent, response.template);
+                DPDdisplayMessageOpc($parent, response.template);
+            } else {
+                DPDdisplayMessageOpc($parent, '');
             }
         },
         error: function (response) {
-            console.error('Errror while saving DPD phone number')
+            console.error('Error while saving DPD phone number')
         }
     });
 }
 
-function DPDdisplayMessage(parent, template) {
+function DPDdisplayMessageOpc(parent, template) {
     var $messageContainer = parent.find('.dpd-message-container');
-    $messageContainer.replaceWith(template);
+    $messageContainer.html(template);
 }

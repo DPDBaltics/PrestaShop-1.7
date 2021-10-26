@@ -104,7 +104,6 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                 $this->savePudoPickupPoint($pudoId, $countryCode);
                 break;
             case 'validateOrderCustom':
-
                 $response = false;
                 /** @var \Invertus\dpdBaltics\Validate\Carrier\PudoValidate $pudoValidate */
                 $pudoValidator = $this->module->getModuleContainer('invertus.dpdbaltics.validate.carrier.pudo_validate');
@@ -152,7 +151,7 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                         ]
                     ));
                 }
-                $this->ajaxDie(json_encode($response));
+                $this->ajaxDie(json_encode(['status' => true]));
                 break;
             case 'updateParcelBlock':
                 $street = Tools::getValue('street');
