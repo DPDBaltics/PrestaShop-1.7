@@ -117,8 +117,8 @@ class CarrierPhoneService
 
         if (!$dpdOrderPhone->save()) {
            throw new DpdCarrierException(
-               $this->module->l('Could not save phone number'),
-               500
+               'Could not save phone number',
+               Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER
            );
         }
 

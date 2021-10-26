@@ -3,6 +3,7 @@
 namespace Invertus\dpdBaltics\Validate\Phone;
 
 use DPDBaltics;
+use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Exception\DpdCarrierException;
 use Invertus\dpdBaltics\Repository\PhoneRepository;
 use Invertus\dpdBaltics\Util\NumberUtility;
@@ -25,27 +26,27 @@ class PhoneNumberValidator
     {
         if (empty($prefix)) {
             throw new DpdCarrierException(
-                $this->module->l('Phone number prefix is empty'),
-                400
+                'Phone number prefix is empty',
+                Config::ERROR_BAD_PHONE_NUMBER_PREFIX
             );
         }
         if (empty($phone)) {
             throw new DpdCarrierException(
-                $this->module->l('Phone number is empty'),
-                400
+             'Phone number is empty',
+                Config::ERROR_PHONE_EMPTY
             );
         }
        if (!is_numeric($phone)) {
            throw new DpdCarrierException(
-               $this->module->l('Phone number contains invalid characters'),
-               400
+              'Phone number contains invalid characters',
+               Config::ERROR_PHONE_HAS_INVALID_CHARACTERS
            );
        }
 
        if (strlen($phone) < 8 || strlen($phone) > 13) {
            throw new DpdCarrierException(
-               $this->module->l('Phone number length is invalid'),
-               400
+              'Phone number length is invalid',
+               Config::ERROR_PHONE_HAS_INVALID_LENGTH
            );
        }
 

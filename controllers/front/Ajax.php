@@ -117,7 +117,7 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                     $phoneNumberValidator->isPhoneAddedInOrder($cartId);
                     $pudoValidator->isPudoSelected($cartId, $carrier->id_reference);
                 } catch (DpdCarrierException $exception) {
-                    $this->messages[] = $exception->getMessage();
+                    $this->setErrorMessage($exception);
                     $this->ajaxDie(json_encode(
                         [
                             'status' => false,
@@ -144,7 +144,7 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                     $phoneNumberValidator->isPhoneValid($prefix, $phone);
                     $response = $phoneService->saveCarrierPhone($cartId, $phone, $prefix);
                 } catch (DpdCarrierException $exception) {
-                    $this->messages[] = $exception->getMessage();
+                    $this->setErrorMessage($exception);
                     $this->ajaxDie(json_encode(
                         [
                             'status' => false,
@@ -371,5 +371,34 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
             'selectedPudoId' => $selectedPudo->getParcelShopId(),
             'coordinates' => $coordinates
         ]));
+    }
+
+    /**
+     * @param Exception | DpdCarrierException $exception
+     */
+    private function setErrorMessage($exception)
+    {
+        switch ($exception->getMessage()) {
+            case Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER:
+                $this->messages[] = $this->module->l('Could not save phone number');
+                break;
+            case Config::ERROR_BAD_PHONE_NUMBER_PREFIX:
+                $this->messages[] = $this->module->l('Phone number prefix is empty');
+                break;
+            case Config::ERROR_PHONE_EMPTY:
+                $this->messages[] = $this->module->l('Phone number is empty');
+                break;
+            case Config::ERROR_PHONE_HAS_INVALID_CHARACTERS:
+                $this->messages[] = $this->module->l('Phone number contains invalid characters');
+                break;
+            case Config::ERROR_PHONE_HAS_INVALID_LENGTH:
+                $this->messages[] = $this->module->l('Phone number length is invalid');
+                break;
+            case Config::ERROR_INVALID_PUDO_TERMINAL:
+                $this->messages[] = $this->module->l('Pudo point is missing, please select valid terminal point');
+                break;
+            default:
+                $this->messages[] = $exception->getMessage();
+        }
     }
 }

@@ -337,16 +337,18 @@ class DPDBaltics extends CarrierModule
         /** @var CarrierPhoneService $carrierPhoneService */
         $carrierPhoneService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.carrier_phone_service');
 
-        if (!$carrierPhoneService->saveCarrierPhone(
-            $this->context->cart->id,
-            Tools::getValue('dpd-phone'),
-            Tools::getValue('dpd-phone-area')
-        )
-        ) {
-            $this->context->controller->errors[] = $this->l('Phone data is not saved');
-            $params['completed'] = false;
-        };
-
+        try {
+            $carrierPhoneService->saveCarrierPhone(
+                $this->context->cart->id,
+                Tools::getValue('dpd-phone'),
+                Tools::getValue('dpd-phone-area')
+            );
+        } catch (Exception $exception) {
+            if ($exception->getCode() === Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER) {
+                $this->context->controller->errors[] = $this->l('Phone data is not saved');
+                $params['completed'] = false;
+            }
+        }
         /** @var \Invertus\dpdBaltics\Service\OrderDeliveryTimeService $orderDeliveryService */
         $orderDeliveryService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.order_delivery_time_service');
 
@@ -1007,9 +1009,17 @@ class DPDBaltics extends CarrierModule
             $carrierPhoneService = $this->getModuleContainer('invertus.dpdbaltics.service.carrier_phone_service');
 
             if (!empty($dpdPhone) && !empty($dpdPhoneArea)) {
-                if (!$carrierPhoneService->saveCarrierPhone($this->context->cart->id, $dpdPhone, $dpdPhoneArea)) {
-                    $error = $this->l('Phone data is not saved');
-                    die($error);
+                try {
+                    $carrierPhoneService->saveCarrierPhone(
+                        $this->context->cart->id,
+                        $dpdPhone,
+                        $dpdPhoneArea
+                    );
+                } catch (Exception $exception) {
+                    if ($exception->getCode() === Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER) {
+                        $error = $this->l('Phone data is not saved');
+                        die($error);
+                    }
                 }
             }
 
