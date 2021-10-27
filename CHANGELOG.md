@@ -59,7 +59,7 @@
 - Map fix, do not load map script when off
 - Bugfix map does not load when address is changed
 
-## [3.2.7] - 2021-10-25
+## [3.2.7] - 2021-10-27
 ### Changed
 - Import parcels function changed on cron parcel update, take countries only from zone range functionality added.
 - Shipment price bug fix when product customizations are used
@@ -85,4 +85,5 @@
 - DPD log message improvements on shipment creation, log errors while creating shipment and printing labels
 - Missing pudo ID fix, when parcel is not reselected in frontend
 - Parcel tracking email template changed, URL changes, show only parcel number in tracking email template
+- Bugfix, when in parcel validation function wrong argument is set, carrier ID instead of reference.
 
