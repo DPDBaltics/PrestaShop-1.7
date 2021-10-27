@@ -368,7 +368,7 @@ class DPDBaltics extends CarrierModule
         $carrier = new Carrier($cart->id_carrier);
         /** @var PudoValidate $pudoValidator */
         $pudoValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.carrier.pudo_validate');
-        if (!$pudoValidator->validatePickupPoints($cart->id, $carrier->id)) {
+        if (!$pudoValidator->validatePickupPoints($cart->id, $carrier->id_reference)) {
             $carrier = new Carrier($cart->id_carrier, $this->context->language->id);
             $this->context->controller->errors[] =
                 sprintf($this->l('Please select pickup point for carrier: %s.'), $carrier->name);
