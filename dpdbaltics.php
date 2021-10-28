@@ -714,10 +714,9 @@ class DPDBaltics extends CarrierModule
 
             $orderId = Tools::getValue('id_order');
             $shipment = $this->getShipment($orderId);
-            $baseUrl = $this->context->shop->getBaseURI();
+            $baseUrl = $this->context->shop->getBaseURL(false, false);
             $baseUrlAdmin = $this->context->link->getAdminBaseLink();
             $isAbove177 = Config::isPrestashopVersionAbove177();
-
             /** @var \Invertus\dpdBaltics\Service\Label\LabelUrlFormatter $labelUrlService */
             $labelUrlService = $isAbove177 ? $this->getModuleContainer('invertus.dpdbaltics.service.label.label_url_formatter') : null;
 
