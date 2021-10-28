@@ -154,6 +154,7 @@ function updateParcelBlock(city, street) {
             }
             if (response.status) {
                 DPDchangePickupPoints($parent, response.template)
+                reselectDataPopover()
             }
         },
         error: function (response) {
