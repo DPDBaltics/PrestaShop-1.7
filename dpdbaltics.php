@@ -715,6 +715,7 @@ class DPDBaltics extends CarrierModule
             $orderId = Tools::getValue('id_order');
             $shipment = $this->getShipment($orderId);
             $baseUrl = $this->context->shop->getBaseURI();
+            $baseUrlAdmin = $this->context->link->getAdminBaseLink();
             $isAbove177 = Config::isPrestashopVersionAbove177();
 
             /** @var \Invertus\dpdBaltics\Service\Label\LabelUrlFormatter $labelUrlService */
@@ -728,7 +729,7 @@ class DPDBaltics extends CarrierModule
                     'id_order' => $orderId,
                     'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
                     'is_ps_above_177' => Config::isPrestashopVersionAbove177(),
-                    'loader_url' => "{$baseUrl}modules/dpdbaltics/views/templates/admin/loader/loader.html"
+                    'loader_url' => "{$baseUrlAdmin}modules/dpdbaltics/views/templates/admin/loader/loader.html"
                 ]
             );
         }
