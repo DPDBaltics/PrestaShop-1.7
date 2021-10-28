@@ -134,13 +134,7 @@ $(document).ready(function () {
 
     initMap(false, true, savedPudoId, true);
 
-    var $dataPopovers = $('[data-toggle="popover"]');
-    if ($dataPopovers.popover() !== 'undefined' && 'AdminOrders' !== currentController) {
-        $dataPopovers.popover();
-    } else {
-        $(document).on('click', '.dpd-more-information.expand', expandExtraInformationEvent);
-        $(document).on('click', '.dpd-more-information.dpd-collapse', collapseExtraInformationEvent);
-    }
+    reselectDataPopover();
 
     $(document).on('click', '#checkout-delivery-step', resizeMapEvent);
     $('.dpd-services-block  .list-inline').on('scroll', dpdHidePopOversEvent);
@@ -333,35 +327,6 @@ $(document).ready(function () {
         isPudoPointSelected = true;
         if (typeof dpdMap[$idReference] !== 'undefined') {
             DPDinitMarkers(dpdMap[$idReference], infoWindow, false, false, $pudoId, true, false);
-        }
-    }
-
-    /**
-     * expands working hour information
-     */
-    function expandExtraInformationEvent() {
-        var $parent = $(this).closest('.list-group-item');
-        var $extraInfoBlock = $parent.find('.extra-info-working-hours');
-
-        if ($(this).hasClass('expand')) {
-            $(this)
-                .removeClass('expand')
-                .addClass('dpd-collapse')
-                .text($(this).data('collapse'));
-            $extraInfoBlock.removeClass('dpd-hidden');
-        }
-    }
-
-    function collapseExtraInformationEvent() {
-        var $parent = $(this).closest('.list-group-item');
-        var $extraInfoBlock = $parent.find('.extra-info-working-hours');
-
-        if ($(this).hasClass('dpd-collapse')) {
-            $(this)
-                .removeClass('dpd-collapse')
-                .addClass('expand')
-                .text($(this).data('expand'));
-            $extraInfoBlock.addClass('dpd-hidden');
         }
     }
 
@@ -721,4 +686,43 @@ function dpdHidePopOversEvent() {
     $('.dpd-more-information').each(function () {
         $(this).popover('hide');
     });
+}
+
+/**
+ * expands working hour information
+ */
+function expandExtraInformationEvent() {
+    var $parent = $(this).closest('.list-group-item');
+    var $extraInfoBlock = $parent.find('.extra-info-working-hours');
+
+    if ($(this).hasClass('expand')) {
+        $(this)
+            .removeClass('expand')
+            .addClass('dpd-collapse')
+            .text($(this).data('collapse'));
+        $extraInfoBlock.removeClass('dpd-hidden');
+    }
+}
+
+function collapseExtraInformationEvent() {
+    var $parent = $(this).closest('.list-group-item');
+    var $extraInfoBlock = $parent.find('.extra-info-working-hours');
+
+    if ($(this).hasClass('dpd-collapse')) {
+        $(this)
+            .removeClass('dpd-collapse')
+            .addClass('expand')
+            .text($(this).data('expand'));
+        $extraInfoBlock.addClass('dpd-hidden');
+    }
+}
+
+function reselectDataPopover() {
+    var $dataPopovers = $('[data-toggle="popover"]');
+    if ($dataPopovers.popover() !== 'undefined' && 'AdminOrders' !== currentController) {
+        $dataPopovers.popover();
+    } else {
+        $(document).on('click', '.dpd-more-information.expand', expandExtraInformationEvent);
+        $(document).on('click', '.dpd-more-information.dpd-collapse', collapseExtraInformationEvent);
+    }
 }
