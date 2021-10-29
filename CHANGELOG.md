@@ -69,7 +69,7 @@
 - Bugfix, when carrier cannot be changed in back office order view and label is not printed
 - Bugfix, when order is using voucher, recalculate parcel total to match order total(shipping discount excluded)
 - Bugfix, mobile view, bad styles fixed
-- Beta version on compatability with SuperCheckout module
+- Beta version on compatability with SuperCheckout module on prestashop177
 - Render Shipping price even though customer is not logged in functionality added
 - Allow select pudo points if customer is missing(not logged in user)
 - Render select with search(jquery choosen lib) on delivery method select(supercheckout applicable)
