@@ -11,6 +11,7 @@ use DPDProduct;
 use DPDPudo;
 use DPDShop;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Factory\ShopFactory;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
@@ -170,13 +171,13 @@ class PudoService
             $cart = new Cart($cartId);
         }
         /** @var CurrentCountryProvider $currentCountryProvider */
-        $currentCountryProvider = $this->module->getModuleContainer(CurrentCountryProvider::class);
+        $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
         $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
 
         /** @var ParcelShopService $parcelShopService */
         /** @var PudoService $pudoService */
-        $parcelShopService= $this->module->getModuleContainer(ParcelShopService::class);
-        $pudoService = $this->module->getModuleContainer(PudoService::class);
+        $parcelShopService= $this->module->getModuleContainer('invertus.dpdbaltics.service.parcel.parcel_shop_service');
+        $pudoService = $this->module->getModuleContainer('invertus.dpdbaltics.service.pudo_service');
 
         /** @var ParcelShop[] $parcelShops */
         $parcelShops = $parcelShopService->getParcelShopsByCountryAndCity($countryCode, $city);
@@ -185,7 +186,7 @@ class PudoService
         $pudoServices = $pudoService->formatPudoServicesWorkHours($pudoServices);
 
         /** @var PudoRepository $pudoRepo */
-        $pudoRepo = $this->module->getModuleContainer(PudoRepository::class);
+        $pudoRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.pudo_repository');
         $pudoId = $pudoRepo->getIdByCart($cartId);
         $selectedPudo = new DPDPudo($pudoId);
 
@@ -235,6 +236,32 @@ class PudoService
         $pudoOrder->city = $city;
         $pudoOrder->street = $street;
         $pudoOrder->save();
+    }
+
+    /**
+     * @param ShipmentData $shipmentData
+     * @param integer $idCart
+     *
+     * @return ShipmentData
+     * @throws \PrestaShopDatabaseException
+     * @throws \PrestaShopException
+     */
+    public function repopulatePudoDataInShipment($shipmentData, $idCart)
+    {
+        $pudoOrderId = $this->pudoRepository->getIdByCart($idCart);
+        $selectedPudo = $this->pudoRepository->getDPDPudo($pudoOrderId);
+
+        if (!$shipmentData->getSelectedPudoId() && !empty($selectedPudo->pudo_id)) {
+            $shipmentData->setSelectedPudoId($selectedPudo->pudo_id);
+        } elseif (!$shipmentData->getSelectedPudoIsoCode() && !empty($selectedPudo->country_code)) {
+            $shipmentData->setSelectedPudoIsoCode($selectedPudo->country_code);
+        } elseif (!$shipmentData->getCity() && !empty($selectedPudo->city)) {
+            $shipmentData->setCity($selectedPudo->city);
+        } elseif (!$shipmentData->getDpdStreet() && !empty($selectedPudo->street)) {
+            $shipmentData->setDpdStreet($selectedPudo->street);
+        }
+
+        return $shipmentData;
     }
 
     public function saveSelectedParcel($cartId, $city, $street, $countryCode, $idCarrier)

@@ -1,15 +1,29 @@
-dpdbaltics_download_printed_label:
+dpdbaltics_save_and_download_printed_label_order_list:
   path: /{orderId}/dpdbaltics/generate-dpdbaltics-print-label
   methods: [GET]
   defaults:
-    _controller: Invertus\dpdBaltics\Controller\OrderLabelController::printLabelAction
+    _controller: Invertus\dpdBaltics\Controller\OrderLabelController::printAndSaveLabelFromOrderListAction
     _legacy_controller: AdminOrders
   requirements:
     orderId: \d+
 
-dpdbaltics_download_multiple_printed_labels:
+dpdbaltics_save_and_download_printed_labels_order_list_multiple:
   path: /dpdbaltics/generate-dpdbaltics-multiple-labels
   methods: [POST]
   defaults:
-    _controller: Invertus\dpdBaltics\Controller\OrderLabelController::printMultipleLabelsAction
+    _controller: Invertus\dpdBaltics\Controller\OrderLabelController::printMultipleLabelsFromOrderListAction
+    _legacy_controller: AdminOrders
+
+dpdbaltics_print_label_order_view:
+  path: /{shipmentId}/{labelPosition}/{labelFormat}/dpdbaltics/print-label
+  methods: [GET]
+  defaults:
+    _controller: Invertus\dpdBaltics\Controller\OrderLabelController::printLabelOrderViewAction
+    _legacy_controller: AdminOrders
+
+dpdbaltics_save_and_download_printed_label_order_view:
+  path: /{orderId}/dpdbaltics/save-and-print-label-order-view
+  methods: [GET]
+  defaults:
+    _controller: Invertus\dpdBaltics\Controller\OrderLabelController::saveAndPrintLabelOrderViewAction
     _legacy_controller: AdminOrders

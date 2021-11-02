@@ -9,13 +9,14 @@ use DPDProduct;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Repository\CodPaymentRepository;
+use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ShipmentCreationRequest;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory;
+use Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler;
 use Message;
 
 class ShipmentApiService
 {
-
     /**
      * @var ShipmentCreationFactory
      */
@@ -24,15 +25,33 @@ class ShipmentApiService
      * @var CodPaymentRepository
      */
     private $codPaymentRepository;
+    /**
+     * @var ParcelTrackingEmailHandler
+     */
+    private $emailHandler;
+    /**
+     * @var ParcelShopService
+     */
+    private $parcelShopService;
 
     public function __construct(
         ShipmentCreationFactory $shipmentCreationFactory,
-        CodPaymentRepository $codPaymentRepository
+        CodPaymentRepository $codPaymentRepository,
+        ParcelTrackingEmailHandler $emailHandler,
+        ParcelShopService $parcelShopService
     ) {
         $this->shipmentCreationFactory = $shipmentCreationFactory;
         $this->codPaymentRepository = $codPaymentRepository;
+        $this->emailHandler = $emailHandler;
+        $this->parcelShopService = $parcelShopService;
     }
 
+    /**
+     * @throws \PrestaShopDatabaseException
+     * @throws \PrestaShopException
+     * @throws \Invertus\dpdBaltics\Exception\ParcelEmailException
+     * @throws \SmartyException
+     */
     public function createShipment($addressId, ShipmentData $shipmentData, $orderId)
     {
         $address = new Address($addressId);
@@ -44,13 +63,26 @@ class ShipmentApiService
         $phoneNumber = $shipmentData->getPhoneArea() . $shipmentData->getPhone();
         $dpdProduct = new DPDProduct($shipmentData->getProduct());
         $parcelType = $dpdProduct->getProductReference();
-
+        $country = Country::getIsoById($address->id_country);
         $postCode = preg_replace('/[^0-9]/', '', $address->postcode);
+        $hasAddressFields = (bool) !$postCode || !$firstName || !$address->city || !$country;
+
+        // IF prestashop allows, we take selected parcel terminal address in case information is missing in checkout address in specific cases.
+        if (($hasAddressFields) && $shipmentData->isPudo()) {
+            $parcel = $this->parcelShopService->getParcelShopByShopId($shipmentData->getSelectedPudoId());
+            $selectedParcel = is_array($parcel) ? reset($parcel) : $parcel;
+            $firstName = $selectedParcel->getCompany();
+            $postCode = $selectedParcel->getPCode();
+            $address->address1 = $selectedParcel->getStreet();
+            $address->city = $selectedParcel->getCity();
+            $country = $selectedParcel->getCountry();
+        }
+
         $shipmentCreationRequest = new ShipmentCreationRequest(
             $firstName,
             $address->address1,
             $address->city,
-            Country::getIsoById($address->id_country),
+            $country,
             $postCode,
             $shipmentData->getParcelAmount(),
             $parcelType,
@@ -91,7 +123,13 @@ class ShipmentApiService
         }
         $shipmentCreator = $this->shipmentCreationFactory->makeShipmentCreation();
 
-        return $shipmentCreator->createShipment($shipmentCreationRequest);
+        $shipmentResponse = $shipmentCreator->createShipment($shipmentCreationRequest);
+
+        if ($shipmentResponse->getStatus() === "ok" && $this->isTrackingEmailAllowed()) {
+            $this->emailHandler->handle($orderId, $shipmentResponse->getPlNumber());
+        }
+
+        return $shipmentResponse;
     }
 
     public function createReturnServiceShipment($addressTemplateId)
@@ -137,5 +175,10 @@ class ShipmentApiService
         $shipmentCreationRequest->setParcelShopId($shipmentData->getSelectedPudoId());
 
         return $shipmentCreationRequest;
+    }
+
+    private function isTrackingEmailAllowed()
+    {
+        return (bool) \Configuration::get(Config::SEND_EMAIL_ON_PARCEL_CREATION);
     }
 }

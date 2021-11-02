@@ -84,11 +84,12 @@ class ShipmentDataFactory
         $shipmentData->setWeight($shipment->weight);
         $shipmentData->setParcelAmount($shipment->num_of_parcels);
         $shipmentData->setGoodsPrice($shipment->goods_price);
-        $shipmentData->setLabelFormat(Configuration::get(Config::DEFAULT_LABEL_FORMAT));
-        $shipmentData->setLabelPosition(Configuration::get(Config::DEFAULT_LABEL_POSITION));
+        $shipmentData->setLabelFormat($shipment->label_format ?: Configuration::get(Config::DEFAULT_LABEL_FORMAT));
+        $shipmentData->setLabelPosition($shipment->label_position ?: Configuration::get(Config::DEFAULT_LABEL_POSITION));
 
         /** Pudo */
         $dpdProduct = new DPDProduct($shipment->id_service);
+
         $shipmentData->setIsPudo($dpdProduct->is_pudo);
         if ($dpdProduct->is_pudo) {
             $carrier = new Carrier($order->id_carrier);

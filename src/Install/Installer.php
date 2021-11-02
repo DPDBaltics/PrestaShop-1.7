@@ -12,6 +12,7 @@ use DPDParcel;
 use DPDShipment;
 use Exception;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Repository\CarrierRepository;
 use Invertus\dpdBaltics\Service\Carrier\CreateCarrierService;
 use Invertus\dpdBaltics\Factory\TabFactory;
 use Invertus\dpdBaltics\Service\Label\LabelPositionService;
@@ -52,6 +53,11 @@ class Installer
     private $createCarriersService;
 
     /**
+     * @var CarrierRepository
+     */
+    private $carrierRepository;
+
+    /**
      * Installer constructor.
      * @param DPDBaltics $module
      * @param CreateCarrierService $createCarriersService
@@ -59,11 +65,13 @@ class Installer
     public function __construct(
         DPDBaltics $module,
         TabFactory $tabFactory,
-        CreateCarrierService $createCarriersService
+        CreateCarrierService $createCarriersService,
+        CarrierRepository $carrierRepository
     ) {
         $this->module = $module;
         $this->tabFactory = $tabFactory;
         $this->createCarriersService = $createCarriersService;
+        $this->carrierRepository = $carrierRepository;
     }
 
     /**
@@ -313,13 +321,18 @@ class Installer
 
         return $tabsUninstaller->uninstallTabs();
     }
+
+    /**
+     * @throws \PrestaShopDatabaseException
+     * @throws \PrestaShopException
+     */
     private function processDeleteCarriers()
     {
         $sql = 'SHOW TABLES LIKE "ps_dpd_product";';
         $carrierTable = Db::getInstance()->executeS($sql);
 
         if (!$carrierTable) {
-            return;
+            return false;
         }
         $query = new DbQuery();
         $query->select('`id_reference`');
@@ -327,7 +340,7 @@ class Installer
         $idReferences = Db::getInstance()->executeS($query);
 
         if (empty($idReferences)) {
-            return;
+            return false;
         }
         foreach ($idReferences as $id) {
             $carrier = Carrier::getCarrierByReference($id['id_reference']);
@@ -336,6 +349,28 @@ class Installer
                 $carrier->update();
             }
         }
+
+        return true;
+    }
+
+    /**
+     * @throws \PrestaShopDatabaseException
+     * @throws \PrestaShopException
+     */
+    public function deleteModuleCarriers()
+    {
+        $dpdCarriers = $this->carrierRepository->getDpdModuleCarrierReferences();
+
+        foreach ($dpdCarriers as $reference) {
+
+            $carrier = Carrier::getCarrierByReference($reference);
+            if (Validate::isLoadedObject($carrier)) {
+                $carrier->deleted = 1;
+                $carrier->update();
+            }
+        }
+
+        return true;
     }
 
     private function getDefaultWSCountry()
@@ -393,7 +428,9 @@ class Installer
             'displayAdminListBefore',
             'actionCarrierProcess',
             'displayAdminOrderTabContent',
-            'actionOrderGridDefinitionModifier'
+            'actionOrderGridDefinitionModifier',
+            'actionObjectCarrierUpdateAfter',
+            'actionObjectCarrierUpdateBefore',
         ];
     }
 }

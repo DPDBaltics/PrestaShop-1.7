@@ -37,7 +37,9 @@
   {% endfor %}
 
 <a class="{{ class }}"
+   {% if not action.options.is_label_download %}
    target="_blank"
+   {% endif %}
    href="{{ path(action.options.route, route_params ) }}"
    data-confirm-message="{{ action.options.confirm_message }}"
         {% if attributes.tooltip_name %}

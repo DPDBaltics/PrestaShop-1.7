@@ -90,9 +90,9 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
     protected function initOptions()
     {
         /** @var ImportExportOptionsProvider $importExportProvider */
-        $importExportProvider = $this->module->getModuleContainer()->get(ImportExportOptionsProvider::class);
+        $importExportProvider = $this->module->getModuleContainer()->get('invertus.dpdbaltics.provider.import_export_options_provider');
         /** @var InfoBlockRender $infoBlockRender */
-        $infoBlockRender = $this->module->getModuleContainer()->get(InfoBlockRender::class);
+        $infoBlockRender = $this->module->getModuleContainer()->get('invertus.dpdbaltics.templating.info_block_render');
         $shopContext = Shop::getContext();
         $info = '';
 
@@ -292,7 +292,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
     private function getWarningBlockTemplate($warningBlockText)
     {
         /** @var InfoBlockBuilder $warningBlockTemplate */
-        $warningBlockTemplate = $this->module->getModuleContainer()->get(WarningBlockBuilder::class);
+        $warningBlockTemplate = $this->module->getModuleContainer()->get('invertus.dpdbaltics.builder.template.admin.warning_block_builder');
         $warningBlockTemplate->setSmarty($this->context->smarty);
         $warningBlockTemplate->setInfoBlockText($warningBlockText);
 
@@ -326,7 +326,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
             return;
         };
         /** @var ExportProvider $exportProvider */
-        $exportProvider = $this->module->getModuleContainer(ExportProvider::class);
+        $exportProvider = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.export_provider');
 
         $exportable = $exportProvider->returnExportable($exportOption);
         if (!$exportable) {
@@ -350,7 +350,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
 
         if ($importOption == Config::IMPORT_EXPORT_OPTION_ALL_ZIP) {
             /* @var ZipImport $zipImport */
-            $zipImport = $this->module->getModuleContainer(ZipImport::class);
+            $zipImport = $this->module->getModuleContainer('invertus.dpdbaltics.service.import.zip_import');
 
             if (!$zipImport->importAllFromZip()) {
                 $this->errors = array_merge($this->errors, $zipImport->errors);
@@ -369,7 +369,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 $this->setImportedTypesToCookie($zipImport->importedTypes);
 
                 /** @var DPDFlashMessageService $flashMessageService */
-                $flashMessageService = $this->module->getModuleContainer(DPDFlashMessageService::class);
+                $flashMessageService = $this->module->getModuleContainer('invertus.dpdbaltics.service.dpdflash_message_service');
                 $flashMessageService->addFlash('success', $this->confirmations);
 
                 Tools::redirectAdmin($this->context->link->getAdminLink(DPDBaltics::ADMIN_IMPORT_EXPORT_CONTROLLER));
@@ -389,7 +389,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
 
         try {
             /** @var ImportProvider $importProvider */
-            $importProvider = $this->module->getModuleContainer(ImportProvider::class);
+            $importProvider = $this->module->getModuleContainer('invertus.dpdbaltics.service.import.import_provider');
             if ($deleteOnImport) {
                 $importProvider->deleteBeforeImport();
             }
@@ -434,23 +434,23 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
             switch ($importOption) {
                 case Config::IMPORT_EXPORT_OPTION_ZONES:
                     /** @var ZoneImport */
-                    return $this->module->getModuleContainer(ZoneImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.zone_import');
                     break;
                 case Config::IMPORT_EXPORT_OPTION_SETTINGS:
                     /** @var ZoneImport */
-                    return $this->module->getModuleContainer(SettingsImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.settings_import');
                     break;
                 case Config::IMPORT_EXPORT_OPTION_PRICE_RULES:
                     /** @var PriceRulesImport */
-                    return $this->module->getModuleContainer(PriceRulesImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.settings_import');
                     break;
                 case Config::IMPORT_EXPORT_OPTION_ADDRESS_TEMPLATES:
                     /** @var AddressTemplatesImport */
-                    return $this->module->getModuleContainer(AddressTemplatesImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.address_templates_import');
                     break;
                 case Config::IMPORT_EXPORT_OPTION_PRODUCTS:
                     /** @var ProductImport */
-                    return $this->module->getModuleContainer(ProductImport::class);
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.product_import');
                     break;
                 default:
                     $this->errors[] = $this->l('Invalid export option selected');
@@ -491,7 +491,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
     {
         $types = $this->getImportMapping();
         /** @var ExportProvider $exportProvider */
-        $exportProvider = $this->module->getModuleContainer(ExportProvider::class);
+        $exportProvider = $this->module->getModuleContainer('invertus.dpdbaltics.service.export.export_provider');
 
         $this->clearTmpDir('export');
         foreach ($types as $type) {

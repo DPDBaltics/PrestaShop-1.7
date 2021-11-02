@@ -213,10 +213,10 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
             ],
         ];
         /** @var PhonePrefixRepository $phonePrefixRepository */
-        $phonePrefixRepository = $this->module->getModuleContainer(PhonePrefixRepository::class);
+        $phonePrefixRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.phone_prefix_repository');
 
         /** @var PhoneInputBuilder $phoneInputBuilder */
-        $phoneInputBuilder = $this->module->getModuleContainer(PhoneInputBuilder::class);
+        $phoneInputBuilder = $this->module->getModuleContainer('invertus.dpdbaltics.builder.template.admin.phone_input_builder');
 
         $saveBtnClasses = 'btn btn-default pull-right js-col-request-save';
 
@@ -239,7 +239,7 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
         } elseif (Tools::getIsset('id_dpd_collection_request')) {
 
             /** @var CollectionRequestRepository $collectionRequestRepository */
-            $collectionRequestRepository = $this->module->getModuleContainer(CollectionRequestRepository::class);
+            $collectionRequestRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.collection_request_repository');
             $phoneData = $collectionRequestRepository->getPhonesAndCodes(
                 Tools::getValue('id_dpd_collection_request')
             );
@@ -335,7 +335,7 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
     private function renderPrefillSelect($prefix)
     {
         /** @var AddressRepository $addressRepository */
-        $addressRepository = $this->module->getModuleContainer(AddressRepository::class);
+        $addressRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.address_repository');
         $addresses = $addressRepository->findAllByShop();
 
         $this->context->smarty->assign('address_templates', $addresses);
@@ -351,19 +351,19 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
     {
         if (Tools::isSubmit('submitAdddpd_collection_request')) {
             /** @var FormDataConverter $formDataConverter */
-            $formDataConverter = $this->module->getModuleContainer(FormDataConverter::class);
+            $formDataConverter = $this->module->getModuleContainer('invertus.dpdbaltics.converter.form_data_converter');
             $data = Tools::getAllValues();
 
             /** @var CollectionRequestData $collectionRequestObj */
             $collectionRequestObj = $formDataConverter->convertCollectionRequestFormDataToCollectionRequestObj($data);
 
             /** @var CollectionRequestService $collectionRequestService */
-            $collectionRequestService = $this->module->getModuleContainer(CollectionRequestService::class);
+            $collectionRequestService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.collection_request_service');
             try {
                 $response = $collectionRequestService->createCollectionRequest($collectionRequestObj);
             } catch (DPDBalticsAPIException $e) {
                 /** @var ExceptionService $exceptionService */
-                $exceptionService = $this->module->getModuleContainer(ExceptionService::class);
+                $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
                 $this->errors[] = $exceptionService->getErrorMessageForException(
                     $e,
                     $exceptionService->getAPIErrorMessages()

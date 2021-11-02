@@ -11,12 +11,14 @@ use DPDAddressTemplate;
 use DPDBaltics;
 use DPDOrderDeliveryTime;
 use DPDParcel;
+use DPDProduct;
 use DPDShipment;
 use Exception;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Factory\ShipmentDataFactory;
 use Invertus\dpdBaltics\Helper\ShipmentHelper;
+use Invertus\dpdBaltics\Logger\Logger;
 use Invertus\dpdBaltics\Repository\AddressTemplateRepository;
 use Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository;
 use Invertus\dpdBaltics\Repository\OrderRepository;
@@ -25,6 +27,7 @@ use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Invertus\dpdBaltics\Service\API\ShipmentApiService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
+use Invertus\dpdBaltics\Validate\Carrier\CarrierUpdateValidate;
 use Invertus\dpdBaltics\Validate\ShipmentData\Exception\InvalidShipmentDataField;
 use Invertus\dpdBaltics\Validate\ShipmentData\ShipmentDataValidator;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ShipmentCreationRequest;
@@ -91,6 +94,18 @@ class ShipmentService
      * @var ShipmentDataFactory
      */
     private $shipmentDataFactory;
+    /**
+     * @var OrderService
+     */
+    private $orderService;
+    /**
+     * @var CarrierUpdateValidate
+     */
+    private $carrierUpdateValidate;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     public function __construct(
         DPDBaltics $module,
@@ -103,7 +118,10 @@ class ShipmentService
         LabelPrintingService $labelPrintingService,
         PudoService $pudoService,
         OrderDeliveryTimeRepository $orderDeliveryTimeRepository,
-        ShipmentDataFactory $shipmentDataFactory
+        ShipmentDataFactory $shipmentDataFactory,
+        OrderService $orderService,
+        CarrierUpdateValidate $carrierUpdateValidate,
+        Logger $logger
     ) {
         $this->module = $module;
         $this->language = $language;
@@ -116,6 +134,9 @@ class ShipmentService
         $this->pudoService = $pudoService;
         $this->orderDeliveryTimeRepository = $orderDeliveryTimeRepository;
         $this->shipmentDataFactory = $shipmentDataFactory;
+        $this->orderService = $orderService;
+        $this->carrierUpdateValidate = $carrierUpdateValidate;
+        $this->logger = $logger;
     }
 
     public function createShipment(Order $order, $idProduct, $isTestMode, $numOfParcels, $weight, $goodsPrice)
@@ -146,9 +167,9 @@ class ShipmentService
     public function createShipmentFromOrder(Order $order)
     {
         /** @var ShipmentRepository $shipmentRepository */
-        $shipmentRepository = $this->module->getModuleContainer(ShipmentRepository::class);
+        $shipmentRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.shipment_repository');
         /** @var ProductRepository $productRepository */
-        $productRepository = $this->module->getModuleContainer(ProductRepository::class);
+        $productRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
 
         if ($shipmentRepository->hasAnyShipments($order->id)) {
             return true;
@@ -184,9 +205,11 @@ class ShipmentService
         $parcelWeight = 0;
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
         foreach ($products as $product) {
-            $parcelPrice += round($product['total_wt'], 2);
+            $parcelPrice += $this->calculateProductsPrice($product);
             $parcelWeight += $product['weight'] * $product['product_quantity'];
         }
+
+        $parcelPrice = $this->calculateParcelPriceWithOrderDiscount($order, $parcelPrice);
         $parcelPrice += $orderShippingCost;
         $shipment = $this->createShipment($order, $idProduct, $isTestMode, 1, $parcelWeight, $parcelPrice);
 
@@ -206,7 +229,8 @@ class ShipmentService
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
 
         foreach ($products as $product) {
-            $parcelPrice += round($product['total_wt'], 2);
+            $parcelPrice += $this->calculateProductsPrice($product);
+            $parcelPrice = $this->calculateParcelPriceWithOrderDiscount($order, $parcelPrice);
             $parcelPrice += $orderShippingCost;
             $parcelWeight += $product['weight'] * $product['product_quantity'];
             $parcelsNum++;
@@ -229,12 +253,13 @@ class ShipmentService
         $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
 
         foreach ($products as $product) {
-            $parcelPrice += round($product['total_wt'], 2);
+            $parcelPrice += $this->calculateProductsPrice($product);
             $parcelWeight += $product['weight'] * $product['product_quantity'];
             $parcelsNum += $product['product_quantity'];
         }
-
+        $parcelPrice = $this->calculateParcelPriceWithOrderDiscount($order, $parcelPrice);
         $parcelPrice += $orderShippingCost;
+
         $shipment = $this->createShipment($order, $idProduct, $isTestMode, $parcelsNum, $parcelWeight, $parcelPrice);
         if (!$shipment->id) {
             return false;
@@ -264,13 +289,33 @@ class ShipmentService
         return $dpdShipment;
     }
 
+    private function calculateParcelPriceWithOrderDiscount($order, $currentPrice)
+    {
+        if (empty($order->total_discounts)) {
+            return $currentPrice;
+        }
+
+        return $currentPrice - $order->total_discounts;
+    }
+
+    private function calculateProductsPrice($product)
+    {
+        if (!empty($product['total_customization_wt'])) {
+            return round($product['total_customization_wt'], 2);
+        }
+
+        return round($product['total_wt'], 2);
+    }
+
     /**
      * @param Order $order
      * @param ShipmentData $shipmentData
      * @param false $print
+     *
      * @return array
      * @throws \PrestaShopDatabaseException
-     * @throws \PrestaShopException
+     * @throws \PrestaShopException*@throws \Invertus\dpdBaltics\Exception\DpdCarrierException
+     * @throws \Invertus\dpdBaltics\Exception\DpdCarrierException
      */
     public function saveShipment(Order $order, ShipmentData $shipmentData, $print = false)
     {
@@ -280,22 +325,34 @@ class ShipmentService
             $this->shipmentDataValidator->validate($shipmentData);
 
         } catch (InvalidShipmentDataField $e) {
-
             $response['message'] = $this->exceptionService->getErrorMessageForException(
                 $e,
                 $this->exceptionService->getShipmentFieldErrorMessages()
             );
+            $this->logger->error($response['message']);
+
             return $response;
 
         } catch (Exception $e) {
             $response['message'] = $this->module->l(
-                sprintf('Failed to save shipment data. Error: %s', $e->getMessage())
+                sprintf('Failed to save shipment data. Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
             );
+            $this->logger->error($response['message']);
+            return $response;
+        }
+
+        try {
+            $shipmentId = $this->shipmentRepository->getIdByOrderId($order->id);
+        } catch (Exception $e) {
+            $response['message'] = $this->module->l(
+                sprintf('Could not fetch shipment order ID Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart
+                )
+            );
+            $this->logger->error($response['message']);
 
             return $response;
         }
 
-        $shipmentId = $this->shipmentRepository->getIdByOrderId($order->id);
         $shipment = new DPDShipment($shipmentId);
 
         if ($shipment->printed_label) {
@@ -312,34 +369,75 @@ class ShipmentService
         try {
             $this->shipmentRepository->saveShipment($shipmentData, $shipmentId);
         } catch (Exception $e) {
-            $response['message'] = $this->module->l('Failed to save shipment');
+            $response['message'] = $this->module->l(
+                sprintf('Failed to save shipment to database Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
+            );
+            $this->logger->error($response['message']);
 
             return $response;
         }
-        if ($shipmentData->isPudo()) {
 
+        if ($shipmentData->isPudo()) {
+            $cartId = $order->id_cart;
             $productId = $shipmentData->getProduct();
+
+            //Fills up missing data(BUG fix for missing pudo ID while creating label)
+            $shipmentData = $this->pudoService->repopulatePudoDataInShipment($shipmentData, $cartId);
+
             $pudoId = $shipmentData->getSelectedPudoId();
             $isoCode = $shipmentData->getSelectedPudoIsoCode();
             $city = $shipmentData->getCity();
             $street = $shipmentData->getDpdStreet();
-            $cartId = $order->id_cart;
+
             try {
                 $this->pudoService->savePudoOrder($productId, $pudoId, $isoCode, $cartId, $city, $street);
             } catch (Exception $e) {
-                $response['message'] = $e->getMessage();
+                $response['message'] = $this->module->l(
+                    sprintf('Failed to save pudo order to database Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
+                );
+                $this->logger->error($response['message']);
 
                 return $response;
             }
         }
 
         if ($shipmentData->getDeliveryTime()) {
-            $deliveryTimeId = $this->orderDeliveryTimeRepository->getOrderDeliveryIdByCartId($order->id_cart);
-            $deliveryTime = new DPDOrderDeliveryTime($deliveryTimeId);
-            $deliveryTime->delivery_time = $shipmentData->getDeliveryTime();
-            $deliveryTime->update();
+            try {
+                $deliveryTimeId = $this->orderDeliveryTimeRepository->getOrderDeliveryIdByCartId($order->id_cart);
+                $deliveryTime = new DPDOrderDeliveryTime($deliveryTimeId);
+                $deliveryTime->delivery_time = $shipmentData->getDeliveryTime();
+                $deliveryTime->update();
+            } catch (Exception $e) {
+                $response['message'] = $this->module->l(
+                    sprintf('Failed to save delivery time to database Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
+                );
+                $this->logger->error($response['message']);
+
+                return $response;
+            }
+
         }
 
+        //Tries to retrieve carrier id by product functionality bugfix for order view shipment change
+        if ($shipmentData->getProduct()) {
+            try {
+                $product = new DPDProduct($shipmentData->getProduct());
+                $productCarrier = Carrier::getCarrierByReference($product->id_reference);
+
+                if (!$this->carrierUpdateValidate->isOrderCarrierMatchesDpdProductCarrier($order->id_carrier, $productCarrier->id)) {
+                    $this->orderService->updateOrderCarrier($order, $productCarrier->id);
+                }
+            } catch (Exception $e) {
+                $response['message'] = $this->module->l(
+                    sprintf('Failed to update order carrier Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)
+                );
+                $this->logger->error($response['message']);
+
+                return $response;
+            }
+        }
+
+        //Checks if print option goes to printing stuff
         if ($print) {
             return $this->labelPrintingService->printAndSaveLabel($shipmentData, $shipmentId, $order->id);
         }
@@ -362,6 +460,20 @@ class ShipmentService
         $shipmentData = $this->shipmentDataFactory->getShipmentDataByIdOrder($orderId);
 
         return $this->saveShipment($order, $shipmentData, true);
+    }
+
+    /**
+     * @param $orderId
+     * @return array
+     * @throws \PrestaShopDatabaseException
+     * @throws \PrestaShopException
+     */
+    public function formatLabelAndCreateShipmentByOrderId($orderId)
+    {
+        $shipmentData = $this->shipmentDataFactory->getShipmentDataByIdOrder($orderId);
+        $shipmentId = $this->shipmentRepository->getIdByOrderId($orderId);
+
+        return $this->labelPrintingService->printAndSaveLabel($shipmentData, $shipmentId, $orderId);
     }
 
     /**

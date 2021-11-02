@@ -74,7 +74,7 @@ class Logger implements LoggerInterface
         }
         $log = new DPDLog();
         $log->response = $message;
-        $log->request = $this->logsService->hideUsernameAndPasswordFromRequest($context['request']);
+        $log->request = !empty($context['request']) ? $this->logsService->hideUsernameAndPasswordFromRequest($context['request']) : null;
         $log->status = self::CRITICAL;
         $log->add();
     }
@@ -97,7 +97,7 @@ class Logger implements LoggerInterface
         }
         $log = new DPDLog();
         $log->response = $message;
-        $log->request = $this->logsService->hideUsernameAndPasswordFromRequest($context['request']);
+        $log->request = !empty($context['request']) ? $this->logsService->hideUsernameAndPasswordFromRequest($context['request']) : null;
         $log->status = self::ERROR;
         $log->add();
     }

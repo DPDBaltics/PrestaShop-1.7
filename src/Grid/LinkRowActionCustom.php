@@ -60,9 +60,12 @@ final class LinkRowActionCustom extends AbstractRowAction
                 //route_param_name and route_param_field becomes redundant, but it cannot be removed due to BC break
                 'extra_route_params' => [],
                 'clickable_row' => false,
+                'is_label_download' => false,
+
             ])
             ->setAllowedTypes('route', 'string')
             ->setAllowedTypes('route_param_name', 'string')
+            ->setAllowedTypes('is_label_download', 'boolean')
             ->setAllowedTypes('route_param_field', 'string')
             ->setAllowedTypes('extra_route_params', 'array')
             ->setAllowedTypes('confirm_message', 'string')

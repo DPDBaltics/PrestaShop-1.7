@@ -1,35 +1,36 @@
 services:
-  Invertus\dpdBaltics\Provider\ImportExportOptionsProvider:
+  invertus.dpdbaltics.provider.import_export_options_provider:
     class: 'Invertus\dpdBaltics\Provider\ImportExportOptionsProvider'
     arguments:
       - '@dpdbaltics'
 
-  Invertus\dpdBaltics\Provider\ImportExportURLProvider:
+  invertus.dpdbaltics.provider.import_export_url_provider:
     class: 'Invertus\dpdBaltics\Provider\ImportExportURLProvider'
     arguments:
       - '@context'
 
-  Invertus\dpdBaltics\Provider\ProductShippingCostProvider:
+  invertus.dpdbaltics.provider.product_shipping_cost_provider:
     class: 'Invertus\dpdBaltics\Provider\ProductShippingCostProvider'
     arguments:
       - '@dpdbaltics'
-      -  '@Invertus\dpdBaltics\Repository\ProductRepository'
-      -  '@Invertus\dpdBaltics\Repository\ZoneRepository'
-      -  '@Invertus\dpdBaltics\Repository\PriceRuleRepository'
+      -  '@invertus.dpdbaltics.repository.product_repository'
+      -  '@invertus.dpdbaltics.repository.zone_repository'
+      -  '@invertus.dpdbaltics.repository.price_rule_repository'
       -  '@currency'
 
-  Invertus\dpdBaltics\Provider\ZoneRangeProvider:
+  invertus.dpdbaltics.provider.zone_range_provider:
     class: 'Invertus\dpdBaltics\Provider\ZoneRangeProvider'
     arguments:
       - '@language'
+      - '@invertus.dpdbaltics.repository.zone_range_repository'
 
-  Invertus\dpdBaltics\Provider\ProductAvailabilityProvider:
+  invertus.dpdbaltics.provider.product_availability_provider:
     class: 'Invertus\dpdBaltics\Provider\ProductAvailabilityProvider'
     arguments:
       - '@language'
-      - '@Invertus\dpdBaltics\Repository\ProductAvailabilityRepository'
+      - '@invertus.dpdbaltics.repository.product_availability_repository'
 
-  Invertus\dpdBaltics\Provider\CurrentCountryProvider:
+  invertus.dpdbaltics.provider.current_country_provider:
     class: 'Invertus\dpdBaltics\Provider\CurrentCountryProvider'
     arguments:
       - '@context'

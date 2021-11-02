@@ -257,7 +257,7 @@ class DPDPriceRule extends ObjectModel
         $module = Module::getInstanceByName('dpdbaltics');
 
         /** @var DPDZoneRepository $repo */
-        $repo = $module->getModuleContainer()->get(DPDZoneRepository::class);
+        $repo = $module->getModuleContainer()->get('invertus.dpdbaltics.repository.dpdzone_repository');
         $zonesIds = $repo->getZonesIdsByPriceRule($this->id);
 
         return DPDZone::checkAddressInZones($address, $zonesIds);

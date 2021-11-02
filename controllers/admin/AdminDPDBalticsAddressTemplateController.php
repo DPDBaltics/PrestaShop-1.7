@@ -37,7 +37,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
         parent::__construct();
         $this->initList();
         $this->initForm();
-        $this->addressTemplateService = $this->module->getModuleContainer()->get(AddressTemplateService::class);
+        $this->addressTemplateService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.address.address_template_service');
 
     }
 
@@ -92,7 +92,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
     private function getFieldFormVars()
     {
         /** @var ShopRepository $shopRepository */
-        $shopRepository = $this->module->getModuleContainer()->get(ShopRepository::class);
+        $shopRepository = $this->module->getModuleContainer()->get('invertus.dpdbaltics.repository.shop_repository');
         $priceRuleShops = $shopRepository->getAddressTemplateShops($this->object->id);
 
         $shops = Shop::getShops(true);
@@ -110,7 +110,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
             $searchBoxName = 'shops_select[]';
 
             /** @var SearchBoxBuilder $searchBoxBuilder */
-            $searchBoxBuilder = $this->module->getModuleContainer()->get(SearchBoxBuilder::class);
+            $searchBoxBuilder = $this->module->getModuleContainer()->get('invertus.dpdbaltics.builder.template.search_box_builder');
             $searchBoxPlugin = $searchBoxBuilder->createSearchBox(
                 $priceRuleShops,
                 $allShopsSelected,
@@ -239,17 +239,17 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
         ];
 
         /** @var PhonePrefixRepository $phonePrefixRepository */
-        $phonePrefixRepository = $this->module->getModuleContainer(PhonePrefixRepository::class);
+        $phonePrefixRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.phone_prefix_repository');
 
         /** @var PhoneInputBuilder $phoneInputBuilder */
-        $phoneInputBuilder = $this->module->getModuleContainer(PhoneInputBuilder::class);
+        $phoneInputBuilder = $this->module->getModuleContainer('invertus.dpdbaltics.builder.template.admin.phone_input_builder');
 
         if (Tools::getIsset('submitAdddpd_address_template')) {
             $phoneData['mobile_phone_code'] = Tools::getValue('mobile_phone_code');
             $phoneData['mobile_phone'] = Tools::getValue('mobile_phone');
         } elseif (Tools::getIsset('id_dpd_address_template')) {
             /** @var AddressRepository $addressRepo */
-            $addressRepo = $this->module->getModuleContainer(AddressRepository::class);
+            $addressRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.address_repository');
             $phoneData = $addressRepo->getAddressPhonesAndCodes(Tools::getValue('id_dpd_address_template'));
         }
 

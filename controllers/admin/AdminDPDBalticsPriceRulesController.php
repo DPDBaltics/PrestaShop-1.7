@@ -43,7 +43,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
 
         $this->initList();
         $this->initForm();
-        $this->priceRuleService = $this->module->getModuleContainer()->get(PriceRuleService::class);
+        $this->priceRuleService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.price_rule_service');
     }
 
     /**
@@ -66,7 +66,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
 
             if (!$this->priceRuleService->duplicatePriceRule($idPriceRule)) {
                 /** @var DPDFlashMessageService $flashMessageService */
-                $flashMessageService = $this->module->getModuleContainer()->get(DPDFlashMessageService::class);
+                $flashMessageService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.dpdflash_message_service');
 
                 $msg = $this->l('Price rule duplication failed. Data is not saved.');
                 $flashMessageService->addFlash('error', $msg);
@@ -330,11 +330,11 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
             $this->context->smarty->fetch($this->module->getLocalPath() . 'views/templates/admin/payment-box.tpl');
 
         /** @var DPDZoneRepository $zoneRepository */
-        $zoneRepository = $this->module->getModuleContainer()->get(DPDZoneRepository::class);
+        $zoneRepository = $this->module->getModuleContainer()->get('invertus.dpdbaltics.repository.dpdzone_repository');
         $priceRuleZones = $zoneRepository->getSelectedPriceRuleZones($this->object->id);
 
         /** @var ShopRepository $shopRepository */
-        $shopRepository = $this->module->getModuleContainer()->get(ShopRepository::class);
+        $shopRepository = $this->module->getModuleContainer()->get('invertus.dpdbaltics.repository.shop_repository');
         $priceRuleShops = $shopRepository->getPriceRuleShops($this->object->id);
 
         if (empty($priceRuleZones)) {
@@ -359,7 +359,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
             $searchBoxName = 'zones_select[]';
 
             /** @var SearchBoxBuilder $searchBoxBuilder */
-            $searchBoxBuilder = $this->module->getModuleContainer()->get(SearchBoxBuilder::class);
+            $searchBoxBuilder = $this->module->getModuleContainer()->get('invertus.dpdbaltics.builder.template.search_box_builder');
             $searchBoxPlugin = $searchBoxBuilder->createSearchBox(
                 $priceRuleZones,
                 $allZonesSelected,
@@ -388,7 +388,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
             $searchBoxName = 'shops_select[]';
 
             /** @var SearchBoxBuilder $searchBoxBuilder */
-            $searchBoxBuilder = $this->module->getModuleContainer()->get(SearchBoxBuilder::class);
+            $searchBoxBuilder = $this->module->getModuleContainer()->get('invertus.dpdbaltics.builder.template.search_box_builder');
             $searchBoxPlugin = $searchBoxBuilder->createSearchBox(
                 $priceRuleShops,
                 $allShopsSelected,

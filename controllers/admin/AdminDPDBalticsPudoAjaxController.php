@@ -44,7 +44,7 @@ class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
 
 
         /** @var ProductRepository $productRepo */
-        $productRepo = $this->module->getModuleContainer(ProductRepository::class);
+        $productRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
         $product = $productRepo->findProductByCarrierReference($carrierId);
         $ispudo = $product['is_pudo'];
         if (!$ispudo) {
@@ -76,7 +76,7 @@ class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
 
         $carrier = new Carrier($idCarrier);
         /** @var PudoRepository $pudoRepository */
-        $pudoRepository = $this->module->getModuleContainer(PudoRepository::class);
+        $pudoRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.pudo_repository');
         $idPudoOrder = $pudoRepository->getPudoIdByCarrierId($carrier->id, $idCart);
 
         $pudoOrder = new DPDPudo($idPudoOrder);
@@ -93,9 +93,9 @@ class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
     private function getPudoSearch(Cart $cart)
     {
         /** @var CurrentCountryProvider $currentCountryProvider */
-        $currentCountryProvider = $this->module->getModuleContainer(CurrentCountryProvider::class);
+        $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
         /** @var ParcelShopRepository $parcelShopRepo */
-        $parcelShopRepo = $this->module->getModuleContainer(ParcelShopRepository::class);
+        $parcelShopRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.parcel_shop_repository');
 
         $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
         $cityList = $parcelShopRepo->getAllCitiesByCountryCode($countryCode);

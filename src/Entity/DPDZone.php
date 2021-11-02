@@ -60,13 +60,14 @@ class DPDZone extends ObjectModel
      */
     public static function checkAddressInZones(Address $address, array $zones)
     {
-        $country = new Country($address->id_country);
+        $idCountry = $address->id_country ?: (int)Configuration::get('PS_COUNTRY_DEFAULT');
+        $country = new Country($idCountry);
 
         /** @var DPDBaltics $module */
         $module = Module::getInstanceByName('dpdbaltics');
 
         /** @var ZoneRangeRepository $zoneRangeRepo */
-        $zoneRangeRepo = $module->getModuleContainer()->get(ZoneRangeRepository::class);
+        $zoneRangeRepo = $module->getModuleContainer()->get('invertus.dpdbaltics.repository.zone_range_repository');
 
         foreach ($zones as $zone) {
             // Get ranges by zone and country

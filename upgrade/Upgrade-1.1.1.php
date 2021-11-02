@@ -43,7 +43,7 @@ function upgrade_module_1_1_1(DPDBaltics $module)
     }
 
     /** @var TabFactory $tabFactory */
-    $tabFactory = $module->getModuleContainer(TabFactory::class);
+    $tabFactory = $module->getModuleContainer('invertus.dpdbaltics.factory.tab_factory');
 
     $tabsInstaller = new TabsInstaller($tabFactory->getTabsCollection(), $module->name);
     if (!$tabsInstaller->installTabs()) {
@@ -51,7 +51,7 @@ function upgrade_module_1_1_1(DPDBaltics $module)
     };
 
     /** @var CurrentCountryProvider $currentCountryProvider */
-    $currentCountryProvider = $this->module->getModuleContainer(CurrentCountryProvider::class);
+    $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
     $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
 
     Configuration::updateValue(Config::DPD_PARCEL_IMPORT_COUNTRY_SELECTOR, Country::getByIso($countryCode));

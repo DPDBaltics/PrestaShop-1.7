@@ -5,8 +5,10 @@ namespace Invertus\dpdBaltics\Service;
 use Address;
 use Customer;
 use DPDBaltics;
+use Invertus\dpdBaltics\Exception\DpdCarrierException;
 use Invertus\dpdBaltics\Repository\OrderRepository;
 use Order;
+use PrestaShop\PrestaShop\Adapter\Validate;
 
 class OrderService
 {
@@ -36,7 +38,7 @@ class OrderService
         $customerAddresses = $customer->getAddresses($idLang);
 
         /** @var OrderRepository $orderRepository */
-        $orderRepository = $this->module->getModuleContainer(OrderRepository::class);
+        $orderRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.order_repository');
         $dpdOrderPhone = $orderRepository->getPhoneByIdCart($order->id_cart);
 
         $details['customer'] = (array) $customer;
@@ -45,5 +47,20 @@ class OrderService
         $details['dpd_order_phone'] = $dpdOrderPhone;
 
         return $details;
+    }
+
+    /**
+     * @throws \PrestaShopException
+     * @throws DpdCarrierException
+     */
+    public function updateOrderCarrier(Order $order, $newCarrierId)
+    {
+        if (!Validate::isLoadedObject($order)) {
+          throw new DpdCarrierException('Could not load order');
+        }
+
+        $order->id_carrier = $newCarrierId;
+
+        return $order->save();
     }
 }

@@ -16,6 +16,11 @@ class PhoneRepository extends AbstractEntityRepository
         return $this->db->getValue($query);
     }
 
+    public function findDpdOrderPhone($id)
+    {
+        return new DPDOrderPhone($id);
+    }
+
     public function saveCarrierPhone($idCart, $dpdPhone, $dpdPhoneCode)
     {
         $idDpdOrderPhone = $this->phoneRepository->getOrderPhoneIdByCartId($idCart);

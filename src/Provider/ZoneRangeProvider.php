@@ -5,6 +5,7 @@ namespace Invertus\dpdBaltics\Provider;
 
 use Country;
 use Exception;
+use Invertus\dpdBaltics\Repository\ZoneRangeRepository;
 use Language;
 use DPDZone;
 use Tools;
@@ -16,10 +17,15 @@ class ZoneRangeProvider
      * @var Language
      */
     private $language;
+    /**
+     * @var ZoneRangeRepository
+     */
+    private $rangeRepository;
 
-    public function __construct(Language $language)
+    public function __construct(Language $language, ZoneRangeRepository $rangeRepository)
     {
         $this->language = $language;
+        $this->rangeRepository = $rangeRepository;
     }
 
     /**
@@ -61,5 +67,17 @@ class ZoneRangeProvider
         }
 
         return $jsZoneRanges;
+    }
+
+    public function getAllZoneRangesCountryIsoCodes()
+    {
+        $isoCodes = [];
+        $countries = $this->rangeRepository->findAllZoneRangeCountryIds();
+
+        foreach ($countries as $item) {
+            $isoCodes[] = Country::getIsoById((int) $item['id_country']);
+        }
+
+        return $isoCodes;
     }
 }

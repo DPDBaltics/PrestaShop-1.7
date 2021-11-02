@@ -83,7 +83,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
         }
 
         /** @var $zoneRangeProvider ZoneRangeProvider */
-        $zoneRangeProvider = $this->module->getModuleContainer()->get(ZoneRangeProvider::class);
+        $zoneRangeProvider = $this->module->getModuleContainer()->get('invertus.dpdbaltics.provider.zone_range_provider');
 
         Media::addJsDef([
             'dpdbaltics' => [
@@ -205,9 +205,9 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
         /** @var $updateZoneService UpdateZoneService */
         /** @var $zoneAdapter ZoneAdapter */
         /** @var $zoneRangeValidate ZoneRangeValidate */
-        $updateZoneService = $this->module->getModuleContainer()->get(UpdateZoneService::class);
-        $zoneAdapter = $this->module->getModuleContainer()->get(ZoneAdapter::class);
-        $zoneRangeValidate = $this->module->getModuleContainer()->get(ZoneRangeValidate::class);
+        $updateZoneService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.zone.update_zone_service');
+        $zoneAdapter = $this->module->getModuleContainer()->get('invertus.dpdbaltics.adapter.zone_adapter');
+        $zoneRangeValidate = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validate.zone.zone_range_validate');
 
         $zoneRanges = $zoneAdapter->convertZoneRangesToObjects($zoneRanges);
 
@@ -234,7 +234,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
         $zoneId = (int) Tools::getValue('id_dpd_zone');
 
         /** @var $deleteZoneService DeleteZoneService */
-        $deleteZoneService = $this->module->getModuleContainer()->get(DeleteZoneService::class);
+        $deleteZoneService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.zone.delete_zone_service');
 
         try {
             $deleteZoneService->deleteZone($zoneId);
@@ -256,7 +256,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
         }
 
         /** @var $deleteZoneService DeleteZoneService */
-        $deleteZoneService = $this->module->getModuleContainer()->get(DeleteZoneService::class);
+        $deleteZoneService = $this->module->getModuleContainer()->get('invertus.dpdbaltics.service.zone.delete_zone_service');
 
         try {
             $deleteZoneService->bulkDeleteZones($zonesId);
@@ -374,12 +374,12 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
             Configuration::get(Config::ON_BOARD_STEP) === Config::STEP_MANUAL_ZONES_5
         ) {
             /** @var OnBoardStepActionService $onBoardStepActionService */
-            $onBoardStepActionService = $this->module->getModuleContainer(OnBoardStepActionService::class);
+            $onBoardStepActionService = $this->module->getModuleContainer('invertus.dpdbaltics.on_board.service.on_board_step_action_service');
             $onBoardStepActionService->nextStep(Config::STEP_MANUAL_ZONES_6);
 
             if(Tools::getValue('buttonName') === Config::ZONES_SAVE_AND_STAY_BUTTON) {
                 /** @var OnBoardService $onBoardService */
-                $onBoardService = $this->module->getModuleContainer(OnBoardService::class);
+                $onBoardService = $this->module->getModuleContainer('invertus.dpdbaltics.on_board.service.on_board_service');
                 $response['onBoardStepTemplate'] = $onBoardService->makeStepActionWithTemplateReturn(true);
             }
         }

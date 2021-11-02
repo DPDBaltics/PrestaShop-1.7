@@ -1,29 +1,42 @@
 services:
-  Invertus\dpdBaltics\Factory\ArrayFactory:
+  invertus.dpdbaltics.factory.array_factory:
     class: 'Invertus\dpdBaltics\Factory\ArrayFactory'
 
-  Invertus\dpdBaltics\Factory\ContextFactory:
+  invertus.dpdbaltics_factory.context_factory:
     class: 'Invertus\dpdBaltics\Factory\ContextFactory'
 
-  Invertus\dpdBaltics\Factory\TabFactory:
+  invertus.dpdbaltics.factory.tab_factory:
     class: 'Invertus\dpdBaltics\Factory\TabFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Service\TabService'
+      - '@invertus.dpdbaltics.service.tab_service'
 
-  Invertus\dpdBaltics\Factory\APIParamsFactory:
+  invertus.dpdbaltics.factory.apiparams_factory:
     class: 'Invertus\dpdBaltics\Factory\APIParamsFactory'
     arguments:
       - '@dpdbaltics'
-      - '@Invertus\dpdBaltics\Config\ApiConfiguration'
+      - '@invertus.dpdbaltics.config.api_configuration'
 
-  Invertus\dpdBaltics\Factory\ShipmentDataFactory:
+  invertus.dpdbaltics.factory.shipment_data_factory:
     class: 'Invertus\dpdBaltics\Factory\ShipmentDataFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\OrderRepository'
-      - '@Invertus\dpdBaltics\Repository\ShipmentRepository'
-      - '@Invertus\dpdBaltics\Repository\PudoRepository'
+      - '@invertus.dpdbaltics.repository.order_repository'
+      - '@invertus.dpdbaltics.repository.shipment_repository'
+      - '@invertus.dpdbaltics.repository.pudo_repository'
 
-  Invertus\dpdBaltics\Factory\ShopFactory:
+  invertus.dpdbaltics.factory.shop_factory:
     class: 'Invertus\dpdBaltics\Factory\ShopFactory'
     arguments:
-      - '@Invertus\dpdBaltics\Repository\ParcelShopRepository'
+    - '@invertus.dpdbaltics.repository.parcel_shop_repository'
+
+  invertus.dpdbaltics.factory.parcel_tracking_url_factory:
+    class: 'Invertus\dpdBaltics\Factory\ParcelTrackingUrlFactory'
+    arguments:
+      - '@invertus.dpdbaltics.provider.current_country_provider'
+      - '@invertus.dpdbaltics.repository.parcel_shop_repository'
+
+  invertus-dpdbaltics-factory-parcel_tracking_url_factory:
+    class: 'Invertus\dpdBaltics\Factory\ParcelTrackingUrlFactory'
+    arguments:
+      - '@invertus.dpdbaltics.provider.current_country_provider'
+
+

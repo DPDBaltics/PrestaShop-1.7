@@ -71,7 +71,7 @@ class ZoneDeleteValidate
 
         $errors = [];
         /** @var ProductRepository $productRepo */
-        $productRepo = $this->module->getModuleContainer(ProductRepository::class);
+        $productRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
         $carriers = $productRepo->getProductsByIdZone($idZone);
 
         if (!empty($carriers)) {
@@ -87,7 +87,7 @@ class ZoneDeleteValidate
         }
 
         /** @var PriceRuleRepository $priceRulesRepository */
-        $priceRulesRepository = $this->module->getModuleContainer(PriceRuleRepository::class);
+        $priceRulesRepository = $this->module->getModuleContainer('invertus.dpdbaltics.repository.price_rule_repository');
         $priceRules = $priceRulesRepository->getPriceRulesByIdZone($idZone);
 
         if (!empty($priceRules)) {

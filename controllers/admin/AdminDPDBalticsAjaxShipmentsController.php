@@ -48,9 +48,10 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         $idOrder = Tools::getValue('id_order');
         $order = new Order($idOrder);
         $cartId = Tools::getValue('id_cart');
+        $isAbove177 = Config::isPrestashopVersionAbove177();
 
         /** @var FormDataConverter $formDataConverter */
-        $formDataConverter = $this->module->getModuleContainer(FormDataConverter::class);
+        $formDataConverter = $this->module->getModuleContainer('invertus.dpdbaltics.converter.form_data_converter');
         $data = Tools::getValue('data');
 
         if (!$cartId && $idOrder) {
@@ -60,14 +61,17 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         switch ($action) {
             case 'changeReceiverAddressBlock':
                 $receiverAddressData = json_decode(Tools::getValue('dpdReceiverAddress'));
-                $orderId = Tools::getValue('id_order');
-                $this->changeReceiverAddressBlock($receiverAddressData, $orderId);
+                $this->changeReceiverAddressBlock($receiverAddressData, $idOrder);
                 break;
             case 'updateAddressBlock':
                 $idAddressDelivery = (int)Tools::getValue('id_address_delivery');
                 $this->updateAddressBlock($order, $idAddressDelivery);
                 break;
             case 'print':
+                //Prevent printing in old controller, set printing from Symfony service, as it does not cause corrupted PDF issue
+                if ($isAbove177) {
+                    $this->returnResponse(['status' => true]);
+                }
                 $shipmentId = (int)Tools::getValue('shipment_id');
                 $labelFormat = Tools::getValue('labelFormat');
                 $labelPosition = Tools::getValue('labelPosition');
@@ -76,7 +80,9 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
             case 'save':
             case 'save_and_print':
                 $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
-                $this->returnResponse($this->saveShipment($order, $shipmentData, $action == 'save_and_print'));
+                //Prevent printing in old controller, set printing from Symfony service, as it does not cause corrupted PDF issue
+                $isPrint = (bool) $action == 'save_and_print' && !$isAbove177;
+                $this->returnResponse($this->saveShipment($order, $shipmentData, $isPrint));
                 break;
             case 'searchPudoServices':
                 $cityName = Tools::getValue('city_name');
@@ -90,7 +96,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                     $carrier = new Carrier($carrierId);
                 }
                 /** @var PudoService $pudoService */
-                $pudoService = $this->module->getModuleContainer(PudoService::class);
+                $pudoService = $this->module->getModuleContainer('invertus.dpdbaltics.service.pudo_service');
                 try {
                     $this->returnResponse(
                         $pudoService->searchPudoServices(
@@ -156,7 +162,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                     $this->ajaxDie($response);
                 }
                 /** @var \Invertus\dpdBaltics\Service\CarrierPhoneService $carrierPhoneService */
-                $carrierPhoneService = $this->module->getModuleContainer(\Invertus\dpdBaltics\Service\CarrierPhoneService::class);
+                $carrierPhoneService = $this->module->getModuleContainer('invertus.dpdbaltics.service.carrier_phone_service');
 
                 $response = [
                     'carrierPhoneTemplate' => $carrierPhoneService->getCarrierPhoneTemplate($idCart)
@@ -174,14 +180,15 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 
     private function printLabelFromList($orderId)
     {
-        $shipmentService = $this->module->getModuleContainer(ShipmentService::class);
+        /** @var ShipmentService $shipmentService */
+        $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
         return $shipmentService->formatLabelShipmentPrintResponse($orderId);
     }
 
     public function printMultipleLabelsFromList($orderIds)
     {
-        $shipmentService = $this->module->getModuleContainer(ShipmentService::class);
+        $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
         return $shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds);
 
@@ -196,7 +203,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
      */
     private function saveShipment(Order $order, ShipmentData $shipmentData, $print = false)
     {
-        $shipmentService = $this->module->getModuleContainer(ShipmentService::class);
+        $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
         return $shipmentService->saveShipment($order, $shipmentData, $print);
     }
@@ -220,7 +227,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         }
         $order = new Order($orderId);
         /** @var ReceiverAddressService $receiverAddressService */
-        $receiverAddressService = $this->module->getModuleContainer(ReceiverAddressService::class);
+        $receiverAddressService = $this->module->getModuleContainer('invertus.dpdbaltics.service.address.receiver_address_service');
         $receiverCustomAddress = $receiverAddressService->addReceiverCustomAddress($receiverAddressData, $orderId);
 
         if (false === $receiverCustomAddress) {
@@ -256,7 +263,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
     private function updateAddressBlock($order, $idAddressDelivery)
     {
         /** @var ReceiverAddressService $receiverAddressService */
-        $receiverAddressService = $this->module->getModuleContainer(ReceiverAddressService::class);
+        $receiverAddressService = $this->module->getModuleContainer('invertus.dpdbaltics.service.address.receiver_address_service');
         try {
             $addressResponse = $receiverAddressService->processUpdateAddressBlock($order, $idAddressDelivery);
         } catch (Exception $e) {
@@ -274,14 +281,14 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 
     private function printLabel($shipmentId, $labelFormat, $labelPosition)
     {
-        $labelPrintingService = $this->module->getModuleContainer(LabelPrintingService::class);
+        $labelPrintingService = $this->module->getModuleContainer('invertus.dpdbaltics.service.label.label_printing_service');
 
         return $labelPrintingService->setLabelOptions($shipmentId, $labelFormat, $labelPosition);
     }
 
     private function setLabelOptions(ShipmentData $shipmentData, $shipmentId, $orderId)
     {
-        $labelPrintingService = $this->module->getModuleContainer(LabelPrintingService::class);
+        $labelPrintingService = $this->module->getModuleContainer('invertus.dpdbaltics.service.label.label_printing_service');
 
         return $labelPrintingService->printAndSaveLabel($shipmentData, $shipmentId, $orderId);
     }
@@ -289,7 +296,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
     private function updatePudoInfo($pudoId)
     {
         /** @var \Invertus\dpdBaltics\Service\Parcel\ParcelShopService $parcelShopService */
-        $parcelShopService = $this->module->getModuleContainer(\Invertus\dpdBaltics\Service\Parcel\ParcelShopService::class);
+        $parcelShopService = $this->module->getModuleContainer('invertus.dpdbaltics.service.parcel.parcel_shop_service');
         try {
             /** @var ParcelShop[] $parcelShops */
             $parcelShops = $parcelShopService->getParcelShopByShopId($pudoId);
@@ -300,7 +307,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         }
 
         /** @var PudoService $pudoService */
-        $pudoService = $this->module->getModuleContainer(PudoService::class);
+        $pudoService = $this->module->getModuleContainer('invertus.dpdbaltics.service.pudo_service');
         $pudoServices = $pudoService->setPudoServiceTypes($parcelShops);
         $pudoServices = $pudoService->formatPudoServicesWorkHours($pudoServices);
 
