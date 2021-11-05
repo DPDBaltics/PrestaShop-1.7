@@ -21,8 +21,7 @@ jobs:
           rm -rf .git
           rm -rf .github
           rm -rf tests
-          rm .php_cs.cache
-          vendor/bin/autoindex
+#          vendor/bin/autoindex
           mkdir dpdbaltics
           rsync -Rr ./ ./dpdbaltics
           shopt -s extglob
