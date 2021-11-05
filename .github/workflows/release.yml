@@ -18,18 +18,9 @@ jobs:
         run: |
           composer install --no-dev --optimize-autoloader --classmap-authoritative
           composer dump-autoload --no-dev --optimize --classmap-authoritative
-          npm install --quiet --no-progress
-          npm run build
-          rm -rf node_modules
-          find views/js/ -name "*.css" -type f -delete
-          cp .github/.htaccess vendor/.htaccess
           rm -rf .git
           rm -rf .github
           rm -rf tests
-          rm -rf .docker
-          rm docker-compose.yml
-          rm docker-compose.local.yml
-          rm Makefile
           rm .php_cs.cache
           vendor/bin/autoindex
           mkdir dpdbaltics
@@ -39,7 +30,7 @@ jobs:
           find . -maxdepth 1 -type f -exec rm "{}" \;
           cd dpdbaltics && rm -rf dpdbaltics
       - name: version
-        run: echo "::set-output name=version::$(./bin/azblogfilter --version)"
+        run: echo "::set-output name=version::$(./bin/dpdbaltics17 --version)"
         id: version
       - name: release
         uses: actions/create-release@v1
