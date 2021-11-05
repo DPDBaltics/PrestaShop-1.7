@@ -1,7 +1,6 @@
 {
   "name": "invertus/dpdbaltics",
   "type": "project",
-  "description": "Oficial DPDbaltics module for prestashop platform",
   "repositories": [
     {
       "type": "git",
