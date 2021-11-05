@@ -36,25 +36,17 @@ function updateStreet() {
 $( document ).ajaxComplete(function( event, request, settings ) {
 
     var applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
-    if (!$.inArray(currentController, applicableControllers)) {
+    if (!inArray(currentController, applicableControllers)) {
         return;
     }
-    if (!settings.url) {
-        return;
-    }
-
     var method = DPDgetUrlParam('action', settings.url)
-
-    if ( method === 'selectDeliveryOption') {
-        updateStreet()
-    }
 
     if (!method) {
         method = DPDgetUrlParam('method', settings.data)
     }
 
-    if (method === 'updateCarrier') {
-        updateStreet();
+    if ( method === 'selectDeliveryOption' || method === 'updateCarrier') {
+        updateStreet()
     }
 });
 
@@ -192,4 +184,13 @@ function DPDgetUrlParam(sParam, string)
             return sParameterName[1] === undefined ? true : sParameterName[1];
         }
     }
+}
+function inArray(needle, haystack) {
+    var length = haystack.length;
+    for(var i = 0; i < length; i++) {
+        if(haystack[i] == needle){
+            return true;
+        }
+    }
+    return false;
 }
