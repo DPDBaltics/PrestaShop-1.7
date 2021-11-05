@@ -86,4 +86,5 @@
 - Missing pudo ID fix, when parcel is not reselected in frontend
 - Parcel tracking email template changed, URL changes, show only parcel number in tracking email template
 - Bugfix, when in parcel validation function wrong argument is set, carrier ID instead of reference.
+- Bugfix, override in array method in javascript, as different jquery version act differently while executing function
 
