@@ -21,7 +21,6 @@ jobs:
           rm -rf .git
           rm -rf .github
           rm -rf tests
-#          vendor/bin/autoindex
           mkdir dpdbaltics
           rsync -Rr ./ ./dpdbaltics
           shopt -s extglob
