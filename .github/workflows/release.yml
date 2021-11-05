@@ -1,5 +1,4 @@
 name: release
-
 on:
   push:
     tags:
@@ -20,18 +19,14 @@ jobs:
           rm -rf .git
           rm -rf .github
           rm -rf tests
+          rm -rf vendor.zip
           mkdir dpdbaltics
           rsync -Rr ./ ./dpdbaltics
           shopt -s extglob
           rm -r !(dpdbaltics)
           find . -maxdepth 1 -type f -exec rm "{}" \;
           cd dpdbaltics && rm -rf dpdbaltics
-          pwd
-          ls
           cd ../ && zip -r dpdbaltics.zip dpdbaltics/
-      - name: version
-        run: echo "::set-output name=version::$(./bin/dpdbaltics17 --version)"
-        id: version
       - name: release
         uses: actions/create-release@v1
         id: create_release
