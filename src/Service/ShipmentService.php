@@ -300,11 +300,9 @@ class ShipmentService
 
     private function calculateProductsPrice($product)
     {
-        if (!empty($product['total_customization_wt'])) {
-            return round($product['total_customization_wt'], 2);
-        }
-
-        return round($product['total_wt'], 2);
+        return $product['total_price_tax_incl'] ?
+            round($product['total_price_tax_incl'], 2) :
+            round($product['total_wt'], 2);
     }
 
     /**
