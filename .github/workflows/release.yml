@@ -30,7 +30,7 @@ jobs:
       - name: Update release
         uses: johnwbyrd/update-release@v1
         with:
-          token: ${{ secrets.YOUR_PRIVATE_SECRET_TOKEN }}
+          token: ${{ github.token }}
           asset: ./dpdbaltics.zip
 
 
