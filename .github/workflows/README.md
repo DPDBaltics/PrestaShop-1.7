@@ -1,10 +1,7 @@
-#Release creation on push library:
-https://github.com/rymndhng/release-on-push-action
-#Artefact creation instructions:
-https://github.com/trstringer/azblogfilter
-https://trstringer.com/github-actions-create-release-upload-artifacts/
-###Release creation
-At the moment release is being created when pushed to main branch
+#Steps needed to trigger a module build:
+* Navigate to repository
+* Create new release
+* Add needed tag
+##Github documentation for releases:
+https://docs.github.com/en/enterprise-server@3.1/repositories/releasing-projects-on-github/managing-releases-in-a-repository
 
-PR rules:
-When pr has tag(in name) `norelease` it won't create a release
