@@ -27,12 +27,11 @@ jobs:
           find . -maxdepth 1 -type f -exec rm "{}" \;
           cd dpdbaltics && rm -rf dpdbaltics
           cd ../ && zip -r dpdbaltics.zip dpdbaltics/
-      - name: Upload module
-        uses: actions/upload-release-asset@v1
+      - name: Update release
+        uses: johnwbyrd/update-release@v1
+      with:
+        token: ${{ secrets.YOUR_PRIVATE_SECRET_TOKEN }}
+        asset: ./dpdbaltics.zip
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dpdbaltics.zip
-          asset_name: dpdbaltics.zip
-          asset_content_type: application/zip
+
