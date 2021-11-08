@@ -1,8 +1,7 @@
 name: release
 on:
   release:
-    types: [ published]
-
+    types: [ published, edited, updated, drafted]
 jobs:
   build_release:
     name: build_release
@@ -27,8 +26,17 @@ jobs:
           find . -maxdepth 1 -type f -exec rm "{}" \;
           cd dpdbaltics && rm -rf dpdbaltics
           cd ../ && zip -r dpdbaltics.zip dpdbaltics/
-      - name: Update Release
-        uses: johnwbyrd/update-release@v1.0.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          files: ./dpdbaltics.zip
+      - name: Update release
+          id: update_release
+          uses: tubone24/update_release@v1.0
+          env:
+            GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload Release Asset
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.github_token }}
+          with:
+            upload_url: ${{ steps.update_release.outputs.upload_url }}
+            asset_path: ./dpdbaltics.zip
+            asset_name: dpdbaltics.zip
+            asset_content_type: application/zip
