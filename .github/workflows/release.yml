@@ -1,8 +1,9 @@
 name: release
 on:
-  types:
-    - created
-    - published
+  release:
+    types:
+      - created
+      - published
 
 jobs:
   build_release:
