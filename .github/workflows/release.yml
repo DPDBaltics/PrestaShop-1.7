@@ -1,7 +1,7 @@
 name: release
 on:
   release:
-    types: [ published, edited, updated]
+    types: [ published, edited, updated, drafted]
 
 jobs:
   build_release:
@@ -27,8 +27,8 @@ jobs:
           find . -maxdepth 1 -type f -exec rm "{}" \;
           cd dpdbaltics && rm -rf dpdbaltics
           cd ../ && zip -r dpdbaltics.zip dpdbaltics/
-      - name: Update release
-        uses: johnwbyrd/update-release@v1
+      - name: Update Release
+        uses: johnwbyrd/update-release@v1.0.0
         with:
-          token: ${{ github.token }}
-          asset: ./dpdbaltics.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: ./dpdbaltics.zip
