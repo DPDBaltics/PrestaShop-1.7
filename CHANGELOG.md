@@ -76,7 +76,7 @@
 - Setup logic to save phone number dynamically(on ajax event trigger), prevents missing phone number in specific cases
 - Validations added for phone number, while saving
 - Format phone number while saving(removes phone prefix while saving phone number example +370123456789 turns to 123456789 on input field)
-- Initiate logic to handle parcel terminals without address added on prestashop
+- Initiate logic to handle parcel terminals without address added on prestashopsrc/Service/Parcel/ParcelUpdateService.php
 - Ajax added to validate missing pudo or phone number on supercheckout module
 - CSS fixes for phone inputs and mobile view
 - Feature change, remove cache from symfony container compilation(fixes problems for clients which does not have permissions for folder write inside module)

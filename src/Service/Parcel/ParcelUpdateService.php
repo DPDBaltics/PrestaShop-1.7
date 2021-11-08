@@ -18,11 +18,6 @@ class ParcelUpdateService
      */
     private $parcelShopRepository;
 
-    /**
-     * @var ParcelShop
-     */
-    private $parcelShop;
-
     public function __construct(ParcelShopRepository $parcelShopRepository)
     {
         $this->parcelShopRepository = $parcelShopRepository;
@@ -39,23 +34,7 @@ class ParcelUpdateService
             if ($parcel instanceof ParcelShop) {
                 $this->addParcelShop($parcel);
             } else {
-
-                $parcelShop = new ParcelShop();
-                $parcelShop->setParcelShopId($parcel->parcelshop_id);
-                $parcelShop->setCompany($parcel->company);
-                $parcelShop->setCountry($parcel->country);
-                $parcelShop->setCity($parcel->city);
-                $parcelShop->setPCode($parcel->pcode);
-                $parcelShop->setStreet($parcel->street);
-                $parcelShop->setEmail($parcel->email);
-                $parcelShop->setPhone($parcel->phone);
-                $parcelShop->setDistance($parcel->distance);
-                $parcelShop->setLongitude($parcel->longitude);
-                $parcelShop->setLatitude($parcel->latitude);
-                $parcelShop->setCoordinateX($parcel->coordinateX);
-                $parcelShop->setCoordinateY($parcel->coordinateY);
-                $parcelShop->setCoordinateZ($parcel->coordinateZ);
-                $parcelShop->setOpeningHours($parcel->openingHours);
+                $parcelShop = $this->resetParcelObject($parcel);
                 $this->addParcelShop($parcelShop);
             }
         }
