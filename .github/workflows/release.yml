@@ -1,8 +1,10 @@
 name: release
+
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types:
+      - published
+      - released
 jobs:
   build_release:
     name: build_release
