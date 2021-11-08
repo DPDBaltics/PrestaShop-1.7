@@ -4,11 +4,11 @@
   "repositories": [
     {
       "type": "git",
-      "url": "git@bitbucket.org:invertus/dpdbaltics-api.git"
+      "url": "https://github.com/Invertus/dpdbaltics-api.git"
     },
     {
       "type": "git",
-      "url": "git@bitbucket.org:invertus/ps-module-tabs.git"
+      "url": "https://github.com/Invertus/ps-module-tabs.git"
     }
   ],
   "autoload": {
