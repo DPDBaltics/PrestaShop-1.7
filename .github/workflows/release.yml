@@ -8,7 +8,7 @@ jobs:
     name: build_release
     runs-on: ubuntu-latest
     steps:
-    - id: release
+    - name: release-creation
       uses: rymndhng/release-on-push-action@master
       with:
         bump_version_scheme: minor
