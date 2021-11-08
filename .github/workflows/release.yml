@@ -1,9 +1,8 @@
 name: release
 on:
   push:
-    branches:
-      - TEST-RELEASE
-
+    tags:
+      - '*'
 jobs:
   build_release:
     name: build_release
@@ -13,14 +12,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: create-release
-        uses: rymndhng/release-on-push-action@master
-        with:
-          bump_version_scheme: minor
-          use_github_release_notes: true
-          tag_prefix: v
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - name: build
         run: |
           composer install --no-dev --optimize-autoloader --classmap-authoritative
