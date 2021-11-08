@@ -27,17 +27,7 @@ jobs:
           find . -maxdepth 1 -type f -exec rm "{}" \;
           cd dpdbaltics && rm -rf dpdbaltics
           cd ../ && zip -r dpdbaltics.zip dpdbaltics/
-      - name: release
-        uses: actions/create-release@v1
-        id: create_release
-        with:
-          draft: false
-          prerelease: false
-          release_name: ${{ steps.version.outputs.version }}
-          tag_name: ${{ github.ref }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-      - name: Upload dpdbaltics
+      - name: Upload module
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
