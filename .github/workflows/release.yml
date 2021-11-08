@@ -32,6 +32,5 @@ jobs:
         with:
           token: ${{ secrets.YOUR_PRIVATE_SECRET_TOKEN }}
           asset: ./dpdbaltics.zip
-          env:
-            GITHUB_TOKEN: ${{ github.token }}
+
 
