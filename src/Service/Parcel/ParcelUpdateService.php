@@ -110,7 +110,7 @@ class ParcelUpdateService
         $parcelShop->setDistance($parcel->distance);
         $parcelShop->setLongitude($parcel->longitude);
         $parcelShop->setLatitude($parcel->latitude);
-        $parcelShop->setCoordinateX($parcel->coordinateX);q
+        $parcelShop->setCoordinateX($parcel->coordinateX);
         $parcelShop->setCoordinateY($parcel->coordinateY);
         $parcelShop->setCoordinateZ($parcel->coordinateZ);
         $parcelShop->setOpeningHours($parcel->openingHours);
