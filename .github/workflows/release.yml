@@ -19,6 +19,10 @@ jobs:
           bump_version_scheme: minor
           use_github_release_notes: true
           tag_prefix: v
+      - name: Check Output Parameters
+          run: |
+            echo "Got tag name ${{ steps.release.outputs.tag_name }}"
+            echo "Got release version ${{ steps.release.outputs.version }}"
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: build
