@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - TEST-RELEASE
+
 jobs:
   build_release:
     name: build_release
