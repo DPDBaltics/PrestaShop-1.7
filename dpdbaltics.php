@@ -962,6 +962,7 @@ class DPDBaltics extends CarrierModule
         $tplVars = [
             'dpdLogoUrl' => $this->getPathUri() . 'views/img/DPDLogo.gif',
             'shipment' => $shipment,
+            'isAbove177' => Config::isPrestashopVersionAbove177(),
             'testOrder' => $shipment->is_test,
             'total_products' => 1,
             'contractPageLink' => $this->context->link->getAdminLink(self::ADMIN_PRODUCTS_CONTROLLER),
