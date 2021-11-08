@@ -2,7 +2,8 @@ name: release
 on:
   push:
     branches:
-      - TEST-RELEASE
+      - TEST
+
 jobs:
   build_release:
     name: build_release
