@@ -1,10 +1,9 @@
 name: release
-
 on:
-  release:
-    types:
-      - published
-      - released
+  push:
+    branches:
+      - TEST-RELEASE
+
 jobs:
   build_release:
     name: build_release
@@ -14,6 +13,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - uses: rymndhng/release-on-push-action@master
+          with:
+            bump_version_scheme: minor
+            use_github_release_notes: true
       - name: build
         run: |
           composer install --no-dev --optimize-autoloader --classmap-authoritative
