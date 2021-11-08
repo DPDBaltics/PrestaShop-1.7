@@ -1,22 +1,13 @@
 name: release
 on:
   push:
-    branch:
-      - TEST-RELEASE
+    tags:
+      - '*'
 jobs:
   build_release:
     name: build_release
     runs-on: ubuntu-latest
     steps:
-    - name: release-creation
-      uses: rymndhng/release-on-push-action@master
-      with:
-        bump_version_scheme: minor
-        tag_prefix: v
-      - name: Check Output Parameters
-        run: |
-          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
-          echo "Got release version ${{ steps.release.outputs.version }}"
       - name: checkout
         uses: actions/checkout@v2
         with:
