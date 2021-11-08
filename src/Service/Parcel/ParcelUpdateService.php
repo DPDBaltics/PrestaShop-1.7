@@ -31,7 +31,12 @@ class ParcelUpdateService
         }
 
         foreach ($parcels as $parcel) {
-            $this->addParcelShop($parcel);
+            if ($parcel instanceof ParcelShop) {
+                $this->addParcelShop($parcel);
+            } else {
+                $parcelShop = $this->resetParcelObject($parcel);
+                $this->addParcelShop($parcelShop);
+            }
         }
 
         return true;
@@ -82,5 +87,34 @@ class ParcelUpdateService
         }
 
         return true;
+    }
+
+    /**
+     *This function is needed for prestashop versions below 1704 as API response loses object instance
+     *
+     * @param $parcel
+     *
+     * @return ParcelShop
+     */
+    private function resetParcelObject($parcel)
+    {
+        $parcelShop = new ParcelShop();
+        $parcelShop->setParcelShopId($parcel->parcelshop_id);
+        $parcelShop->setCompany($parcel->company);
+        $parcelShop->setCountry($parcel->country);
+        $parcelShop->setCity($parcel->city);
+        $parcelShop->setPCode($parcel->pcode);
+        $parcelShop->setStreet($parcel->street);
+        $parcelShop->setEmail($parcel->email);
+        $parcelShop->setPhone($parcel->phone);
+        $parcelShop->setDistance($parcel->distance);
+        $parcelShop->setLongitude($parcel->longitude);
+        $parcelShop->setLatitude($parcel->latitude);
+        $parcelShop->setCoordinateX($parcel->coordinateX);
+        $parcelShop->setCoordinateY($parcel->coordinateY);
+        $parcelShop->setCoordinateZ($parcel->coordinateZ);
+        $parcelShop->setOpeningHours($parcel->openingHours);
+
+        return $parcelShop;
     }
 }

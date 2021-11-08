@@ -76,7 +76,7 @@
 - Setup logic to save phone number dynamically(on ajax event trigger), prevents missing phone number in specific cases
 - Validations added for phone number, while saving
 - Format phone number while saving(removes phone prefix while saving phone number example +370123456789 turns to 123456789 on input field)
-- Initiate logic to handle parcel terminals without address added on prestashop
+- Initiate logic to handle parcel terminals without address added on prestashopsrc/Service/Parcel/ParcelUpdateService.php
 - Ajax added to validate missing pudo or phone number on supercheckout module
 - CSS fixes for phone inputs and mobile view
 - Feature change, remove cache from symfony container compilation(fixes problems for clients which does not have permissions for folder write inside module)
@@ -87,4 +87,11 @@
 - Parcel tracking email template changed, URL changes, show only parcel number in tracking email template
 - Bugfix, when in parcel validation function wrong argument is set, carrier ID instead of reference.
 - Bugfix, override in array method in javascript, as different jquery version act differently while executing function
+## [3.2.8] - 2021-11-08
+### Changed
+- Bugfix when combination with price impact calculates wrong price on shipment.
+- Bugfix when prestashop versions below 1704 loses object instance and causes an error while importing parcels.
+- Bugfix when prestashop versions below 1704 smarty variable is not read correctly.
+- Bugfix when prestashop versions below 1704 tries to load undefined method.
+- More precision calculation library added, vendor rengenerated, zip for vendor updated
 
