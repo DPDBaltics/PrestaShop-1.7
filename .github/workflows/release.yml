@@ -29,9 +29,9 @@ jobs:
           cd ../ && zip -r dpdbaltics.zip dpdbaltics/
       - name: Update release
         uses: johnwbyrd/update-release@v1
-      with:
-        token: ${{ secrets.YOUR_PRIVATE_SECRET_TOKEN }}
-        asset: ./dpdbaltics.zip
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          token: ${{ secrets.YOUR_PRIVATE_SECRET_TOKEN }}
+          asset: ./dpdbaltics.zip
+          env:
+            GITHUB_TOKEN: ${{ github.token }}
 
