@@ -93,4 +93,5 @@
 - Bugfix when prestashop versions below 1704 loses object instance and causes an error while importing parcels.
 - Bugfix when prestashop versions below 1704 smarty variable is not read correctly.
 - Bugfix when prestashop versions below 1704 tries to load undefined method.
+- More precision calculation library added, vendor rengenerated, zip for vendor updated
 

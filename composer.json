@@ -34,7 +34,8 @@
     "invertus/dpdbalticsapi":"dev-developer",
     "invertus/psmoduletabs":"dev-develop",
     "symfony/console": "^3.4",
-    "friendsofphp/php-cs-fixer": "^2.19"
+    "friendsofphp/php-cs-fixer": "^2.19",
+    "prestashop/decimal": "^1.4"
   },
   "require-dev": {
     "phpunit/phpunit": "*",
