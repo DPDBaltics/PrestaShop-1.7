@@ -5,3 +5,6 @@ https://github.com/trstringer/azblogfilter
 https://trstringer.com/github-actions-create-release-upload-artifacts/
 ###Release creation
 At the moment release is being created when pushed to main branch
+
+PR rules:
+When pr has tag(in name) `norelease` it won't create a release
