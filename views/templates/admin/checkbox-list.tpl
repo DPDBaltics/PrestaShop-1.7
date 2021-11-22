@@ -13,7 +13,7 @@
     <div class="panel-heading">
         <span class="check-box-all-message">{l s='Check all' mod='dpdbaltics'}</span>
         <input type="checkbox" name="checkme_{$type|escape:'htmlall':'UTF-8'}" class="checkme" {if $checked}checked{/if}>
-        <p class="help-block {if !$checked}hidden{/if}">{l s='All current and future %s are selected.' mod='dpdbaltics' sprintf=[$name|escape:'htmlall':'UTF-8']}</p>
+        <p class="help-block {if !$checked}hidden d-none{/if}">{l s='All current and future %s are selected.' mod='dpdbaltics' sprintf=[$name|escape:'htmlall':'UTF-8']}</p>
         <div class="clearfix">&nbsp;</div>
     </div>
     <div class="panel-body">
