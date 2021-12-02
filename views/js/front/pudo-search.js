@@ -45,7 +45,7 @@ $( document ).ajaxComplete(function( event, request, settings ) {
         method = DPDgetUrlParam('method', settings.data)
     }
 
-    if ( method === 'selectDeliveryOption' || method === 'updateCarrier') {
+    if ( (method === 'selectDeliveryOption' || method === 'updateCarrier') && !isPudoPointSelected) {
         updateStreet()
     }
 });
