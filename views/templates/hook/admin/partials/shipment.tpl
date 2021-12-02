@@ -232,7 +232,7 @@
 
         <div class="dpd-separator"></div>
 
-        <div id="pudoTemplate" {if !$is_pudo}class="hidden"{/if}>
+        <div id="pudoTemplate" {if !$is_pudo}class="hidden d-none"{/if}>
             {include file='./pudo-address.tpl'}
         </div>
 

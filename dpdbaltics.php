@@ -625,7 +625,7 @@ class DPDBaltics extends CarrierModule
                 $selectedCity = $parcelShops[0]->getCity();
             }
 
-            if (!$selectedCity) {
+            if (!$selectedCity && Tools::getValue('controller') !== 'order') {
                 $tplVars = [
                     'displayMessage' => true,
                     'messages' => [$this->l("Your delivery address city is not in a list of pickup cities, please select closest pickup point city below manually")],

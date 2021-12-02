@@ -61,7 +61,7 @@
     </td>
     <td class="text-center product-actions">
         <button type="button" class="btn btn-default js-move-product {if $testOrder && !$testMode}disabled{/if}">{l s='Move' mod='dpdbaltics'}</button>
-        <div id="deleteParcelBtnTemplate" class="hidden">
+        <div id="deleteParcelBtnTemplate" class="hidden d-none">
             <button type="button" class="btn btn-default js-parcel-delete-btn">
                 {l s='Delete' mod='dpdbaltics'}
             </button>

@@ -87,12 +87,15 @@
 - Parcel tracking email template changed, URL changes, show only parcel number in tracking email template
 - Bugfix, when in parcel validation function wrong argument is set, carrier ID instead of reference.
 - Bugfix, override in array method in javascript, as different jquery version act differently while executing function
-## [3.2.8] - 2021-11-08
+## [3.2.8] - 2021-11-22
 ### Changed
 - Bugfix when combination with price impact calculates wrong price on shipment.
 - Bugfix when prestashop versions below 1704 loses object instance and causes an error while importing parcels.
 - Bugfix when prestashop versions below 1704 smarty variable is not read correctly.
 - Bugfix when prestashop versions below 1704 tries to load undefined method.
+
 - More precision calculation library added, vendor regenerated, zip for vendor updated
 - Compatability fix for old php versions, do not use pipes in try catch statements
+- Bugfix when parcel terminal form is always visible in order"
+
 

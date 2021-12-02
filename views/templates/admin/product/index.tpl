@@ -26,7 +26,7 @@
         <div class="css-product-margin col-xs-1">
             <p>{l s='Availability' mod='dpdbaltics'}</p>
         </div>
-        <div class="css-product-margin col-xs-2 {if !$isMultiShop}hidden{/if}">
+        <div class="css-product-margin col-xs-2 {if !$isMultiShop}hidden d-none{/if}">
             <p>{l s='Shop' mod='dpdbaltics'}</p>
         </div>
         <div class="col-xs-1">
