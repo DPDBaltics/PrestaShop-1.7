@@ -10,7 +10,7 @@
  *}
 
 <div class="bootstrap">
-    <div class="alert alert-danger hidden js-admin-error">
+    <div class="alert alert-danger hidden d-none js-admin-error">
         <button type="button" class="close" data-dismiss="alert">×</button>
         <span></span>
     </div>

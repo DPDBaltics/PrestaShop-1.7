@@ -8,8 +8,6 @@
  *
  *  International Registered Trademark & Property of INVERTUS, UAB
  *}
-{assign var='isAbove177' value=Invertus\dpdBaltics\Config\Config::isPrestashopVersionAbove177()}
-
 <div class="js-shipment-block dpd-shipment-panel panel card">
     <!-- Shipment heading -->
     <div class="panel-heading card-header">
@@ -234,7 +232,7 @@
 
         <div class="dpd-separator"></div>
 
-        <div id="pudoTemplate" {if !$is_pudo}class="hidden"{/if}>
+        <div id="pudoTemplate" {if !$is_pudo}class="hidden d-none"{/if}>
             {include file='./pudo-address.tpl'}
         </div>
 

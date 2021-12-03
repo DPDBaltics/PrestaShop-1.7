@@ -1,0 +1,42 @@
+name: release
+on:
+  release:
+    types: [ published, edited, updated, drafted]
+jobs:
+  build_release:
+    name: build_release
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: build
+        run: |
+          composer install --no-dev --optimize-autoloader --classmap-authoritative
+          composer dump-autoload --no-dev --optimize --classmap-authoritative
+          rm -rf .git
+          rm -rf .github
+          rm -rf tests
+          rm -rf vendor.zip
+          mkdir dpdbaltics
+          rsync -Rr ./ ./dpdbaltics
+          shopt -s extglob
+          rm -r !(dpdbaltics)
+          find . -maxdepth 1 -type f -exec rm "{}" \;
+          cd dpdbaltics && rm -rf dpdbaltics
+          cd ../ && zip -r dpdbaltics.zip dpdbaltics/
+      - name: Update release
+        id: update_release
+        uses: tubone24/update_release@v1.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          upload_url: ${{ steps.update_release.outputs.upload_url }}
+          asset_path: ./dpdbaltics.zip
+          asset_name: dpdbaltics.zip
+          asset_content_type: application/zip

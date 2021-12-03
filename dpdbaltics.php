@@ -96,7 +96,7 @@ class DPDBaltics extends CarrierModule
         $this->displayName = $this->l('DPDBaltics');
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
-        $this->version = '3.2.7';
+        $this->version = '3.2.8';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -625,7 +625,7 @@ class DPDBaltics extends CarrierModule
                 $selectedCity = $parcelShops[0]->getCity();
             }
 
-            if (!$selectedCity) {
+            if (!$selectedCity && Tools::getValue('controller') !== 'order') {
                 $tplVars = [
                     'displayMessage' => true,
                     'messages' => [$this->l("Your delivery address city is not in a list of pickup cities, please select closest pickup point city below manually")],
@@ -715,20 +715,20 @@ class DPDBaltics extends CarrierModule
             $orderId = Tools::getValue('id_order');
             $shipment = $this->getShipment($orderId);
             $baseUrl = $this->context->shop->getBaseURL(true, false);
-            $baseUrlAdmin = $this->context->link->getAdminBaseLink();
             $isAbove177 = Config::isPrestashopVersionAbove177();
+            $baseUrlAdmin = $isAbove177 ? $this->context->link->getAdminBaseLink() : null;
             /** @var \Invertus\dpdBaltics\Service\Label\LabelUrlFormatter $labelUrlService */
             $labelUrlService = $isAbove177 ? $this->getModuleContainer('invertus.dpdbaltics.service.label.label_url_formatter') : null;
 
             Media::addJsDef(
                 [
-                    'print_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelPrintUrl() : null,
-                    'print_and_save_label_url' => $labelUrlService ? $baseUrl.$labelUrlService->formatJsLabelSaveAndPrintUrl() : null,
+                    'print_url' => $labelUrlService && $isAbove177 ? $baseUrl.$labelUrlService->formatJsLabelPrintUrl() : null,
+                    'print_and_save_label_url' => $labelUrlService && $isAbove177 ? $baseUrl.$labelUrlService->formatJsLabelSaveAndPrintUrl() : null,
                     'shipment' => $shipment,
                     'id_order' => $orderId,
                     'is_label_download_option' => Configuration::get(Config::LABEL_PRINT_OPTION) === 'download',
                     'is_ps_above_177' => Config::isPrestashopVersionAbove177(),
-                    'loader_url' => "{$baseUrlAdmin}modules/dpdbaltics/views/templates/admin/loader/loader.html"
+                    'loader_url' => $isAbove177 ? "{$baseUrlAdmin}modules/dpdbaltics/views/templates/admin/loader/loader.html" : null
                 ]
             );
         }
@@ -962,6 +962,7 @@ class DPDBaltics extends CarrierModule
         $tplVars = [
             'dpdLogoUrl' => $this->getPathUri() . 'views/img/DPDLogo.gif',
             'shipment' => $shipment,
+            'isAbove177' => Config::isPrestashopVersionAbove177(),
             'testOrder' => $shipment->is_test,
             'total_products' => 1,
             'contractPageLink' => $this->context->link->getAdminLink(self::ADMIN_PRODUCTS_CONTROLLER),

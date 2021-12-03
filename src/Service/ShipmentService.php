@@ -36,6 +36,7 @@ use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 use Language;
 use Order;
 use OrderCarrier;
+use PrestaShop\Decimal\DecimalNumber;
 
 class ShipmentService
 {
@@ -300,11 +301,9 @@ class ShipmentService
 
     private function calculateProductsPrice($product)
     {
-        if (!empty($product['total_customization_wt'])) {
-            return round($product['total_customization_wt'], 2);
-        }
+        $price = new DecimalNumber($product['total_price_tax_incl'] ?: $product['total_wt']);
 
-        return round($product['total_wt'], 2);
+        return $price->toPrecision(2);
     }
 
     /**
