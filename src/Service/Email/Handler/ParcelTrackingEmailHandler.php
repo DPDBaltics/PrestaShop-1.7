@@ -7,7 +7,7 @@ use Invertus\dpdBaltics\Factory\ContextFactory;
 use Invertus\dpdBaltics\Factory\ParcelTrackingUrlFactory;
 use Mail;
 use Module;
-use PrestaShop\PrestaShop\Adapter\Validate;
+use Validate;
 
 class ParcelTrackingEmailHandler
 {
