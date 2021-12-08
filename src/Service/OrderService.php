@@ -8,7 +8,7 @@ use DPDBaltics;
 use Invertus\dpdBaltics\Exception\DpdCarrierException;
 use Invertus\dpdBaltics\Repository\OrderRepository;
 use Order;
-use PrestaShop\PrestaShop\Adapter\Validate;
+use Validate;
 
 class OrderService
 {
