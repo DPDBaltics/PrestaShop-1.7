@@ -87,7 +87,7 @@
 - Parcel tracking email template changed, URL changes, show only parcel number in tracking email template
 - Bugfix, when in parcel validation function wrong argument is set, carrier ID instead of reference.
 - Bugfix, override in array method in javascript, as different jquery version act differently while executing function
-## [3.2.8] - 2021-11-22
+## [3.2.8] - 2021-12-08
 ### Changed
 - Bugfix when combination with price impact calculates wrong price on shipment.
 - Bugfix when prestashop versions below 1704 loses object instance and causes an error while importing parcels.
@@ -99,5 +99,7 @@
 - Bugfix when parcel terminal unconditionally changed to first selection while searching.
 - Upgrade added to avoid error when client upgrades modules and does not delete cache.
 - Bugfix when parcel tracking validation was called from prestashop core. Fall back to universal legacy function
+- Bugfix when parcel terminal form is always visible in order
+- Translatable string added when no option available, translations updated for all baltic languages for pickup select.
 
 
