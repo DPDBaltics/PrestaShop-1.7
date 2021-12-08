@@ -210,6 +210,12 @@ class DPDBaltics extends CarrierModule
 
         if (in_array($currentController, $applicableControlelrs, true)) {
 
+            Media::addJsDef([
+               'select_an_option_translatable' => $this->l('Select an Option'),
+               'select_an_option_multiple_translatable' => $this->l('Select Some Options'),
+               'no_results_translatable' => $this->l('No results match'),
+
+            ]);
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
             $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/order-input.css');
