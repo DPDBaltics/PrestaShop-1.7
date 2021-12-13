@@ -5,6 +5,7 @@ namespace Invertus\dpdBaltics\Service\Email\Handler;
 use Invertus\dpdBaltics\Exception\ParcelEmailException;
 use Invertus\dpdBaltics\Factory\ContextFactory;
 use Invertus\dpdBaltics\Factory\ParcelTrackingUrlFactory;
+use Invertus\dpdBaltics\Logger\Logger;
 use Mail;
 use Module;
 use Validate;
@@ -16,17 +17,25 @@ class ParcelTrackingEmailHandler
      */
     private $trackingUrlFactory;
 
+
     /**
      * @var Module
      */
     private $module;
 
+    /**
+     * @var Logger
+     */
+    private $logger;
+
     public function __construct(
         ParcelTrackingUrlFactory $trackingUrlFactory,
-        Module $module
+        Module $module,
+        Logger $logger
     ) {
         $this->trackingUrlFactory = $trackingUrlFactory;
         $this->module = $module;
+        $this->logger = $logger;
     }
 
     /**
@@ -36,17 +45,20 @@ class ParcelTrackingEmailHandler
     public function handle($idOrder, $parcelNumbers)
     {
         if (!$idOrder) {
-            throw new ParcelEmailException('Could not retrieve order');
+            $this->logger->log(Logger::ERROR, 'Could not retrieve order');
+            return false;
         }
         $order = $this->getOrder($idOrder);
 
         if (empty($parcelNumbers)) {
-            throw new ParcelEmailException('Could not retrieve parcel number, failed to format email');
+            $this->logger->log(Logger::ERROR, 'Could not retrieve parcel number, failed to format email ID Order: '. $idOrder);
+            return false;
         }
+
         $cart = $this->getCartByOrderId($idOrder);
 
         if (!Validate::isLoadedObject($cart)) {
-            throw new ParcelEmailException('Could not retrieve order cart information');
+            $this->logger->log(Logger::ERROR, 'Could not retrieve order cart information ID Order: '. $idOrder);
         }
 
         ContextFactory::getSmarty()->assign([

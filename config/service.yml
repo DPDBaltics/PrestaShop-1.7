@@ -260,6 +260,7 @@ services:
     arguments:
       - '@invertus.dpdbaltics.factory.parcel_tracking_url_factory'
       - '@dpdbaltics'
+      - '@invertus.dpdbaltics.logger.logger'
 
   invertus.dpdbaltics.service.carrier.prestashop_carrier_regeneration_handler:
     class: 'Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler'
