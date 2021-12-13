@@ -46,12 +46,15 @@ class ParcelTrackingEmailHandler
     {
         if (!$idOrder) {
             $this->logger->log(Logger::ERROR, 'Could not retrieve order');
+            return false;
         }
         $order = $this->getOrder($idOrder);
 
         if (empty($parcelNumbers)) {
             $this->logger->log(Logger::ERROR, 'Could not retrieve parcel number, failed to format email ID Order: '. $idOrder);
+            return false;
         }
+
         $cart = $this->getCartByOrderId($idOrder);
 
         if (!Validate::isLoadedObject($cart)) {
