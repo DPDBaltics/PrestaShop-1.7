@@ -99,5 +99,6 @@
 - Bugfix when parcel terminal unconditionally changed to first selection while searching.
 - Upgrade added to avoid error when client upgrades modules and does not delete cache.
 - Bugfix when parcel tracking validation was called from prestashop core. Fall back to universal legacy function
+- Logic to execute code further if error occurs on tracking email send.
 
 
