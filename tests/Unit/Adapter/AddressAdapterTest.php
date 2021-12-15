@@ -39,5 +39,17 @@ class AddressAdapterTest extends TestCase
             'LV',
             '1050'
         ];
+
+        yield 'Post code UK' => [
+            'CH 65UZ',
+            'GB',
+            'CH65UZ'
+        ];
+
+        yield 'Post code NL' => [
+            '1012 AB',
+            'NL',
+            '1012AB'
+        ];
     }
 }

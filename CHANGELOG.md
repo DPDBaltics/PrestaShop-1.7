@@ -102,6 +102,7 @@
 - Logic to execute code further if error occurs on tracking email send.
 - Bugfix when parcel terminal form is always visible in order
 - Translatable string added when no option available, translations updated for all baltic languages for pickup select.
+- Compatability for shipments from: GB,IE,NL added, service for different post code formatting initiated.
 
 
 

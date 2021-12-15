@@ -230,7 +230,7 @@ class Config
     const PRODUCT_TYPE_SAME_DAY_DELIVERY = '274';
     const PS_VERSION_1_7_7 = '1.7.7.0';
 
-    const COUNTRY_ISO_CODES_WITH_MIXED_CHARACTERS = ['IE'];
+    const COUNTRY_ISO_CODES_WITH_MIXED_CHARACTERS = ['IE', 'GB', 'NL'];
 
     const PRODUCT_NAME_B2B = [
         'LT' => 'Pristatymas privatiems asmenims',
