@@ -7,3 +7,6 @@ services:
 
   invertus.dpdbaltics.adapter.link_adapter:
     class: 'Invertus\dpdBaltics\Adapter\LinkAdapter'
+
+  invertus.dpdbaltics.adapter.address_adapter:
+    class: 'Invertus\dpdBaltics\Adapter\AddressAdapter'

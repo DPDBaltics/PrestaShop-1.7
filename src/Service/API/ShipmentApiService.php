@@ -6,6 +6,7 @@ use Address;
 use Country;
 use DPDAddressTemplate;
 use DPDProduct;
+use Invertus\dpdBaltics\Adapter\AddressAdapter;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Repository\CodPaymentRepository;
@@ -33,17 +34,23 @@ class ShipmentApiService
      * @var ParcelShopService
      */
     private $parcelShopService;
+    /**
+     * @var AddressAdapter
+     */
+    private $addressAdapter;
 
     public function __construct(
         ShipmentCreationFactory $shipmentCreationFactory,
         CodPaymentRepository $codPaymentRepository,
         ParcelTrackingEmailHandler $emailHandler,
-        ParcelShopService $parcelShopService
+        ParcelShopService $parcelShopService,
+        AddressAdapter $addressAdapter
     ) {
         $this->shipmentCreationFactory = $shipmentCreationFactory;
         $this->codPaymentRepository = $codPaymentRepository;
         $this->emailHandler = $emailHandler;
         $this->parcelShopService = $parcelShopService;
+        $this->addressAdapter = $addressAdapter;
     }
 
     /**
@@ -64,7 +71,6 @@ class ShipmentApiService
         $dpdProduct = new DPDProduct($shipmentData->getProduct());
         $parcelType = $dpdProduct->getProductReference();
         $country = Country::getIsoById($address->id_country);
-        $postCode = preg_replace('/[^0-9]/', '', $address->postcode);
         $hasAddressFields = (bool) !$postCode || !$firstName || !$address->city || !$country;
 
         // IF prestashop allows, we take selected parcel terminal address in case information is missing in checkout address in specific cases.
@@ -77,6 +83,8 @@ class ShipmentApiService
             $address->city = $selectedParcel->getCity();
             $country = $selectedParcel->getCountry();
         }
+
+        $postCode = $this->addressAdapter->formatPostCodeByCountry($postCode, $country);
 
         $shipmentCreationRequest = new ShipmentCreationRequest(
             $firstName,
