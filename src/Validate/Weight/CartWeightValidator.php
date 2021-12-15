@@ -3,7 +3,7 @@
 namespace Invertus\dpdBaltics\Validate\Weight;
 
 use Invertus\dpdBaltics\Config\Config;
-use PrestaShop\PrestaShop\Adapter\Validate;
+use Validate;
 
 
 

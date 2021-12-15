@@ -19,7 +19,7 @@ use Invertus\dpdBaltics\OnBoard\Objects\OnBoardButton;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardFastMoveButton;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardParagraph;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardTemplateData;
-use PrestaShop\PrestaShop\Adapter\Entity\Configuration;
+use Configuration;
 
 class StepManualZones1 extends AbstractOnBoardStep
 {

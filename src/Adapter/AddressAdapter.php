@@ -15,6 +15,7 @@ namespace Invertus\dpdBaltics\Adapter;
 use Address;
 use Country;
 use DPDBaltics;
+use Invertus\dpdBaltics\Config\Config;
 use Tools;
 
 /**
@@ -133,5 +134,20 @@ class AddressAdapter
         }
 
         return $formattedZipCode;
+    }
+
+    /**
+     * @param $postCode
+     * @param $countryIsoCode
+     *
+     * @return array|string|string[]|null
+     */
+    public function formatPostCodeByCountry($postCode, $countryIsoCode)
+    {
+        if (in_array($countryIsoCode, Config::COUNTRY_ISO_CODES_WITH_MIXED_CHARACTERS, true)) {
+            return str_replace(' ', '', $postCode);
+        }
+
+        return preg_replace('/[^0-9]/', '', $postCode);
     }
 }

@@ -158,6 +158,7 @@ services:
       - '@invertus.dpdbaltics.repository.cod_payment_repository'
       - '@invertus.dpdbaltics.repository.parcel_tracking_email_handler'
       - '@invertus.dpdbaltics.service.parcel.parcel_shop_service'
+      - '@invertus.dpdbaltics.adapter.address_adapter'
 
   invertus.dpdbaltics.service.api.label_api_service:
     class: 'Invertus\dpdBaltics\Service\API\LabelApiService'
@@ -260,6 +261,7 @@ services:
     arguments:
       - '@invertus.dpdbaltics.factory.parcel_tracking_url_factory'
       - '@dpdbaltics'
+      - '@invertus.dpdbaltics.logger.logger'
 
   invertus.dpdbaltics.service.carrier.prestashop_carrier_regeneration_handler:
     class: 'Invertus\dpdBaltics\Service\Carrier\PrestashopCarrierRegenerationHandler'
