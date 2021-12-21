@@ -71,6 +71,7 @@ class ShipmentApiService
         $dpdProduct = new DPDProduct($shipmentData->getProduct());
         $parcelType = $dpdProduct->getProductReference();
         $country = Country::getIsoById($address->id_country);
+        $postCode = $address->postcode;
         $hasAddressFields = (bool) !$postCode || !$firstName || !$address->city || !$country;
 
         // IF prestashop allows, we take selected parcel terminal address in case information is missing in checkout address in specific cases.
