@@ -87,6 +87,7 @@
 - Parcel tracking email template changed, URL changes, show only parcel number in tracking email template
 - Bugfix, when in parcel validation function wrong argument is set, carrier ID instead of reference.
 - Bugfix, override in array method in javascript, as different jquery version act differently while executing function
+
 ## [3.2.8] - 2021-12-08
 ### Changed
 - Bugfix when combination with price impact calculates wrong price on shipment.
@@ -103,6 +104,11 @@
 - Bugfix when parcel terminal form is always visible in order
 - Translatable string added when no option available, translations updated for all baltic languages for pickup select.
 - Compatability for shipments from: GB,IE,NL added, service for different post code formatting initiated.
+
+## [3.2.9] - 2021-01-06
+- Restriction for COD carriers while using LATVIAN webservice removed
+- ZIP folder inside repository removed
+
 
 
 
