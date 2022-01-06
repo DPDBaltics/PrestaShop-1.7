@@ -102,9 +102,7 @@ class ProductService
         $productId = $this->productRepository->getProductIdByProductReference(
             Config::PRODUCT_TYPE_PUDO_COD
         );
-        if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
-            $this->deleteProduct(Config::PRODUCT_TYPE_PUDO_COD);
-        } elseif (!$productId) {
+        if (!$productId) {
             $this->addProduct(Config::PRODUCT_TYPE_PUDO_COD, $newCountryIsoCode);
         }
 
@@ -120,9 +118,7 @@ class ProductService
         $productId = $this->productRepository->getProductIdByProductReference(
             Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD
         );
-        if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
-            $this->deleteProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
-        } elseif (!$productId) {
+        if (!$productId) {
             $this->addProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD, $newCountryIsoCode);
         }
 
