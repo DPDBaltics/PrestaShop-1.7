@@ -28,7 +28,9 @@ class Config
     const AVAILABLE_PUDO_COD_IDS = [
         'EE90',
         'EE10',
-        'LT90'
+        'LT90',
+        'LV90',
+        'LV10'
     ];
 
     /** In seconds. Used as minimum execution time for some of the scripts.  */
