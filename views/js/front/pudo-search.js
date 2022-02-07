@@ -202,14 +202,14 @@ function togglePhoneRequiredField() {
     let dpdPhoneInputs = $('input[name="dpd-phone"]');
 
     deliveryMethod.on('change', function(event) {
-        console.log(event.currentTarget, "currentTarget")
-        currentCarrier  = parseInt(event.currentTarget.value);
+        currentCarrier  = 'dpd-carrier-'+ event.currentTarget.value;
         dpdPhoneInputs.each(function (index, input) {
-            if(parseInt($(input).attr('id')) !== currentCarrier) {
-                $(input).prop("required", false);
-            } else {
+            if($(input).attr('id') + ',' === currentCarrier) {
                 $(input).prop("required", true);
+            } else {
+                $(input).prop("required", false);
             }
         })
     });
 }
+
