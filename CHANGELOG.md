@@ -103,6 +103,9 @@
 - Bugfix when parcel terminal form is always visible in order
 - Translatable string added when no option available, translations updated for all baltic languages for pickup select.
 - Compatability for shipments from: GB,IE,NL added, service for different post code formatting initiated.
+## [3.2.9] - 2022-02-07
+### Changed
+- Bugfix after selecting non DPD carrier, phone input is non-required.
 
 
 

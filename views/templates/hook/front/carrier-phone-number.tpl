@@ -14,7 +14,6 @@
                 {l s='Code' mod='dpdbaltics'}
             </div>
         </div>
-        {debug}
         <div class="col-lg-4 col-8 col-sm-12 dpd-input-wrapper{if isset($dpdPhone) && $dpdPhone} hasValue{/if} small-padding-sm-left">
             <input name="dpd-phone" id={$carrierID} type="text" class="form-control" {if isset($dpdPhone) && $dpdPhone}value="{$dpdPhone}"{/if}>
             <div id="phone-input-placeholder" class="dpd-input-placeholder" for="dpd-phone">{l s='Phone' mod='dpdbaltics'}</div>
