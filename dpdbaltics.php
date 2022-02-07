@@ -534,7 +534,7 @@ class DPDBaltics extends CarrierModule
             $sameDayDeliveryPresenter = $this->getModuleContainer()->get('invertus.dpdbaltics.presenter.same_day_delivery_message_presenter');
             $return .= $sameDayDeliveryPresenter->getSameDayDeliveryMessageTemplate();
         }
-        $return .= $carrierPhoneService->getCarrierPhoneTemplate($this->context->cart->id);
+        $return .= $carrierPhoneService->getCarrierPhoneTemplate($this->context->cart->id, $carrier->id_reference);
         if ($dpdProduct->getProductReference() === Config::PRODUCT_TYPE_B2B ||
             $dpdProduct->getProductReference() === Config::PRODUCT_TYPE_B2B_COD
         ) {

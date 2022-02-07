@@ -60,7 +60,7 @@ class CarrierPhoneService
         $this->orderRepository = $orderRepository;
     }
 
-    public function getCarrierPhoneTemplate($cartId)
+    public function getCarrierPhoneTemplate($cartId, $carrierID)
     {
         $cart = new Cart($cartId);
 
@@ -89,6 +89,7 @@ class CarrierPhoneService
         $phone = $this->removePhonePrefix($phone, $phonePrefix);
         $this->context->smarty->assign(
             [
+                'carrierID' => $carrierID,
                 'dpdPhone' => $phone,
                 'dpdPhoneArea' => $phoneData['mobile_phone_code_list'],
                 'contextPrefix' => Config::PHONE_CODE_PREFIX . $phonePrefix,

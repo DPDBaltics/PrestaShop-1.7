@@ -35,6 +35,7 @@ function updateStreet() {
 
 $( document ).ajaxComplete(function( event, request, settings ) {
 
+    togglePhoneRequiredField()
     var applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
     if (!inArray(currentController, applicableControllers)) {
         return;
@@ -193,4 +194,22 @@ function inArray(needle, haystack) {
         }
     }
     return false;
+}
+
+function togglePhoneRequiredField() {
+    let deliveryMethod = $('.custom-radio > input');
+    let currentCarrier = null;
+    let dpdPhoneInputs = $('input[name="dpd-phone"]');
+
+    deliveryMethod.on('change', function(event) {
+        console.log(event.currentTarget, "currentTarget")
+        currentCarrier  = parseInt(event.currentTarget.value);
+        dpdPhoneInputs.each(function (index, input) {
+            if(parseInt($(input).attr('id')) !== currentCarrier) {
+                $(input).prop("required", false);
+            } else {
+                $(input).prop("required", true);
+            }
+        })
+    });
 }
