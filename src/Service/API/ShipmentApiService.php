@@ -15,6 +15,7 @@ use Invertus\dpdBalticsApi\Api\DTO\Request\ShipmentCreationRequest;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory;
 use Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler;
 use Message;
+use voku\helper\ASCII;
 
 class ShipmentApiService
 {
@@ -38,6 +39,8 @@ class ShipmentApiService
      * @var AddressAdapter
      */
     private $addressAdapter;
+
+    const REMARK_LIMIT = 44;
 
     public function __construct(
         ShipmentCreationFactory $shipmentCreationFactory,
@@ -113,7 +116,8 @@ class ShipmentApiService
         $cartMessage = Message::getMessagesByOrderId($orderId);
         if ($cartMessage)
         {
-            $shipmentCreationRequest->setRemark($cartMessage[0]['message']);
+            $trimmedRemarkMessage = $this->trimRemarkMessage($cartMessage[0]['message']);
+            $shipmentCreationRequest->setRemark($this->convertMessageToASCII($trimmedRemarkMessage));
         }
 
         if ($shipmentData->getSelectedPudoId()) {
@@ -189,5 +193,12 @@ class ShipmentApiService
     private function isTrackingEmailAllowed()
     {
         return (bool) \Configuration::get(Config::SEND_EMAIL_ON_PARCEL_CREATION);
+    }
+
+    private function trimRemarkMessage($message) {
+        return strlen($message) > self::REMARK_LIMIT ? substr($message,0,self::REMARK_LIMIT)."..." : $message;
+    }
+    private function convertMessageToASCII ($message) {
+        return ASCII::to_transliterate($message);
     }
 }
