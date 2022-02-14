@@ -112,6 +112,6 @@
 ## [3.3.0] - 2022-02-14
 ### Changed
 - Bugfix in cart, if prestashop default carrier is selected dpd-phone input for phone number is no longer required'.
-
+- Translation changed in Import Pick up points
 
 
