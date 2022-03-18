@@ -208,13 +208,28 @@ class DPDBaltics extends CarrierModule
 
         }
 
-        if (in_array($currentController, $applicableControlelrs, true)) {
+        $baseUrl = $this->context->shop->getBaseURL(true, false);
+        /** @var ProductRepository $productRepo */
+        $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
 
+        $dpdProducts = $productRepo->getAllActiveDpdProductReferences();
+        $carrierIds = [];
+        foreach ($dpdProducts as $dpdProduct) {
+            $carrier = Carrier::getCarrierByReference($dpdProduct['id_reference']);
+            $carrierIds[] = $carrier->id;
+        }
+
+        Media::addJsDef([
+            'lapinas_img' => $baseUrl . $this->getPathUri() . 'views/img/lapinas.png',
+            'lapinas_text' => $this->l('Sustainable'),
+            'dpd_carrier_ids' => json_encode($carrierIds)
+        ]);
+
+        if (in_array($currentController, $applicableControlelrs, true)) {
             Media::addJsDef([
                'select_an_option_translatable' => $this->l('Select an Option'),
                'select_an_option_multiple_translatable' => $this->l('Select Some Options'),
                'no_results_translatable' => $this->l('No results match'),
-
             ]);
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
@@ -423,6 +438,8 @@ class DPDBaltics extends CarrierModule
         if (!$this->active) {
             return false;
         }
+
+
 
         $carrier = new Carrier($this->id_carrier);
         if ($this->context->controller->ajax && Tools::getValue('id_address_delivery')) {
