@@ -110,6 +110,5 @@
 - ZIP folder inside repository removed
 - Bugfix in cart, if prestashop default carrier is selected dpd-phone input for phone number is no longer required'.
 - Translation changed in Import Pick up points
-- PDP phone input cart validation in FO and BO
 - Sustainable logo added to DPD carrier text
 
