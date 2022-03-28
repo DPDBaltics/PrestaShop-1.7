@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding: 0 15px;
 }
 #sustainable-box img {
     max-width: 25px;
