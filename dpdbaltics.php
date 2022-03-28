@@ -222,9 +222,8 @@ class DPDBaltics extends CarrierModule
         Media::addJsDef([
             'lapinas_img' => $baseUrl . $this->getPathUri() . 'views/img/lapinas.png',
             'lapinas_text' => $this->l('Sustainable'),
-            'dpd_carrier_ids' => json_encode($carrierIds)
+            'dpd_carrier_ids' => $carrierIds
         ]);
-
         if (in_array($currentController, $applicableControlelrs, true)) {
             Media::addJsDef([
                'select_an_option_translatable' => $this->l('Select an Option'),
@@ -233,7 +232,9 @@ class DPDBaltics extends CarrierModule
             ]);
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
+            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/sustainable.js');
             $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/order-input.css');
+            $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/sustainable.css');
             /** @var PaymentService $paymentService */
             $paymentService = $this->getModuleContainer('invertus.dpdbaltics.service.payment.payment_service');
             $isPickupMap = Configuration::get(\Invertus\dpdBaltics\Config\Config::PICKUP_MAP);
