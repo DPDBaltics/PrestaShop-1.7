@@ -108,10 +108,7 @@
 ## [3.2.9] - 2021-01-06
 - Restriction for COD carriers while using LATVIAN webservice removed
 - ZIP folder inside repository removed
-- 
-## [3.2.10] - 2022-02-14
-### Changed
 - Bugfix in cart, if prestashop default carrier is selected dpd-phone input for phone number is no longer required'.
 - Translation changed in Import Pick up points
-
+- Sustainable logo added to DPD carrier text
 
