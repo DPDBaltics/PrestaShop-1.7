@@ -51,4 +51,10 @@ class AdminDPDBalticsAjaxController extends AbstractAdminController
         $countryIso = Country::getIsoById($countryId);
         $this->ajaxDie(json_encode($parcelShopImport->importParcelShops($countryIso)));
     }
+
+    public function ajaxProcessMyAction()
+    {
+       Tools::getValue('dataPassed');
+       $this->ajaxDie();
+    }
 }

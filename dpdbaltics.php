@@ -208,15 +208,24 @@ class DPDBaltics extends CarrierModule
 
         }
 
-        $baseUrl = $this->context->shop->getBaseURL(true, false);
-        /** @var ProductRepository $productRepo */
-        $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
-
-        $dpdProducts = $productRepo->getAllActiveDpdProductReferences();
+        /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
+        $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+        $webServiceCountryCode = Configuration::get(Config::WEB_SERVICE_COUNTRY);
         $carrierIds = [];
-        foreach ($dpdProducts as $dpdProduct) {
-            $carrier = Carrier::getCarrierByReference($dpdProduct['id_reference']);
-            $carrierIds[] = $carrier->id;
+        $baseUrl = $this->context->shop->getBaseURL(true, false);
+
+        if ($webServiceCountryCode === Config::LATVIA_ISO_CODE) {
+            /** @var ProductRepository $productRepo */
+            $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
+
+            $dpdProductReferences = $productRepo->getAllActiveDpdProductReferences();
+
+            foreach ($dpdProductReferences as $reference) {
+                $carrier = Carrier::getCarrierByReference($reference['id_reference']);
+                if (Validate::isLoadedObject($carrier)) {
+                    $carrierIds[] = $carrier->id;
+                }
+            }
         }
 
         Media::addJsDef([
@@ -232,9 +241,9 @@ class DPDBaltics extends CarrierModule
             ]);
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
-            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/sustainable.js');
+            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/sustainable-logo.js');
             $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/order-input.css');
-            $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/sustainable.css');
+            $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/sustainable-logo.css');
             /** @var PaymentService $paymentService */
             $paymentService = $this->getModuleContainer('invertus.dpdbaltics.service.payment.payment_service');
             $isPickupMap = Configuration::get(\Invertus\dpdBaltics\Config\Config::PICKUP_MAP);

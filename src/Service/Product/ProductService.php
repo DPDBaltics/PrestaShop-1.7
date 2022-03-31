@@ -11,6 +11,7 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Exception\ProductUpdateException;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Service\Carrier\CreateCarrierService;
+use PrestaShop\PrestaShop\Adapter\Validate;
 
 class ProductService
 {
@@ -79,8 +80,11 @@ class ProductService
             return true;
         }
         $product = new DPDProduct($productId);
-
         $carrier = Carrier::getCarrierByReference($product->id_reference);
+        if (!Validate::isLoadedObject($carrier)) {
+            return true;
+        }
+
         $carrier->deleted = 1;
         $carrier->update();
 

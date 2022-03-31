@@ -42,9 +42,8 @@ function upgrade_module_1_1_2(DPDBaltics $module)
     /** @var ProductService $productService */
     $productService = $module->getModuleContainer('invertus.dpdbaltics.service.product.product_service');
     $productId = $productRepository->getProductIdByProductReference(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
-    if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
-        $productService->deleteProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
-    } elseif (!$productId) {
+
+    if (!$productId) {
         $productService->addProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
     }
 
