@@ -12,11 +12,11 @@ class StringUtility
         return \Tools::strtolower($string);
     }
 
-    public static function trimRemarkMessage($message) {
+    public static function trimString($message) {
         return strlen($message) > self::REMARK_LIMIT ? substr($message,0,self::REMARK_LIMIT)."..." : $message;
     }
 
-    public static function convertAccentsAndSpecialToNormal($string) {
+    public static function removeSpecialCharacters($string) {
         $table = array(
             'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Ă'=>'A', 'Ā'=>'A', 'Ą'=>'A', 'Æ'=>'A', 'Ǽ'=>'A',
             'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'ă'=>'a', 'ā'=>'a', 'ą'=>'a', 'æ'=>'a', 'ǽ'=>'a',
@@ -87,11 +87,9 @@ class StringUtility
             '♀'=>' female ', '♂'=>' male ',
             '©'=>' Copyright ', '®'=>' Registered ', '™' =>' Trademark ',
         );
-
         $string = strtr($string, $table);
         // Currency symbols: £¤¥€  - we dont bother with them for now
         $string = preg_replace("/[^\x9\xA\xD\x20-\x7F]/u", "", $string);
-
         return $string;
     }
 }

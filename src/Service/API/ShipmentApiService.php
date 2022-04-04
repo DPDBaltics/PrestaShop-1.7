@@ -117,8 +117,8 @@ class ShipmentApiService
 
         if ($cartMessage)
         {
-            $trimmedRemarkMessage = StringUtility::trimRemarkMessage($cartMessage[0]['message']);
-            $shipmentCreationRequest->setRemark(StringUtility::convertAccentsAndSpecialToNormal($trimmedRemarkMessage));
+            $trimmedRemarkMessage = StringUtility::trimString($cartMessage[0]['message']);
+            $shipmentCreationRequest->setRemark(StringUtility::removeSpecialCharacters($trimmedRemarkMessage));
         }
 
         if ($shipmentData->getSelectedPudoId()) {
