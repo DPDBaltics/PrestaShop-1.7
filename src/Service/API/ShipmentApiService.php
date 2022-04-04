@@ -117,10 +117,7 @@ class ShipmentApiService
         if ($cartMessage)
         {
             $trimmedRemarkMessage = $this->trimRemarkMessage($cartMessage[0]['message']);
-            $toASCIIChars = $this->convertAccentsAndSpecialToNormal($trimmedRemarkMessage);
-            var_dump($toASCIIChars);
-            die;
-            $shipmentCreationRequest->setRemark($this->convertMessageToASCII($trimmedRemarkMessage));
+            $shipmentCreationRequest->setRemark($this->convertAccentsAndSpecialToNormal($trimmedRemarkMessage));
         }
 
         if ($shipmentData->getSelectedPudoId()) {
