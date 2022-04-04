@@ -19,7 +19,7 @@
   },
   "config": {
     "platform": {
-      "php": "7.1.33"
+      "php": "5.6"
     },
     "prepend-autoloader": false
   },
@@ -35,8 +35,7 @@
     "invertus/psmoduletabs":"dev-develop",
     "symfony/console": "^3.4",
     "friendsofphp/php-cs-fixer": "^2.19",
-    "prestashop/decimal": "^1.4",
-    "voku/portable-ascii": "^2.0"
+    "prestashop/decimal": "^1.4"
   },
   "require-dev": {
     "phpunit/phpunit": "*",
