@@ -7,6 +7,8 @@ namespace Invertus\dpdBaltics\Util;
 
 class StringUtility
 {
+    const REMARK_LIMIT = 44;
+
     public static function toLowerCase($string)
     {
         return \Tools::strtolower($string);

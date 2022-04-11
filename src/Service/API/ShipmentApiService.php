@@ -40,8 +40,6 @@ class ShipmentApiService
      */
     private $addressAdapter;
 
-    const REMARK_LIMIT = 44;
-
     public function __construct(
         ShipmentCreationFactory $shipmentCreationFactory,
         CodPaymentRepository $codPaymentRepository,
