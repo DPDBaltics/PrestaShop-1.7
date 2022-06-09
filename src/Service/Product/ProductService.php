@@ -11,6 +11,7 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Exception\ProductUpdateException;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Service\Carrier\CreateCarrierService;
+use PrestaShop\PrestaShop\Adapter\Validate;
 
 class ProductService
 {
@@ -79,8 +80,11 @@ class ProductService
             return true;
         }
         $product = new DPDProduct($productId);
-
         $carrier = Carrier::getCarrierByReference($product->id_reference);
+        if (!Validate::isLoadedObject($carrier)) {
+            return true;
+        }
+
         $carrier->deleted = 1;
         $carrier->update();
 
@@ -102,9 +106,7 @@ class ProductService
         $productId = $this->productRepository->getProductIdByProductReference(
             Config::PRODUCT_TYPE_PUDO_COD
         );
-        if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
-            $this->deleteProduct(Config::PRODUCT_TYPE_PUDO_COD);
-        } elseif (!$productId) {
+        if (!$productId) {
             $this->addProduct(Config::PRODUCT_TYPE_PUDO_COD, $newCountryIsoCode);
         }
 
@@ -120,9 +122,7 @@ class ProductService
         $productId = $this->productRepository->getProductIdByProductReference(
             Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD
         );
-        if ($newCountryIsoCode === Config::LATVIA_ISO_CODE) {
-            $this->deleteProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD);
-        } elseif (!$productId) {
+        if (!$productId) {
             $this->addProduct(Config::PRODUCT_TYPE_SATURDAY_DELIVERY_COD, $newCountryIsoCode);
         }
 

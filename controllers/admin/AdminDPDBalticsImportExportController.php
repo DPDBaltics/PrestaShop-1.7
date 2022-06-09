@@ -103,7 +103,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
             $this->l('We have prepared standard zones for Latvia and Lithuania. You can import them whenever you want.');
 
         $importParcelsInfoBlockText =
-            $this->l('You can import or update list of pick-up points by clicking Import button. We would recommend to update pick-up points at least once a year, as DPD Pick-up network is expanding regularly');
+            $this->l('You can import or update list of pick-up points by clicking Import button. We would recommend to update pick-up points daily, as DPD Pick-up network is expanding regularly');
 
         $importParcelsWarningBlockText =
             $this->l('Pick-up point import might might take up to 10 minutes depending on how many parcels selected country has. Please be patient and don\'t close this page.');

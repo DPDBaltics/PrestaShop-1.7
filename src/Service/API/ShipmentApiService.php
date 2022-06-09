@@ -14,6 +14,7 @@ use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ShipmentCreationRequest;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory;
 use Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler;
+use Invertus\dpdBaltics\Util\StringUtility;
 use Message;
 
 class ShipmentApiService
@@ -111,9 +112,11 @@ class ShipmentApiService
         }
 
         $cartMessage = Message::getMessagesByOrderId($orderId);
+
         if ($cartMessage)
         {
-            $shipmentCreationRequest->setRemark($cartMessage[0]['message']);
+            $trimmedRemarkMessage = StringUtility::trimString($cartMessage[0]['message']);
+            $shipmentCreationRequest->setRemark(StringUtility::removeSpecialCharacters($trimmedRemarkMessage));
         }
 
         if ($shipmentData->getSelectedPudoId()) {
@@ -190,4 +193,5 @@ class ShipmentApiService
     {
         return (bool) \Configuration::get(Config::SEND_EMAIL_ON_PARCEL_CREATION);
     }
+
 }

@@ -96,7 +96,7 @@ class DPDBaltics extends CarrierModule
         $this->displayName = $this->l('DPDBaltics');
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
-        $this->version = '3.2.8';
+        $this->version = '3.2.9';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -208,17 +208,42 @@ class DPDBaltics extends CarrierModule
 
         }
 
-        if (in_array($currentController, $applicableControlelrs, true)) {
+        /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
+        $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+        $webServiceCountryCode = Configuration::get(Config::WEB_SERVICE_COUNTRY);
+        $carrierIds = [];
+        $baseUrl = $this->context->shop->getBaseURL(true, false);
 
+        if ($webServiceCountryCode === Config::LATVIA_ISO_CODE) {
+            /** @var ProductRepository $productRepo */
+            $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
+
+            $dpdProductReferences = $productRepo->getAllActiveDpdProductReferences();
+
+            foreach ($dpdProductReferences as $reference) {
+                $carrier = Carrier::getCarrierByReference($reference['id_reference']);
+                if (Validate::isLoadedObject($carrier)) {
+                    $carrierIds[] = $carrier->id;
+                }
+            }
+        }
+
+        Media::addJsDef([
+            'lapinas_img' => $baseUrl . $this->getPathUri() . 'views/img/lapinas.png',
+            'lapinas_text' => $this->l('Sustainable'),
+            'dpd_carrier_ids' => $carrierIds
+        ]);
+        if (in_array($currentController, $applicableControlelrs, true)) {
             Media::addJsDef([
                'select_an_option_translatable' => $this->l('Select an Option'),
                'select_an_option_multiple_translatable' => $this->l('Select Some Options'),
                'no_results_translatable' => $this->l('No results match'),
-
             ]);
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
+            $this->context->controller->addJS($this->getPathUri() . 'views/js/front/sustainable-logo.js');
             $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/order-input.css');
+            $this->context->controller->addCSS($this->getPathUri() . 'views/css/front/sustainable-logo.css');
             /** @var PaymentService $paymentService */
             $paymentService = $this->getModuleContainer('invertus.dpdbaltics.service.payment.payment_service');
             $isPickupMap = Configuration::get(\Invertus\dpdBaltics\Config\Config::PICKUP_MAP);
@@ -424,6 +449,8 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
+
+
         $carrier = new Carrier($this->id_carrier);
         if ($this->context->controller->ajax && Tools::getValue('id_address_delivery')) {
             $cart->id_address_delivery = (int)Tools::getValue('id_address_delivery');
@@ -534,7 +561,7 @@ class DPDBaltics extends CarrierModule
             $sameDayDeliveryPresenter = $this->getModuleContainer()->get('invertus.dpdbaltics.presenter.same_day_delivery_message_presenter');
             $return .= $sameDayDeliveryPresenter->getSameDayDeliveryMessageTemplate();
         }
-        $return .= $carrierPhoneService->getCarrierPhoneTemplate($this->context->cart->id);
+        $return .= $carrierPhoneService->getCarrierPhoneTemplate($this->context->cart->id, $carrier->id_reference);
         if ($dpdProduct->getProductReference() === Config::PRODUCT_TYPE_B2B ||
             $dpdProduct->getProductReference() === Config::PRODUCT_TYPE_B2B_COD
         ) {

@@ -87,6 +87,7 @@
 - Parcel tracking email template changed, URL changes, show only parcel number in tracking email template
 - Bugfix, when in parcel validation function wrong argument is set, carrier ID instead of reference.
 - Bugfix, override in array method in javascript, as different jquery version act differently while executing function
+
 ## [3.2.8] - 2021-12-08
 ### Changed
 - Bugfix when combination with price impact calculates wrong price on shipment.
@@ -104,5 +105,12 @@
 - Translatable string added when no option available, translations updated for all baltic languages for pickup select.
 - Compatability for shipments from: GB,IE,NL added, service for different post code formatting initiated.
 
-
+## [3.2.9] - 2021-06-09
+- Restriction for COD carriers while using LATVIAN webservice removed
+- ZIP folder inside repository removed
+- Bugfix in cart, if prestashop default carrier is selected dpd-phone input for phone number is no longer required'.
+- Translation changed in Import Pick up points
+- Sustainable logo added to DPD carrier text
+- API endpoint changed in dpdbalticsapi, logic improved, no to send unnecessary params
+- Remark message upgrade added, allow special chars, trim content to prevent error.
 

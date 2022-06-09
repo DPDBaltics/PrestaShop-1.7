@@ -31,7 +31,7 @@
   ],
   "require": {
     "php": ">=5.6",
-    "invertus/dpdbalticsapi":"dev-developer",
+    "invertus/dpdbaltics-api":"dev-developer",
     "invertus/psmoduletabs":"dev-develop",
     "symfony/console": "^3.4",
     "friendsofphp/php-cs-fixer": "^2.19",

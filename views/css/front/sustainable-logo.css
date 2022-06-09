@@ -1,0 +1,14 @@
+#sustainable-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 15px;
+}
+#sustainable-box img {
+    max-width: 25px;
+}
+
+#sustainable-box span {
+    font-size: 12px;
+    color: #0E731E;
+}
