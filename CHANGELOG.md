@@ -105,10 +105,12 @@
 - Translatable string added when no option available, translations updated for all baltic languages for pickup select.
 - Compatability for shipments from: GB,IE,NL added, service for different post code formatting initiated.
 
-## [3.2.9] - 2021-01-06
+## [3.2.9] - 2021-06-09
 - Restriction for COD carriers while using LATVIAN webservice removed
 - ZIP folder inside repository removed
 - Bugfix in cart, if prestashop default carrier is selected dpd-phone input for phone number is no longer required'.
 - Translation changed in Import Pick up points
 - Sustainable logo added to DPD carrier text
+- API endpoint changed in dpdbalticsapi, logic improved, no to send unnecessary params
+- Remark message upgrade added, allow special chars, trim content to prevent error.
 
