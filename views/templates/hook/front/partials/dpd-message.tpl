@@ -8,15 +8,28 @@
  *
  *  International Registered Trademark & Property of INVERTUS, UAB
  *}
-<div class="dpd-message-container">
-    <div class="alert alert-{$messageType|escape:'htmlall':'UTF-8'} {if isset($messageType_pudo)} alert-danger{/if} {if !isset($displayMessage)}dpd-hidden{/if}" role="alert">
-        <p>&nbsp;</p>
-        <ol>
-            {if isset($messages) && !empty($messages)}
-                {foreach from=$messages item=msg}
-                    <li>{$msg|escape:'htmlall':'UTF-8'}</li>
-                {/foreach}
-            {/if}
-        </ol>
+
+{if isset($currentController) && $currentController === 'supercheckout' || isset($is_super_checkout)}
+    <div id="supercheckout-empty-page-content" class="supercheckout-empty-page-content" style="display:block">
+        {if isset($messages) && !empty($messages)}
+            {foreach from=$messages item=msg}
+                <div class="permanent-warning">{$msg|escape:'htmlall':'UTF-8'}</div>
+            {/foreach}
+        {/if}
     </div>
-</div>
+    {else}
+    <div class="dpd-message-container">
+        <div class="alert alert-{$messageType|escape:'htmlall':'UTF-8'} {if isset($messageType_pudo)} alert-danger{/if} {if !isset($displayMessage)}dpd-hidden{/if}" role="alert">
+            <p>&nbsp;</p>
+            <ol>
+                {if isset($messages) && !empty($messages)}
+                    {foreach from=$messages item=msg}
+                        <li>{$msg|escape:'htmlall':'UTF-8'}</li>
+                    {/foreach}
+                {/if}
+            </ol>
+        </div>
+    </div>
+
+{/if}
+

@@ -671,6 +671,7 @@ class DPDBaltics extends CarrierModule
             $streetList = $parcelShopRepo->getAllAddressesByCountryCodeAndCity($countryCode, $selectedCity);
             $this->context->smarty->assign(
                 [
+                    'currentController' => Tools::getValue('controller'),
                     'carrierId' => $carrier->id,
                     'pickUpMap' => Configuration::get(Config::PICKUP_MAP),
                     'pudoId' => $pudoId,

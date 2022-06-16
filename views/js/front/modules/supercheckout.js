@@ -20,7 +20,8 @@ $( document ).ajaxComplete(function( event, request, settings ) {
             data: {
                 'ajax': 1,
                 'action': 'validateOrderCustom',
-                'token': typeof prestashop !== 'undefined' ? prestashop.static_token : ''
+                'token': typeof prestashop !== 'undefined' ? prestashop.static_token : '',
+                'super_checkout_controller': currentController
             },
             success: function (response) {
                 response = JSON.parse(response);
@@ -43,5 +44,5 @@ $( document ).ajaxComplete(function( event, request, settings ) {
 });
 
 function DPDdisplayMessageOnSuperCheckout(parent, template) {
-    parent.html('<div class="dpd-error">' + template + '</div>');
+    parent.html(template);
 }
