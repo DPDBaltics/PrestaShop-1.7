@@ -9,7 +9,7 @@
  *  International Registered Trademark & Property of INVERTUS, UAB
  *}
 {if (!isset($disableMap) || (isset($disableMap) && !$disableMap))}
-    <div class="dpd-checkout-pickup-container dpd-pudo-container pickup-map-{$carrierId}"
+    <div class=" {if $currentController == 'supercheckout'}supercheckout-pudo-container {/if}dpd-checkout-pickup-container dpd-pudo-container pickup-map-{$carrierId}"
          data-id="{$carrierId}" {if isset($dpdIdCarrier) && $dpdIdCarrier}data-pudo-id-carrier="{$dpdIdCarrier}"{/if}>
         <div class="panel panel-default">
             {include file='module:dpdbaltics/views/templates/hook/front/partials/dpd-message.tpl' messageType='error'}

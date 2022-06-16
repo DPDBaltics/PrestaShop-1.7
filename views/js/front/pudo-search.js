@@ -34,8 +34,13 @@ function updateStreet() {
 }
 
 $( document ).ajaxComplete(function( event, request, settings ) {
-    let defaultCarrier =  $('.custom-radio > input:checked');
-    togglePhoneRequiredField(defaultCarrier)
+
+    var opcControllers = ['order-opc', 'supercheckout'];
+    if (!inArray(currentController, opcControllers)) {
+        let defaultCarrier =  $('.custom-radio > input:checked');
+        togglePhoneRequiredField(defaultCarrier)
+    }
+
     var applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
     if (!inArray(currentController, applicableControllers)) {
         return;
@@ -147,7 +152,7 @@ function updateParcelBlock(city, street) {
             }
             if (response.status) {
                 DPDchangePickupPoints($parent, response.template)
-                reselectDataPopover()
+                reselectDataPopover();
             }
         },
         error: function (response) {
@@ -162,12 +167,19 @@ function updateParcelBlock(city, street) {
 
 function DPDdisplayMessage(parent, template) {
     var $messageContainer = parent.find('.dpd-message-container');
-    $messageContainer.replaceWith(template);
+    if (currentController === 'supercheckout') {
+        $messageContainer =  parent.find('.supercheckwout-empty-page-content');
+    }
+
+    $messageContainer.html(template);
     parent.find('[id^="dpd-pudo-map"] div').removeClass('dpd-hidden');
 }
 
 function DPDremoveMessage(parent) {
     var $messageContainer = parent.find('.dpd-message-container');
+    if (currentController === 'supercheckout') {
+        $messageContainer = parent.find('.supercheckwout-empty-page-content');
+    }
     $messageContainer.html('');
 }
 
