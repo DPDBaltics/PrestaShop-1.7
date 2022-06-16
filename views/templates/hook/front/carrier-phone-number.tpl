@@ -1,5 +1,10 @@
 <div class="container dpd-checkout-phone-container dpd-phone-block{if $isAbove177} new-version {/if}">
-    {include file='module:dpdbaltics/views/templates/hook/front/partials/dpd-message.tpl' messageType='error'}
+
+    {if isset($currentController) && $currentController === 'supercheckout'}
+        <div class="supercheckout-dpd-phone-error"></div>
+        {else}
+        {include file='module:dpdbaltics/views/templates/hook/front/partials/dpd-message.tpl' messageType='error'}
+    {/if}
     <div id="phone-block-wrapper" class="row form-group">
         <div class="col-lg-5 col-12 ">
             <p class="form-control-label">{l s='This a phone number that will be used for deliveries' mod='dpdbaltics'}</p></div>

@@ -121,6 +121,8 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                         [
                             'status' => false,
                             'template' => $this->getMessageTemplate('danger'),
+                            'pudo_valid' => $pudoValidator,
+                            'phone_valid' => $phoneNumberValidator
                         ]
                     ));
                 }

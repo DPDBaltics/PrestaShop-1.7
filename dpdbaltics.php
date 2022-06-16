@@ -214,7 +214,7 @@ class DPDBaltics extends CarrierModule
         $carrierIds = [];
         $baseUrl = $this->context->shop->getBaseURL(true, false);
 
-        if ($webServiceCountryCode === Config::LATVIA_ISO_CODE) {
+        if ($webServiceCountryCode === Config::LATVIA_ISO_CODE || $currentController === 'supercheckout') {
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
 
@@ -264,6 +264,7 @@ class DPDBaltics extends CarrierModule
                 'dpdLockerMarkerPath' => $this->getPathUri() . 'views/img/locker.png',
                 'dpdHookAjaxUrl' => $this->context->link->getModuleLink($this->name, 'Ajax'),
                 'pudoSelectSuccess' => $this->l('Pick-up point selected'),
+                'dpd_carrier_ids' => $carrierIds
             ]);
 
             $this->context->controller->registerStylesheet(

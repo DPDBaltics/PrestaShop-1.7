@@ -9,10 +9,15 @@ $( document ).ajaxComplete(function( event, request, settings ) {
     if (!settings.data) {
         return;
     }
+    var selectedCarrierValue = parseInt(document.querySelector('.supercheckout_shipping_option:checked').value);
+
+    if (!dpd_carrier_ids.includes(selectedCarrierValue)) {
+       return;
+    }
 
     var method = DPDgetUrlParam('method', settings.data)
 
-    if (method === 'updateCheckoutBehaviour') {
+    if (method === 'updateCarrier') {
         //Handles phone number on payment method load on supercheckout
         handlePhoneNumber($('.dpd-phone-block'));
         $.ajax(dpdHookAjaxUrl, {
@@ -24,8 +29,9 @@ $( document ).ajaxComplete(function( event, request, settings ) {
                 'super_checkout_controller': currentController
             },
             success: function (response) {
+
                 response = JSON.parse(response);
-                var $parent = $('#supercheckout-empty-page-content');
+                var $parent = $('.supercheckout-dpd-phone-error');
                 if (!response.status) {
                     DPDdisplayMessageOnSuperCheckout($parent, response.template);
                     $("html, body").animate({
@@ -42,6 +48,34 @@ $( document ).ajaxComplete(function( event, request, settings ) {
     }
 
 });
+
+function saveSelectedPhoneNumberSuperCheckout(phoneNumber, phoneArea) {
+    $.ajax(dpdHookAjaxUrl, {
+        type: 'POST',
+        data: {
+            'ajax': 1,
+            'phone_number': phoneNumber,
+            'phone_area': phoneArea,
+            'action': 'saveSelectedPhoneNumber',
+            'token': typeof prestashop !== 'undefined' ? prestashop.static_token : ''
+        },
+        success: function (response) {
+            response = JSON.parse(response);
+            var $parent = $('.supercheckout-dpd-phone-error');
+            if (!response.status) {
+                DPDdisplayMessageOnSuperCheckout($parent, response.template);
+                $("html, body").animate({
+                    scrollTop: 0
+                }, "fast");
+            } else {
+                DPDdisplayMessageOnSuperCheckout($parent, '');
+            }
+        },
+        error: function (response) {
+            console.error('Error while saving DPD phone number')
+        }
+    });
+}
 
 function DPDdisplayMessageOnSuperCheckout(parent, template) {
     parent.html(template);

@@ -50,7 +50,7 @@ class PhoneNumberValidator
                 );
             }
 
-            if (strlen($phone) < 8 || strlen($phone) > 13) {
+            if (strlen($phone) < 6 || strlen($phone) > 13) {
                 throw new DpdCarrierException(
                     'Phone number length is invalid',
                     Config::ERROR_PHONE_HAS_INVALID_LENGTH

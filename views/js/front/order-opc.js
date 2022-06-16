@@ -26,7 +26,11 @@ function handlePhoneNumber(selector)
     var phone = selector.find('input[name="dpd-phone"]').val();
     var phoneArea = selector.find('select[name="dpd-phone-area"] option:selected').val();
 
-    saveSelectedPhoneNumber(phone, phoneArea)
+    if (currentController === 'supercheckout') {
+        saveSelectedPhoneNumberSuperCheckout(phone, phoneArea)
+    } else {
+        saveSelectedPhoneNumber(phone, phoneArea)
+    }
 
     return true;
 }
