@@ -114,3 +114,8 @@
 - API endpoint changed in dpdbalticsapi, logic improved, no to send unnecessary params
 - Remark message upgrade added, allow special chars, trim content to prevent error.
 
+## [3.2.10]
+ - Validation message styles unified with super checkout module
+ - Validation message handling added(remove change and display correct messages)
+ - Logic to execute superchekout handling added only when correct carrier selected
+
