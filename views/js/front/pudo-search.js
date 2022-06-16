@@ -34,8 +34,13 @@ function updateStreet() {
 }
 
 $( document ).ajaxComplete(function( event, request, settings ) {
-    let defaultCarrier =  $('.custom-radio > input:checked');
-    togglePhoneRequiredField(defaultCarrier)
+
+    var opcControllers = ['order-opc', 'supercheckout'];
+    if (!inArray(currentController, opcControllers)) {
+        let defaultCarrier =  $('.custom-radio > input:checked');
+        togglePhoneRequiredField(defaultCarrier)
+    }
+
     var applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
     if (!inArray(currentController, applicableControllers)) {
         return;

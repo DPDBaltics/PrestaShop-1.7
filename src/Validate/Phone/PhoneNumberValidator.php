@@ -24,31 +24,39 @@ class PhoneNumberValidator
 
     public function isPhoneValid($prefix, $phone)
     {
-        if (empty($prefix)) {
+        if (empty($prefix) && empty($phone)) {
             throw new DpdCarrierException(
-                'Phone number prefix is empty',
-                Config::ERROR_BAD_PHONE_NUMBER_PREFIX
+                'Phone number details are empty',
+                Config::ERROR_EMPTY_PHONE_DETAILS
             );
-        }
-        if (empty($phone)) {
-            throw new DpdCarrierException(
-             'Phone number is empty',
-                Config::ERROR_PHONE_EMPTY
-            );
-        }
-       if (!is_numeric($phone)) {
-           throw new DpdCarrierException(
-              'Phone number contains invalid characters',
-               Config::ERROR_PHONE_HAS_INVALID_CHARACTERS
-           );
-       }
+        } else {
 
-       if (strlen($phone) < 8 || strlen($phone) > 13) {
-           throw new DpdCarrierException(
-              'Phone number length is invalid',
-               Config::ERROR_PHONE_HAS_INVALID_LENGTH
-           );
-       }
+            if (empty($prefix)) {
+                throw new DpdCarrierException(
+                    'Phone number prefix is empty',
+                    Config::ERROR_BAD_PHONE_NUMBER_PREFIX
+                );
+            }
+            if (empty($phone)) {
+                throw new DpdCarrierException(
+                    'Phone number is empty',
+                    Config::ERROR_PHONE_EMPTY
+                );
+            }
+            if (!is_numeric($phone)) {
+                throw new DpdCarrierException(
+                    'Phone number contains invalid characters',
+                    Config::ERROR_PHONE_HAS_INVALID_CHARACTERS
+                );
+            }
+
+            if (strlen($phone) < 8 || strlen($phone) > 13) {
+                throw new DpdCarrierException(
+                    'Phone number length is invalid',
+                    Config::ERROR_PHONE_HAS_INVALID_LENGTH
+                );
+            }
+        }
 
         return true;
     }
