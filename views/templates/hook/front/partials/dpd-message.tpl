@@ -10,7 +10,7 @@
  *}
 
 {if isset($currentController) && $currentController === 'supercheckout' || isset($is_super_checkout)}
-    <div id="supercheckout-empty-page-content" class="supercheckout-empty-page-content" style="display:block">
+    <div id="supercheckout-empty-page-content" class="supercheckwout-empty-page-content" style="display:block">
         {if isset($messages) && !empty($messages)}
             {foreach from=$messages item=msg}
                 <div class="permanent-warning">{$msg|escape:'htmlall':'UTF-8'}</div>

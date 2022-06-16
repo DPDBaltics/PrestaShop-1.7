@@ -1,4 +1,14 @@
+function isDPdCarrierSelected() {
+    if (document.querySelector('.supercheckout_shipping_option:checked')) {
+        var selectedCarrierValue = parseInt(document.querySelector('.supercheckout_shipping_option:checked').value);
 
+        if (!dpd_carrier_ids.includes(selectedCarrierValue)) {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 $( document ).ajaxComplete(function( event, request, settings ) {
 
@@ -9,10 +19,9 @@ $( document ).ajaxComplete(function( event, request, settings ) {
     if (!settings.data) {
         return;
     }
-    var selectedCarrierValue = parseInt(document.querySelector('.supercheckout_shipping_option:checked').value);
 
-    if (!dpd_carrier_ids.includes(selectedCarrierValue)) {
-       return;
+    if (!isDPdCarrierSelected()) {
+        return;
     }
 
     var method = DPDgetUrlParam('method', settings.data)
