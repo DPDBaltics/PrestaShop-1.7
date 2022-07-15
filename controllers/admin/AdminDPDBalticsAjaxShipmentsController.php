@@ -17,6 +17,7 @@ use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Factory\ShipmentDataFactory;
 use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Invertus\dpdBaltics\Service\Address\ReceiverAddressService;
+use Invertus\dpdBaltics\Service\API\LabelApiService;
 use Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService;
 use Invertus\dpdBaltics\Service\API\ShipmentApiService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
@@ -43,7 +44,6 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
     public function postProcess()
     {
         $response = ['status' => false];
-
         $action = Tools::getValue('action');
         $idOrder = Tools::getValue('id_order');
         $order = new Order($idOrder);
@@ -68,15 +68,19 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $this->updateAddressBlock($order, $idAddressDelivery);
                 break;
             case 'print':
-                //Prevent printing in old controller, set printing from Symfony service, as it does not cause corrupted PDF issue
-                if ($isAbove177) {
-                    $this->returnResponse(['status' => true]);
-                }
-                $shipmentId = (int)Tools::getValue('shipment_id');
-                $labelFormat = Tools::getValue('labelFormat');
-                $labelPosition = Tools::getValue('labelPosition');
-                $this->returnResponse($this->printLabel($shipmentId, $labelFormat, $labelPosition));
+                    //Prevent printing in old controller, set printing from Symfony service, as it does not cause corrupted PDF issue
+                    if ($isAbove177) {
+                        $this->returnResponse(['status' => true]);
+                    }
+                    $shipmentId = (int)Tools::getValue('shipment_id');
+                    $labelFormat = Tools::getValue('labelFormat');
+                    $labelPosition = Tools::getValue('labelPosition');
+                    $this->returnResponse($this->printLabel($shipmentId, $labelFormat, $labelPosition));
                 break;
+            case 'print-return':
+                $response['status'] = false;
+                $shipmentId = (int)Tools::getValue('shipment_id');
+                $this->printReturnLabel($shipmentId, $idOrder);
             case 'save':
             case 'save_and_print':
                 $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
@@ -284,6 +288,22 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         $labelPrintingService = $this->module->getModuleContainer('invertus.dpdbaltics.service.label.label_printing_service');
 
         return $labelPrintingService->setLabelOptions($shipmentId, $labelFormat, $labelPosition);
+    }
+
+    private function  printReturnLabel($shipmentId, $orderId)
+    {
+        /** @var LabelApiService $labelApiService */
+        $labelApiService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
+        $dpdShipment = new DPDShipment($shipmentId);
+        if ($dpdShipment->return_pl_number) {
+            try {
+                $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
+                exit();
+            } catch (Exception $e) {
+                $response['status'] = false;
+                $this->returnResponse($response);
+            }
+        }
     }
 
     private function setLabelOptions(ShipmentData $shipmentData, $shipmentId, $orderId)

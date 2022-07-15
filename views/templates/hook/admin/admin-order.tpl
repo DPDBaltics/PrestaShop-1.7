@@ -43,6 +43,7 @@
                                 <th class="text-center">{l s='Unique products' mod='dpdbaltics'}</th>
                                 <th class="text-center">{l s='Label printed' mod='dpdbaltics'}</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -66,6 +67,15 @@
                                         {/if}
                                     </a>
                                 </td>
+                                {if !$isAutomated}
+                                <td>
+                                    <form id="order-return-form" action="{$href}" method="post">
+                                        <button class="btn btn-link pt-0 pb-0" type="submit">
+                                            {l s='Download return label' mod='dpdbaltics'}
+                                        </button>
+                                    </form>
+                                </td>
+                                {/if}
                             </tr>
                             </tbody>
                         </table>

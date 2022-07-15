@@ -778,6 +778,15 @@ class DPDBaltics extends CarrierModule
                 'collapseText' => $this->l('Collapse'),
                 'dpdAjaxShipmentsUrl' =>
                     $this->context->link->getAdminLink(self::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
+                'dpdShipmentReturnUrl' =>
+                    $this->context->link->getModuleLink(
+                        $this->name,
+                        'ShipmentReturn',
+                        [
+                            'id_order' => $orderId,
+                            'dpd-return-submit' => ''
+                        ]
+                    ),
                 'dpdMessages' => [
                     'invalidProductQuantity' => $this->l('Invalid product quantity entered'),
                     'invalidShipment' => $this->l('Invalid shipment selected'),
@@ -994,6 +1003,15 @@ class DPDBaltics extends CarrierModule
             }
         }
 
+        $href = $this->context->link->getModuleLink(
+            $this->name,
+            'ShipmentReturn',
+            [
+                'id_order' => $order->id,
+                'dpd-return-submit' => ''
+            ]
+        );
+
         $tplVars = [
             'dpdLogoUrl' => $this->getPathUri() . 'views/img/DPDLogo.gif',
             'shipment' => $shipment,
@@ -1018,6 +1036,9 @@ class DPDBaltics extends CarrierModule
             'has_parcel_shops' => $hasParcelShops,
             'receiverAddressCountries' => Country::getCountries($this->context->language->id, true),
             'documentReturnEnabled' => Configuration::get(Config::DOCUMENT_RETURN),
+            'href' => $href,
+            'adminLabelLink' => $this->context->link->getAdminLink('AdminDPDBalticsAjaxShipments', true, [], ['action' => 'print-return']),
+            'isAutomated' => Configuration::get(Config::AUTOMATED_PARCEL_RETURN),
         ];
 
         $this->context->smarty->assign($tplVars);
@@ -1086,10 +1107,15 @@ class DPDBaltics extends CarrierModule
         $shipment = new DPDShipment($idShipment);
         $format = $shipment->label_format;
         $position = $shipment->label_position;
-
+        $isAutomated = Configuration::get(Config::AUTOMATED_PARCEL_RETURN);
         try {
             /** @var ParcelPrintResponse $parcelPrintResponse */
-            $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
+            if ($isAutomated) {
+                $plNumbers = [$shipment->pl_number, $shipment->return_pl_number];
+                $parcelPrintResponse = $labelApiService->printLabel(implode('|', $plNumbers), $format, $position, false);
+            } else {
+                $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
+            }
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');

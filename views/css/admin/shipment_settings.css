@@ -1,0 +1,34 @@
+/* Tooltip container */
+#conf_id_AUTOMATED_PARCEL_RETURN {
+    cursor: pointer;
+}
+
+#conf_id_AUTOMATED_PARCEL_RETURN label {
+    cursor: pointer;
+}
+
+/* Tooltip text */
+#conf_id_AUTOMATED_PARCEL_RETURN .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #fafbfc;
+    color: #363a41;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #dbe6e9;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    right: 40%;
+    z-index: 1;
+}
+@media only screen and (max-width: 800px) {
+    #conf_id_AUTOMATED_PARCEL_RETURN .tooltiptext {
+        right: 20%;
+    }
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+#conf_id_AUTOMATED_PARCEL_RETURN:hover .tooltiptext {
+    visibility: visible;
+}

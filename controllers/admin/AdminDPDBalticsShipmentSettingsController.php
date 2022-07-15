@@ -94,6 +94,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
         $this->addJS($this->getModuleJSUri() . 'label_position.js');
         $this->addJS($this->getModuleJSUri() . 'shipment_settings.js');
         $this->addCSS($this->getModuleCssUri() . 'customSelect/custom-select.css');
+        $this->addCSS($this->getModuleCssUri() . 'shipment_settings.css');
     }
 
     /**
@@ -183,6 +184,12 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                     ],
                     Config::PICKUP_MAP => [
                         'title' => $this->l('Pickup map'),
+                        'validation' => 'isBool',
+                        'cast' => 'intval',
+                        'type' => 'bool',
+                    ],
+                    Config::AUTOMATED_PARCEL_RETURN => [
+                        'title' => $this->l('Automated parcel return'),
                         'validation' => 'isBool',
                         'cast' => 'intval',
                         'type' => 'bool',

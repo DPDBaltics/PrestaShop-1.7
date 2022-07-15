@@ -20,11 +20,16 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
 
         $orderid = Tools::getValue('id_order');
         $returnTemplateId = Tools::getValue('return_template_id');
+        //TODO: FIX return template ID in ADMIN order view
+        if (!$returnTemplateId) {
+            $returnTemplateId = 1;
+        }
         $this->printReturnLabel($orderid, $returnTemplateId);
     }
 
     private function printReturnLabel($orderId, $returnTemplateId)
     {
+
         $response['status'] = false;
 
         /** @var ShipmentRepository $shipmentRepo */
@@ -108,4 +113,5 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
             );
         }
     }
+
 }
