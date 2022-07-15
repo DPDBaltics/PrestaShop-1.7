@@ -68,14 +68,14 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $this->updateAddressBlock($order, $idAddressDelivery);
                 break;
             case 'print':
-                    //Prevent printing in old controller, set printing from Symfony service, as it does not cause corrupted PDF issue
-                    if ($isAbove177) {
-                        $this->returnResponse(['status' => true]);
-                    }
-                    $shipmentId = (int)Tools::getValue('shipment_id');
-                    $labelFormat = Tools::getValue('labelFormat');
-                    $labelPosition = Tools::getValue('labelPosition');
-                    $this->returnResponse($this->printLabel($shipmentId, $labelFormat, $labelPosition));
+                //Prevent printing in old controller, set printing from Symfony service, as it does not cause corrupted PDF issue
+                if ($isAbove177) {
+                    $this->returnResponse(['status' => true]);
+                }
+                $shipmentId = (int)Tools::getValue('shipment_id');
+                $labelFormat = Tools::getValue('labelFormat');
+                $labelPosition = Tools::getValue('labelPosition');
+                $this->returnResponse($this->printLabel($shipmentId, $labelFormat, $labelPosition));
                 break;
             case 'print-return':
                 $response['status'] = false;

@@ -778,15 +778,6 @@ class DPDBaltics extends CarrierModule
                 'collapseText' => $this->l('Collapse'),
                 'dpdAjaxShipmentsUrl' =>
                     $this->context->link->getAdminLink(self::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
-                'dpdShipmentReturnUrl' =>
-                    $this->context->link->getModuleLink(
-                        $this->name,
-                        'ShipmentReturn',
-                        [
-                            'id_order' => $orderId,
-                            'dpd-return-submit' => ''
-                        ]
-                    ),
                 'dpdMessages' => [
                     'invalidProductQuantity' => $this->l('Invalid product quantity entered'),
                     'invalidShipment' => $this->l('Invalid shipment selected'),
@@ -1037,7 +1028,12 @@ class DPDBaltics extends CarrierModule
             'receiverAddressCountries' => Country::getCountries($this->context->language->id, true),
             'documentReturnEnabled' => Configuration::get(Config::DOCUMENT_RETURN),
             'href' => $href,
-            'adminLabelLink' => $this->context->link->getAdminLink('AdminDPDBalticsAjaxShipments', true, [], ['action' => 'print-return']),
+            'adminLabelLink' => $this->context->link->getAdminLink(
+                'AdminDPDBalticsAjaxShipments',
+                true,
+                [],
+                ['action' => 'print-return']
+            ),
             'isAutomated' => Configuration::get(Config::AUTOMATED_PARCEL_RETURN),
         ];
 

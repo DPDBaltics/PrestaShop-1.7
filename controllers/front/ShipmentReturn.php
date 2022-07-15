@@ -113,5 +113,4 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
             );
         }
     }
-
 }
