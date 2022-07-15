@@ -118,4 +118,7 @@
  - Validation message styles unified with super checkout module
  - Validation message handling added(remove change and display correct messages)
  - Logic to execute superchekout handling added only when correct carrier selected
+ - Parcel return label logic added to Admin Order View
+ - Automated parcel return settings added to Shipment settings
+ - On Automated parcel setting return Shipment and Return labels are printed together
 
