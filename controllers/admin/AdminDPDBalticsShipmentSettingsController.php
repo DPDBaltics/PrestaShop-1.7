@@ -94,7 +94,6 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
         $this->addJS($this->getModuleJSUri() . 'label_position.js');
         $this->addJS($this->getModuleJSUri() . 'shipment_settings.js');
         $this->addCSS($this->getModuleCssUri() . 'customSelect/custom-select.css');
-        $this->addCSS($this->getModuleCssUri() . 'shipment_settings.css');
     }
 
     /**
@@ -192,6 +191,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                         'title' => $this->l('Automated parcel return'),
                         'validation' => 'isBool',
                         'cast' => 'intval',
+                        'hint' => $this->trans('Enabling automated parcel returns will generate a return label for every DPD order', [], 'Admin.Shipment'),
                         'type' => 'bool',
                     ],
                     Config::GOOGLE_API_KEY => [
