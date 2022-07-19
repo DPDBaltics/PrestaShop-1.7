@@ -1135,10 +1135,14 @@ class DPDBaltics extends CarrierModule
 
     public function printMultipleLabels($shipmentIds)
     {
+        $isAutomated = Configuration::get(Config::AUTOMATED_PARCEL_RETURN);
         $plNumbers = [];
         foreach ($shipmentIds as $shipmentId) {
             $shipment = new DPDShipment($shipmentId);
             $plNumbers[] = $shipment->pl_number;
+            if ($isAutomated) {
+                $plNumbers[] = $shipment->return_pl_number;
+            }
         }
 
         /** @var LabelApiService $labelApiService */
