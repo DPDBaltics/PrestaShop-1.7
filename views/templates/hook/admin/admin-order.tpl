@@ -69,11 +69,12 @@
                                 </td>
                                 {if !$isAutomated}
                                 <td>
-                                    <form id="order-return-form" action="{$href}" method="post">
-                                        <button class="btn btn-link pt-0 pb-0" type="submit">
-                                            {l s='Download return label' mod='dpdbaltics'}
-                                        </button>
-                                    </form>
+                                    <a href="{$adminLabelLink}&shipment_id={$shipment->id}"
+                                       class="btn btn-default pull-right pull-right"
+                                    >
+                                        <i class="process-icon-save"></i>
+                                        {l s='Download return label' mod='dpdbaltics'}
+                                    </a>
                                 </td>
                                 {/if}
                             </tr>

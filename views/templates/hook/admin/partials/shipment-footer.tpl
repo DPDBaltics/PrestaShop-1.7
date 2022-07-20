@@ -20,9 +20,9 @@
         <i class="process-icon-save"></i>
         {l s='Save' mod='dpdbaltics'}
     </button>
-    <div class="d-flex flex-column float-right">
+    <div class="d-flex flex-row float-right">
         <a href="#"
-           class="btn btn-default btn-secondary  pull-right js-print-label-btn mb-2"
+           class="btn btn-default btn-secondary  pull-right js-print-label-btn mr-1"
            style="display: none"
            data-action="print"
            data-shipment-id={$shipment->id}

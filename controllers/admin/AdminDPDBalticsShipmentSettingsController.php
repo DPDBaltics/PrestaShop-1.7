@@ -188,7 +188,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                         'type' => 'bool',
                     ],
                     Config::AUTOMATED_PARCEL_RETURN => [
-                        'title' => $this->l('Automated parcel return'),
+                        'title' => $this->trans('Automatically generate return label'),
                         'validation' => 'isBool',
                         'cast' => 'intval',
                         'hint' => $this->trans('Enabling automated parcel returns will generate a return label for every DPD order', [], 'Admin.Shipment'),

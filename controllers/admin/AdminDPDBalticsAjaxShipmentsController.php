@@ -80,7 +80,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
             case 'print-return':
                 $response['status'] = false;
                 $shipmentId = (int)Tools::getValue('shipment_id');
-                $this->printReturnLabel($shipmentId, $idOrder);
+                $this->printReturnLabel($shipmentId);
             case 'save':
             case 'save_and_print':
                 $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
@@ -290,10 +290,12 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         return $labelPrintingService->setLabelOptions($shipmentId, $labelFormat, $labelPosition);
     }
 
-    private function  printReturnLabel($shipmentId, $orderId)
+    private function  printReturnLabel($shipmentId)
     {
         /** @var LabelApiService $labelApiService */
         $labelApiService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
+        $returnTemplateId = Tools::getValue('return_template_id');
+
         $dpdShipment = new DPDShipment($shipmentId);
         if ($dpdShipment->return_pl_number) {
             try {
@@ -303,6 +305,21 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $response['status'] = false;
                 $this->returnResponse($response);
             }
+        }
+        try {
+            /** @var ShipmentService $shipmentService */
+            $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
+            $dpdShipment = $shipmentService->createReturnServiceShipment($returnTemplateId, $dpdShipment->id_order);
+            $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
+            exit();
+        } catch (DPDBalticsAPIException $e) {
+            /** @var ExceptionService $exceptionService */
+            $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
+            $errorMessage = $exceptionService->getErrorMessageForException(
+                $e,
+                $exceptionService->getAPIErrorMessages()
+            );
+            $this->context->cookie->dpd_error = json_encode($errorMessage);
         }
     }
 

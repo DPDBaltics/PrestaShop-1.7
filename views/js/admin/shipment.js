@@ -28,7 +28,6 @@ $(document).ready(function () {
     $dpdBlock.on('change', '.js-contract-select', togglePudoContainer);
     $dpdBlock.on('change', '.js-contract-select', toggleDeliveryTime);
     $dpdBlock.on('change', 'input[name="DPD_DOCUMENT_RETURN"]', toggleDocumentReturn);
-    $dpdBlock.on('click', '.js-print-label-return-btn', printReturnLabel);
 
     function editAddressBlockEvent() {
         $('.js-dpd-recipient-detail, .js-dpd-recipient-detail-edit').addClass('hidden d-none');
@@ -311,31 +310,6 @@ $(document).ready(function () {
 
     }
 
-    function printReturnLabel() {
-        event.preventDefault();
-        var $clickedBtn = $(this);
-        var action = $clickedBtn.data('action');
-        var shipmentId = $clickedBtn.data('shipment-id');
-
-        $.ajax(dpdAjaxShipmentsUrl, {
-            method: 'POST',
-            data: {
-                id_order: id_order,
-                shipment_id: shipmentId,
-                action: action,
-                async: true,
-            },
-            success: function (response) {
-                try {
-                    JSON.parse(response);
-                } catch (e) {
-                    DPDshowError(dpdMessages.unexpectedError);
-                    return;
-                }
-            }
-        })
-    }
-
     /**
      * Remove selected parcel
      */
@@ -405,7 +379,6 @@ $(document).ready(function () {
         if (addListeners) {
             $dpdBlock.on('click', '.js-toggle-shipment', toggleShipmentEvent);
             $dpdBlock.on('click', '.js-print-label-btn', printLabel);
-            $dpdBlock.on('click', '.js-print-label-return-btn', printReturnLabel);
         }
     }
 
