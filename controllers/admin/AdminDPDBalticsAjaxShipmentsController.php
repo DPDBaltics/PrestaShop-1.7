@@ -17,6 +17,7 @@ use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Factory\ShipmentDataFactory;
 use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Invertus\dpdBaltics\Service\Address\ReceiverAddressService;
+use Invertus\dpdBaltics\Service\API\LabelApiService;
 use Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService;
 use Invertus\dpdBaltics\Service\API\ShipmentApiService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
@@ -43,7 +44,6 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
     public function postProcess()
     {
         $response = ['status' => false];
-
         $action = Tools::getValue('action');
         $idOrder = Tools::getValue('id_order');
         $order = new Order($idOrder);
@@ -77,6 +77,10 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $labelPosition = Tools::getValue('labelPosition');
                 $this->returnResponse($this->printLabel($shipmentId, $labelFormat, $labelPosition));
                 break;
+            case 'print-return':
+                $response['status'] = false;
+                $shipmentId = (int)Tools::getValue('shipment_id');
+                $this->printReturnLabel($shipmentId);
             case 'save':
             case 'save_and_print':
                 $shipmentData = $formDataConverter->convertShipmentFormDataToShipmentObj($data);
@@ -284,6 +288,39 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         $labelPrintingService = $this->module->getModuleContainer('invertus.dpdbaltics.service.label.label_printing_service');
 
         return $labelPrintingService->setLabelOptions($shipmentId, $labelFormat, $labelPosition);
+    }
+
+    private function  printReturnLabel($shipmentId)
+    {
+        /** @var LabelApiService $labelApiService */
+        $labelApiService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
+        $returnTemplateId = Tools::getValue('return_template_id');
+
+        $dpdShipment = new DPDShipment($shipmentId);
+        if ($dpdShipment->return_pl_number) {
+            try {
+                $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
+                exit();
+            } catch (Exception $e) {
+                $response['status'] = false;
+                $this->returnResponse($response);
+            }
+        }
+        try {
+            /** @var ShipmentService $shipmentService */
+            $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
+            $dpdShipment = $shipmentService->createReturnServiceShipment($returnTemplateId, $dpdShipment->id_order);
+            $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
+            exit();
+        } catch (DPDBalticsAPIException $e) {
+            /** @var ExceptionService $exceptionService */
+            $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
+            $errorMessage = $exceptionService->getErrorMessageForException(
+                $e,
+                $exceptionService->getAPIErrorMessages()
+            );
+            $this->context->cookie->dpd_error = json_encode($errorMessage);
+        }
     }
 
     private function setLabelOptions(ShipmentData $shipmentData, $shipmentId, $orderId)

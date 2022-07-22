@@ -375,6 +375,7 @@ $(document).ready(function () {
         $('.js-toggle-shipment').prop('disabled', false);
         $('.js-shipment-save-btn').hide();
         $('.js-print-label-btn').show();
+        $('.js-print-label-return-btn').show();
         if (addListeners) {
             $dpdBlock.on('click', '.js-toggle-shipment', toggleShipmentEvent);
             $dpdBlock.on('click', '.js-print-label-btn', printLabel);

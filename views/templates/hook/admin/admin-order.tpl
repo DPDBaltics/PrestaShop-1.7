@@ -43,6 +43,7 @@
                                 <th class="text-center">{l s='Unique products' mod='dpdbaltics'}</th>
                                 <th class="text-center">{l s='Label printed' mod='dpdbaltics'}</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -66,6 +67,16 @@
                                         {/if}
                                     </a>
                                 </td>
+                                {if !$isAutomated}
+                                <td>
+                                    <a href="{$adminLabelLink}&shipment_id={$shipment->id}"
+                                       class="btn btn-default pull-right pull-right"
+                                    >
+                                        <i class="process-icon-save"></i>
+                                        {l s='Download return label' mod='dpdbaltics'}
+                                    </a>
+                                </td>
+                                {/if}
                             </tr>
                             </tbody>
                         </table>

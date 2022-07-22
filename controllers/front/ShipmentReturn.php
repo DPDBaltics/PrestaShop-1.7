@@ -10,7 +10,7 @@ use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontController
 {
     const FILENAME = 'ShipmentReturn';
-
+    const DEFAULT_LABEL_TEMPLATE_ID = 1;
     public function postProcess()
     {
 //        return phpinfo();
@@ -19,12 +19,14 @@ class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontControlle
         }
 
         $orderid = Tools::getValue('id_order');
-        $returnTemplateId = Tools::getValue('return_template_id');
+        $returnTemplateId = Tools::getValue('return_template_id') ? : self::DEFAULT_LABEL_TEMPLATE_ID;
+
         $this->printReturnLabel($orderid, $returnTemplateId);
     }
 
     private function printReturnLabel($orderId, $returnTemplateId)
     {
+
         $response['status'] = false;
 
         /** @var ShipmentRepository $shipmentRepo */

@@ -20,19 +20,29 @@
         <i class="process-icon-save"></i>
         {l s='Save' mod='dpdbaltics'}
     </button>
-    <a href="#"
-       class="btn btn-default btn-secondary float-right pull-right js-print-label-btn"
-       style="display: none"
-       data-action="print"
-       data-shipment-id={$shipment->id}
-    >
-        <i class="process-icon-save"></i>
-        {if 'download' == $printLabelOption}
-            {l s='Download label' mod='dpdbaltics'}
-        {else}
-            {l s='Print label' mod='dpdbaltics'}
+    <div class="d-flex flex-row float-right">
+        <a href="#"
+           class="btn btn-default btn-secondary  pull-right js-print-label-btn mr-1"
+           style="display: none"
+           data-action="print"
+           data-shipment-id={$shipment->id}
+        >
+            <i class="process-icon-save"></i>
+            {if 'download' == $printLabelOption}
+                {l s='Download label' mod='dpdbaltics'}
+            {else}
+                {l s='Print label' mod='dpdbaltics'}
+            {/if}
+        </a>
+        {if !$isAutomated}
+        <a href="{$adminLabelLink}&shipment_id={$shipment->id}"
+           class="btn btn-default btn-secondary pull-right"
+        >
+            <i class="process-icon-save"></i>
+            {l s='Download return label' mod='dpdbaltics'}
+        </a>
         {/if}
-    </a>
+    </div>
 
     <div class="dpd-print-format-block">
         <div class="pull-right dpd-print-format-input form-group row">

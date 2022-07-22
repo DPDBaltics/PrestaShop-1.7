@@ -994,6 +994,15 @@ class DPDBaltics extends CarrierModule
             }
         }
 
+        $href = $this->context->link->getModuleLink(
+            $this->name,
+            'ShipmentReturn',
+            [
+                'id_order' => $order->id,
+                'dpd-return-submit' => ''
+            ]
+        );
+
         $tplVars = [
             'dpdLogoUrl' => $this->getPathUri() . 'views/img/DPDLogo.gif',
             'shipment' => $shipment,
@@ -1018,6 +1027,14 @@ class DPDBaltics extends CarrierModule
             'has_parcel_shops' => $hasParcelShops,
             'receiverAddressCountries' => Country::getCountries($this->context->language->id, true),
             'documentReturnEnabled' => Configuration::get(Config::DOCUMENT_RETURN),
+            'href' => $href,
+            'adminLabelLink' => $this->context->link->getAdminLink(
+                'AdminDPDBalticsAjaxShipments',
+                true,
+                [],
+                ['action' => 'print-return']
+            ),
+            'isAutomated' => Configuration::get(Config::AUTOMATED_PARCEL_RETURN),
         ];
 
         $this->context->smarty->assign($tplVars);
@@ -1086,10 +1103,14 @@ class DPDBaltics extends CarrierModule
         $shipment = new DPDShipment($idShipment);
         $format = $shipment->label_format;
         $position = $shipment->label_position;
-
+        $isAutomated = Configuration::get(Config::AUTOMATED_PARCEL_RETURN);
         try {
             /** @var ParcelPrintResponse $parcelPrintResponse */
-            $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
+            if ($isAutomated) {
+                $parcelPrintResponse = $this->printConcatedLabels($shipment, $format, $position);
+            } else {
+                $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
+            }
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
@@ -1113,10 +1134,14 @@ class DPDBaltics extends CarrierModule
 
     public function printMultipleLabels($shipmentIds)
     {
+        $isAutomated = Configuration::get(Config::AUTOMATED_PARCEL_RETURN);
         $plNumbers = [];
         foreach ($shipmentIds as $shipmentId) {
             $shipment = new DPDShipment($shipmentId);
             $plNumbers[] = $shipment->pl_number;
+            if ($isAutomated) {
+                $plNumbers[] = $shipment->return_pl_number;
+            }
         }
 
         /** @var LabelApiService $labelApiService */
@@ -1372,5 +1397,15 @@ class DPDBaltics extends CarrierModule
             $this->printMultipleLabels($shipmentIds);
             exit;
         }
+    }
+
+    private function printConcatedLabels ($shipment, $format, $position) {
+
+        $plNumbers = [$shipment->pl_number, $shipment->return_pl_number];
+        /** @var LabelApiService $labelApiService */
+        $labelApiService = $this->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
+
+        return $labelApiService->printLabel(implode('|', $plNumbers), $format, $position, false);
+
     }
 }

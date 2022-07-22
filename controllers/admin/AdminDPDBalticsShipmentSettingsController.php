@@ -187,6 +187,13 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
                         'cast' => 'intval',
                         'type' => 'bool',
                     ],
+                    Config::AUTOMATED_PARCEL_RETURN => [
+                        'title' => $this->trans('Automatically generate return label'),
+                        'validation' => 'isBool',
+                        'cast' => 'intval',
+                        'hint' => $this->trans('Enabling automated parcel returns will generate a return label for every DPD order', [], 'Admin.Shipment'),
+                        'type' => 'bool',
+                    ],
                     Config::GOOGLE_API_KEY => [
                         'title' => $this->l('Google maps Api key'),
                         'validation' => 'isCleanHtml',
