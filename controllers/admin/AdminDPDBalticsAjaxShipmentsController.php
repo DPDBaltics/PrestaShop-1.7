@@ -37,7 +37,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 {
     protected $ajaxActions = ['save', 'save_and_print', 'updateAddressBlock', 'getProductPriceByID', 'print'];
     protected $ajaxPudoActions = ['searchPudoServices'];
-
+    const DEFAULT_LABEL_TEMPLATE_ID = 1;
     /**
      * Process AJAX call
      */
@@ -294,7 +294,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
     {
         /** @var LabelApiService $labelApiService */
         $labelApiService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
-        $returnTemplateId = Tools::getValue('return_template_id');
+        $returnTemplateId = Tools::getValue('return_template_id') ? : self::DEFAULT_LABEL_TEMPLATE_ID;
 
         $dpdShipment = new DPDShipment($shipmentId);
         if ($dpdShipment->return_pl_number) {
