@@ -303,7 +303,8 @@ class Installer
         }
         /** @var TabsCollection $tabCollection */
         $tabCollection = $this->tabFactory->getTabsCollection();
-        $tabsInitializer = new TabsInitializer(_PS_VERSION_, $tabCollection);
+        $moduleName = $this->module->name;
+        $tabsInitializer = new TabsInitializer(_PS_VERSION_, $tabCollection, $moduleName);
 
         return $tabsInitializer->initializeTabsByPsVersion();
     }
