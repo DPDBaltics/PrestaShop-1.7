@@ -1109,7 +1109,7 @@ class DPDBaltics extends CarrierModule
             if ($isAutomated) {
                 if (!$shipment->return_pl_number) {
                     $shipmentService = $this->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
-                    $shipmentService->createReturnServiceShipment(Config::RETURN_TEMPLATE_DEFAUTL_ID, $shipment->id_order);
+                    $shipmentService->createReturnServiceShipment(Config::RETURN_TEMPLATE_DEFAULT_ID, $shipment->id_order);
                 }
                 $parcelPrintResponse = $this->printConcatedLabels($shipment, $format, $position);
             } else {

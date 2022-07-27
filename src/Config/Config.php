@@ -126,7 +126,7 @@ class Config
     const API_COLLECTION_REQUEST_ERROR_STATUS = '402 Error:';
     const API_COURIER_REQUEST_ERROR_STATUS = '402 Error:';
     const API_RESPONSE_ERROR_STATUS = 'err';
-    const RETURN_TEMPLATE_DEFAUTL_ID = 1;
+    const RETURN_TEMPLATE_DEFAULT_ID = 1;
 
     const DEFAULT_LABEL_TYPE = 'pdf';
 
