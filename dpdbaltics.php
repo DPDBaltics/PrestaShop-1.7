@@ -1107,6 +1107,10 @@ class DPDBaltics extends CarrierModule
         try {
             /** @var ParcelPrintResponse $parcelPrintResponse */
             if ($isAutomated) {
+                if (!$shipment->return_pl_number) {
+                    $shipmentService = $this->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
+                    $shipmentService->createReturnServiceShipment(Config::RETURN_TEMPLATE_DEFAULT_ID, $shipment->id_order);
+                }
                 $parcelPrintResponse = $this->printConcatedLabels($shipment, $format, $position);
             } else {
                 $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
@@ -1404,7 +1408,6 @@ class DPDBaltics extends CarrierModule
         $plNumbers = [$shipment->pl_number, $shipment->return_pl_number];
         /** @var LabelApiService $labelApiService */
         $labelApiService = $this->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
-
         return $labelApiService->printLabel(implode('|', $plNumbers), $format, $position, false);
 
     }
