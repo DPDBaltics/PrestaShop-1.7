@@ -415,7 +415,6 @@ class Installer
             'displayCarrierExtraContent',
             'actionFrontControllerSetMedia',
             'displayProductPriceBlock',
-            'actionObjectOrderUpdateAfter',
             'actionValidateOrder',
             'displayAdminOrder',
             'displayAdminOrderTabContent',
@@ -424,14 +423,10 @@ class Installer
             'displayOrderDetail',
             'displayBackOfficeTop',
             'displayOrderDetail',
-            'actionDispatcher',
             'actionAdminOrdersListingFieldsModifier',
             'displayAdminListBefore',
-            'actionCarrierProcess',
             'displayAdminOrderTabContent',
             'actionOrderGridDefinitionModifier',
-            'actionObjectCarrierUpdateAfter',
-            'actionObjectCarrierUpdateBefore',
         ];
     }
 }

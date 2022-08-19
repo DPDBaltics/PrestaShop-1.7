@@ -137,7 +137,7 @@ services:
     class: 'Invertus\dpdBaltics\Service\Label\LabelPositionService'
     arguments:
       - '@dpdbaltics'
-      - '@Smarty'
+      - '@smarty'
 
   invertus.dpdbaltics.service.order_service:
     class: 'Invertus\dpdBaltics\Service\OrderService'
