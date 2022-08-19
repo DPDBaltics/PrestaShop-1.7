@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.service.export.export_provider:
     class: 'Invertus\dpdBaltics\Service\Export\ExportProvider'
     arguments:

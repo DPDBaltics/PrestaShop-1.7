@@ -18,6 +18,9 @@ imports:
   - { resource: templateRender.yml }
 
 services:
+  _defaults:
+    public: true
+
   dpdbaltics:
     class: 'DPDBaltics'
     factory: ['Module', 'getInstanceByName']

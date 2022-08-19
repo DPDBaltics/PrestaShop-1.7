@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.validate.zone.zone_range_validate:
     class: 'Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate'
     arguments:

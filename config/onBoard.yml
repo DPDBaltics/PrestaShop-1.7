@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.on_board.builder.on_board_block_builder:
     class: 'Invertus\dpdBaltics\OnBoard\Builder\OnBoardBlockBuilder'
     arguments:

@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.factory.array_factory:
     class: 'Invertus\dpdBaltics\Factory\ArrayFactory'
 

@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.adapter.dpdconfiguration_adapter:
     class: 'Invertus\dpdBaltics\Adapter\DPDConfigurationAdapter'
 

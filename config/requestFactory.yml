@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics_api.factory.apirequest.closing_manifest_factory:
     class: 'Invertus\dpdBalticsApi\Factory\APIRequest\ClosingManifestFactory'
     arguments:

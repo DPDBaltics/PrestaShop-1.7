@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.presenter.delivery_time_presenter:
     class: 'Invertus\dpdBaltics\Presenter\DeliveryTimePresenter'
     arguments:

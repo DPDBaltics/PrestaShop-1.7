@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.templating.info_block_render:
     class: 'Invertus\dpdBaltics\Templating\InfoBlockRender'
     arguments:
