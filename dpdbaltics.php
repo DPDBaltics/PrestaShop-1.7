@@ -235,9 +235,9 @@ class DPDBaltics extends CarrierModule
         ]);
         if (in_array($currentController, $applicableControlelrs, true)) {
             Media::addJsDef([
-               'select_an_option_translatable' => $this->l('Select an Option'),
-               'select_an_option_multiple_translatable' => $this->l('Select Some Options'),
-               'no_results_translatable' => $this->l('No results match'),
+                'select_an_option_translatable' => $this->l('Select an Option'),
+                'select_an_option_multiple_translatable' => $this->l('Select Some Options'),
+                'no_results_translatable' => $this->l('No results match'),
             ]);
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
@@ -254,7 +254,7 @@ class DPDBaltics extends CarrierModule
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
             Media::addJsDef([
-                'pudoCarriers' => Tools::jsonEncode($productRepo->getPudoProducts()),
+                'pudoCarriers' => json_encode($productRepo->getPudoProducts()),
                 'currentController' => $currentController,
                 'is_pickup_map'  => $isPickupMap,
                 'id_language' => $this->context->language->id,
@@ -723,13 +723,13 @@ class DPDBaltics extends CarrierModule
 
         if (Config::isPrestashopVersionBelow174()) {
             /** @var  $tabs TabService*/
-           $tabs = $this->getModuleContainer()->get('invertus.dpdbaltics.service.tab_service');
-           $visibleClasses = $tabs->getTabsClassNames(false);
+            $tabs = $this->getModuleContainer()->get('invertus.dpdbaltics.service.tab_service');
+            $visibleClasses = $tabs->getTabsClassNames(false);
 
-           if (in_array($currentController, $visibleClasses, true)) {
-               Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames(true)]);
-               $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
-           }
+            if (in_array($currentController, $visibleClasses, true)) {
+                Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames(true)]);
+                $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
+            }
         }
 
         if ('AdminOrders' === $currentController) {
@@ -806,13 +806,13 @@ class DPDBaltics extends CarrierModule
         }
         if ('AdminOrders' === $currentController &&
             (Tools::isSubmit('addorder') || Tools::getValue('action') === 'addorder')
-            ) {
+        ) {
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
 
             Media::addJsDef([
                 'dpdFrontController' => false,
-                'pudoCarriers' => Tools::jsonEncode($productRepo->getPudoProducts()),
+                'pudoCarriers' => json_encode($productRepo->getPudoProducts()),
                 'currentController' => $currentController,
                 'dpdAjaxShipmentsUrl' =>
                     $this->context->link->getAdminLink(self::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
@@ -1342,10 +1342,10 @@ class DPDBaltics extends CarrierModule
         $definition->getBulkActions()
             ->add(
                 (new SubmitBulkActionCustom('print_multiple_labels'))
-                ->setName($this->l('Print multiple labels'))
-                ->setOptions([
-                    'submit_route' => 'dpdbaltics_save_and_download_printed_labels_order_list_multiple',
-                ])
+                    ->setName($this->l('Print multiple labels'))
+                    ->setOptions([
+                        'submit_route' => 'dpdbaltics_save_and_download_printed_labels_order_list_multiple',
+                    ])
             )
         ;
     }
