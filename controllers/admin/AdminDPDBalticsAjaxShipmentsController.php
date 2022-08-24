@@ -31,13 +31,14 @@ use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ShipmentCreationResponse;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
-require_once dirname(__DIR__).'/../vendor/autoload.php';
+require_once dirname(__DIR__) . '/../vendor/autoload.php';
 
 class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 {
     protected $ajaxActions = ['save', 'save_and_print', 'updateAddressBlock', 'getProductPriceByID', 'print'];
     protected $ajaxPudoActions = ['searchPudoServices'];
     const DEFAULT_LABEL_TEMPLATE_ID = 1;
+
     /**
      * Process AJAX call
      */
@@ -64,7 +65,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $this->changeReceiverAddressBlock($receiverAddressData, $idOrder);
                 break;
             case 'updateAddressBlock':
-                $idAddressDelivery = (int)Tools::getValue('id_address_delivery');
+                $idAddressDelivery = (int) Tools::getValue('id_address_delivery');
                 $this->updateAddressBlock($order, $idAddressDelivery);
                 break;
             case 'print':
@@ -72,14 +73,14 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 if ($isAbove177) {
                     $this->returnResponse(['status' => true]);
                 }
-                $shipmentId = (int)Tools::getValue('shipment_id');
+                $shipmentId = (int) Tools::getValue('shipment_id');
                 $labelFormat = Tools::getValue('labelFormat');
                 $labelPosition = Tools::getValue('labelPosition');
                 $this->returnResponse($this->printLabel($shipmentId, $labelFormat, $labelPosition));
                 break;
             case 'print-return':
                 $response['status'] = false;
-                $shipmentId = (int)Tools::getValue('shipment_id');
+                $shipmentId = (int) Tools::getValue('shipment_id');
                 $this->printReturnLabel($shipmentId);
             case 'save':
             case 'save_and_print':
@@ -96,7 +97,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                     $product = new DPDProduct($productId);
                     $carrier = Carrier::getCarrierByReference($product->id_reference);
                 } else {
-                    $carrierId = (int)Tools::getValue('carrier_id');
+                    $carrierId = (int) Tools::getValue('carrier_id');
                     $carrier = new Carrier($carrierId);
                 }
                 /** @var PudoService $pudoService */
@@ -128,7 +129,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $this->returnResponse(
                     [
                         'status' => true,
-                        'isPudo' => (bool)$dpdProduct->is_pudo
+                        'isPudo' => (bool) $dpdProduct->is_pudo
                     ]
                 );
                 break;
@@ -225,7 +226,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 
     private function changeReceiverAddressBlock($receiverAddressData, $orderId)
     {
-        if (preg_match('#[^0-9]#',$receiverAddressData->phone)) {
+        if (preg_match('#[^0-9]#', $receiverAddressData->phone)) {
             $response['message'] = $this->module->l('Invalid phone number.');
             $this->returnResponse($response);
         }
@@ -285,16 +286,17 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 
     private function printLabel($shipmentId, $labelFormat, $labelPosition)
     {
+        /** @var LabelPrintingService $labelPrintingService */
         $labelPrintingService = $this->module->getModuleContainer('invertus.dpdbaltics.service.label.label_printing_service');
 
         return $labelPrintingService->setLabelOptions($shipmentId, $labelFormat, $labelPosition);
     }
 
-    private function  printReturnLabel($shipmentId)
+    private function printReturnLabel($shipmentId)
     {
         /** @var LabelApiService $labelApiService */
         $labelApiService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
-        $returnTemplateId = Tools::getValue('return_template_id') ? : self::DEFAULT_LABEL_TEMPLATE_ID;
+        $returnTemplateId = Tools::getValue('return_template_id') ?: self::DEFAULT_LABEL_TEMPLATE_ID;
 
         $dpdShipment = new DPDShipment($shipmentId);
         if ($dpdShipment->return_pl_number) {
@@ -320,6 +322,8 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $exceptionService->getAPIErrorMessages()
             );
             $this->context->cookie->dpd_error = json_encode($errorMessage);
+            //todo: change to show normal error and not exit message.
+            die($errorMessage);
         }
     }
 

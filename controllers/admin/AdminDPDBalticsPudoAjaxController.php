@@ -56,7 +56,7 @@ class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
         );
 
         $this->ajaxDie(
-            Tools::jsonEncode(
+            json_encode(
                 array(
                     'searchTemplate' => $searchTemplate
                 )

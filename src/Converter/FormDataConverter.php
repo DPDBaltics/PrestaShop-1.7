@@ -12,6 +12,9 @@ class FormDataConverter
     public function convertShipmentFormDataToShipmentObj($formData)
     {
         $shipmentData = new ShipmentData();
+        if (!$formData) {
+            return $shipmentData;
+        }
         foreach ($formData as $datum) {
             $setter = 'set' . ucfirst(Container::camelize($datum['name']));
             $setter = self::dashesToCamelCase($setter);

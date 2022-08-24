@@ -450,8 +450,6 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
-
-
         $carrier = new Carrier($this->id_carrier);
         if ($this->context->controller->ajax && Tools::getValue('id_address_delivery')) {
             $cart->id_address_delivery = (int)Tools::getValue('id_address_delivery');
