@@ -323,8 +323,8 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $exceptionService->getAPIErrorMessages()
             );
             $this->context->cookie->dpd_error = json_encode($errorMessage);
-            //todo: change to show normal error and not exit message.
-            die($errorMessage);
+            //todo: it should display error somehow but now it just shows error in empty page.
+            exit($errorMessage);
         }
     }
 
