@@ -31,16 +31,16 @@
   ],
   "require": {
     "php": ">=5.6",
-    "invertus/dpdbaltics-api":"dev-developer",
+    "invertus/dpdbaltics-api":"dev-new-api",
     "invertus/psmoduletabs":"dev-develop",
     "symfony/console": "^3.4",
-    "friendsofphp/php-cs-fixer": "^2.19",
     "prestashop/decimal": "^1.4"
   },
   "require-dev": {
     "phpunit/phpunit": "*",
     "facebook/webdriver": "dev-master",
     "squizlabs/php_codesniffer": "*",
-    "vlucas/phpdotenv": "^3.6"
+    "vlucas/phpdotenv": "^3.6",
+    "friendsofphp/php-cs-fixer": "^2.19"
   }
 }

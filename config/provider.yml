@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.provider.import_export_options_provider:
     class: 'Invertus\dpdBaltics\Provider\ImportExportOptionsProvider'
     arguments:

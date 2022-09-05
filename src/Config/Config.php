@@ -384,7 +384,6 @@ class Config
 
     public static function getProductByReference($productReference, $countryCode = 'EN')
     {
-
         switch ($productReference) {
             case self::PRODUCT_TYPE_B2B:
                 $product = new DPDProductInstall();

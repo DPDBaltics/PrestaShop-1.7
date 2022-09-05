@@ -118,8 +118,8 @@ class AdminDPDBalticsProductsController extends AbstractAdminController
         } catch (ProductUpdateException $e) {
             $response['status'] = false;
             $response['errors'][] = $e->getMessage();
-        };
+        }
 
-        $this->ajaxDie(Tools::jsonEncode($response));
+        $this->ajaxDie(json_encode($response));
     }
 }

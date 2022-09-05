@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.repository.carrier_repository:
     class: 'Invertus\dpdBaltics\Repository\CarrierRepository'
 

@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.service.import.settings_import:
     class: 'Invertus\dpdBaltics\Service\Import\SettingsImport'
     arguments:
