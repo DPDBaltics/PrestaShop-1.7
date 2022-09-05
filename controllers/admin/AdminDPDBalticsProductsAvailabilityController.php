@@ -239,7 +239,7 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
                     'class' => 'pull-right',
                 ],
                 [
-                    'title' => $this->l('Save & Stay'),
+                    'title' => $this->l('Save and stay'),
                     'icon' => 'process-icon-save',
                     'name' => 'processSaveAndStayProductAvailabilities',
                     'type' => 'button',

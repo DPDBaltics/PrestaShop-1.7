@@ -229,7 +229,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
             ],
             'buttons' => [
                 [
-                    'title' => $this->l('Save & Stay'),
+                    'title' => $this->l('Save and stay'),
                     'icon' => 'process-icon-save',
                     'name' => 'submitAdddpd_address_templateAndStay',
                     'type' => 'submit',
