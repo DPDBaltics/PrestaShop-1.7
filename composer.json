@@ -34,7 +34,9 @@
     "invertus/dpdbaltics-api":"dev-developer",
     "invertus/psmoduletabs":"dev-develop",
     "symfony/console": "^3.4",
-    "prestashop/decimal": "^1.4"
+    "prestashop/decimal": "^1.4",
+    "prestashop/autoindex": "1.0.0",
+    "prestashop/header-stamp": "1.7"
   },
   "require-dev": {
     "phpunit/phpunit": "*",

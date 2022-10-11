@@ -29,7 +29,7 @@
             </div>
             {if $shipment->return_pl_number}
                 <div class="alert alert-warning" role="alert">
-                    {l s='Return label has been created by customer!'}
+                    {l s='Return label has been created by customer!' mod='dpdbaltics'}
                 </div>
             {/if}
             <div class="panel-body card-body">

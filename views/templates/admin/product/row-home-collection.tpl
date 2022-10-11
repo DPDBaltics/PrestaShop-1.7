@@ -13,7 +13,7 @@
     <div class="row custom-product-row {if $isOddRow == true}odd-row{else}even-row{/if}">
         <input type="hidden" name="home-collection-product-id" value="{$idProduct}" disabled>
         <div class="col-xs-8">
-            <h4>{$productName} {l s=" Home collection"}</h4>
+            <h4>{$productName} {l s=' Home collection' mod='dpdbaltics'}</h4>
         </div>
 
         <div class="product-select-wrapper js-home-collection-select col-xs-2">

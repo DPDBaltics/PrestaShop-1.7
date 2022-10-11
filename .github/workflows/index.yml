@@ -1,0 +1,61 @@
+name: Indexing and licensing
+on: [pull_request]
+
+jobs:
+  autoindex:
+    name: Adds index files
+    runs-on: ubuntu-latest
+    steps:
+      -   name: Checkout
+          uses: actions/checkout@v2
+
+      -   name: Cache vendor folder
+          uses: actions/cache@v1
+          with:
+            path: vendor
+            key: php-${{ hashFiles('composer.lock') }}
+
+      -   name: Cache composer folder
+          uses: actions/cache@v1
+          with:
+            path: ~/.composer/cache
+            key: php-composer-cache
+
+      -   run: composer install
+
+      -   name: Run auto indexing
+          run: php vendor/bin/autoindex
+
+      -   uses: stefanzweifel/git-auto-commit-action@v4
+          with:
+            commit_message: Adding auto indexes
+
+  # Add license comments above code in every file
+  license-addition:
+    name: license addition
+    runs-on: ubuntu-latest
+    steps:
+      -   name: Checkout
+          uses: actions/checkout@v2
+
+      -   name: Cache vendor folder
+          uses: actions/cache@v1
+          with:
+            path: vendor
+            key: php-${{ hashFiles('composer.lock') }}
+
+      -   name: Cache composer folder
+          uses: actions/cache@v1
+          with:
+            path: ~/.composer/cache
+            key: php-composer-cache
+
+      -   run: composer install
+
+      - name: Adding licenses
+        run: vendor/bin/header-stamp --license=assets/afl.txt --exclude=vendor,node_modules
+
+      -   uses: stefanzweifel/git-auto-commit-action@v4
+          with:
+            commit_message: Automatic license addition applying
+
