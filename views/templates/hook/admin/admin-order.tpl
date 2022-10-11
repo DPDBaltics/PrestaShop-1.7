@@ -1,12 +1,20 @@
-{*
+{**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
  * NOTICE OF LICENSE
  *
- * @author    INVERTUS, UAB www.invertus.eu <support@invertus.eu>
- * @copyright Copyright (c) permanent, INVERTUS, UAB
- * @license   Addons PrestaShop license limitation
- * @see       /LICENSE
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
  *
- *  International Registered Trademark & Property of INVERTUS, UAB
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 
 <div class="row">
@@ -29,7 +37,7 @@
             </div>
             {if $shipment->return_pl_number}
                 <div class="alert alert-warning" role="alert">
-                    {l s='Return label has been created by customer!'}
+                    {l s='Return label has been created by customer!' mod='dpdbaltics'}
                 </div>
             {/if}
             <div class="panel-body card-body">

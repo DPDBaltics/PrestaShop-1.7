@@ -33,10 +33,6 @@ if (!defined('_PS_VERSION_')) {
  */
 function upgrade_module_1_1_2(DPDBaltics $module)
 {
-    /** @var CurrentCountryProvider $currentCountryProvider */
-    $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
-    $newCountryIsoCode = $currentCountryProvider->getCurrentCountryIsoCode();
-
     /** @var ProductRepository $productRepository */
     $productRepository = $module->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
     /** @var ProductService $productService */

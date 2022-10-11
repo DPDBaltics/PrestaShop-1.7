@@ -1,46 +1,52 @@
 {
-  "name": "invertus/dpdbaltics",
-  "type": "project",
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/Invertus/dpdbaltics-api.git"
+    "name": "invertus/dpdbaltics",
+    "type": "project",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/Invertus/dpdbaltics-api.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/Invertus/ps-module-tabs.git"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Invertus\\dpdBaltics\\": "src/"
+        },
+        "classmap": [
+            "src/Entity"
+        ]
     },
-    {
-      "type": "git",
-      "url": "https://github.com/Invertus/ps-module-tabs.git"
-    }
-  ],
-  "autoload": {
-    "psr-4": {
-      "Invertus\\dpdBaltics\\": "src/"
+    "config": {
+        "platform": {
+            "php": "5.6"
+        },
+        "prepend-autoloader": false
     },
-    "classmap":  ["src/Entity"]
-  },
-  "config": {
-    "platform": {
-      "php": "5.6"
+    "authors": [
+        {
+            "name": "Invertus",
+            "email": "developers@invertus.eu"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "invertus/dpdbaltics-api": "dev-developer",
+        "invertus/psmoduletabs": "dev-develop",
+        "symfony/console": "^3.4",
+        "prestashop/decimal": "^1.4",
+        "prestashop/autoindex": "1.0.0",
+        "prestashop/header-stamp": "1.7"
     },
-    "prepend-autoloader": false
-  },
-  "authors": [
-    {
-      "name": "Invertus",
-      "email": "developers@invertus.eu"
-    }
-  ],
-  "require": {
-    "php": ">=5.6",
-    "invertus/dpdbaltics-api":"dev-developer",
-    "invertus/psmoduletabs":"dev-develop",
-    "symfony/console": "^3.4",
-    "prestashop/decimal": "^1.4"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "*",
-    "facebook/webdriver": "dev-master",
-    "squizlabs/php_codesniffer": "*",
-    "vlucas/phpdotenv": "^3.6",
-    "friendsofphp/php-cs-fixer": "^2.19"
-  }
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "facebook/webdriver": "dev-master",
+        "squizlabs/php_codesniffer": "*",
+        "vlucas/phpdotenv": "^3.6",
+        "friendsofphp/php-cs-fixer": "^2.19"
+    },
+    "author": "PrestaShop",
+    "license": "AFL-3.0"
 }
