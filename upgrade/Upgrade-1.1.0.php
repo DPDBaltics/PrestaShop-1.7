@@ -135,7 +135,6 @@ function upgrade_module_1_1_0(DPDBaltics $module)
     try {
         $result = $carrierCreateService->createCarriers($collection);
     } catch (Exception $e) {
-
         $result = false;
     }
 
