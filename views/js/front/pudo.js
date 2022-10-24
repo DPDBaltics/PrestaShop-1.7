@@ -107,6 +107,12 @@ $(document).ready(function () {
                 return;
             }
 
+            //Js to open extra content failed from theme, doing it manually.
+	        if (!$(params.deliveryOption).next('.carrier-extra-content').is(':visible')) {
+                $('.carrier-extra-content').hide();
+                $(params.deliveryOption).next('.carrier-extra-content').slideDown();
+	        }
+
             var deliveryOption = params.deliveryOption;
             var $idCarrier = parseInt(deliveryOption.find('input[name^="delivery_option"]').val());
             var $pudoContainer = $('[data-pudo-id-carrier="' + $idCarrier + '"]');
