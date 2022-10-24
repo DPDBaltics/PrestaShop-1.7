@@ -42,7 +42,7 @@ $(document).ready(function () {
         $(this).closest(".dpd-input-wrapper").find("input").focus();
     });
 
-    $(document).on('change', 'input[name^="delivery_option"]', function(){
+    $(document).on('change', 'input[name^="delivery_option"]', function () {
         searchPudoServicesEvent($('select[name="dpd-city"]'));
         var savedPudoId = $('input[name="saved_pudo_id"]').val();
 
@@ -51,7 +51,7 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('change', 'input[name="dpd-phone"]', function(){
+    $(document).on('change', 'input[name="dpd-phone"]', function () {
         var value = $(this).val();
         var name = $(this).attr('name');
 
@@ -64,24 +64,24 @@ $(document).ready(function () {
         phoneInput.val($(this).val());
     });
 
-    $(document).on('change', 'select[name="dpd-city"]', function(){
+    $(document).on('change', 'select[name="dpd-city"]', function () {
         phoneInput = $('select[name="dpd-city"]');
         phoneInput.val($(this).val());
         $('select').trigger("chosen:updated");
     });
 
-    $(document).on('change', 'select[name="dpd-street"]', function(){
+    $(document).on('change', 'select[name="dpd-street"]', function () {
         phoneInput = $('select[name="dpd-street"]');
         phoneInput.val($(this).val());
         $('select').trigger("chosen:updated");
     });
 
-    $(document).on('keyup', 'input[name="dpd-street"]', function(){
+    $(document).on('keyup', 'input[name="dpd-street"]', function () {
         phoneInput = $('input[name="dpd-street"]');
         phoneInput.val($(this).val());
     });
 
-    $(document).on('change', 'select[name="dpd-delivery-time"]', function(){
+    $(document).on('change', 'select[name="dpd-delivery-time"]', function () {
         phoneInput = $('select[name="dpd-delivery-time"]');
         phoneInput.val($(this).val());
     });
@@ -105,6 +105,12 @@ $(document).ready(function () {
         prestashop.on('updatedDeliveryForm', function (params) {
             if (typeof params.deliveryOption === 'undefined') {
                 return;
+            }
+
+            //Js to open extra content failed from theme, doing it manually.
+            if (!$(params.deliveryOption).next('.carrier-extra-content').is(':visible')) {
+                $('.carrier-extra-content').hide();
+                $(params.deliveryOption).next('.carrier-extra-content').slideDown();
             }
 
             var deliveryOption = params.deliveryOption;
@@ -370,8 +376,7 @@ $(document).ready(function () {
  * @returns {{map: google.maps.Map, infoWindow: google.maps.InfoWindow}}
  * @constructor
  */
-function initMap(coordinates, loadMarkers, selectedPudoId, firstLoad, referenceId)
-{
+function initMap(coordinates, loadMarkers, selectedPudoId, firstLoad, referenceId) {
     var carriers = JSON.parse(pudoCarriers);
 
     if (typeof carriers === 'undefined') {
@@ -400,7 +405,7 @@ function initMap(coordinates, loadMarkers, selectedPudoId, firstLoad, referenceI
         );
 
         if (!coordinates) {
-            coordinates = DPDgetDefaultCoordinates($('.pickup-map-'+ idReference));
+            coordinates = DPDgetDefaultCoordinates($('.pickup-map-' + idReference));
         }
 
         dpdMap[idReference].setCenter(new google.maps.LatLng(parseFloat(coordinates.lat), parseFloat(coordinates.lng)));
