@@ -48,11 +48,11 @@ DPDZoneRangesData.prototype.addZoneRange = function (zoneRange)
  * @param {integer|string} zoneRangeId
  * @param {object} valueObject Object containing updated values
  */
-DPDZoneRangesData.prototype.updateZoneRange = function (zoneRangeId, valueObject) {
+DPDZoneRangesData.prototype.updateZoneRangeupdateZoneRange = function (zoneRangeId, valueObject) {
     var self = this;
 
     this.zoneRanges.forEach(function (zoneRange, i) {
-        if (zoneRange.id === zoneRangeId) {
+        if (zoneRange.id === parseInt(zoneRangeId)) {
             for (var property in valueObject) {
                 if (zoneRange.hasOwnProperty(property)) {
                     self.zoneRanges[i][property] = valueObject[property];
