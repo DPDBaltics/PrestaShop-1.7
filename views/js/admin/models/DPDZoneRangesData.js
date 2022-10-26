@@ -52,7 +52,7 @@ DPDZoneRangesData.prototype.updateZoneRange = function (zoneRangeId, valueObject
     var self = this;
 
     this.zoneRanges.forEach(function (zoneRange, i) {
-        if (zoneRange.id === zoneRangeId) {
+        if (zoneRange.id === parseInt(zoneRangeId)) {
             for (var property in valueObject) {
                 if (zoneRange.hasOwnProperty(property)) {
                     self.zoneRanges[i][property] = valueObject[property];
