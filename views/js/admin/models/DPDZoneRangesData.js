@@ -71,7 +71,7 @@ DPDZoneRangesData.prototype.removeZoneRange = function (zoneRangeId) {
     var self = this;
 
     this.zoneRanges.forEach(function (zoneRange, i) {
-        if (zoneRange.id === zoneRangeId) {
+        if (zoneRange.id === parseInt(zoneRangeId)) {
             self.zoneRanges.splice(i, 1);
         }
     });
