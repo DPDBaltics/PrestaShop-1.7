@@ -234,7 +234,7 @@ class DPDBaltics extends CarrierModule
         $carrierIds = [];
         $baseUrl = $this->context->shop->getBaseURL(true, false);
 
-        //if ($webServiceCountryCode === Config::LATVIA_ISO_CODE || $currentController === 'supercheckout') {
+        if ($webServiceCountryCode === Config::LATVIA_ISO_CODE || $currentController === 'supercheckout') {
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
 
@@ -246,7 +246,7 @@ class DPDBaltics extends CarrierModule
                     $carrierIds[] = $carrier->id;
                 }
             }
-        //}
+        }
 
         Media::addJsDef([
             'lapinas_img' => $baseUrl . $this->getPathUri() . 'views/img/lapinas.png',
