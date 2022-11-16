@@ -17,8 +17,15 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 $(document).ready(function () {
-    let dpdCarriers = $('.custom-radio.float-xs-left > input');
-    let dpdCarriersTextBox = $('.carrier');
+    var dpdCarriers = $('.custom-radio.float-xs-left > input');
+    var dpdCarriersTextBox;
+
+    if ($('.carrier').length) {
+        dpdCarriersTextBox = $('.carrier');
+    } else {
+        //NOTE: seems like in 2019 Nov 22 carrier class was added, prior to that there were just rows in the classic theme.
+        dpdCarriersTextBox = $('.delivery-option').find('.col-sm-5.col-xs-12').find('.row');
+    }
 
     dpdCarriers.each(function (index, input) {
         let carrierId = parseInt($(input).attr('value'));

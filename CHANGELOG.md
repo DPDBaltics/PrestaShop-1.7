@@ -122,3 +122,5 @@
  - Automated parcel return settings added to Shipment settings
  - On Automated parcel setting return Shipment and Return labels are printed together
 
+## [3.2.11]
+- Sustainable logo added to DPD carrier text for older versions of theme
