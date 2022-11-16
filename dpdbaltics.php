@@ -116,7 +116,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.9';
+        $this->version = '3.2.11';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -234,7 +234,7 @@ class DPDBaltics extends CarrierModule
         $carrierIds = [];
         $baseUrl = $this->context->shop->getBaseURL(true, false);
 
-        if ($webServiceCountryCode === Config::LATVIA_ISO_CODE || $currentController === 'supercheckout') {
+        //if ($webServiceCountryCode === Config::LATVIA_ISO_CODE || $currentController === 'supercheckout') {
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
 
@@ -246,7 +246,7 @@ class DPDBaltics extends CarrierModule
                     $carrierIds[] = $carrier->id;
                 }
             }
-        }
+        //}
 
         Media::addJsDef([
             'lapinas_img' => $baseUrl . $this->getPathUri() . 'views/img/lapinas.png',
