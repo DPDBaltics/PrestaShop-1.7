@@ -124,3 +124,6 @@
 
 ## [3.2.11]
 - Sustainable logo added to DPD carrier text for older versions of theme
+
+## [3.2.12]
+- Print return label on initial order creation in bulk action and save&print bug fix
