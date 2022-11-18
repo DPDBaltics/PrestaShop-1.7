@@ -116,7 +116,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.11';
+        $this->version = '3.2.12';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -1162,6 +1162,10 @@ class DPDBaltics extends CarrierModule
             $shipment = new DPDShipment($shipmentId);
             $plNumbers[] = $shipment->pl_number;
             if ($isAutomated) {
+                if(!$shipment->return_pl_number) {
+                    $shipmentService = $this->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
+                    $shipment = $shipmentService->createReturnServiceShipment(Config::RETURN_TEMPLATE_DEFAULT_ID, $shipment->id_order);
+                }
                 $plNumbers[] = $shipment->return_pl_number;
             }
         }
