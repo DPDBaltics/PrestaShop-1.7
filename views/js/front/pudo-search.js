@@ -228,7 +228,7 @@ function inArray(needle, haystack) {
 
 function togglePhoneRequiredField(defaultCarrier) {
     let deliveryMethod = $('.custom-radio > input');
-    let currentCarrier = defaultCarrier.props('defaultValue');
+    let currentCarrier = defaultCarrier.val();
     let dpdPhoneInputs = $('input[name="dpd-phone"]');
 
     deliveryMethod.on('change', function(event) {
