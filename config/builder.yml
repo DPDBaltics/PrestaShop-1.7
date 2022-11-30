@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    public: true
+
   invertus.dpdbaltics.builder.template.admin.info_block_builder:
     class: 'Invertus\dpdBaltics\Builder\Template\Admin\InfoBlockBuilder'
     arguments:

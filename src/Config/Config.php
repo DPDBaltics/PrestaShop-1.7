@@ -1,4 +1,23 @@
 <?php
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+
 
 namespace Invertus\dpdBaltics\Config;
 
@@ -111,6 +130,7 @@ class Config
     const PICKUP_MAP = 'DPD_PICKUP_MAP';
     const DOCUMENT_RETURN = 'DPD_DOCUMENT_RETURN';
     const PARCEL_SHOP_DISPLAY = 'PARCEL_SHOP_DISPLAY';
+    const AUTOMATED_PARCEL_RETURN = 'AUTOMATED_PARCEL_RETURN';
     const GOOGLE_API_KEY = 'DPD_GOOGLE_API_KEY';
     const SHIPMENTS_LIST_CONFIGURATION = 'DPD_SHIPMENTS_LIST_CONFIGURATION';
     const SHIPMENTS_RETURN_LIST_CONFIGURATION = 'DPD_SHIPMENTS_RETURN_LIST_CONFIGURATION';
@@ -125,6 +145,7 @@ class Config
     const API_COLLECTION_REQUEST_ERROR_STATUS = '402 Error:';
     const API_COURIER_REQUEST_ERROR_STATUS = '402 Error:';
     const API_RESPONSE_ERROR_STATUS = 'err';
+    const RETURN_TEMPLATE_DEFAULT_ID = 1;
 
     const DEFAULT_LABEL_TYPE = 'pdf';
 
@@ -286,6 +307,7 @@ class Config
 
     const ERROR_COULD_NOT_SAVE_PHONE_NUMBER = 501;
     const ERROR_BAD_PHONE_NUMBER_PREFIX = 502;
+    const ERROR_EMPTY_PHONE_DETAILS = 509;
     const ERROR_PHONE_EMPTY = 505;
     const ERROR_PHONE_HAS_INVALID_CHARACTERS = 506;
     const ERROR_PHONE_HAS_INVALID_LENGTH = 507;
@@ -381,7 +403,6 @@ class Config
 
     public static function getProductByReference($productReference, $countryCode = 'EN')
     {
-
         switch ($productReference) {
             case self::PRODUCT_TYPE_B2B:
                 $product = new DPDProductInstall();

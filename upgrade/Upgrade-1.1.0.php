@@ -120,7 +120,7 @@ function upgrade_module_1_1_0(DPDBaltics $module)
     $carrierCreateService = $module->getModuleContainer()->get('invertus.dpdbaltics.service.carrier.create_carrier_service');
     $productService = $module->getModuleContainer()->get('invertus.dpdbaltics.service.product.product_service');
     /** @var CurrentCountryProvider $currentCountryProvider */
-    $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+    $currentCountryProvider = $module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
     $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
 
     $productService->updateCarriersOnCountryChange($countryCode);
@@ -135,7 +135,6 @@ function upgrade_module_1_1_0(DPDBaltics $module)
     try {
         $result = $carrierCreateService->createCarriers($collection);
     } catch (Exception $e) {
-
         $result = false;
     }
 

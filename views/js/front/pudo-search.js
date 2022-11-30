@@ -1,3 +1,21 @@
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
 $(document).ready(function () {
     if ($('input[name="saved_pudo_id"]').val() === undefined) {
         updateStreet();
@@ -34,8 +52,13 @@ function updateStreet() {
 }
 
 $( document ).ajaxComplete(function( event, request, settings ) {
-    let defaultCarrier =  $('.custom-radio > input:checked');
-    togglePhoneRequiredField(defaultCarrier)
+
+    var opcControllers = ['order-opc', 'supercheckout'];
+    if (!inArray(currentController, opcControllers)) {
+        let defaultCarrier =  $('.custom-radio > input:checked');
+        togglePhoneRequiredField(defaultCarrier)
+    }
+
     var applicableControllers = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
     if (!inArray(currentController, applicableControllers)) {
         return;
@@ -147,7 +170,7 @@ function updateParcelBlock(city, street) {
             }
             if (response.status) {
                 DPDchangePickupPoints($parent, response.template)
-                reselectDataPopover()
+                reselectDataPopover();
             }
         },
         error: function (response) {
@@ -162,12 +185,19 @@ function updateParcelBlock(city, street) {
 
 function DPDdisplayMessage(parent, template) {
     var $messageContainer = parent.find('.dpd-message-container');
-    $messageContainer.replaceWith(template);
+    if (currentController === 'supercheckout') {
+        $messageContainer =  parent.find('.supercheckwout-empty-page-content');
+    }
+
+    $messageContainer.html(template);
     parent.find('[id^="dpd-pudo-map"] div').removeClass('dpd-hidden');
 }
 
 function DPDremoveMessage(parent) {
     var $messageContainer = parent.find('.dpd-message-container');
+    if (currentController === 'supercheckout') {
+        $messageContainer = parent.find('.supercheckwout-empty-page-content');
+    }
     $messageContainer.html('');
 }
 
@@ -198,7 +228,7 @@ function inArray(needle, haystack) {
 
 function togglePhoneRequiredField(defaultCarrier) {
     let deliveryMethod = $('.custom-radio > input');
-    let currentCarrier = defaultCarrier.props('defaultValue');
+    let currentCarrier = defaultCarrier.val();
     let dpdPhoneInputs = $('input[name="dpd-phone"]');
 
     deliveryMethod.on('change', function(event) {

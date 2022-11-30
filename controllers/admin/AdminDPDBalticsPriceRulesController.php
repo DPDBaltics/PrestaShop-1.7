@@ -608,7 +608,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                 ],
                 'buttons' => [
                     [
-                        'title' => $this->l('Save & Stay'),
+                        'title' => $this->l('Save and stay'),
                         'icon' => 'process-icon-save',
                         'name' => 'submitAdddpd_price_ruleAndStay',
                         'class' => 'pull-right',
@@ -653,7 +653,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                 ],
                 'buttons' => [
                     [
-                        'title' => $this->l('Save & Stay'),
+                        'title' => $this->l('Save and stay'),
                         'icon' => 'process-icon-save',
                         'name' => 'submitAdddpd_price_ruleAndStay',
                         'class' => 'pull-right',

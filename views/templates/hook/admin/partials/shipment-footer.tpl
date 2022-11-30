@@ -1,3 +1,21 @@
+{**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ *}
 
 <!-- Shipment footer -->
 <div class="panel-footer card-footer dpd-shipment-footer">
@@ -20,19 +38,29 @@
         <i class="process-icon-save"></i>
         {l s='Save' mod='dpdbaltics'}
     </button>
-    <a href="#"
-       class="btn btn-default btn-secondary float-right pull-right js-print-label-btn"
-       style="display: none"
-       data-action="print"
-       data-shipment-id={$shipment->id}
-    >
-        <i class="process-icon-save"></i>
-        {if 'download' == $printLabelOption}
-            {l s='Download label' mod='dpdbaltics'}
-        {else}
-            {l s='Print label' mod='dpdbaltics'}
+    <div class="d-flex flex-row float-right">
+        <a href="#"
+           class="btn btn-default btn-secondary  pull-right js-print-label-btn mr-1"
+           style="display: none"
+           data-action="print"
+           data-shipment-id={$shipment->id}
+        >
+            <i class="process-icon-save"></i>
+            {if 'download' == $printLabelOption}
+                {l s='Download label' mod='dpdbaltics'}
+            {else}
+                {l s='Print label' mod='dpdbaltics'}
+            {/if}
+        </a>
+        {if !$isAutomated}
+        <a href="{$adminLabelLink}&shipment_id={$shipment->id}"
+           class="btn btn-default btn-secondary pull-right"
+        >
+            <i class="process-icon-save"></i>
+            {l s='Download return label' mod='dpdbaltics'}
+        </a>
         {/if}
-    </a>
+    </div>
 
     <div class="dpd-print-format-block">
         <div class="pull-right dpd-print-format-input form-group row">

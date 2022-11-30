@@ -358,7 +358,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
                     'class' => 'pull-right',
                 ],
                 [
-                    'title' => $this->l('Save & Stay'),
+                    'title' => $this->l('Save and stay'),
                     'icon' => 'process-icon-save',
                     'name' => 'processSaveAndStayZoneRanges',
                     'type' => 'button',

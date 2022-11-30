@@ -1,4 +1,23 @@
 <?php
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+
 
 use Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker;
 use Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder;
@@ -96,7 +115,8 @@ class DPDBaltics extends CarrierModule
         $this->displayName = $this->l('DPDBaltics');
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
-        $this->version = '3.2.9';
+        $this->description = 'DPD Baltics shipping integration';
+        $this->version = '3.2.12';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -214,7 +234,7 @@ class DPDBaltics extends CarrierModule
         $carrierIds = [];
         $baseUrl = $this->context->shop->getBaseURL(true, false);
 
-        if ($webServiceCountryCode === Config::LATVIA_ISO_CODE) {
+        if ($webServiceCountryCode === Config::LATVIA_ISO_CODE || $currentController === 'supercheckout') {
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
 
@@ -235,9 +255,9 @@ class DPDBaltics extends CarrierModule
         ]);
         if (in_array($currentController, $applicableControlelrs, true)) {
             Media::addJsDef([
-               'select_an_option_translatable' => $this->l('Select an Option'),
-               'select_an_option_multiple_translatable' => $this->l('Select Some Options'),
-               'no_results_translatable' => $this->l('No results match'),
+                'select_an_option_translatable' => $this->l('Select an Option'),
+                'select_an_option_multiple_translatable' => $this->l('Select Some Options'),
+                'no_results_translatable' => $this->l('No results match'),
             ]);
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order.js');
             $this->context->controller->addJS($this->getPathUri() . 'views/js/front/order-input.js');
@@ -254,7 +274,7 @@ class DPDBaltics extends CarrierModule
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
             Media::addJsDef([
-                'pudoCarriers' => Tools::jsonEncode($productRepo->getPudoProducts()),
+                'pudoCarriers' => json_encode($productRepo->getPudoProducts()),
                 'currentController' => $currentController,
                 'is_pickup_map'  => $isPickupMap,
                 'id_language' => $this->context->language->id,
@@ -264,6 +284,7 @@ class DPDBaltics extends CarrierModule
                 'dpdLockerMarkerPath' => $this->getPathUri() . 'views/img/locker.png',
                 'dpdHookAjaxUrl' => $this->context->link->getModuleLink($this->name, 'Ajax'),
                 'pudoSelectSuccess' => $this->l('Pick-up point selected'),
+                'dpd_carrier_ids' => $carrierIds
             ]);
 
             $this->context->controller->registerStylesheet(
@@ -448,8 +469,6 @@ class DPDBaltics extends CarrierModule
         if (!$this->active) {
             return false;
         }
-
-
 
         $carrier = new Carrier($this->id_carrier);
         if ($this->context->controller->ajax && Tools::getValue('id_address_delivery')) {
@@ -671,6 +690,7 @@ class DPDBaltics extends CarrierModule
             $streetList = $parcelShopRepo->getAllAddressesByCountryCodeAndCity($countryCode, $selectedCity);
             $this->context->smarty->assign(
                 [
+                    'currentController' => Tools::getValue('controller'),
                     'carrierId' => $carrier->id,
                     'pickUpMap' => Configuration::get(Config::PICKUP_MAP),
                     'pudoId' => $pudoId,
@@ -721,13 +741,13 @@ class DPDBaltics extends CarrierModule
 
         if (Config::isPrestashopVersionBelow174()) {
             /** @var  $tabs TabService*/
-           $tabs = $this->getModuleContainer()->get('invertus.dpdbaltics.service.tab_service');
-           $visibleClasses = $tabs->getTabsClassNames(false);
+            $tabs = $this->getModuleContainer()->get('invertus.dpdbaltics.service.tab_service');
+            $visibleClasses = $tabs->getTabsClassNames(false);
 
-           if (in_array($currentController, $visibleClasses, true)) {
-               Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames(true)]);
-               $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
-           }
+            if (in_array($currentController, $visibleClasses, true)) {
+                Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames(true)]);
+                $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
+            }
         }
 
         if ('AdminOrders' === $currentController) {
@@ -804,13 +824,13 @@ class DPDBaltics extends CarrierModule
         }
         if ('AdminOrders' === $currentController &&
             (Tools::isSubmit('addorder') || Tools::getValue('action') === 'addorder')
-            ) {
+        ) {
             /** @var ProductRepository $productRepo */
             $productRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
 
             Media::addJsDef([
                 'dpdFrontController' => false,
-                'pudoCarriers' => Tools::jsonEncode($productRepo->getPudoProducts()),
+                'pudoCarriers' => json_encode($productRepo->getPudoProducts()),
                 'currentController' => $currentController,
                 'dpdAjaxShipmentsUrl' =>
                     $this->context->link->getAdminLink(self::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
@@ -992,6 +1012,15 @@ class DPDBaltics extends CarrierModule
             }
         }
 
+        $href = $this->context->link->getModuleLink(
+            $this->name,
+            'ShipmentReturn',
+            [
+                'id_order' => $order->id,
+                'dpd-return-submit' => ''
+            ]
+        );
+
         $tplVars = [
             'dpdLogoUrl' => $this->getPathUri() . 'views/img/DPDLogo.gif',
             'shipment' => $shipment,
@@ -1016,6 +1045,14 @@ class DPDBaltics extends CarrierModule
             'has_parcel_shops' => $hasParcelShops,
             'receiverAddressCountries' => Country::getCountries($this->context->language->id, true),
             'documentReturnEnabled' => Configuration::get(Config::DOCUMENT_RETURN),
+            'href' => $href,
+            'adminLabelLink' => $this->context->link->getAdminLink(
+                'AdminDPDBalticsAjaxShipments',
+                true,
+                [],
+                ['action' => 'print-return']
+            ),
+            'isAutomated' => Configuration::get(Config::AUTOMATED_PARCEL_RETURN),
         ];
 
         $this->context->smarty->assign($tplVars);
@@ -1084,10 +1121,18 @@ class DPDBaltics extends CarrierModule
         $shipment = new DPDShipment($idShipment);
         $format = $shipment->label_format;
         $position = $shipment->label_position;
-
+        $isAutomated = Configuration::get(Config::AUTOMATED_PARCEL_RETURN);
         try {
             /** @var ParcelPrintResponse $parcelPrintResponse */
-            $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
+            if ($isAutomated) {
+                if (!$shipment->return_pl_number) {
+                    $shipmentService = $this->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
+                    $shipment = $shipmentService->createReturnServiceShipment(Config::RETURN_TEMPLATE_DEFAULT_ID, $shipment->id_order);
+                }
+                $parcelPrintResponse = $this->printConcatedLabels($shipment, $format, $position);
+            } else {
+                $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
+            }
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
@@ -1111,10 +1156,18 @@ class DPDBaltics extends CarrierModule
 
     public function printMultipleLabels($shipmentIds)
     {
+        $isAutomated = Configuration::get(Config::AUTOMATED_PARCEL_RETURN);
         $plNumbers = [];
         foreach ($shipmentIds as $shipmentId) {
             $shipment = new DPDShipment($shipmentId);
             $plNumbers[] = $shipment->pl_number;
+            if ($isAutomated) {
+                if(!$shipment->return_pl_number) {
+                    $shipmentService = $this->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
+                    $shipment = $shipmentService->createReturnServiceShipment(Config::RETURN_TEMPLATE_DEFAULT_ID, $shipment->id_order);
+                }
+                $plNumbers[] = $shipment->return_pl_number;
+            }
         }
 
         /** @var LabelApiService $labelApiService */
@@ -1311,10 +1364,10 @@ class DPDBaltics extends CarrierModule
         $definition->getBulkActions()
             ->add(
                 (new SubmitBulkActionCustom('print_multiple_labels'))
-                ->setName($this->l('Print multiple labels'))
-                ->setOptions([
-                    'submit_route' => 'dpdbaltics_save_and_download_printed_labels_order_list_multiple',
-                ])
+                    ->setName($this->l('Print multiple labels'))
+                    ->setOptions([
+                        'submit_route' => 'dpdbaltics_save_and_download_printed_labels_order_list_multiple',
+                    ])
             )
         ;
     }
@@ -1370,5 +1423,14 @@ class DPDBaltics extends CarrierModule
             $this->printMultipleLabels($shipmentIds);
             exit;
         }
+    }
+
+    private function printConcatedLabels ($shipment, $format, $position) {
+
+        $plNumbers = [$shipment->pl_number, $shipment->return_pl_number];
+        /** @var LabelApiService $labelApiService */
+        $labelApiService = $this->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
+        return $labelApiService->printLabel(implode('|', $plNumbers), $format, $position, false);
+
     }
 }

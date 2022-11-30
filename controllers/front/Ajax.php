@@ -121,6 +121,8 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
                         [
                             'status' => false,
                             'template' => $this->getMessageTemplate('danger'),
+                            'pudo_valid' => $pudoValidator,
+                            'phone_valid' => $phoneNumberValidator
                         ]
                     ));
                 }
@@ -286,7 +288,8 @@ class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
         $this->context->smarty->assign([
             'messageType' => $type,
             'messages' => $this->messages,
-            'displayMessage' => true
+            'displayMessage' => true,
+            'is_super_checkout' => Tools::getIsset('super_checkout_controller')
         ]);
 
         return $this->context->smarty->fetch(

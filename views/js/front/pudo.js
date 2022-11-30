@@ -1,12 +1,20 @@
-/*
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
  * NOTICE OF LICENSE
  *
- * @author    INVERTUS, UAB www.invertus.eu <support@invertus.eu>
- * @copyright Copyright (c) permanent, INVERTUS, UAB
- * @license   Addons PrestaShop license limitation
- * @see       /LICENSE
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
  *
- *  International Registered Trademark & Property of INVERTUS, UAB
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
 /**
@@ -34,7 +42,7 @@ $(document).ready(function () {
         $(this).closest(".dpd-input-wrapper").find("input").focus();
     });
 
-    $(document).on('change', 'input[name^="delivery_option"]', function(){
+    $(document).on('change', 'input[name^="delivery_option"]', function () {
         searchPudoServicesEvent($('select[name="dpd-city"]'));
         var savedPudoId = $('input[name="saved_pudo_id"]').val();
 
@@ -43,7 +51,7 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('change', 'input[name="dpd-phone"]', function(){
+    $(document).on('change', 'input[name="dpd-phone"]', function () {
         var value = $(this).val();
         var name = $(this).attr('name');
 
@@ -56,24 +64,24 @@ $(document).ready(function () {
         phoneInput.val($(this).val());
     });
 
-    $(document).on('change', 'select[name="dpd-city"]', function(){
+    $(document).on('change', 'select[name="dpd-city"]', function () {
         phoneInput = $('select[name="dpd-city"]');
         phoneInput.val($(this).val());
         $('select').trigger("chosen:updated");
     });
 
-    $(document).on('change', 'select[name="dpd-street"]', function(){
+    $(document).on('change', 'select[name="dpd-street"]', function () {
         phoneInput = $('select[name="dpd-street"]');
         phoneInput.val($(this).val());
         $('select').trigger("chosen:updated");
     });
 
-    $(document).on('keyup', 'input[name="dpd-street"]', function(){
+    $(document).on('keyup', 'input[name="dpd-street"]', function () {
         phoneInput = $('input[name="dpd-street"]');
         phoneInput.val($(this).val());
     });
 
-    $(document).on('change', 'select[name="dpd-delivery-time"]', function(){
+    $(document).on('change', 'select[name="dpd-delivery-time"]', function () {
         phoneInput = $('select[name="dpd-delivery-time"]');
         phoneInput.val($(this).val());
     });
@@ -97,6 +105,12 @@ $(document).ready(function () {
         prestashop.on('updatedDeliveryForm', function (params) {
             if (typeof params.deliveryOption === 'undefined') {
                 return;
+            }
+
+            //Js to open extra content failed from theme, doing it manually.
+            if (!$(params.deliveryOption).next('.carrier-extra-content').is(':visible')) {
+                $('.carrier-extra-content').hide();
+                $(params.deliveryOption).next('.carrier-extra-content').slideDown();
             }
 
             var deliveryOption = params.deliveryOption;
@@ -362,8 +376,7 @@ $(document).ready(function () {
  * @returns {{map: google.maps.Map, infoWindow: google.maps.InfoWindow}}
  * @constructor
  */
-function initMap(coordinates, loadMarkers, selectedPudoId, firstLoad, referenceId)
-{
+function initMap(coordinates, loadMarkers, selectedPudoId, firstLoad, referenceId) {
     var carriers = JSON.parse(pudoCarriers);
 
     if (typeof carriers === 'undefined') {
@@ -392,7 +405,7 @@ function initMap(coordinates, loadMarkers, selectedPudoId, firstLoad, referenceI
         );
 
         if (!coordinates) {
-            coordinates = DPDgetDefaultCoordinates($('.pickup-map-'+ idReference));
+            coordinates = DPDgetDefaultCoordinates($('.pickup-map-' + idReference));
         }
 
         dpdMap[idReference].setCenter(new google.maps.LatLng(parseFloat(coordinates.lat), parseFloat(coordinates.lng)));

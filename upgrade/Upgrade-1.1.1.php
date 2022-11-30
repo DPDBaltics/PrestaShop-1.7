@@ -51,7 +51,7 @@ function upgrade_module_1_1_1(DPDBaltics $module)
     };
 
     /** @var CurrentCountryProvider $currentCountryProvider */
-    $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+    $currentCountryProvider = $module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
     $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
 
     Configuration::updateValue(Config::DPD_PARCEL_IMPORT_COUNTRY_SELECTOR, Country::getByIso($countryCode));
