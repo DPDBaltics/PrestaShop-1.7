@@ -23,6 +23,7 @@ namespace Invertus\dpdBaltics\Service;
 
 use Carrier;
 use Cart;
+use Context;
 use DPDBaltics;
 use DPDPriceRule;
 use Invertus\dpdBaltics\Repository\CarrierRepository;
@@ -394,7 +395,6 @@ class PriceRuleService
                 return false;
             }
             $priceRule = new DPDPriceRule($priceRuleId, null, $shopId);
-
             // Check if price rule is applicable for this cart
             if ($priceRule->isApplicableForCart($cart)) {
                 // If it's applicable - use price rule's price and don't check other price rules

@@ -69,6 +69,12 @@ services:
       - '@language'
       - '@shop'
 
+  invertus.dpdbaltics.service.shipping_price_calculation_service:
+    class: 'Invertus\dpdBaltics\Service\ShippingPriceCalculationService'
+    arguments:
+      - '@invertus.dpdbaltics.service.price_rule_service'
+      - '@invertus.dpdbaltics.repository.price_rule_repository'
+
   invertus.dpdbaltics.service.tab_service:
     class: 'Invertus\dpdBaltics\Service\TabService'
     arguments:
