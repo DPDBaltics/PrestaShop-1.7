@@ -394,7 +394,6 @@ class PriceRuleService
                 return false;
             }
             $priceRule = new DPDPriceRule($priceRuleId, null, $shopId);
-            $priceRule->price += $this->getAdditionalShippingCosts($cart);
             // Check if price rule is applicable for this cart
             if ($priceRule->isApplicableForCart($cart)) {
                 // If it's applicable - use price rule's price and don't check other price rules
@@ -425,24 +424,5 @@ class PriceRuleService
         }
 
         return true;
-    }
-
-    /**
-     * @param Cart $cart
-     *
-     * @return float|null
-     */
-    private function getAdditionalShippingCosts(Cart $cart)
-    {
-        $products = $cart->getProducts();
-        $additionalShippingCosts = 0;
-
-        foreach ($products as $product) {
-            if($product['additional_shipping_cost']) {
-                $additionalShippingCosts += $product['additional_shipping_cost'];
-            }
-        }
-
-        return $additionalShippingCosts;
     }
 }

@@ -51,6 +51,7 @@ use Invertus\dpdBaltics\Service\Payment\PaymentService;
 use Invertus\dpdBaltics\Service\PriceRuleService;
 use Invertus\dpdBaltics\Service\PudoService;
 use Invertus\dpdBaltics\Service\ShipmentService;
+use Invertus\dpdBaltics\Service\ShippingPriceCalculationService;
 use Invertus\dpdBaltics\Service\TabService;
 use Invertus\dpdBaltics\Service\TrackingService;
 use Invertus\dpdBaltics\Util\CountryUtility;
@@ -549,8 +550,9 @@ class DPDBaltics extends CarrierModule
             );
         /** @var PriceRuleService $priceRuleService */
         $priceRuleService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.price_rule_service');
-
-        return $priceRuleService->applyPriceRuleForCarrier($cart, $priceRulesIds, $this->context->shop->id);
+        $shippingPriceCalculationService = new ShippingPriceCalculationService();
+        $shippingCosts = $priceRuleService->applyPriceRuleForCarrier($cart, $priceRulesIds, $this->context->shop->id);
+        return $shippingPriceCalculationService->calculateShippingCosts($cart, $shippingCosts);
     }
 
     public function hookDisplayCarrierExtraContent($params)
