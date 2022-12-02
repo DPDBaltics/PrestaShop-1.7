@@ -21,7 +21,6 @@
 
 namespace Invertus\dpdBaltics\Service;
 
-use Address;
 use Carrier;
 use Cart;
 use DPDBaltics;
@@ -36,7 +35,6 @@ use Language;
 use Module;
 use Shop;
 use Smarty;
-use TaxManagerFactory;
 use Tools;
 use Validate;
 
