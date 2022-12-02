@@ -23,6 +23,7 @@ namespace Invertus\dpdBaltics\Service;
 
 use Carrier;
 use Cart;
+use Context;
 use DPDBaltics;
 use DPDPriceRule;
 use Invertus\dpdBaltics\Repository\CarrierRepository;
@@ -424,5 +425,16 @@ class PriceRuleService
         }
 
         return true;
+    }
+
+    public function applyAdditionalCosts(Cart $cart, array $priceRulesIds, float $additionalShippingCosts) {
+
+        $shippingPrice = 0.0;
+
+        $shippingPrice += $this->applyPriceRuleForCarrier($cart, $priceRulesIds, Context::getContext()->shop->id);
+
+        $shippingPrice += $additionalShippingCosts;
+
+        return $shippingPrice;
     }
 }

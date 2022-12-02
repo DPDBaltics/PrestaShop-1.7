@@ -26,20 +26,21 @@ class ShippingPriceCalculationService
 {
     /**
      * @param Cart $cart
-     * @param float $shippingCosts
+     * @param PriceRuleService $priceRuleService
+     * @param array<string, string> $priceRulesIds
      *
      * @return float
      */
-    public function calculateShippingCosts(Cart $cart, float $shippingCosts)
+    public function calculate(Cart $cart, PriceRuleService $priceRuleService, array $priceRulesIds)
     {
         $products = $cart->getProducts();
-
+        $additionalShippingCosts = 0.0;
         foreach ($products as $product) {
-            if($product['additional_shipping_cost']) {
-                $shippingCosts += (float) $product['additional_shipping_cost'];
+            if((float) $product['additional_shipping_cost']) {
+                $additionalShippingCosts += (float) $product['additional_shipping_cost'];
             }
         }
 
-        return $shippingCosts;
+        return $priceRuleService->applyAdditionalCosts($cart, $priceRulesIds, $additionalShippingCosts);
     }
 }

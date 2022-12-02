@@ -550,9 +550,8 @@ class DPDBaltics extends CarrierModule
             );
         /** @var PriceRuleService $priceRuleService */
         $priceRuleService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.price_rule_service');
-        $shippingCosts = $priceRuleService->applyPriceRuleForCarrier($cart, $priceRulesIds, $this->context->shop->id);
         $shippingPriceCalculationService = new ShippingPriceCalculationService();
-        return $shippingPriceCalculationService->calculateShippingCosts($cart, $shippingCosts);
+        return  $shippingPriceCalculationService->calculate($cart, $priceRuleService, $priceRulesIds);
     }
 
     public function hookDisplayCarrierExtraContent($params)
