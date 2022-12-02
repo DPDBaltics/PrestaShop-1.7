@@ -539,19 +539,10 @@ class DPDBaltics extends CarrierModule
             }
         }
 
-        /** @var PriceRuleRepository $priceRuleRepository */
-        $priceRuleRepository = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.price_rule_repository');
+        /** @var ShippingPriceCalculationService $shippingPriceCalculationService */
+        $shippingPriceCalculationService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.price_calculation_service');
 
-        // Get all price rules for current carrier
-        $priceRulesIds =
-            $priceRuleRepository->getByCarrierReference(
-                $deliveryAddress,
-                $carrier->id_reference
-            );
-        /** @var PriceRuleService $priceRuleService */
-        $priceRuleService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.price_rule_service');
-        $shippingPriceCalculationService = new ShippingPriceCalculationService();
-        return  $shippingPriceCalculationService->calculate($cart, $priceRuleService, $priceRulesIds);
+        return  $shippingPriceCalculationService->calculate($cart, $deliveryAddress);
     }
 
     public function hookDisplayCarrierExtraContent($params)

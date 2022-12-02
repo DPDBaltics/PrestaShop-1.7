@@ -20,27 +20,70 @@
 
 namespace Invertus\dpdBaltics\Service;
 
+use Address;
 use Cart;
+use Context;
+use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 
 class ShippingPriceCalculationService
 {
     /**
+     * @var PriceRuleService
+     */
+    private $priceRuleService;
+    /**
+     * @var PriceRuleRepository
+     */
+    private $priceRuleRepository;
+
+    public function __construct(
+        PriceRuleService $priceRuleService,
+        PriceRuleRepository $priceRuleRepository
+    ) {
+        $this->priceRuleService = $priceRuleService;
+        $this->priceRuleRepository = $priceRuleRepository;
+    }
+
+    /**
      * @param Cart $cart
-     * @param PriceRuleService $priceRuleService
-     * @param array<string, string> $priceRulesIds
+     * @param Address $deliveryAddress
      *
      * @return float
      */
-    public function calculate(Cart $cart, PriceRuleService $priceRuleService, array $priceRulesIds)
+    public function calculate(Cart $cart, Address $deliveryAddress)
+    {
+        $shippingCosts = 0.0;
+
+        $priceRulesIds =
+            $this->priceRuleRepository->getByCarrierReference(
+                $deliveryAddress,
+                $cart->id_carrier
+            );
+
+        $shippingCosts += $this->priceRuleService->applyPriceRuleForCarrier(
+            $cart,
+            $priceRulesIds,
+            Context::getContext()->shop->id
+        );
+
+        $shippingCosts += $this->applyAdditionalCosts($cart);
+
+        return $shippingCosts;
+    }
+    /**
+     * @param Cart $cart
+     *
+     * @return float
+     */
+    private function applyAdditionalCosts(Cart $cart)
     {
         $products = $cart->getProducts();
         $additionalShippingCosts = 0.0;
         foreach ($products as $product) {
-            if((float) $product['additional_shipping_cost']) {
-                $additionalShippingCosts += (float) $product['additional_shipping_cost'];
+            if ((float)$product['additional_shipping_cost']) {
+                $additionalShippingCosts += (float)$product['additional_shipping_cost'];
             }
         }
-
-        return $priceRuleService->applyAdditionalCosts($cart, $priceRulesIds, $additionalShippingCosts);
+        return $additionalShippingCosts;
     }
 }
