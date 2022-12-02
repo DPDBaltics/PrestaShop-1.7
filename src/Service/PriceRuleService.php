@@ -393,7 +393,6 @@ class PriceRuleService
             if (!$this->priceRuleRepository->isAvailableInShop($priceRuleId, $shopId)) {
                 return false;
             }
-
             $priceRule = new DPDPriceRule($priceRuleId, null, $shopId);
             // Check if price rule is applicable for this cart
             if ($priceRule->isApplicableForCart($cart)) {
