@@ -540,7 +540,7 @@ class DPDBaltics extends CarrierModule
         }
 
         /** @var ShippingPriceCalculationService $shippingPriceCalculationService */
-        $shippingPriceCalculationService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.price_calculation_service');
+        $shippingPriceCalculationService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.shipping_price_calculation_service');
 
         return  $shippingPriceCalculationService->calculate($cart, $deliveryAddress);
     }
