@@ -21,7 +21,7 @@ function upgrade_module_3_2_13()
 {
     $sql = [];
 
-    $sql[] = 'ALTER TABLE `' . _DB_PREFIX_ . 'dpd_shipment` ADD INDEX `order_id_index` (`id_order`)';
+    $sql[] = 'ALTER TABLE `' . _DB_PREFIX_ . 'dpd_shipment` ADD INDEX (`id_order`)';
 
     foreach ($sql as $query) {
         if (Db::getInstance()->execute($query) == false) {
