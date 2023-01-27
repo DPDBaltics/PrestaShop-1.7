@@ -317,23 +317,18 @@ class Installer
 
     private function installTabs()
     {
-        if (!Config::isPrestashopVersionBelow174()) {
-            return true;
-        }
         /** @var TabsCollection $tabCollection */
         $tabCollection = $this->tabFactory->getTabsCollection();
         $moduleName = $this->module->name;
-        $tabsInitializer = new TabsInitializer(_PS_VERSION_, $tabCollection, $moduleName);
-
-        return $tabsInitializer->initializeTabsByPsVersion();
+        
+        // TODO - create dedicated service to clean up the code
+        $tabsInstaller = new \Invertus\psModuleTabs\Service\TabsInstaller($tabCollection, $moduleName);
+        
+        return $tabsInstaller->installTabs();
     }
 
     private function uninstallTabs()
     {
-        if (!Config::isPrestashopVersionBelow174()) {
-            return true;
-        }
-
         /** @var TabsCollection $tabCollection */
         $tabCollection = $this->tabFactory->getTabsCollection()->getTabsCollection();
 

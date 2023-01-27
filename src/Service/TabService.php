@@ -47,7 +47,8 @@ class TabService
                 'name' => $this->module->displayName,
                 'class_name' => DPDBaltics::ADMIN_DPDBALTICS_MODULE_CONTROLLER,
                 'ParentClassName' => 'AdminParentShipping',
-                'parent' => 'AdminParentShipping'
+                'parent' => 'AdminParentShipping',
+                'visible' => true
             ],
             [
                 'name' => $this->module->l('Shipment', self::FILE_NAME),

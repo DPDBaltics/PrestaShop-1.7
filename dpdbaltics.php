@@ -159,17 +159,6 @@ class DPDBaltics extends CarrierModule
         return true;
     }
 
-    /**
-     * @return array
-     */
-    public function getTabs()
-    {
-        /** @var TabService $tabsService */
-        $tabsService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.tab_service');
-
-        return $tabsService->getTabs();
-    }
-
     public function getContent()
     {
         Tools::redirectAdmin($this->context->link->getAdminLink(self::ADMIN_SETTINGS_CONTROLLER));
