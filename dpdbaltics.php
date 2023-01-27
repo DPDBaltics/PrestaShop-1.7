@@ -116,7 +116,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.12';
+        $this->version = '3.2.13';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
