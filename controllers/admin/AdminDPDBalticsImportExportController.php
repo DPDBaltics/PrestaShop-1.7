@@ -461,7 +461,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                     break;
                 case Config::IMPORT_EXPORT_OPTION_PRICE_RULES:
                     /** @var PriceRulesImport */
-                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.settings_import');
+                    return $this->module->getModuleContainer('invertus.dpdbaltics.service.import.price_rules_import');
                     break;
                 case Config::IMPORT_EXPORT_OPTION_ADDRESS_TEMPLATES:
                     /** @var AddressTemplatesImport */
