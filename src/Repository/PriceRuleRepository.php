@@ -226,7 +226,7 @@ class PriceRuleRepository extends AbstractEntityRepository
         $query->select('pr.id_dpd_price_rule');
         $query->from('dpd_price_rule', 'pr');
         $query->leftJoin('dpd_price_rule_carrier', 'prc', 'pr.id_dpd_price_rule = prc.id_dpd_price_rule');
-        $query->where('pr.id_dpd_price_rule = ' . (int)$priceRuleId . ' OR prc.all_carriers = 1');
+        $query->where('pr.id_dpd_price_rule = ' . (int)$priceRuleId . ' AND prc.all_carriers = 1');
 
         $result = $this->db->executeS($query);
         if (!is_array($result) || empty($result)) {

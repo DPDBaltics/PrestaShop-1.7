@@ -23,6 +23,7 @@ namespace Invertus\dpdBaltics\Config;
 
 use Configuration;
 use DPDParcel;
+use DPDShipment;
 use Invertus\dpdBaltics\Collection\DPDProductInstallCollection;
 use Invertus\dpdBaltics\DTO\DPDProductInstall;
 use Module;
@@ -379,6 +380,7 @@ class Config
             self::IMPORT_LINES_SKIP => 1,
             self::PARCEL_DISTRIBUTION => DPDParcel::DISTRIBUTION_NONE,
             self::LABEL_PRINT_OPTION => 'download',
+            self::AUTO_VALUE_FOR_REF => DPDShipment::AUTO_VAL_REF_NONE,
         ];
     }
 
