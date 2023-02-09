@@ -51,6 +51,7 @@ use Invertus\dpdBaltics\Service\Payment\PaymentService;
 use Invertus\dpdBaltics\Service\PriceRuleService;
 use Invertus\dpdBaltics\Service\PudoService;
 use Invertus\dpdBaltics\Service\ShipmentService;
+use Invertus\dpdBaltics\Service\ShippingPriceCalculationService;
 use Invertus\dpdBaltics\Service\TabService;
 use Invertus\dpdBaltics\Service\TrackingService;
 use Invertus\dpdBaltics\Util\CountryUtility;
@@ -116,7 +117,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.12';
+        $this->version = '3.2.13';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -538,19 +539,10 @@ class DPDBaltics extends CarrierModule
             }
         }
 
-        /** @var PriceRuleRepository $priceRuleRepository */
-        $priceRuleRepository = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.price_rule_repository');
+        /** @var ShippingPriceCalculationService $shippingPriceCalculationService */
+        $shippingPriceCalculationService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.shipping_price_calculation_service');
 
-        // Get all price rules for current carrier
-        $priceRulesIds =
-            $priceRuleRepository->getByCarrierReference(
-                $deliveryAddress,
-                $carrier->id_reference
-            );
-        /** @var PriceRuleService $priceRuleService */
-        $priceRuleService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.price_rule_service');
-
-        return $priceRuleService->applyPriceRuleForCarrier($cart, $priceRulesIds, $this->context->shop->id);
+        return  $shippingPriceCalculationService->calculate($cart, $deliveryAddress);
     }
 
     public function hookDisplayCarrierExtraContent($params)
