@@ -31,6 +31,6 @@ CREATE TABLE IF NOT EXISTS `PREFIX_dpd_shipment` (
   `weight` DECIMAL(20,2) UNSIGNED,
   `goods_price` DECIMAL(20,2) UNSIGNED,
   `is_test` TINYINT(1) UNSIGNED DEFAULT 0,
-  PRIMARY KEY (`id_dpd_shipment`)
+  PRIMARY KEY (`id_dpd_shipment`),
   INDEX (`id_order`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
