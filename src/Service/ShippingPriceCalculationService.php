@@ -50,11 +50,9 @@ class ShippingPriceCalculationService
      *
      * @return float
      */
-    public function calculate(Cart $cart, Address $deliveryAddress)
+    public function calculate(Cart $cart, \Carrier $carrier, Address $deliveryAddress)
     {
         $shippingCosts = 0.0;
-
-        $carrier = new \Carrier($cart->id_carrier);
 
         $priceRulesIds = $this->priceRuleRepository->getByCarrierReference(
             $deliveryAddress,
