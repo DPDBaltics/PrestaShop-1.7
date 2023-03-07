@@ -102,7 +102,6 @@ class LabelPrintingService
             );
 
         } catch (DPDBalticsAPIException $e) {
-
             $response['message'] = $this->exceptionService->getErrorMessageForException(
                 $e,
                 $this->exceptionService->getAPIErrorMessages()
