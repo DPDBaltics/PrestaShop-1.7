@@ -285,3 +285,9 @@ services:
     arguments:
       - '@invertus.dpdbaltics.factory.parcel_tracking_url_factory'
       - '@dpdbaltics'
+
+  invertus.dpdbaltics.service.label_printing_service:
+    class: 'Invertus\dpdBaltics\Service\LabelPrintingService'
+    arguments:
+      - '@invertus.dpdbaltics.service.api.label_api_service'
+      - '@invertus.dpdbaltics.service.shipment_service'
