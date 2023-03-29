@@ -293,22 +293,22 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
         return $labelPrintingService->setLabelOptions($shipmentId, $labelFormat, $labelPosition);
     }
 
-    private function printReturnLabel($shipmentId)
+    private function  printReturnLabel($shipmentId)
     {
         /** @var LabelApiService $labelApiService */
         $labelApiService = $this->module->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
         $returnTemplateId = Tools::getValue('return_template_id') ?: self::DEFAULT_LABEL_TEMPLATE_ID;
 
         $dpdShipment = new DPDShipment($shipmentId);
-        if ($dpdShipment->return_pl_number) {
-            try {
-                $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
-                exit();
-            } catch (Exception $e) {
-                $response['status'] = false;
-                $this->returnResponse($response);
-            }
-        }
+        //if ($dpdShipment->return_pl_number) {
+        //    try {
+        //        $labelApiService->printLabel($dpdShipment->return_pl_number, false, false, true);
+        //        exit();
+        //    } catch (Exception $e) {
+        //        $response['status'] = false;
+        //        $this->returnResponse($response);
+        //    }
+        //}
         try {
             /** @var ShipmentService $shipmentService */
             $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');

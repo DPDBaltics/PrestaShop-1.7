@@ -1397,13 +1397,4 @@ class DPDBaltics extends CarrierModule
             exit;
         }
     }
-
-    private function printConcatedLabels ($shipment, $format, $position) {
-
-        $plNumbers = [$shipment->pl_number, $shipment->return_pl_number];
-        /** @var LabelApiService $labelApiService */
-        $labelApiService = $this->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
-        return $labelApiService->printLabel(implode('|', $plNumbers), $format, $position, false);
-
-    }
 }

@@ -168,6 +168,7 @@ services:
       - '@invertus.dpdbaltics.repository.parcel_tracking_email_handler'
       - '@invertus.dpdbaltics.service.parcel.parcel_shop_service'
       - '@invertus.dpdbaltics.adapter.address_adapter'
+      - '@invertus.dpdbaltics.repository.order_repository'
 
   invertus.dpdbaltics.service.api.label_api_service:
     class: 'Invertus\dpdBaltics\Service\API\LabelApiService'
