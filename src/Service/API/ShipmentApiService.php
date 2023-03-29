@@ -29,6 +29,7 @@ use Invertus\dpdBaltics\Adapter\AddressAdapter;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Repository\CodPaymentRepository;
+use Invertus\dpdBaltics\Repository\OrderRepository;
 use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ShipmentCreationRequest;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory;
@@ -58,19 +59,22 @@ class ShipmentApiService
      * @var AddressAdapter
      */
     private $addressAdapter;
+    private $orderRepository;
 
     public function __construct(
         ShipmentCreationFactory $shipmentCreationFactory,
         CodPaymentRepository $codPaymentRepository,
         ParcelTrackingEmailHandler $emailHandler,
         ParcelShopService $parcelShopService,
-        AddressAdapter $addressAdapter
+        AddressAdapter $addressAdapter,
+        OrderRepository $orderRepository
     ) {
         $this->shipmentCreationFactory = $shipmentCreationFactory;
         $this->codPaymentRepository = $codPaymentRepository;
         $this->emailHandler = $emailHandler;
         $this->parcelShopService = $parcelShopService;
         $this->addressAdapter = $addressAdapter;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -163,24 +167,28 @@ class ShipmentApiService
         return $shipmentResponse;
     }
 
-    public function createReturnServiceShipment($addressTemplateId)
+    public function createReturnServiceShipment($addressTemplateId, $orderId)
     {
-        $dpdAddressTemplate = new DPDAddressTemplate($addressTemplateId);
+        $order = new \Order($orderId);
+        $address = new \Address($order->id_address_delivery);
+        $customer = new \Customer($order->id_customer);
 
-        $phoneNumber = $dpdAddressTemplate->mobile_phone_code . $dpdAddressTemplate->mobile_phone;
         $parcelType = 'RET-RETURN';
 
-        $postCode = preg_replace('/[^0-9]/', '', $dpdAddressTemplate->zip_code);
+        /** @var array $phoneNumber */
+        $phoneNumber = $this->orderRepository->getPhoneByIdCart($order->id_cart);
+
+        $postCode = preg_replace('/[^0-9]/', '', $address->postcode);
         $shipmentCreationRequest = new ShipmentCreationRequest(
-            $dpdAddressTemplate->full_name,
-            $dpdAddressTemplate->address,
-            $dpdAddressTemplate->dpd_city_name,
-            Country::getIsoById($dpdAddressTemplate->dpd_country_id),
+            $address->firstname . ' ' . $address->lastname,
+            $address->address1,
+            $address->city,
+            Country::getIsoById($address->id_country),
             $postCode,
             '1',
             $parcelType,
-            $phoneNumber,
-            $dpdAddressTemplate->email,
+            $phoneNumber['phone_area'] . $phoneNumber['phone'],
+            $customer->email,
             1
         );
         $shipmentCreator = $this->shipmentCreationFactory->makeShipmentCreation();

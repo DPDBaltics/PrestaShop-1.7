@@ -293,7 +293,7 @@ class ShipmentService
             return false;
         }
         /** @var ShipmentCreationResponse $shipmentResponse */
-        $shipmentResponse = $this->shipmentApiService->createReturnServiceShipment($returnAddressId);
+        $shipmentResponse = $this->shipmentApiService->createReturnServiceShipment($returnAddressId, $orderId);
 
         if ($shipmentResponse->getStatus() !== Config::API_SUCCESS_STATUS) {
             throw new DPDBalticsAPIException(
