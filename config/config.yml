@@ -5,6 +5,7 @@ imports:
   - { resource: builder.yml }
   - { resource: provider.yml }
   - { resource: validator.yml }
+  - { resource: verification.yml }
   - { resource: adapter.yml }
   - { resource: helper.yml }
   - { resource: util.yml }

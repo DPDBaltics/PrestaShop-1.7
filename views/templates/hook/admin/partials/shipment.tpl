@@ -76,14 +76,13 @@
                             <select class=" form-control js-contract-select" title="{l s='Service' mod='dpdbaltics'}"
                                     name="product">
                                 {foreach $dpdProducts as $product}
-                                    {if $product->active}
-                                        <option
-                                                value="{$product->id_dpd_product}"
-                                                {if $product->id_dpd_product == $shipment->id_service}selected{/if}
-                                        >
-                                            {$product->name}
-                                        </option>
-                                    {/if}
+                                    <option
+                                            value="{$product.id_dpd_product}"
+                                            {if $product.id_dpd_product === $shipment->id_service}selected{/if}
+                                            {if !$product.available}disabled{/if}
+                                    >
+                                        {$product.name}
+                                    </option>
                                 {/foreach}
                             </select>
                         </div>

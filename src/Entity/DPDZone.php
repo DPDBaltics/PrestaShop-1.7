@@ -49,56 +49,6 @@ class DPDZone extends ObjectModel
     ];
 
     /**
-     * Check if address falls into given zones
-     *
-     * @param Address $address
-     * @param array $zones
-     *
-     * @return bool
-     * @throws PrestaShopDatabaseException
-     * @throws PrestaShopException
-     */
-    public static function checkAddressInZones(Address $address, array $zones)
-    {
-        $idCountry = $address->id_country ?: (int)Configuration::get('PS_COUNTRY_DEFAULT');
-        $country = new Country($idCountry);
-
-        /** @var DPDBaltics $module */
-        $module = Module::getInstanceByName('dpdbaltics');
-
-        /** @var ZoneRangeRepository $zoneRangeRepo */
-        $zoneRangeRepo = $module->getModuleContainer()->get('invertus.dpdbaltics.repository.zone_range_repository');
-
-        foreach ($zones as $zone) {
-            // Get ranges by zone and country
-            $ranges = $zoneRangeRepo->findBy([
-                'id_dpd_zone' => $zone['id'],
-                // Check by country as well, because the zone must match the country of address
-                'id_country' => $country->id,
-            ]);
-
-            foreach ($ranges as $range) {
-                if ($range['include_all_zip_codes']) {
-                    return true;
-                }
-
-                if (ZoneRangeValidate::isZipCodeInRange(
-                    $address->postcode,
-                    $range['zip_code_from'],
-                    $range['zip_code_to'],
-                    $country->id
-                )
-                ) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-
-    /**
      * Delete all zone ranges
      *
      * @return bool

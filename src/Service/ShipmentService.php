@@ -528,13 +528,11 @@ class ShipmentService
 
         if ($success) {
             $message = $this->module->l('Labels printed successfully');
-        }
-
-        if (!$success) {
+        } else {
             $message .= sprintf(
-                    $this->module->l('Printing failed for some orders, printed labels for orders: %s'),
-                    implode(', ', $successfulOrders)
-                ) . '</br>' . $message;
+                $this->module->l('Printing failed for some orders, printed labels for orders: %s'),
+                implode(', ', $successfulOrders)
+            );
         }
 
         $response['message'] = $message;

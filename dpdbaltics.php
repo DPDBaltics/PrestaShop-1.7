@@ -488,6 +488,10 @@ class DPDBaltics extends CarrierModule
         $productAvailabilityService = $this->getModuleContainer('invertus.dpdbaltics.service.product.product_availability_service');
         $cartWeightValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.weight.cart_weight_validator');
         $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+
+        /** @var \Invertus\dpdBaltics\Verification\IsAddressInZone $isAddressInZone */
+        $isAddressInZone = $this->getModuleContainer('invertus.dpdbaltics.verification.is_address_in_zone');
+
         $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
 
         if (!$productAvailabilityService->checkIfCarrierIsAvailable($carrier->id_reference)) {
@@ -520,7 +524,7 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
-        if (!DPDZone::checkAddressInZones($deliveryAddress, $carrierZones)) {
+        if (!$isAddressInZone->verify($deliveryAddress, $carrierZones)) {
             return false;
         }
 
@@ -891,10 +895,6 @@ class DPDBaltics extends CarrierModule
 
         $products = $cart->getProducts();
 
-        /** @var ProductRepository $productRepository */
-        $productRepository = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
-        $dpdProducts = $productRepository->getAllProducts();
-        $dpdProducts->where('active', '=', 1);
         /** @var LabelPositionService $labelPositionService */
         $labelPositionService = $this->getModuleContainer('invertus.dpdbaltics.service.label.label_position_service');
         $labelPositionService->assignLabelPositions($shipment->id);
@@ -915,11 +915,6 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if ($isCodPayment) {
-            $dpdProducts->where('is_cod', '=', 1);
-        } else {
-            $dpdProducts->where('is_cod', '=', 0);
-        }
         /** @var PudoRepository $pudoRepo */
         $pudoRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.pudo_repository');
         $selectedProduct = new DPDProduct($shipment->id_service);
@@ -983,12 +978,24 @@ class DPDBaltics extends CarrierModule
             );
         }
 
+        /** @var ProductRepository $productRepository */
+        $productRepository = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
+        $dpdProducts = $productRepository->getAllProducts();
+
+        $dpdCarrierOptions = [];
+
         /** @var DPDProduct $dpdProduct */
         foreach ($dpdProducts as $dpdProduct) {
-            if ($dpdProduct->is_pudo && !$hasParcelShops) {
-                $dpdProduct->active = 0;
-            }
+            $dpdCarrierOptions[] = [
+                'id_dpd_product' => $dpdProduct->id_dpd_product,
+                'name' => $dpdProduct->name,
+                'available' =>
+                    $dpdProduct->active &&
+                    (int) $dpdProduct->is_cod === (int) $isCodPayment &&
+                    (!$dpdProduct->is_pudo && $hasParcelShops)
+            ];
         }
+
         $cityList = $parcelShopRepo->getAllCitiesByCountryCode($countryCode);
 
         if (\Invertus\dpdBaltics\Config\Config::productHasDeliveryTime($selectedProduct->product_reference)) {
@@ -1028,7 +1035,7 @@ class DPDBaltics extends CarrierModule
             'orderDetails' => $orderDetails,
             'mobilePhoneCodeList' => $phonePrefixRepository->getCallPrefixes(),
             'products' => $products,
-            'dpdProducts' => $dpdProducts,
+            'dpdProducts' => $dpdCarrierOptions,
             'isCodPayment' => $isCodPayment,
             'is_pudo' => (bool)$isPudo,
             'selectedPudo' => $selectedPudoService,
