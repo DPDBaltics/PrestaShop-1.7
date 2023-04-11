@@ -194,6 +194,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 
     public function printMultipleLabelsFromList($orderIds)
     {
+        /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
 
         return $shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds);

@@ -127,6 +127,7 @@ class OrderLabelController extends FrameworkBundleAdminController
         if (!$orderIds) {
             return $this->redirectWithError('admin_orders_index', $this->module->l('Could not print labels order id\'s are missing'));
         }
+        /** @var ShipmentService $shipmentService */
         $shipmentService = $this->module->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
         $response = $shipmentService->formatMultipleLabelShipmentPrintResponse($orderIds);
 
