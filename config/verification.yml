@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    public: true
+
+  invertus.dpdbaltics.verification.is_address_in_zone:
+    class: 'Invertus\dpdBaltics\Verification\IsAddressInZone'
+    arguments:
+      - '@invertus.dpdbaltics.repository.zone_range_repository'
+      - '@invertus.dpdbaltics.verification.is_address_in_range'
+
+  invertus.dpdbaltics.verification.is_address_in_range:
+    class: 'Invertus\dpdBaltics\Verification\IsAddressInRange'

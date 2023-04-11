@@ -30,6 +30,7 @@ use DPDZone;
 use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\ZoneRepository;
+use Invertus\dpdBaltics\Verification\IsAddressInZone;
 use Product;
 use Tools;
 
@@ -59,19 +60,25 @@ class ProductShippingCostProvider
      * @var Currency
      */
     private $currency;
+    /**
+     * @var IsAddressInZone
+     */
+    private $isAddressInZone;
 
     public function __construct(
         DPDBaltics $module,
         ProductRepository $productRepository,
         ZoneRepository $zoneRepository,
         PriceRuleRepository $priceRuleRepository,
-        Currency $currency
+        Currency $currency,
+        IsAddressInZone $isAddressInZone
     ) {
         $this->module = $module;
         $this->productRepository = $productRepository;
         $this->zoneRepository = $zoneRepository;
         $this->priceRuleRepository = $priceRuleRepository;
         $this->currency = $currency;
+        $this->isAddressInZone = $isAddressInZone;
     }
 
     public function getProductShippingCost($carrierReference, $idAddress)
@@ -93,7 +100,7 @@ class ProductShippingCostProvider
             return false;
         }
 
-        if ($idAddress && !DPDZone::checkAddressInZones($deliveryAddress, $carrierZones)) {
+        if ($idAddress && !$this->isAddressInZone->verify($deliveryAddress, $carrierZones)) {
             return false;
         }
 

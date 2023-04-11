@@ -488,6 +488,10 @@ class DPDBaltics extends CarrierModule
         $productAvailabilityService = $this->getModuleContainer('invertus.dpdbaltics.service.product.product_availability_service');
         $cartWeightValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.weight.cart_weight_validator');
         $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+
+        /** @var \Invertus\dpdBaltics\Verification\IsAddressInZone $isAddressInZone */
+        $isAddressInZone = $this->getModuleContainer('invertus.dpdbaltics.verification.is_address_in_zone');
+
         $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
 
         if (!$productAvailabilityService->checkIfCarrierIsAvailable($carrier->id_reference)) {
@@ -520,7 +524,7 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
-        if (!DPDZone::checkAddressInZones($deliveryAddress, $carrierZones)) {
+        if (!$isAddressInZone->verify($deliveryAddress, $carrierZones)) {
             return false;
         }
 
