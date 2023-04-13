@@ -361,6 +361,11 @@ class ShipmentService
 
         try {
             $shipmentId = $this->shipmentRepository->getIdByOrderId($order->id);
+            if (!$shipmendId) {
+                if ($this->createShipmentFromOrder($order)) {
+                    $shipmentId = $this->shipmentRepository->getIdByOrderId($order->id);
+                }
+            }
         } catch (Exception $e) {
             $response['message'] = $this->module->l(
                 sprintf('Could not fetch shipment order ID Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart
