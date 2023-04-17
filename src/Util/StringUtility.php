@@ -111,6 +111,7 @@ class StringUtility
         $string = strtr($string, $table);
         // Currency symbols: £¤¥€  - we dont bother with them for now
         $string = preg_replace("/[^\x9\xA\xD\x20-\x7F]/u", "", $string);
+        $string = preg_replace("/[\r\n]*/","",$string);
         return $string;
     }
 }
