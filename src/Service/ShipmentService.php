@@ -292,8 +292,11 @@ class ShipmentService
         if (!$returnAddressId) {
             return false;
         }
+
+        $shipmentData = $this->shipmentDataFactory->getShipmentDataByIdOrder($orderId);
+
         /** @var ShipmentCreationResponse $shipmentResponse */
-        $shipmentResponse = $this->shipmentApiService->createReturnServiceShipment($returnAddressId);
+        $shipmentResponse = $this->shipmentApiService->createReturnServiceShipment($returnAddressId, $orderId, $shipmentData);
 
         if ($shipmentResponse->getStatus() !== Config::API_SUCCESS_STATUS) {
             throw new DPDBalticsAPIException(
@@ -528,13 +531,11 @@ class ShipmentService
 
         if ($success) {
             $message = $this->module->l('Labels printed successfully');
-        }
-
-        if (!$success) {
+        } else {
             $message .= sprintf(
-                    $this->module->l('Printing failed for some orders, printed labels for orders: %s'),
-                    implode(', ', $successfulOrders)
-                ) . '</br>' . $message;
+                $this->module->l('Printing failed for some orders, printed labels for orders: %s'),
+                implode(', ', $successfulOrders)
+            );
         }
 
         $response['message'] = $message;

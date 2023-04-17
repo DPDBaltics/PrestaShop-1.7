@@ -29,6 +29,8 @@ use Invertus\dpdBaltics\Adapter\AddressAdapter;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Repository\CodPaymentRepository;
+use Invertus\dpdBaltics\Repository\OrderRepository;
+use Invertus\dpdBaltics\Repository\PudoRepository;
 use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ShipmentCreationRequest;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ShipmentCreationFactory;
@@ -58,19 +60,25 @@ class ShipmentApiService
      * @var AddressAdapter
      */
     private $addressAdapter;
+    private $orderRepository;
+    private $pudoRepository;
 
     public function __construct(
         ShipmentCreationFactory $shipmentCreationFactory,
         CodPaymentRepository $codPaymentRepository,
         ParcelTrackingEmailHandler $emailHandler,
         ParcelShopService $parcelShopService,
-        AddressAdapter $addressAdapter
+        AddressAdapter $addressAdapter,
+        OrderRepository $orderRepository,
+        PudoRepository $pudoRepository
     ) {
         $this->shipmentCreationFactory = $shipmentCreationFactory;
         $this->codPaymentRepository = $codPaymentRepository;
         $this->emailHandler = $emailHandler;
         $this->parcelShopService = $parcelShopService;
         $this->addressAdapter = $addressAdapter;
+        $this->orderRepository = $orderRepository;
+        $this->pudoRepository = $pudoRepository;
     }
 
     /**
@@ -163,26 +171,46 @@ class ShipmentApiService
         return $shipmentResponse;
     }
 
-    public function createReturnServiceShipment($addressTemplateId)
+    public function createReturnServiceShipment($addressTemplateId, $orderId, ShipmentData $shipmentData)
     {
-        $dpdAddressTemplate = new DPDAddressTemplate($addressTemplateId);
+        $order = new \Order($orderId);
 
-        $phoneNumber = $dpdAddressTemplate->mobile_phone_code . $dpdAddressTemplate->mobile_phone;
+        $address = new \Address($order->id_address_delivery);
+        $customer = new \Customer($order->id_customer);
+
+        /** @var array $phoneNumber */
+        $phoneNumber = $this->orderRepository->getPhoneByIdCart($order->id_cart);
+
+        if ($shipmentData->isPudo()) {
+            $selectedPudo = $this->pudoRepository->getDPDPudo($shipmentData->getIdPudo());
+
+            $address1 = $selectedPudo->street;
+            $city = $selectedPudo->city;
+            $countryIso = $selectedPudo->country_code;
+            $postCode = $selectedPudo->post_code;
+        } else {
+            $address1 = $address->address1;
+            $city = $address->city;
+            $countryIso = Country::getIsoById($address->id_country);
+            $postCode = preg_replace('/[^0-9]/', '', $address->postcode);
+        }
+
         $parcelType = 'RET-RETURN';
 
-        $postCode = preg_replace('/[^0-9]/', '', $dpdAddressTemplate->zip_code);
         $shipmentCreationRequest = new ShipmentCreationRequest(
-            $dpdAddressTemplate->full_name,
-            $dpdAddressTemplate->address,
-            $dpdAddressTemplate->dpd_city_name,
-            Country::getIsoById($dpdAddressTemplate->dpd_country_id),
+            $address->firstname . ' ' . $address->lastname,
+            $address1,
+            $city,
+            $countryIso,
             $postCode,
             '1',
             $parcelType,
-            $phoneNumber,
-            $dpdAddressTemplate->email,
+            $phoneNumber['phone_area'] . $phoneNumber['phone'],
+            $customer->email,
             1
         );
+        $shipmentCreationRequest = $this->setNotRequiredData($shipmentCreationRequest, $shipmentData);
+
         $shipmentCreator = $this->shipmentCreationFactory->makeShipmentCreation();
 
         return $shipmentCreator->createShipment($shipmentCreationRequest);

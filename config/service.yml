@@ -168,6 +168,8 @@ services:
       - '@invertus.dpdbaltics.repository.parcel_tracking_email_handler'
       - '@invertus.dpdbaltics.service.parcel.parcel_shop_service'
       - '@invertus.dpdbaltics.adapter.address_adapter'
+      - '@invertus.dpdbaltics.repository.order_repository'
+      - '@invertus.dpdbaltics.repository.pudo_repository'
 
   invertus.dpdbaltics.service.api.label_api_service:
     class: 'Invertus\dpdBaltics\Service\API\LabelApiService'
@@ -285,3 +287,9 @@ services:
     arguments:
       - '@invertus.dpdbaltics.factory.parcel_tracking_url_factory'
       - '@dpdbaltics'
+
+  invertus.dpdbaltics.service.label_printing_service:
+    class: 'Invertus\dpdBaltics\Service\LabelPrintingService'
+    arguments:
+      - '@invertus.dpdbaltics.service.api.label_api_service'
+      - '@invertus.dpdbaltics.service.shipment_service'

@@ -488,6 +488,10 @@ class DPDBaltics extends CarrierModule
         $productAvailabilityService = $this->getModuleContainer('invertus.dpdbaltics.service.product.product_availability_service');
         $cartWeightValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.weight.cart_weight_validator');
         $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+
+        /** @var \Invertus\dpdBaltics\Verification\IsAddressInZone $isAddressInZone */
+        $isAddressInZone = $this->getModuleContainer('invertus.dpdbaltics.verification.is_address_in_zone');
+
         $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
 
         if (!$productAvailabilityService->checkIfCarrierIsAvailable($carrier->id_reference)) {
@@ -520,7 +524,7 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
-        if (!DPDZone::checkAddressInZones($deliveryAddress, $carrierZones)) {
+        if (!$isAddressInZone->verify($deliveryAddress, $carrierZones)) {
             return false;
         }
 
@@ -542,7 +546,7 @@ class DPDBaltics extends CarrierModule
         /** @var ShippingPriceCalculationService $shippingPriceCalculationService */
         $shippingPriceCalculationService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.shipping_price_calculation_service');
 
-        return  $shippingPriceCalculationService->calculate($cart, $deliveryAddress);
+        return  $shippingPriceCalculationService->calculate($cart, $carrier, $deliveryAddress);
     }
 
     public function hookDisplayCarrierExtraContent($params)
@@ -891,10 +895,6 @@ class DPDBaltics extends CarrierModule
 
         $products = $cart->getProducts();
 
-        /** @var ProductRepository $productRepository */
-        $productRepository = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
-        $dpdProducts = $productRepository->getAllProducts();
-        $dpdProducts->where('active', '=', 1);
         /** @var LabelPositionService $labelPositionService */
         $labelPositionService = $this->getModuleContainer('invertus.dpdbaltics.service.label.label_position_service');
         $labelPositionService->assignLabelPositions($shipment->id);
@@ -915,11 +915,6 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if ($isCodPayment) {
-            $dpdProducts->where('is_cod', '=', 1);
-        } else {
-            $dpdProducts->where('is_cod', '=', 0);
-        }
         /** @var PudoRepository $pudoRepo */
         $pudoRepo = $this->getModuleContainer('invertus.dpdbaltics.repository.pudo_repository');
         $selectedProduct = new DPDProduct($shipment->id_service);
@@ -983,12 +978,24 @@ class DPDBaltics extends CarrierModule
             );
         }
 
+        /** @var ProductRepository $productRepository */
+        $productRepository = $this->getModuleContainer('invertus.dpdbaltics.repository.product_repository');
+        $dpdProducts = $productRepository->getAllProducts();
+
+        $dpdCarrierOptions = [];
+
         /** @var DPDProduct $dpdProduct */
         foreach ($dpdProducts as $dpdProduct) {
-            if ($dpdProduct->is_pudo && !$hasParcelShops) {
-                $dpdProduct->active = 0;
-            }
+            $dpdCarrierOptions[] = [
+                'id_dpd_product' => $dpdProduct->id_dpd_product,
+                'name' => $dpdProduct->name,
+                'available' =>
+                    $dpdProduct->active &&
+                    (int) $dpdProduct->is_cod === (int) $isCodPayment &&
+                    (!$dpdProduct->is_pudo && $hasParcelShops)
+            ];
         }
+
         $cityList = $parcelShopRepo->getAllCitiesByCountryCode($countryCode);
 
         if (\Invertus\dpdBaltics\Config\Config::productHasDeliveryTime($selectedProduct->product_reference)) {
@@ -1028,7 +1035,7 @@ class DPDBaltics extends CarrierModule
             'orderDetails' => $orderDetails,
             'mobilePhoneCodeList' => $phonePrefixRepository->getCallPrefixes(),
             'products' => $products,
-            'dpdProducts' => $dpdProducts,
+            'dpdProducts' => $dpdCarrierOptions,
             'isCodPayment' => $isCodPayment,
             'is_pudo' => (bool)$isPudo,
             'selectedPudo' => $selectedPudoService,
@@ -1107,82 +1114,25 @@ class DPDBaltics extends CarrierModule
 
     public function printLabel($idShipment)
     {
-        /** @var LabelApiService $labelApiService */
-        $labelApiService = $this->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
+        /** @var \Invertus\dpdBaltics\Service\LabelPrintingService $labelPrintingService */
+        $labelPrintingService = $this->getModuleContainer('invertus.dpdbaltics.service.label_printing_service');
 
-        $shipment = new DPDShipment($idShipment);
-        $format = $shipment->label_format;
-        $position = $shipment->label_position;
-        $isAutomated = Configuration::get(Config::AUTOMATED_PARCEL_RETURN);
-        try {
-            /** @var ParcelPrintResponse $parcelPrintResponse */
-            if ($isAutomated) {
-                if (!$shipment->return_pl_number) {
-                    $shipmentService = $this->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
-                    $shipment = $shipmentService->createReturnServiceShipment(Config::RETURN_TEMPLATE_DEFAULT_ID, $shipment->id_order);
-                }
-                $parcelPrintResponse = $this->printConcatedLabels($shipment, $format, $position);
-            } else {
-                $parcelPrintResponse = $labelApiService->printLabel($shipment->pl_number, $format, $position, false);
-            }
-        } catch (DPDBalticsAPIException $e) {
-            /** @var ExceptionService $exceptionService */
-            $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
-            Context::getContext()->controller->errors[] = $exceptionService->getErrorMessageForException(
-                $e,
-                $exceptionService->getAPIErrorMessages()
-            );
-            return;
-        } catch (Exception $e) {
-            Context::getContext()->controller->errors[] = $this->l('Failed to print label: ') . $e->getMessage();
-            return;
-        }
+        $parcelPrintResponse = $labelPrintingService->printOne($idShipment);
 
         if ($parcelPrintResponse->getStatus() === Config::API_SUCCESS_STATUS) {
             $this->updateOrderCarrier($idShipment);
             return;
         }
 
-        Context::getContext()->controller->errors[] = $this->l($parcelPrintResponse->getErrLog());
+        return $parcelPrintResponse;
     }
 
     public function printMultipleLabels($shipmentIds)
     {
-        $isAutomated = Configuration::get(Config::AUTOMATED_PARCEL_RETURN);
-        $plNumbers = [];
-        foreach ($shipmentIds as $shipmentId) {
-            $shipment = new DPDShipment($shipmentId);
-            $plNumbers[] = $shipment->pl_number;
-            if ($isAutomated) {
-                if(!$shipment->return_pl_number) {
-                    $shipmentService = $this->getModuleContainer('invertus.dpdbaltics.service.shipment_service');
-                    $shipment = $shipmentService->createReturnServiceShipment(Config::RETURN_TEMPLATE_DEFAULT_ID, $shipment->id_order);
-                }
-                $plNumbers[] = $shipment->return_pl_number;
-            }
-        }
+        /** @var \Invertus\dpdBaltics\Service\LabelPrintingService $labelPrintingService */
+        $labelPrintingService = $this->getModuleContainer('invertus.dpdbaltics.service.label_printing_service');
 
-        /** @var LabelApiService $labelApiService */
-        $labelApiService = $this->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
-
-        $position = Configuration::get(Config::DEFAULT_LABEL_POSITION);
-        $format = Configuration::get(Config::DEFAULT_LABEL_FORMAT);
-
-        try {
-            /** @var ParcelPrintResponse $parcelPrintResponse */
-            $parcelPrintResponse = $labelApiService->printLabel(implode('|', $plNumbers), $format, $position, false);
-        } catch (DPDBalticsAPIException $e) {
-            /** @var ExceptionService $exceptionService */
-            $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
-            Context::getContext()->controller->errors[] = $exceptionService->getErrorMessageForException(
-                $e,
-                $exceptionService->getAPIErrorMessages()
-            );
-            return;
-        } catch (Exception $e) {
-            Context::getContext()->controller->errors[] = $this->l('Failed to print label: ') . $e->getMessage();
-            return;
-        }
+        $parcelPrintResponse = $labelPrintingService->printMultiple($shipmentIds);
 
         if ($parcelPrintResponse->getStatus() === Config::API_SUCCESS_STATUS) {
             foreach ($shipmentIds as $shipmentId) {
@@ -1191,7 +1141,7 @@ class DPDBaltics extends CarrierModule
             return;
         }
 
-        Context::getContext()->controller->errors[] = $this->l($parcelPrintResponse->getErrLog());
+        return $parcelPrintResponse;
     }
 
     private function updateOrderCarrier($shipmentId)
@@ -1406,23 +1356,52 @@ class DPDBaltics extends CarrierModule
     {
         if (Tools::isSubmit('print_label')) {
             $idShipment = Tools::getValue('id_dpd_shipment');
-            $this->printLabel($idShipment);
+
+            try {
+                $parcelPrintResponse = $this->printLabel($idShipment);
+            } catch (DPDBalticsAPIException $e) {
+                /** @var ExceptionService $exceptionService */
+                $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
+                Context::getContext()->controller->errors[] = $exceptionService->getErrorMessageForException(
+                    $e,
+                    $exceptionService->getAPIErrorMessages()
+                );
+                return;
+            } catch (Exception $e) {
+                Context::getContext()->controller->errors[] = $this->l('Failed to print label: ') . $e->getMessage();
+                return;
+            }
+
+            if (!empty($parcelPrintResponse->getErrLog())) {
+                Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
+            }
+
             exit;
         }
 
         if (Tools::isSubmit('print_multiple_labels')) {
             $shipmentIds = json_decode(Tools::getValue('shipment_ids'));
-            $this->printMultipleLabels($shipmentIds);
+
+            try {
+                $parcelPrintResponse = $this->printMultipleLabels($shipmentIds);
+            } catch (DPDBalticsAPIException $e) {
+                /** @var ExceptionService $exceptionService */
+                $exceptionService = $this->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
+                Context::getContext()->controller->errors[] = $exceptionService->getErrorMessageForException(
+                    $e,
+                    $exceptionService->getAPIErrorMessages()
+                );
+                return;
+            } catch (Exception $e) {
+                Context::getContext()->controller->errors[] = $this->l('Failed to print label: ') . $e->getMessage();
+                return;
+            }
+
+            if (!empty($parcelPrintResponse->getErrLog())) {
+                Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
+            }
+
             exit;
         }
-    }
-
-    private function printConcatedLabels ($shipment, $format, $position) {
-
-        $plNumbers = [$shipment->pl_number, $shipment->return_pl_number];
-        /** @var LabelApiService $labelApiService */
-        $labelApiService = $this->getModuleContainer('invertus.dpdbaltics.service.api.label_api_service');
-        return $labelApiService->printLabel(implode('|', $plNumbers), $format, $position, false);
-
     }
 }

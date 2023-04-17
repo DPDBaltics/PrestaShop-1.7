@@ -70,7 +70,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
 
         $this->multiple_fieldsets = true;
 
-        $date = new DateTime($this->fields_value['shipment_date']);
+        $date = new DateTime(isset($this->fields_value['shipment_date']) ? $this->fields_value['shipment_date'] : null);
         $this->fields_value['shipment_date'] = $date->format('Y-m-d');
         $this->fields_form = [
             [
