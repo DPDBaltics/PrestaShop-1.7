@@ -115,7 +115,9 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
         $priceRuleShops = $shopRepository->getAddressTemplateShops($this->object->id);
 
         $shops = Shop::getShops(true);
-        if (count($shops) > 1) {
+        $isMultiShop = (bool) Configuration::get('PS_MULTISHOP_FEATURE_ACTIVE') && (count($shops) > 1);
+
+        if ($isMultiShop) {
             $allShopsSelected = false;
 
             // Checking if "All shops" option is selected
@@ -149,100 +151,100 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
         $this->loadObject(true);
         $dpdCountries = Country::getCountries($this->context->language->id, false);
 
+        $isEECountry = CountryUtility::isEstonia();
+
+        $inputs = [
+            [
+                'label' => $this->l('Name'),
+                'type' => 'text',
+                'name' => 'name',
+                'required' => true,
+                'class' => 'fixed-width-xxl',
+            ],
+            [
+                'label' => $this->l('Address type'),
+                'name' => 'type',
+                'type' => $isEECountry ? 'hidden' : 'radio',
+                'default_value' => DPDAddressTemplate::ADDRESS_TYPE_COLLECTION_REQUEST,
+                'values' => [
+                    [
+                        'id' => DPDAddressTemplate::ADDRESS_TYPE_COLLECTION_REQUEST,
+                        'value' => DPDAddressTemplate::ADDRESS_TYPE_COLLECTION_REQUEST,
+                        'label' => $this->l('Collection request'),
+                    ],
+                    [
+                        'id' => DPDAddressTemplate::ADDRESS_TYPE_RETURN_SERVICE,
+                        'value' => DPDAddressTemplate::ADDRESS_TYPE_RETURN_SERVICE,
+                        'label' => $this->l('Return service'),
+                    ],
+                ],
+            ],
+            [
+                'label' => $this->l('Full name/Company name'),
+                'name' => 'full_name',
+                'type' => 'text',
+                'class' => 'fixed-width-xxl',
+            ],
+            [
+                'label' => $this->l('Mobile phone'),
+                'name' => 'mobile_phone',
+                'type' => 'free',
+                'class' => 'fixed-width-xxl',
+            ],
+            [
+                'label' => $this->l('Email address'),
+                'name' => 'email',
+                'type' => 'text',
+                'class' => 'fixed-width-xxl',
+            ],
+            [
+                'label' => $this->l('Country'),
+                'name' => 'dpd_country_id',
+                'type' => 'select',
+                'class' => 'fixed-width-xxl chosen',
+                'options' => [
+                    'id' => 'id_country',
+                    'name' => 'name',
+                    'query' => $dpdCountries,
+                ],
+            ],
+            [
+                'label' => $this->l('Zip code'),
+                'name' => 'zip_code',
+                'type' => 'text',
+                'class' => 'fixed-width-xxl',
+            ],
+            [
+                'label' => $this->l('City/Region'),
+                'name' => 'dpd_city_name',
+                'type' => 'text',
+                'class' => 'fixed-width-xxl',
+            ],
+            [
+                'label' => $this->l('Address'),
+                'name' => 'address',
+                'type' => 'text',
+                'class' => 'fixed-width-xxl',
+            ]
+        ];
+
         $shops = Shop::getShops(true);
-        $receiverShop = null;
-        if (count($shops) > 1) {
-            $receiverShop = [
+        $isMultiShop = (bool) Configuration::get('PS_MULTISHOP_FEATURE_ACTIVE') && (count($shops) > 1);
+
+        if ($isMultiShop) {
+            $inputs[] = [
                 'label' => $this->l('Receiver shops'),
                 'name' => 'search_block_shops',
                 'type' => 'free',
                 'form_group_class' => 'dpd-price-rule-shops',
             ];
         }
-        $isEECountry = false;
-        if (CountryUtility::isEstonia()) {
-            $isEECountry = true;
-        }
 
         $this->fields_form = [
             'legend' => [
                 'title' => $this->l('Address template'),
             ],
-            'input' => [
-                [
-                    'label' => $this->l('Name'),
-                    'type' => 'text',
-                    'name' => 'name',
-                    'required' => true,
-                    'class' => 'fixed-width-xxl',
-                ],
-                [
-                    'label' => $this->l('Address type'),
-                    'name' => 'type',
-                    'type' => $isEECountry ? 'hidden' : 'radio',
-                    'default_value' => DPDAddressTemplate::ADDRESS_TYPE_COLLECTION_REQUEST,
-                    'values' => [
-                        [
-                            'id' => DPDAddressTemplate::ADDRESS_TYPE_COLLECTION_REQUEST,
-                            'value' => DPDAddressTemplate::ADDRESS_TYPE_COLLECTION_REQUEST,
-                            'label' => $this->l('Collection request'),
-                        ],
-                        [
-                            'id' => DPDAddressTemplate::ADDRESS_TYPE_RETURN_SERVICE,
-                            'value' => DPDAddressTemplate::ADDRESS_TYPE_RETURN_SERVICE,
-                            'label' => $this->l('Return service'),
-                        ],
-                    ],
-                ],
-                [
-                    'label' => $this->l('Full name/Company name'),
-                    'name' => 'full_name',
-                    'type' => 'text',
-                    'class' => 'fixed-width-xxl',
-                ],
-                [
-                    'label' => $this->l('Mobile phone'),
-                    'name' => 'mobile_phone',
-                    'type' => 'free',
-                    'class' => 'fixed-width-xxl',
-                ],
-                [
-                    'label' => $this->l('Email address'),
-                    'name' => 'email',
-                    'type' => 'text',
-                    'class' => 'fixed-width-xxl',
-                ],
-                [
-                    'label' => $this->l('Country'),
-                    'name' => 'dpd_country_id',
-                    'type' => 'select',
-                    'class' => 'fixed-width-xxl chosen',
-                    'options' => [
-                        'id' => 'id_country',
-                        'name' => 'name',
-                        'query' => $dpdCountries,
-                    ],
-                ],
-                [
-                    'label' => $this->l('Zip code'),
-                    'name' => 'zip_code',
-                    'type' => 'text',
-                    'class' => 'fixed-width-xxl',
-                ],
-                [
-                    'label' => $this->l('City/Region'),
-                    'name' => 'dpd_city_name',
-                    'type' => 'text',
-                    'class' => 'fixed-width-xxl',
-                ],
-                [
-                    'label' => $this->l('Address'),
-                    'name' => 'address',
-                    'type' => 'text',
-                    'class' => 'fixed-width-xxl',
-                ],
-                $receiverShop
-            ],
+            'input' => $inputs,
             'submit' => [
                 'title' => $this->l('Save'),
             ],
