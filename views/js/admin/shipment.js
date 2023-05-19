@@ -398,6 +398,7 @@ $(document).ready(function () {
         if (addListeners) {
             $dpdBlock.on('click', '.js-toggle-shipment', toggleShipmentEvent);
             $dpdBlock.on('click', '.js-print-label-btn', printLabel);
+            $dpdBlock.on('click', '.expand-collapse-pudo-extra-info', togglePudoInfoEvent);
         }
     }
 

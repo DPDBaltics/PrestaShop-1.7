@@ -48,22 +48,19 @@ class IsAddressInZone
     {
         $idCountry = $address->id_country ?: (int)\Configuration::get('PS_COUNTRY_DEFAULT');
 
-        foreach ($zones as $zone) {
-            // Get ranges by zone and country
-            $ranges = $this->zoneRangeRepository->findBy([
-                'id_dpd_zone' => $zone['id'],
-                // Check by country as well, because the zone must match the country of address
-                'id_country' => $idCountry,
-            ]);
+        // Get ranges by zone and country
+        $ranges = $this->zoneRangeRepository->findInZones(
+            array_column($zones, 'id'),
+            $idCountry
+        );
 
-            if (empty($ranges)) {
-                continue;
-            }
+        if (empty($ranges)) {
+            return false;
+        }
 
-            foreach ($ranges as $range) {
-                if ($this->isAddressInRange->verify($address, $range)) {
-                    return true;
-                }
+        foreach ($ranges as $range) {
+            if ($this->isAddressInRange->verify($address, $range)) {
+                return true;
             }
         }
 

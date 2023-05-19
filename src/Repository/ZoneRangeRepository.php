@@ -25,7 +25,7 @@ use DbQuery;
 
 class ZoneRangeRepository extends AbstractEntityRepository
 {
-    public function findBy(array $criteria, $limit = null, array $notEqualsCriteria = [])
+    public function findInZones(array $zoneIds, $countryId)
     {
         $query = new DbQuery();
         $query->select(
@@ -33,18 +33,8 @@ class ZoneRangeRepository extends AbstractEntityRepository
         );
         $query->select('dzr.zip_code_from, dzr.zip_code_to');
         $query->from('dpd_zone_range', 'dzr');
-
-        foreach ($criteria as $field => $value) {
-            $query->where('dzr.'.bqSQL($field).' = "'.pSQL($value).'"');
-        }
-
-        foreach ($notEqualsCriteria as $field => $value) {
-            $query->where('dzr.'.bqSQL($field).' != "'.pSQL($value).'"');
-        }
-
-        if ($limit) {
-            $query->limit((int) $limit);
-        }
+        $query->where('dzr.id_dpd_zone IN ('.implode(',', $zoneIds).')');
+        $query->where('dzr.id_country = ' . (int) $countryId);
 
         $result = $this->db->executeS($query);
 
