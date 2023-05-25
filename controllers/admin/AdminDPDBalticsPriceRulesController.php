@@ -374,7 +374,9 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
         }
 
         $shops = Shop::getShops(true);
-        if (count($shops) > 1) {
+        $isMultiShop = (bool) Configuration::get('PS_MULTISHOP_FEATURE_ACTIVE') && (count($shops) > 1);
+
+        if ($isMultiShop) {
             $allShopsSelected = false;
 
             // Checking if "All shops" option is selected
@@ -510,15 +512,91 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
         $shops = Shop::getShops(true);
         $isMultiShop = (bool) Configuration::get('PS_MULTISHOP_FEATURE_ACTIVE') && (count($shops) > 1);
 
-        $receiverShop = null;
+        $inputs = [
+            [
+                'type' => 'switch',
+                'label' => $this->l('Active'),
+                'name' => 'active',
+                'is_bool' => true,
+                'values' => [
+                    [
+                        'id' => 'active_on',
+                        'value' => true,
+                        'label' => $this->l('Enabled')
+                    ],
+                    [
+                        'id' => 'active_off',
+                        'value' => false,
+                        'label' => $this->l('Disabled')
+                    ]
+                ],
+            ],
+            [
+                'type' => 'radio',
+                'label' => $this->l('Customer types'),
+                'name' => 'customer_type',
+                'hint' => $this->l('Do you want this rule to apply everybody or just companies or individuals?'),
+                'required' => true,
+                'is_bool' => true,
+                'form_group_class' => 'dpd-price-rule-customer-types',
+                'values' => [
+                    [
+                        'id' => 'customer_type' . DPDPriceRule::CUSTOMER_TYPE_ALL,
+                        'value' => DPDPriceRule::CUSTOMER_TYPE_ALL,
+                        'label' => $this->l('All')
+                    ],
+                    [
+                        'id' => 'customer_type' . DPDPriceRule::CUSTOMER_TYPE_REGULAR,
+                        'value' => DPDPriceRule::CUSTOMER_TYPE_REGULAR,
+                        'label' => $this->l('Individual')
+                    ],
+                    [
+                        'id' => 'customer_type' . DPDPriceRule::CUSTOMER_TYPE_COMPANY,
+                        'value' => DPDPriceRule::CUSTOMER_TYPE_COMPANY,
+                        'label' => $this->l('Company')
+                    ],
+                ]
+            ],
+            [
+                'label' => $this->l('Name'),
+                'hint' => $this->l('Name of the price rule is displayed only in back office'),
+                'name' => 'name',
+                'required' => true,
+                'type' => 'text',
+                'col' => '3',
+                'form_group_class' => 'dpd-price-rule-name',
+            ],
+            [
+                'label' => '',
+                'name' => 'price_rule_ranges',
+                'type' => 'free',
+                'form_group_class' => 'dpd-price-rule-ranges',
+            ],
+            [
+                'label' => $this->l('Carriers'),
+                'name' => 'carriers_box',
+                'type' => 'free',
+                'form_group_class' => 'dpd-price-rule-carriers',
+                'required' => true,
+            ],
+            [
+                'label' => $this->l('Receiver zones'),
+                'name' => 'search_block',
+                'type' => 'free',
+                'form_group_class' => 'dpd-price-rule-zones',
+                'required' => true
+            ]
+        ];
+
         if ($isMultiShop) {
-            $receiverShop = [
+            $inputs[] = [
                 'label' => $this->l('Receiver shops'),
                 'name' => 'search_block_shops',
                 'type' => 'free',
                 'form_group_class' => 'dpd-price-rule-shops',
             ];
         }
+
         $this->multiple_fieldsets = true;
         $this->fields_form = [];
         $this->fields_form[] = [
@@ -527,82 +605,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
                     'title' => $this->l('Conditions'),
                     'icon' => 'icon-cogs'
                 ],
-                'input' => [
-                    [
-                        'type' => 'switch',
-                        'label' => $this->l('Active'),
-                        'name' => 'active',
-                        'is_bool' => true,
-                        'values' => [
-                            [
-                                'id' => 'active_on',
-                                'value' => true,
-                                'label' => $this->l('Enabled')
-                            ],
-                            [
-                                'id' => 'active_off',
-                                'value' => false,
-                                'label' => $this->l('Disabled')
-                            ]
-                        ],
-                    ],
-                    [
-                        'type' => 'radio',
-                        'label' => $this->l('Customer types'),
-                        'name' => 'customer_type',
-                        'hint' => $this->l('Do you want this rule to apply everybody or just companies or individuals?'),
-                        'required' => true,
-                        'is_bool' => true,
-                        'form_group_class' => 'dpd-price-rule-customer-types',
-                        'values' => [
-                            [
-                                'id' => 'customer_type' . DPDPriceRule::CUSTOMER_TYPE_ALL,
-                                'value' => DPDPriceRule::CUSTOMER_TYPE_ALL,
-                                'label' => $this->l('All')
-                            ],
-                            [
-                                'id' => 'customer_type' . DPDPriceRule::CUSTOMER_TYPE_REGULAR,
-                                'value' => DPDPriceRule::CUSTOMER_TYPE_REGULAR,
-                                'label' => $this->l('Individual')
-                            ],
-                            [
-                                'id' => 'customer_type' . DPDPriceRule::CUSTOMER_TYPE_COMPANY,
-                                'value' => DPDPriceRule::CUSTOMER_TYPE_COMPANY,
-                                'label' => $this->l('Company')
-                            ],
-                        ]
-                    ],
-                    [
-                        'label' => $this->l('Name'),
-                        'hint' => $this->l('Name of the price rule is displayed only in back office'),
-                        'name' => 'name',
-                        'required' => true,
-                        'type' => 'text',
-                        'col' => '3',
-                        'form_group_class' => 'dpd-price-rule-name',
-                    ],
-                    [
-                        'label' => '',
-                        'name' => 'price_rule_ranges',
-                        'type' => 'free',
-                        'form_group_class' => 'dpd-price-rule-ranges',
-                    ],
-                    [
-                        'label' => $this->l('Carriers'),
-                        'name' => 'carriers_box',
-                        'type' => 'free',
-                        'form_group_class' => 'dpd-price-rule-carriers',
-                        'required' => true,
-                    ],
-                    [
-                        'label' => $this->l('Receiver zones'),
-                        'name' => 'search_block',
-                        'type' => 'free',
-                        'form_group_class' => 'dpd-price-rule-zones',
-                        'required' => true
-                    ],
-                    $receiverShop
-                ],
+                'input' => $inputs,
                 'submit' => [
                     'title' => $this->l('Save'),
                 ],
