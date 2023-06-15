@@ -79,7 +79,6 @@
                                     <option
                                             value="{$product.id_dpd_product}"
                                             {if $product.id_dpd_product === $shipment->id_service}selected{/if}
-                                            {if !$product.available}disabled{/if}
                                     >
                                         {$product.name}
                                     </option>
