@@ -140,3 +140,6 @@
 
 ## [3.2.14]
 - Fixed module price rule and address tabs not opening.
+
+## [3.2.15]
+- Added possibility to change carrier for shipment from BO Order page before printing label even if Carrier is inactive in module.
