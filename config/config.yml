@@ -63,7 +63,6 @@ services:
     class: 'Invertus\dpdBaltics\Install\Installer'
     arguments:
       - '@dpdbaltics'
-      - '@invertus.dpdbaltics.factory.tab_factory'
       - '@invertus.dpdbaltics.service.carrier.create_carrier_service'
       - '@invertus.dpdbaltics.repository.carrier_repository'
 

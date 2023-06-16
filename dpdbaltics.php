@@ -22,7 +22,6 @@
 use Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker;
 use Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder;
 use Invertus\dpdBaltics\Config\Config;
-use Invertus\dpdBaltics\ConsoleCommand\UpdateParcelShopsCommand;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Grid\LinkRowActionCustom;
 use Invertus\dpdBaltics\Grid\SubmitBulkActionCustom;
@@ -74,30 +73,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 class DPDBaltics extends CarrierModule
 {
     /**
-     * Controller for displaying dpd links in prestashop's menu
-     */
-    const ADMIN_DPDBALTICS_MODULE_CONTROLLER = 'AdminDPDBalticsModule';
-
-    const ADMIN_ZONES_CONTROLLER = 'AdminDPDBalticsZones';
-    const ADMIN_PRODUCT_AVAILABILITY_CONTROLLER = 'AdminDPDBalticsProductsAvailability';
-    const ADMIN_PRODUCTS_CONTROLLER = 'AdminDPDBalticsProducts';
-    const ADMIN_SETTINGS_CONTROLLER = 'AdminDPDBalticsSettings';
-    const ADMIN_SHIPMENT_SETTINGS_CONTROLLER = 'AdminDPDBalticsShipmentSettings';
-    const ADMIN_IMPORT_EXPORT_CONTROLLER = 'AdminDPDBalticsImportExport';
-    const ADMIN_PRICE_RULES_CONTROLLER = 'AdminDPDBalticsPriceRules';
-    const ADMIN_ADDRESS_TEMPLATE_CONTROLLER = 'AdminDPDBalticsAddressTemplate';
-    const ADMIN_AJAX_CONTROLLER = 'AdminDPDBalticsAjax';
-    const ADMIN_PUDO_AJAX_CONTROLLER = 'AdminDPDBalticsPudoAjax';
-    const ADMIN_REQUEST_SUPPORT_CONTROLLER = 'AdminDPDBalticsRequestSupport';
-    const ADMIN_AJAX_SHIPMENTS_CONTROLLER = 'AdminDPDBalticsAjaxShipments';
-    const ADMIN_LOGS_CONTROLLER = 'AdminDPDBalticsLogs';
-    const ADMIN_SHIPMENT_CONTROLLER = 'AdminDPDBalticsShipment';
-    const ADMIN_ORDER_RETURN_CONTROLLER = 'AdminDPDBalticsOrderReturn';
-    const ADMIN_COLLECTION_REQUEST_CONTROLLER = 'AdminDPDBalticsCollectionRequest';
-    const ADMIN_COURIER_REQUEST_CONTROLLER = 'AdminDPDBalticsCourierRequest';
-    const ADMIN_AJAX_ON_BOARD_CONTROLLER = 'AdminDPDAjaxOnBoard';
-
-    /**
      * Symfony DI Container
      **/
     private $moduleContainer;
@@ -117,7 +92,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.15';
+        $this->version = '3.2.16';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -132,32 +107,40 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
-        /** @var Installer $installer */
-        $installer = $this->getModuleContainer()->get('invertus.dpdbaltics.install.installer');
-        if (!$installer->install()) {
-            $this->_errors += $installer->getErrors();
-            $this->uninstall();
+        /** @var \Invertus\dpdBaltics\Infrastructure\Bootstrap\Install\Installer $installer */
+        $installer = $this->getService(\Invertus\dpdBaltics\Infrastructure\Bootstrap\Install\Installer::class);
+
+        try {
+            $installer->init();
+
+            return true;
+        } catch (\Invertus\dpdBaltics\Infrastructure\Bootstrap\Exception\CouldNotInstallModule $exception) {
+            $this->_errors[] = $exception->getMessage();
 
             return false;
         }
-
-        return true;
     }
 
     public function uninstall()
     {
-        /** @var Installer $installer */
-        $installer = $this->moduleContainer->get('invertus.dpdbaltics.install.installer');
-        if (!$installer->uninstall()) {
-            $this->_errors += $installer->getErrors();
+        $uninstall = parent::uninstall();
+
+        if (!$uninstall) {
             return false;
         }
 
-        if (!parent::uninstall()) {
+        /** @var \Invertus\dpdBaltics\Infrastructure\Bootstrap\Uninstall\Uninstaller $uninstaller */
+        $uninstaller = $this->getService(\Invertus\dpdBaltics\Infrastructure\Bootstrap\Uninstall\Uninstaller::class);
+
+        try {
+            $uninstaller->init();
+
+            return true;
+        } catch (\Invertus\dpdBaltics\Infrastructure\Bootstrap\Exception\CouldNotUninstallModule $exception) {
+            $this->_errors[] = $exception->getMessage();
+
             return false;
         }
-
-        return true;
     }
 
     /**
@@ -165,15 +148,20 @@ class DPDBaltics extends CarrierModule
      */
     public function getTabs()
     {
-        /** @var TabService $tabsService */
-        $tabsService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.tab_service');
+        /** @var \Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs $moduleTabs */
+        $moduleTabs = $this->getService(\Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs::class);
 
-        return $tabsService->getTabs();
+        return $moduleTabs->getTabs();
     }
 
     public function getContent()
     {
-        Tools::redirectAdmin($this->context->link->getAdminLink(self::ADMIN_SETTINGS_CONTROLLER));
+        Tools::redirectAdmin($this->context->link->getAdminLink(\Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs::ADMIN_SETTINGS_CONTROLLER));
+    }
+
+    public function getService($serviceName)
+    {
+        return $this->getModuleContainer()->get($serviceName);
     }
 
     /**
@@ -193,7 +181,7 @@ class DPDBaltics extends CarrierModule
         //TODO fillup this array when more modules are compatible with OPC
         $onePageCheckoutControllers = ['supercheckout'];
         $applicableControlelrs = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
-        $currentController = $this->context->controller->php_self ?? Tools::getValue('controller');
+        $currentController = !empty($this->context->controller->php_self) ? $this->context->controller->php_self : Tools::getValue('controller');
 
         if ('product' === $currentController) {
             $this->context->controller->registerStylesheet(
@@ -736,12 +724,12 @@ class DPDBaltics extends CarrierModule
         $currentController = Tools::getValue('controller');
 
         if (Config::isPrestashopVersionBelow174()) {
-            /** @var  $tabs TabService*/
-            $tabs = $this->getModuleContainer()->get('invertus.dpdbaltics.service.tab_service');
-            $visibleClasses = $tabs->getTabsClassNames(false);
+            /** @var \Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs $moduleTabs */
+            $moduleTabs = $this->getService(\Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs::class);
+            $visibleClasses = $moduleTabs->getTabsClassNames(false);
 
             if (in_array($currentController, $visibleClasses, true)) {
-                Media::addJsDef(['visibleTabs' => $tabs->getTabsClassNames(true)]);
+                Media::addJsDef(['visibleTabs' => $moduleTabs->getTabsClassNames(true)]);
                 $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/tabsHandlerBelowPs174.js');
             }
         }
@@ -753,7 +741,7 @@ class DPDBaltics extends CarrierModule
             $this->context->controller->addJS($this->getPathUri() . 'views/js/admin/order_list.js');
             Media::addJsDef(
                 [
-                    'dpdHookAjaxShipmentController' => $this->context->link->getAdminLink(self::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
+                    'dpdHookAjaxShipmentController' => $this->context->link->getAdminLink(\Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
                     'shipmentIsBeingPrintedMessage' => $this->context->smarty->fetch($this->getLocalPath() . 'views/templates/admin/partials/spinner.tpl') .
                         $this->l('Your labels are being saved please stay on the page'),
                     'noOrdersSelectedMessage' => $this->l('No orders were selected'),
@@ -791,7 +779,7 @@ class DPDBaltics extends CarrierModule
                 'expandText' => $this->l('Expand'),
                 'collapseText' => $this->l('Collapse'),
                 'dpdAjaxShipmentsUrl' =>
-                    $this->context->link->getAdminLink(self::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
+                    $this->context->link->getAdminLink(\Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
                 'dpdMessages' => [
                     'invalidProductQuantity' => $this->l('Invalid product quantity entered'),
                     'invalidShipment' => $this->l('Invalid shipment selected'),
@@ -829,9 +817,9 @@ class DPDBaltics extends CarrierModule
                 'pudoCarriers' => json_encode($productRepo->getPudoProducts()),
                 'currentController' => $currentController,
                 'dpdAjaxShipmentsUrl' =>
-                    $this->context->link->getAdminLink(self::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
+                    $this->context->link->getAdminLink(\Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs::ADMIN_AJAX_SHIPMENTS_CONTROLLER),
                 'ignoreAdminController' => true,
-                'dpdAjaxPudoUrl' => $this->context->link->getAdminLink(self::ADMIN_PUDO_AJAX_CONTROLLER),
+                'dpdAjaxPudoUrl' => $this->context->link->getAdminLink(\Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs::ADMIN_PUDO_AJAX_CONTROLLER),
                 'id_shop' => $this->context->shop->id,
             ]);
 
@@ -1026,7 +1014,7 @@ class DPDBaltics extends CarrierModule
             'isAbove177' => Config::isPrestashopVersionAbove177(),
             'testOrder' => $shipment->is_test,
             'total_products' => 1,
-            'contractPageLink' => $this->context->link->getAdminLink(self::ADMIN_PRODUCTS_CONTROLLER),
+            'contractPageLink' => $this->context->link->getAdminLink(\Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs::ADMIN_PRODUCTS_CONTROLLER),
             'dpdCodWarning' => $dpdCodWarning,
             'testMode' => Configuration::get(Config::SHIPMENT_TEST_MODE),
             'printLabelOption' => Configuration::get(Config::LABEL_PRINT_OPTION),

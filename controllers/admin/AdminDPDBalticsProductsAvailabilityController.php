@@ -12,6 +12,7 @@
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Exception\ProductAvailabilityUpdateException;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Provider\ProductAvailabilityProvider;
 use Invertus\dpdBaltics\Service\Product\ProductAvailabilityService;
 
@@ -61,8 +62,8 @@ class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminControl
                     'saveProgress' => $this->l('Saving...'),
                 ],
                 'url' => [
-                    'productAvailabilityControllerUrl' => $this->context->link->getAdminLink(DPDBaltics::ADMIN_PRODUCT_AVAILABILITY_CONTROLLER),
-                    'productControllerUrl' => $this->context->link->getAdminLink(DPDBaltics::ADMIN_PRODUCTS_CONTROLLER),
+                    'productAvailabilityControllerUrl' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_PRODUCT_AVAILABILITY_CONTROLLER),
+                    'productControllerUrl' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_PRODUCTS_CONTROLLER),
                 ],
                 'entity' => [
                     'productAvailabilityRanges' => $productAvailabilityProvider->getProductAvailabilityForJS(Tools::getValue('id_dpd_product')),

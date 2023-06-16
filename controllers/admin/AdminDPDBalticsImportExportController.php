@@ -24,6 +24,7 @@ use Invertus\dpdBaltics\Builder\Template\Admin\WarningBlockBuilder;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Exception\ImportException;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Provider\ImportExportOptionsProvider;
 use Invertus\dpdBaltics\Service\DPDFlashMessageService;
 use Invertus\dpdBaltics\Service\Export\ExportProvider;
@@ -57,7 +58,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
         if (Tools::isSubmit('submitProcessImportZones')) {
             Media::addJsDef([
                 'dpdAjaxUrl' =>
-                    $this->context->link->getAdminLink(DPDBaltics::ADMIN_AJAX_CONTROLLER),
+                    $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_CONTROLLER),
                 'successMessage' => $this->module->l('Zones successfully imported'),
                 'failMessage' => $this->module->l('Zones import failed')
             ]);
@@ -68,7 +69,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
         if (Tools::isSubmit('submitProcessImportParcels')) {
             Media::addJsDef([
                 'dpdAjaxUrl' =>
-                    $this->context->link->getAdminLink(DPDBaltics::ADMIN_AJAX_CONTROLLER),
+                    $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_CONTROLLER),
                 'successMessage' => $this->module->l('Parcels successfully updated'),
                 'failMessage' => $this->module->l('Parcels update failed'),
                 'countryId' => Tools::getValue('DPD_PARCEL_IMPORT_COUNTRY_SELECTOR')
@@ -391,7 +392,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                 $flashMessageService = $this->module->getModuleContainer('invertus.dpdbaltics.service.dpdflash_message_service');
                 $flashMessageService->addFlash('success', $this->confirmations);
 
-                Tools::redirectAdmin($this->context->link->getAdminLink(DPDBaltics::ADMIN_IMPORT_EXPORT_CONTROLLER));
+                Tools::redirectAdmin($this->context->link->getAdminLink(ModuleTabs::ADMIN_IMPORT_EXPORT_CONTROLLER));
             }
 
             return;

@@ -76,3 +76,13 @@ services:
 
   invertus.dpdbaltics.repository.order_delivery_time_repository:
     class: 'Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository'
+
+  Invertus\dpdBaltics\Core\Shared\Repository\LanguageRepository:
+    class: 'Invertus\dpdBaltics\Core\Shared\Repository\LanguageRepository'
+
+  Invertus\dpdBaltics\Core\Shared\Repository\LanguageRepositoryInterface: '@Invertus\dpdBaltics\Core\Shared\Repository\LanguageRepository'
+
+  Invertus\dpdBaltics\Core\Shared\Repository\TabRepository:
+    class: 'Invertus\dpdBaltics\Core\Shared\Repository\TabRepository'
+
+  Invertus\dpdBaltics\Core\Shared\Repository\TabRepositoryInterface: '@Invertus\dpdBaltics\Core\Shared\Repository\TabRepository'
