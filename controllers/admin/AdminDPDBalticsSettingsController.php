@@ -113,6 +113,21 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                     'title' => $this->l('Save'),
                 ],
             ],
+            'orders_page_configuration' => [
+                'title' => $this->l('Orders page configuration'),
+                'icon' => 'dpd-icon-settings',
+                'fields' => [
+                    Config::HIDE_ORDERS_LABEL_PRINT_BUTTON => [
+                        'title' => $this->l('Hide print label button column in admin orders listing'),
+                        'type' => 'bool',
+                        'validation' => 'isBool',
+                        'cast' => 'intval'
+                    ],
+                ],
+                'submit' => [
+                    'title' => $this->l('Save'),
+                ],
+            ],
             'log_configuration' => [
                 'title' => $this->l('Log configuration'),
                 'icon' => 'dpd-icon-settings',

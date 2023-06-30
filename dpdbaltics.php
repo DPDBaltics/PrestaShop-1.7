@@ -1233,6 +1233,10 @@ class DPDBaltics extends CarrierModule
 
     public function hookActionAdminOrdersListingFieldsModifier($params)
     {
+        if (Configuration::get(Config::HIDE_ORDERS_LABEL_PRINT_BUTTON)) {
+            return false;
+        }
+
         if (isset($params['select'])) {
             $params['select'] .= ' ,ds.`id_order` AS id_order_shipment ';
         }
@@ -1293,15 +1297,17 @@ class DPDBaltics extends CarrierModule
 
         $definition = $params['definition'];
 
-        $definition->getColumns()
-            ->addAfter(
-                'date_add',
-                (new ActionColumn('dpd_print_label'))
-                    ->setName($this->l('Dpd print label'))
-                    ->setOptions([
-                        'actions' => $this->getGridAction()
-                    ])
-            );
+        if (!Configuration::get(Config::HIDE_ORDERS_LABEL_PRINT_BUTTON)) {
+            $definition->getColumns()
+                ->addAfter(
+                    'date_add',
+                    (new ActionColumn('dpd_print_label'))
+                        ->setName($this->l('Dpd print label'))
+                        ->setOptions([
+                            'actions' => $this->getGridAction()
+                        ])
+                );
+        }
 
         $definition->getBulkActions()
             ->add(
