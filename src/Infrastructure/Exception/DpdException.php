@@ -57,7 +57,7 @@ class DpdException extends \Exception
     public static function unknownError(\Exception $exception)
     {
         return new static(
-            'An unknown error error occurred. Please check system logs or contact Bolt support.',
+            'An unknown error error occurred. Please check system logs or contact Dpd support.',
             ExceptionCode::UNKNOWN_ERROR,
             $exception
         );
