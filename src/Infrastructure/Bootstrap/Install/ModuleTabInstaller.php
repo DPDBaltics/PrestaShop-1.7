@@ -40,18 +40,6 @@ final class ModuleTabInstaller implements InstallerInterface
 
     public function init()
     {
-        /*
-         * NOTE: PS 170-174 core install module tab command does not check for
-         * existing tabs and just write new ones. This causes bugs so
-         * we stop our own tab installer.
-         *
-         * Greater versions sometimes throw error about existing tabs
-         * so installing tabs manually only on PS 16.
-         */
-        if (VersionUtility::isPsVersionGreaterOrEqualTo('1.7.0.0')) {
-            return;
-        }
-
         $tabs = $this->moduleTabs->getTabs();
 
         foreach ($tabs as $tab) {
@@ -86,7 +74,7 @@ final class ModuleTabInstaller implements InstallerInterface
 
         $tabEntity = new PrestashopTab();
         $tabEntity->class_name = $className;
-        $tabEntity->id_parent = $parentTab ? $parentTab->id : 0;
+        $tabEntity->id_parent = $parentTab ? $parentTab->id : -1;
         $tabEntity->module = $this->module->name;
         $tabEntity->active = $visible;
 
