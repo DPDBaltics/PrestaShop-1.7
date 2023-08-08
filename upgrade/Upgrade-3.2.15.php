@@ -30,7 +30,7 @@ if (!defined('_PS_VERSION_')) {
  * @throws PrestaShopDatabaseException
  * @throws PrestaShopException
  */
-function upgrade_module_3_2_16(DPDBaltics $module)
+function upgrade_module_3_2_15(DPDBaltics $module)
 {
     $result = true;
 
