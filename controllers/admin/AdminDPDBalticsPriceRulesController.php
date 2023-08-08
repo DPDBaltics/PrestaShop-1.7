@@ -13,6 +13,7 @@
 use Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Repository\DPDZoneRepository;
 use Invertus\dpdBaltics\Repository\ShopRepository;
 use Invertus\dpdBaltics\Service\DPDFlashMessageService;
@@ -340,7 +341,7 @@ class AdminDPDBalticsPriceRulesController extends AbstractAdminController
         if (empty($priceRuleZones)) {
             $this->fields_value['search_block'] = $this->getMessageWithLink(
                 'warning',
-                $this->context->link->getAdminLink(DPDBaltics::ADMIN_ZONES_CONTROLLER) .
+                $this->context->link->getAdminLink(ModuleTabs::ADMIN_ZONES_CONTROLLER) .
                 '&add' . DPDZone::$definition['table'],
                 $this->l('There are no zones to add. '),
                 $this->l(' to add more zones.')

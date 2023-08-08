@@ -21,6 +21,7 @@
 
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Repository\AddressTemplateRepository;
 use Invertus\dpdBaltics\Repository\CodPaymentRepository;
 use Invertus\dpdBaltics\Repository\PaymentRepository;
@@ -128,7 +129,7 @@ class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
         $infoBlockText = $this->module->l('Please move COD modules to the right, non-COD modules leave on the left');
         $returnServiceAddresses = $addressTemplateRepo->getReturnServiceAddressTemplates();
         if (!$returnServiceAddresses) {
-            $addressTabRedirect = $this->context->link->getAdminLink(DPDBaltics::ADMIN_ADDRESS_TEMPLATE_CONTROLLER);
+            $addressTabRedirect = $this->context->link->getAdminLink(ModuleTabs::ADMIN_ADDRESS_TEMPLATE_CONTROLLER);
             $this->context->smarty->assign(
                 [
                     'addressTabRedirect' => $addressTabRedirect

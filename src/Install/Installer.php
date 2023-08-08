@@ -33,13 +33,7 @@ use Exception;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Repository\CarrierRepository;
 use Invertus\dpdBaltics\Service\Carrier\CreateCarrierService;
-use Invertus\dpdBaltics\Factory\TabFactory;
 use Invertus\dpdBaltics\Service\Label\LabelPositionService;
-use Invertus\dpdBaltics\Uninstaller\ModuleTabs\ModuleTabsUninstaller;
-use Invertus\psModuleTabs\Object\TabsCollection;
-use Invertus\psModuleTabs\Service\TabsInitializer;
-use Invertus\psModuleTabs\Service\TabsUninstaller;
-use Symfony\Component\Validator\Constraints\Count;
 use Tools;
 use Validate;
 
@@ -56,15 +50,6 @@ class Installer
      */
     private $module;
 
-    /**
-     * @var array
-     */
-    private $errors = [];
-
-    /**
-     * @var TabFactory
-     */
-    private $tabFactory;
 
     /**
      * @var CreateCarrierService
@@ -76,91 +61,60 @@ class Installer
      */
     private $carrierRepository;
 
-    /**
-     * Installer constructor.
-     * @param DPDBaltics $module
-     * @param CreateCarrierService $createCarriersService
-     */
     public function __construct(
         DPDBaltics $module,
-        TabFactory $tabFactory,
         CreateCarrierService $createCarriersService,
         CarrierRepository $carrierRepository
     ) {
         $this->module = $module;
-        $this->tabFactory = $tabFactory;
         $this->createCarriersService = $createCarriersService;
         $this->carrierRepository = $carrierRepository;
     }
 
     /**
-     * Get installer errors
-     *
-     * @return array|string[]
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
-     * @return bool
+     * @throws \Exception
      */
     public function install()
     {
-        if (!$this->installConfiguration()) {
-            $this->errors[] = $this->module->l('Failed to install configuration', self::FILE_NAME);
-            return false;
-        }
+        //TODO custom exceptions.
+        //TODO extract messages to translator instead of translating them here.
 
-        if (!$this->installTabs()) {
-            $this->errors[] = $this->module->l('Failed to install tabs', self::FILE_NAME);
-            return false;
+        if (!$this->installConfiguration()) {
+            throw new \Exception($this->module->l('Failed to install configuration', self::FILE_NAME));
         }
 
         if (!$this->processDatabase(self::DB_ACTION_INSTALL)) {
-            $this->errors[] = $this->module->l('Failed to install database tables', self::FILE_NAME);
-            return false;
+            throw new \Exception($this->module->l('Failed to install database tables', self::FILE_NAME));
         }
 
         if (!$this->createCarriers()) {
-            $this->errors[] = $this->module->l('Failed to create carriers', self::FILE_NAME);
-            return false;
+            throw new \Exception($this->module->l('Failed to create carriers', self::FILE_NAME));
         }
 
         if (!$this->registerHooks()) {
-            $this->errors[] = $this->module->l('Failed to register hooks', self::FILE_NAME);
-            return false;
+            throw new \Exception($this->module->l('Failed to register hooks', self::FILE_NAME));
         }
-
-        return true;
     }
 
     /**
-     * Uninstall controllers, hooks, database & etc.
-     *
-     * @return bool
+     * @throws \Exception
      */
     public function uninstall()
     {
+        //TODO custom exceptions.
+        //TODO extract messages to translator instead of translating them here.
+
         if (!$this->uninstallConfiguration()) {
-            $this->errors[] = $this->module->l('Failed to uninstall configuration', self::FILE_NAME);
-            return false;
+            throw new \Exception($this->module->l('Failed to uninstall configuration', self::FILE_NAME));
         }
 
-        if (!$this->uninstallTabs()) {
-            $this->errors[] = $this->module->l('Failed to uninstall tabs', self::FILE_NAME);
-            return false;
+        if (!$this->processDeleteCarriers()) {
+            throw new \Exception($this->module->l('Failed to delete carriers', self::FILE_NAME));
         }
-
-        $this->processDeleteCarriers();
 
         if (!$this->processDatabase(self::DB_ACTION_UNINSTALL)) {
-            $this->errors[] = $this->module->l('Failed to uninstall database tables', self::FILE_NAME);
-            return false;
+            throw new \Exception($this->module->l('Failed to uninstall database tables', self::FILE_NAME));
         }
-
-        return true;
     }
 
     /**
@@ -180,10 +134,10 @@ class Installer
 
             if (!$this->execute($sqlStatements)) {
                 if (self::DB_ACTION_INSTALL === $action) {
-                    $this->errors[] = sprintf(
+                    throw new \Exception(sprintf(
                         $this->module->l('Failed to execute SQL in file %s', self::FILE_NAME),
                         $sqlFile
-                    );
+                    ));
                 }
                 return false;
             }
@@ -232,14 +186,7 @@ class Installer
      */
     public function createCarriers()
     {
-        try {
-            $result = $this->createCarriersService->createCarriers(Config::getProducts());
-        } catch (Exception $e) {
-            $this->errors[] = $e->getMessage();
-            $result = false;
-        }
-
-        return $result;
+        return $this->createCarriersService->createCarriers(Config::getProducts());
     }
 
     /**
@@ -313,33 +260,6 @@ class Installer
         }
 
         return true;
-    }
-
-    private function installTabs()
-    {
-        if (!Config::isPrestashopVersionBelow174()) {
-            return true;
-        }
-        /** @var TabsCollection $tabCollection */
-        $tabCollection = $this->tabFactory->getTabsCollection();
-        $moduleName = $this->module->name;
-        $tabsInitializer = new TabsInitializer(_PS_VERSION_, $tabCollection, $moduleName);
-
-        return $tabsInitializer->initializeTabsByPsVersion();
-    }
-
-    private function uninstallTabs()
-    {
-        if (!Config::isPrestashopVersionBelow174()) {
-            return true;
-        }
-
-        /** @var TabsCollection $tabCollection */
-        $tabCollection = $this->tabFactory->getTabsCollection()->getTabsCollection();
-
-        $tabsUninstaller = new ModuleTabsUninstaller($tabCollection);
-
-        return $tabsUninstaller->uninstallTabs();
     }
 
     /**

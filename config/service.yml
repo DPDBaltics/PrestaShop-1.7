@@ -75,11 +75,6 @@ services:
       - '@invertus.dpdbaltics.service.price_rule_service'
       - '@invertus.dpdbaltics.repository.price_rule_repository'
 
-  invertus.dpdbaltics.service.tab_service:
-    class: 'Invertus\dpdBaltics\Service\TabService'
-    arguments:
-      - '@dpdbaltics'
-
   invertus.dpdbaltics.service.zone.delete_zone_service:
     class: 'Invertus\dpdBaltics\Service\Zone\DeleteZoneService'
     arguments:
@@ -293,3 +288,37 @@ services:
     arguments:
       - '@invertus.dpdbaltics.service.api.label_api_service'
       - '@invertus.dpdbaltics.service.shipment_service'
+
+  Invertus\dpdBaltics\Infrastructure\Adapter\ModuleFactory:
+    class: 'Invertus\dpdBaltics\Infrastructure\Adapter\ModuleFactory'
+
+  Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs:
+    class: 'Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs'
+    arguments:
+      - '@Invertus\dpdBaltics\Infrastructure\Adapter\ModuleFactory'
+
+  Invertus\dpdBaltics\Infrastructure\Bootstrap\Install\ModuleTabInstaller:
+    class: 'Invertus\dpdBaltics\Infrastructure\Bootstrap\Install\ModuleTabInstaller'
+    arguments:
+      - '@Invertus\dpdBaltics\Infrastructure\Adapter\ModuleFactory'
+      - '@Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs'
+      - '@Invertus\dpdBaltics\Core\Shared\Repository\TabRepositoryInterface'
+      - '@Invertus\dpdBaltics\Core\Shared\Repository\LanguageRepositoryInterface'
+
+  Invertus\dpdBaltics\Infrastructure\Bootstrap\Install\Installer:
+    class: 'Invertus\dpdBaltics\Infrastructure\Bootstrap\Install\Installer'
+    arguments:
+      - '@Invertus\dpdBaltics\Infrastructure\Bootstrap\Install\ModuleTabInstaller'
+      - '@invertus.dpdbaltics.install.installer'
+
+  Invertus\dpdBaltics\Infrastructure\Bootstrap\Uninstall\ModuleTabUninstaller:
+    class: 'Invertus\dpdBaltics\Infrastructure\Bootstrap\Uninstall\ModuleTabUninstaller'
+    arguments:
+      - '@Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs'
+      - '@Invertus\dpdBaltics\Core\Shared\Repository\TabRepositoryInterface'
+
+  Invertus\dpdBaltics\Infrastructure\Bootstrap\Uninstall\Uninstaller:
+    class: 'Invertus\dpdBaltics\Infrastructure\Bootstrap\Uninstall\Uninstaller'
+    arguments:
+      - '@Invertus\dpdBaltics\Infrastructure\Bootstrap\Uninstall\ModuleTabUninstaller'
+      - '@invertus.dpdbaltics.install.installer'

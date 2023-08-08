@@ -11,13 +11,9 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
-use Invertus\dpdBaltics\Factory\TabFactory;
-use Invertus\dpdBaltics\Install\Installer;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\Install\ModuleTabInstaller;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\Uninstall\ModuleTabUninstaller;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
-use Invertus\psModuleTabs\Object\Tab;
-use Invertus\psModuleTabs\Object\TabsCollection;
-use Invertus\psModuleTabs\Service\TabsInitializer;
-use Invertus\psModuleTabs\Service\TabsInstaller;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -31,30 +27,26 @@ if (!defined('_PS_VERSION_')) {
  */
 function upgrade_module_1_1_1(DPDBaltics $module)
 {
-    $db = Db::getInstance();
-    $dbQuery = new DbQuery();
-    $dbQuery->select('id_tab');
-    $dbQuery->from('tab');
-    $dbQuery->where("`module` = '" . pSQL($module->name) . "'");
-    $tabs = $db->executeS($dbQuery);
-    foreach ($tabs as $tab) {
-        $tabClass = new TabCore($tab['id_tab']);
-        $tabClass->delete();
+    /** @var ModuleTabUninstaller $moduleTabUninstaller */
+    $moduleTabUninstaller = $module->getService(ModuleTabUninstaller::class);
+
+    /** @var ModuleTabInstaller $moduleTabInstaller */
+    $moduleTabInstaller = $module->getService(ModuleTabInstaller::class);
+
+    $result = true;
+
+    try {
+        $moduleTabUninstaller->init();
+        $moduleTabInstaller->init();
+    } catch (Exception $exception) {
+        $result &= false;
     }
 
-    /** @var TabFactory $tabFactory */
-    $tabFactory = $module->getModuleContainer('invertus.dpdbaltics.factory.tab_factory');
-
-    $tabsInstaller = new TabsInstaller($tabFactory->getTabsCollection(), $module->name);
-    if (!$tabsInstaller->installTabs()) {
-        return false;
-    };
-
     /** @var CurrentCountryProvider $currentCountryProvider */
-    $currentCountryProvider = $module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+    $currentCountryProvider = $module->getService('invertus.dpdbaltics.provider.current_country_provider');
     $countryCode = $currentCountryProvider->getCurrentCountryIsoCode();
 
     Configuration::updateValue(Config::DPD_PARCEL_IMPORT_COUNTRY_SELECTOR, Country::getByIso($countryCode));
 
-    return true;
+    return $result;
 }

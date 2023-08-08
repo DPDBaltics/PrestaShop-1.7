@@ -14,6 +14,7 @@ namespace Invertus\dpdBaltics\OnBoard\OnBoardSteps;
 
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardFastMoveButton;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardParagraph;
@@ -81,7 +82,7 @@ class StepManualProducts2 extends AbstractOnBoardStep
         }
 
         $this->stepActionService->ifNotRightControllerReverseStep(
-            DPDBaltics::ADMIN_PRODUCTS_CONTROLLER,
+            ModuleTabs::ADMIN_PRODUCTS_CONTROLLER,
             Config::STEP_MANUAL_PRODUCTS_0
         );
 

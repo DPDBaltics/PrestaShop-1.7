@@ -24,6 +24,7 @@ use Invertus\dpdBaltics\Builder\Template\Admin\PhoneInputBuilder;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Converter\FormDataConverter;
 use Invertus\dpdBaltics\DTO\CollectionRequestData;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Repository\AddressRepository;
 use Invertus\dpdBaltics\Repository\CollectionRequestRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
@@ -344,7 +345,7 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
 
             Media::addJsDef([
                 'dpdAjaxUrl' =>
-                    $this->context->link->getAdminLink(DPDBaltics::ADMIN_AJAX_CONTROLLER),
+                    $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_CONTROLLER),
             ]);
         }
 
@@ -405,7 +406,7 @@ class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
     public function displayViewCollectionRequestLink($token, $idCollectionRequest)
     {
         $collectionRequestUrl =
-            $this->context->link->getAdminLink(DPDBaltics::ADMIN_COLLECTION_REQUEST_CONTROLLER, false);
+            $this->context->link->getAdminLink(ModuleTabs::ADMIN_COLLECTION_REQUEST_CONTROLLER, false);
         $collectionRequestUrl .=
             '&id_dpd_collection_request=' . $idCollectionRequest . '&updatedpd_collection_request&token=' . $token;
 
