@@ -8,11 +8,6 @@ services:
   invertus.dpdbaltics_factory.context_factory:
     class: 'Invertus\dpdBaltics\Factory\ContextFactory'
 
-  invertus.dpdbaltics.factory.tab_factory:
-    class: 'Invertus\dpdBaltics\Factory\TabFactory'
-    arguments:
-      - '@invertus.dpdbaltics.service.tab_service'
-
   invertus.dpdbaltics.factory.apiparams_factory:
     class: 'Invertus\dpdBaltics\Factory\APIParamsFactory'
     arguments:

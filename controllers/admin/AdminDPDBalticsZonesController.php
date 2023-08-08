@@ -15,6 +15,7 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Exception\ZoneUpdateException;
 use Invertus\dpdBaltics\Exception\ZoneValidateException;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardService;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardStepActionService;
 use Invertus\dpdBaltics\Provider\ZoneRangeProvider;
@@ -63,7 +64,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
         if ($this->display != 'edit' && $this->display != 'add') {
             $this->toolbar_btn['import'] = [
                 'href' => $this->context->link->getAdminLink(
-                    DPDBaltics::ADMIN_IMPORT_EXPORT_CONTROLLER,
+                    ModuleTabs::ADMIN_IMPORT_EXPORT_CONTROLLER,
                     true,
                     [],
                     ['importContr' => Config::IMPORT_EXPORT_OPTION_ZONES]
@@ -101,7 +102,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
                     'saveProgress' => $this->l('Saving...'),
                 ],
                 'url' => [
-                    'zonesControllerUrl' => $this->context->link->getAdminLink(DPDBaltics::ADMIN_ZONES_CONTROLLER),
+                    'zonesControllerUrl' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_ZONES_CONTROLLER),
                 ],
                 'entity' => [
                     'zoneRanges' => $zoneRangeProvider->getZoneRangesForJS(),

@@ -15,6 +15,7 @@ namespace Invertus\dpdBaltics\OnBoard\OnBoardSteps;
 use Configuration;
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardFastMoveButton;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardParagraph;
@@ -92,7 +93,7 @@ class StepManualZones6 extends AbstractOnBoardStep
     public function takeStepAction()
     {
         if ($this->stepActionService->nextStepIfRightController(
-            DPDBaltics::ADMIN_PRODUCTS_CONTROLLER,
+            ModuleTabs::ADMIN_PRODUCTS_CONTROLLER,
             Config::STEP_MANUAL_PRODUCTS_2
         )) {
             $this->stepActionService->setManualConfigCompletedSteps(Config::ON_BOARD_PRODUCTS_PART);

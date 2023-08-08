@@ -23,6 +23,7 @@ use Invertus\dpdBaltics\Builder\Template\Admin\PhoneInputBuilder;
 use Invertus\dpdBaltics\Builder\Template\SearchBoxBuilder;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Repository\AddressRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
 use Invertus\dpdBaltics\Repository\ShopRepository;
@@ -101,7 +102,7 @@ class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
 
             Media::addJsDef([
                 'dpdAjaxUrl' =>
-                    $this->context->link->getAdminLink(DPDBaltics::ADMIN_AJAX_CONTROLLER),
+                    $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_CONTROLLER),
                 'inputWarningMessage' => $this->l('Please fill all required fields')
             ]);
         }

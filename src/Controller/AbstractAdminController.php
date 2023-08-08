@@ -25,6 +25,7 @@ use Configuration;
 use DPDBaltics;
 use Exception;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardStepActionService;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Provider\ImportExportURLProvider;
@@ -83,7 +84,7 @@ class AbstractAdminController extends ModuleAdminController
         $importExportUrl = $importExportURLProvider->getImportExportUrl();
 
         $this->page_header_toolbar_btn['logs'] = [
-            'href' => $this->context->link->getAdminLink(DPDBaltics::ADMIN_LOGS_CONTROLLER),
+            'href' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_LOGS_CONTROLLER),
             'desc' => $this->module->l('Logs', self::FILENAME),
             'icon' => 'process-icon-database',
         ];
@@ -95,7 +96,7 @@ class AbstractAdminController extends ModuleAdminController
         ];
 
         $this->page_header_toolbar_btn['request_support'] = [
-            'href' => $this->context->link->getAdminLink(DPDBaltics::ADMIN_REQUEST_SUPPORT_CONTROLLER),
+            'href' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_REQUEST_SUPPORT_CONTROLLER),
             'desc' => $this->module->l('Request support', self::FILENAME),
             'icon' => 'process-icon-newCombination toolbar-new',
         ];
@@ -132,7 +133,7 @@ class AbstractAdminController extends ModuleAdminController
             $jsVars['onBoard'] = array(
                 'stopWarning' => $this->l('Stop DPD on-board?'),
                 'pauseWarning' => $this->l('Pause DPD on-board?'),
-                'ajaxUrl' => $this->context->link->getAdminLink(DPDBaltics::ADMIN_AJAX_ON_BOARD_CONTROLLER),
+                'ajaxUrl' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_ON_BOARD_CONTROLLER),
                 'currentStep' => Configuration::get(Config::ON_BOARD_STEP)
             );
 
@@ -201,7 +202,7 @@ class AbstractAdminController extends ModuleAdminController
             $this->warnings[] = $this->context->smarty->fetch(
                 $this->module->getLocalPath() . 'views/templates/admin/warning-message-with-link.tpl',
                 [
-                    'messageLink' => $this->context->link->getAdminLink(DPDBaltics::ADMIN_IMPORT_EXPORT_CONTROLLER) . "#import-Parcels-button",
+                    'messageLink' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_IMPORT_EXPORT_CONTROLLER) . "#import-Parcels-button",
                     'messageStart' => $this->module->l('“Please note: Pick-up carrier is not available for your shop at the moment, because you don’t have pick-up points. To import pick-up points ', self::FILENAME),
                     'messageEnd' => '',
                     'linkText' => $this->module->l('click here', self::FILENAME)
