@@ -524,7 +524,7 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
-        if (!$isAddressInZone->verify($deliveryAddress, $carrierZones)) {
+        if (!$zoneRepo->findAddressInZones($deliveryAddress)) {
             return false;
         }
 
