@@ -100,7 +100,7 @@ class ProductShippingCostProvider
             return false;
         }
 
-        if ($idAddress && !$this->isAddressInZone->verify($deliveryAddress, $carrierZones)) {
+        if ($idAddress && !$this->isAddressInZone->verify($deliveryAddress)) {
             return false;
         }
 

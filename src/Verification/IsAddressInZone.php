@@ -13,57 +13,31 @@
 namespace Invertus\dpdBaltics\Verification;
 
 use Invertus\dpdBaltics\Repository\ZoneRangeRepository;
+use Invertus\dpdBaltics\Repository\ZoneRepository;
 use Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate;
 
 class IsAddressInZone
 {
     /**
-     * @var ZoneRangeRepository
+     * @var ZoneRepository
      */
-    private $zoneRangeRepository;
-    /**
-     * @var IsAddressInRange
-     */
-    private $isAddressInRange;
+    private $zoneRepository;
 
     public function __construct(
-        ZoneRangeRepository $zoneRangeRepository,
-        IsAddressInRange $isAddressInRange
+        ZoneRepository $zoneRepository
     ) {
-        $this->zoneRangeRepository = $zoneRangeRepository;
-        $this->isAddressInRange = $isAddressInRange;
+        $this->zoneRepository = $zoneRepository;
     }
 
     /**
      * Check if address falls into given zones
      *
      * @param \Address $address
-     * @param array $zones
      *
      * @return bool
-     * @throws \PrestaShopDatabaseException
-     * @throws \PrestaShopException
      */
-    public function verify(\Address $address, array $zones)
+    public function verify(\Address $address)
     {
-        $idCountry = $address->id_country ?: (int)\Configuration::get('PS_COUNTRY_DEFAULT');
-
-        // Get ranges by zone and country
-        $ranges = $this->zoneRangeRepository->findInZones(
-            array_column($zones, 'id'),
-            $idCountry
-        );
-
-        if (empty($ranges)) {
-            return false;
-        }
-
-        foreach ($ranges as $range) {
-            if ($this->isAddressInRange->verify($address, $range)) {
-                return true;
-            }
-        }
-
-        return false;
+        return !empty($this->zoneRepository->findAddressInZones($address));
     }
 }

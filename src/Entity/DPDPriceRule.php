@@ -261,9 +261,8 @@ class DPDPriceRule extends ObjectModel
 
         /** @var DPDZoneRepository $repo */
         $repo = $module->getModuleContainer()->get('invertus.dpdbaltics.repository.dpdzone_repository');
-        $zonesIds = $repo->getZonesIdsByPriceRule($this->id);
 
-        return $isAddressInZone->verify($address, $zonesIds);
+        return $isAddressInZone->verify($address);
     }
 
     public function isApplicableByPrice($price, $idCurrency)

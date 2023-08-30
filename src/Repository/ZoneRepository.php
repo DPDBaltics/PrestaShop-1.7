@@ -22,6 +22,7 @@
 namespace Invertus\dpdBaltics\Repository;
 
 use Address;
+use Country;
 use DbQuery;
 use PrestaShopDatabaseException;
 
