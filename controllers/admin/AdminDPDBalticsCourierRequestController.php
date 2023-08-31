@@ -24,6 +24,7 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Converter\FormDataConverter;
 use Invertus\dpdBaltics\DTO\CourierRequestData;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Repository\AddressRepository;
 use Invertus\dpdBaltics\Repository\CourierRequestRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
@@ -303,7 +304,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
 
             Media::addJsDef([
                 'dpdAjaxUrl' =>
-                    $this->context->link->getAdminLink(DPDBaltics::ADMIN_AJAX_CONTROLLER),
+                    $this->context->link->getAdminLink(ModuleTabs::ADMIN_AJAX_CONTROLLER),
             ]);
         }
 
@@ -379,7 +380,7 @@ class AdminDPDBalticsCourierRequestController extends AbstractAdminController
     public function displayViewCourierRequestLink($token, $idCourierRequest)
     {
         $courierRequestUrl =
-            $this->context->link->getAdminLink(DPDBaltics::ADMIN_COURIER_REQUEST_CONTROLLER, false);
+            $this->context->link->getAdminLink(ModuleTabs::ADMIN_COURIER_REQUEST_CONTROLLER, false);
         $courierRequestUrl .=
             '&id_dpd_courier_request=' . $idCourierRequest . '&updatedpd_courier_request&token=' . $token;
 

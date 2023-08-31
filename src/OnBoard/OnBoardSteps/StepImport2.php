@@ -14,6 +14,7 @@ namespace Invertus\dpdBaltics\OnBoard\OnBoardSteps;
 
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\OnBoard\AbstractOnBoardStep;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardButton;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardFastMoveButton;
@@ -79,7 +80,7 @@ class StepImport2 extends AbstractOnBoardStep
     public function takeStepAction()
     {
         $this->stepActionService->ifNotRightControllerReverseStep(
-            DPDBaltics::ADMIN_IMPORT_EXPORT_CONTROLLER,
+            ModuleTabs::ADMIN_IMPORT_EXPORT_CONTROLLER,
             Config::STEP_IMPORT_1
         );
 

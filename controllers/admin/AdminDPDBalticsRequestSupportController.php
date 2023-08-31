@@ -12,6 +12,7 @@
 
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Service\LogsService;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
@@ -70,7 +71,7 @@ class AdminDPDBalticsRequestSupportController extends AbstractAdminController
                 ],
             ],
             'isLogsOn' => Configuration::get(Config::TRACK_LOGS),
-            'downloadLogsAction' => 'index.php?controller=' . DPDBaltics::ADMIN_REQUEST_SUPPORT_CONTROLLER . '&token=' . $this->token,
+            'downloadLogsAction' => 'index.php?controller=' . ModuleTabs::ADMIN_REQUEST_SUPPORT_CONTROLLER . '&token=' . $this->token,
         ];
 
         $this->context->smarty->assign($tplVars);

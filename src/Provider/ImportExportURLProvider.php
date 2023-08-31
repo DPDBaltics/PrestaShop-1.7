@@ -15,6 +15,7 @@ namespace Invertus\dpdBaltics\Provider;
 use Context;
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 
 class ImportExportURLProvider
 {
@@ -28,7 +29,7 @@ class ImportExportURLProvider
     public function getImportExportUrl()
     {
         return $this->context->link->getAdminLink(
-            DPDBaltics::ADMIN_IMPORT_EXPORT_CONTROLLER,
+            ModuleTabs::ADMIN_IMPORT_EXPORT_CONTROLLER,
             true
         );
     }

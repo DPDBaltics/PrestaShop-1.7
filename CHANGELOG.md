@@ -127,3 +127,25 @@
 
 ## [3.2.12]
 - Print return label on initial order creation in bulk action and save&print bug fix
+
+## [3.2.13]
+- Improved installation and uninstallation.
+- Improved shipping price calculation.
+- Improved performance of BO orders page when many shipments have been created.
+- Improved label printing functionality.
+- Implemented checkout to use selected carrier instead of first one on cart.
+- Implemented usage of PUDO address as return label address when PUDO was selected during checkout.
+- Implemented creation of missing DPD shipment when saving label.
+- Improved order message functionality when new lines were passed.
+
+## [3.2.14]
+- Fixed module price rule and address tabs not opening.
+
+## [3.2.15]
+- Added possibility to change carrier for shipment from BO Order page before printing label even if Carrier is inactive in module.
+
+## [3.2.16]
+- Shipping tab improvements.
+- Improved PUDO orders with incorrect post code.
+- Fixed BO bug then changing terminal.
+- Improved module code base.

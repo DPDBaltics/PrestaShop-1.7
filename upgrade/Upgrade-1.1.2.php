@@ -11,7 +11,6 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
-use Invertus\dpdBaltics\Factory\TabFactory;
 use Invertus\dpdBaltics\Install\Installer;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Repository\ProductRepository;

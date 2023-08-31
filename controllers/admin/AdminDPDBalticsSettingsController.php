@@ -25,6 +25,7 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\DTO\DPDProductInstall;
 use Invertus\dpdBaltics\Exception\DpdCarrierException;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Service\Carrier\CreateCarrierService;
 use Invertus\dpdBaltics\Service\Carrier\CarrierUpdateHandler;
@@ -270,7 +271,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
         Configuration::updateValue(Config::ON_BOARD_STEP, Config::STEP_MAIN_1);
         Configuration::updateValue(Config::ON_BOARD_MANUAL_CONFIG_CURRENT_PART, 1);
 
-        Tools::redirectAdmin($this->context->link->getAdminLink(DPDBaltics::ADMIN_SETTINGS_CONTROLLER));
+        Tools::redirectAdmin($this->context->link->getAdminLink(ModuleTabs::ADMIN_SETTINGS_CONTROLLER));
     }
 
     private function getPasswordPlaceholder()

@@ -108,7 +108,7 @@ $(document).ready(function () {
             }
 
             //Js to open extra content failed from theme, doing it manually.
-            if (!$(params.deliveryOption).next('.carrier-extra-content').is(':visible')) {
+            if (params.deliveryOption.length > 0 && !$(params.deliveryOption).next('.carrier-extra-content').is(':visible')) {
                 $('.carrier-extra-content').hide();
                 $(params.deliveryOption).next('.carrier-extra-content').slideDown();
             }
