@@ -260,7 +260,7 @@ class DPDPriceRule extends ObjectModel
         /** @var ZoneRepository $zoneRepo */
         $zoneRepo = $module->getModuleContainer()->get('invertus.dpdbaltics.repository.dpdzone_repository');
 
-        return $zoneRepo->findAddressInZones($address);
+        return $zoneRepo->findZoneInRangeByAddress($address);
     }
 
     public function isApplicableByPrice($price, $idCurrency)

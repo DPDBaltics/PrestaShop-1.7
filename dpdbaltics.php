@@ -429,7 +429,7 @@ class DPDBaltics extends CarrierModule
         }
     }
 
-    public function getOrderShippingCost($cart, $shipping_cost)
+    public function getOrderShippingCost($cart, $shippingCost)
     {
         return $this->getOrderShippingCostExternal($cart);
     }
@@ -451,6 +451,7 @@ class DPDBaltics extends CarrierModule
         if ($this->context->controller->ajax && Tools::getValue('id_address_delivery')) {
             $cart->id_address_delivery = (int)Tools::getValue('id_address_delivery');
         }
+
         /** @var ZoneRepository $zoneRepository */
         /** @var ProductRepository $productRepo */
         /** @var \Invertus\dpdBaltics\Service\Product\ProductAvailabilityService $productAvailabilityService */
@@ -464,7 +465,7 @@ class DPDBaltics extends CarrierModule
 
         $deliveryAddress = new Address($cart->id_address_delivery);
 
-        if (empty($zoneRepository->findAddressInZones($deliveryAddress))) {
+        if (empty($zoneRepository->findZoneInRangeByAddress($deliveryAddress))) {
             return false;
         }
 

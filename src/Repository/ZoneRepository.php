@@ -98,7 +98,7 @@ class ZoneRepository extends AbstractEntityRepository
         }
     }
 
-    public function findAddressInZones(Address $address)
+    public function findZoneInRangeByAddress(Address $address)
     {
         $idCountry = $address->id_country ?: (int)\Configuration::get('PS_COUNTRY_DEFAULT');
         $zipCode = $address->postcode;

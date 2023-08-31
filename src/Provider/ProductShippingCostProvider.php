@@ -92,7 +92,7 @@ class ProductShippingCostProvider
             return false;
         }
 
-        if ($idAddress && empty($this->zoneRepository->findAddressInZones($deliveryAddress))) {
+        if ($idAddress && empty($this->zoneRepository->findZoneInRangeByAddress($deliveryAddress))) {
             return false;
         }
 
