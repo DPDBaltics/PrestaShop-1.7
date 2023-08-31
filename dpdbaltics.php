@@ -448,36 +448,39 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
-        $carrier = new Carrier($this->id_carrier);
         if ($this->context->controller->ajax && Tools::getValue('id_address_delivery')) {
             $cart->id_address_delivery = (int)Tools::getValue('id_address_delivery');
         }
 
-        $deliveryAddress = new Address($cart->id_address_delivery);
-
+        /** @var ZoneRepository $zoneRepository */
         /** @var ProductRepository $productRepo */
-        /** @var ZoneRepository $zoneRepo */
         /** @var \Invertus\dpdBaltics\Service\Product\ProductAvailabilityService $productAvailabilityService */
         /** @var \Invertus\dpdBaltics\Validate\Weight\CartWeightValidator $cartWeightValidator */
         /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
+        $zoneRepository =  $this->getModuleContainer('invertus.dpdbaltics.repository.zone_repository');
         $productRepo = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.product_repository');
-        $zoneRepo = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.zone_repository');
         $productAvailabilityService = $this->getModuleContainer('invertus.dpdbaltics.service.product.product_availability_service');
         $cartWeightValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.weight.cart_weight_validator');
         $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
 
-        /** @var \Invertus\dpdBaltics\Verification\IsAddressInZone $isAddressInZone */
-        $isAddressInZone = $this->getModuleContainer('invertus.dpdbaltics.verification.is_address_in_zone');
+        $deliveryAddress = new Address($cart->id_address_delivery);
 
-        $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
+        if (empty($zoneRepository->findZoneInRangeByAddress($deliveryAddress))) {
+            return false;
+        }
+
+        $carrier = new Carrier($this->id_carrier);
 
         if (!$productAvailabilityService->checkIfCarrierIsAvailable($carrier->id_reference)) {
             return false;
         }
 
         try {
-            $carrierZones = $zoneRepo->findZonesIdsByCarrierReference($carrier->id_reference);
-            $isShopAvailable = $productRepo->checkIfCarrierIsAvailableInShop($carrier->id_reference, $this->context->shop->id);
+            $isCarrierAvailableInShop = $productRepo->checkIfCarrierIsAvailableInShop($carrier->id_reference, $this->context->shop->id);
+            if (empty($isCarrierAvailableInShop)) {
+                return false;
+            }
+
             $serviceCarrier = $productRepo->findProductByCarrierReference($carrier->id_reference);
         } catch (Exception $e) {
             $tplVars = [
@@ -490,22 +493,16 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        $parcelDistribution = \Configuration::get(Config::PARCEL_DISTRIBUTION);
-        $maxAllowedWeight = Config::getDefaultServiceWeights($countryCode, $serviceCarrier['product_reference']);
-
-        if (!$cartWeightValidator->validate($cart, $parcelDistribution ,$maxAllowedWeight)) {
-            return false;
-        }
-
         if ((bool)$serviceCarrier['is_home_collection']) {
             return false;
         }
 
-        if (!$isAddressInZone->verify($deliveryAddress, $carrierZones)) {
-            return false;
-        }
+        $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
 
-        if (empty($isShopAvailable)) {
+        $parcelDistribution = \Configuration::get(Config::PARCEL_DISTRIBUTION);
+        $maxAllowedWeight = Config::getDefaultServiceWeights($countryCode, $serviceCarrier['product_reference']);
+
+        if (!$cartWeightValidator->validate($cart, $parcelDistribution ,$maxAllowedWeight)) {
             return false;
         }
 
