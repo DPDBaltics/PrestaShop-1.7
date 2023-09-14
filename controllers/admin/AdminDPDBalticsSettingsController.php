@@ -39,6 +39,8 @@ require_once dirname(__DIR__).'/../vendor/autoload.php';
 
 class AdminDPDBalticsSettingsController extends AbstractAdminController
 {
+    private const FILE_NAME = 'AdminDPDBalticsSettingsController';
+
     public function init()
     {
         $parentReturn = parent::init();
@@ -115,7 +117,7 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                 ],
             ],
             'orders_page_configuration' => [
-                'title' => $this->l('Orders listing page configuration'),
+                'title' => $this->l('Orders listing page configuration', self::FILE_NAME),
                 'icon' => 'dpd-icon-settings',
                 'fields' => [
                     Config::HIDE_ORDERS_LABEL_PRINT_BUTTON => [
