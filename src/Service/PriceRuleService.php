@@ -390,10 +390,13 @@ class PriceRuleService
 
     public function applyPriceRuleForCarrier(Cart $cart, $priceRulesIds, $shopId)
     {
+        $availablePriceRules = $this->priceRuleRepository->findAllAvailableInShop($shopId);
+
         foreach ($priceRulesIds as $priceRuleId) {
-            if (!$this->priceRuleRepository->isAvailableInShop($priceRuleId, $shopId)) {
+            if (!in_array($priceRuleId, $availablePriceRules)) {
                 return false;
             }
+
             $priceRule = new DPDPriceRule($priceRuleId, null, $shopId);
             // Check if price rule is applicable for this cart
             if ($priceRule->isApplicableForCart($cart)) {

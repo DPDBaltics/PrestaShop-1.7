@@ -25,26 +25,18 @@ use DbQuery;
 
 class ZoneRangeRepository extends AbstractEntityRepository
 {
-    public function findBy(array $criteria, $limit = null, array $notEqualsCriteria = [])
+    public function findInZones(array $zoneIds, $countryId)
     {
+        $zoneIds = $zoneIds ?: [0];
+
         $query = new DbQuery();
         $query->select(
             'dzr.id_dpd_zone_range, dzr.id_dpd_zone, dzr.id_country, dzr.include_all_zip_codes'
         );
         $query->select('dzr.zip_code_from, dzr.zip_code_to');
         $query->from('dpd_zone_range', 'dzr');
-
-        foreach ($criteria as $field => $value) {
-            $query->where('dzr.'.bqSQL($field).' = "'.pSQL($value).'"');
-        }
-
-        foreach ($notEqualsCriteria as $field => $value) {
-            $query->where('dzr.'.bqSQL($field).' != "'.pSQL($value).'"');
-        }
-
-        if ($limit) {
-            $query->limit((int) $limit);
-        }
+        $query->where('dzr.id_dpd_zone IN (' . implode(',', $zoneIds) . ')');
+        $query->where('dzr.id_country = ' . (int)$countryId);
 
         $result = $this->db->executeS($query);
 
@@ -55,7 +47,7 @@ class ZoneRangeRepository extends AbstractEntityRepository
     {
         return \Db::getInstance()->executeS('
             SELECT DISTINCT `id_country`
-            FROM `'._DB_PREFIX_.'dpd_zone_range`
+            FROM `' . _DB_PREFIX_ . 'dpd_zone_range`
         ');
     }
 }

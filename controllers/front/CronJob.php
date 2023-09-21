@@ -27,6 +27,8 @@ class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
 {
     public function postProcess()
     {
+        set_time_limit(0);
+
         $token = Tools::getValue('token');
         if ($token !== Configuration::get(Config::DPDBALTICS_HASH_TOKEN)) {
             $this->ajaxDie([

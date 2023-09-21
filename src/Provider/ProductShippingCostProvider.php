@@ -60,25 +60,19 @@ class ProductShippingCostProvider
      * @var Currency
      */
     private $currency;
-    /**
-     * @var IsAddressInZone
-     */
-    private $isAddressInZone;
 
     public function __construct(
         DPDBaltics $module,
         ProductRepository $productRepository,
         ZoneRepository $zoneRepository,
         PriceRuleRepository $priceRuleRepository,
-        Currency $currency,
-        IsAddressInZone $isAddressInZone
+        Currency $currency
     ) {
         $this->module = $module;
         $this->productRepository = $productRepository;
         $this->zoneRepository = $zoneRepository;
         $this->priceRuleRepository = $priceRuleRepository;
         $this->currency = $currency;
-        $this->isAddressInZone = $isAddressInZone;
     }
 
     public function getProductShippingCost($carrierReference, $idAddress)
@@ -92,15 +86,13 @@ class ProductShippingCostProvider
 
         $deliveryAddress = new Address($idAddress);
 
-        $carrierZones = $this->zoneRepository->findZonesIdsByCarrierReference($carrier->id_reference);
-
         $serviceCarrier = $this->productRepository->findProductByCarrierReference($carrier->id_reference);
 
         if ((bool) $serviceCarrier['is_home_collection']) {
             return false;
         }
 
-        if ($idAddress && !$this->isAddressInZone->verify($deliveryAddress, $carrierZones)) {
+        if ($idAddress && empty($this->zoneRepository->findZoneInRangeByAddress($deliveryAddress))) {
             return false;
         }
 

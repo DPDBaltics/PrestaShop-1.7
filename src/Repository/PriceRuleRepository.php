@@ -470,12 +470,11 @@ class PriceRuleRepository extends AbstractEntityRepository
         $this->db->delete('dpd_price_rule_shop', 'id_dpd_price_rule = ' . (int) $priceRuleId);
     }
 
-    public function isAvailableInShop($priceRuleId, $shopId)
+    public function findAllAvailableInShop($shopId)
     {
         $query = new DbQuery();
         $query->select('id_dpd_price_rule');
         $query->from('dpd_price_rule_shop');
-        $query->where('id_dpd_price_rule = ' . (int)$priceRuleId);
         $query->where('(id_shop = ' . (int)$shopId . ' OR all_shops = 1)');
 
         return $this->db->executeS($query);
