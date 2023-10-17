@@ -143,8 +143,6 @@
 
 ## [3.2.15]
 - Added possibility to change carrier for shipment from BO Order page before printing label even if Carrier is inactive in module.
-
-## [3.2.16]
 - Shipping tab improvements.
 - Improved PUDO orders with incorrect post code.
 - Fixed BO bug then changing terminal.
