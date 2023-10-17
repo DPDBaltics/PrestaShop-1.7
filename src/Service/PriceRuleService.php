@@ -442,7 +442,7 @@ class PriceRuleService
     private function doesCarrierHavePriceRule($priceRuleId, $availablePriceRules)
     {
         foreach ($availablePriceRules as $rule) {
-            if (isset($rule['id_dpd_price_rule']) && $rule['id_dpd_price_rule'] === $priceRuleId) {
+            if (isset($rule['id_dpd_price_rule']) && (int) $rule['id_dpd_price_rule'] === (int) $priceRuleId) {
                 return true;
             }
         }
