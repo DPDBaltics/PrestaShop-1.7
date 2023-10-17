@@ -147,3 +147,7 @@
 - Improved PUDO orders with incorrect post code.
 - Fixed BO bug then changing terminal.
 - Improved module code base.
+
+## [3.2.16]
+- Improved performance
+- Added additional validation
