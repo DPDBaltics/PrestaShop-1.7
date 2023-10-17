@@ -397,7 +397,7 @@ class PriceRuleService
         }
 
         foreach ($priceRulesIds as $priceRuleId) {
-            if (!$this->doesCarrierHavePriceRule($priceRuleId, $availablePriceRules)) {
+            if (!$this->ensureCarrierHasPriceRule($priceRuleId, $availablePriceRules)) {
                 return false;
             }
 
@@ -439,7 +439,7 @@ class PriceRuleService
      * @param array|false $availablePriceRules
      * @return bool
      */
-    private function doesCarrierHavePriceRule($priceRuleId, $availablePriceRules)
+    private function ensureCarrierHasPriceRule($priceRuleId, $availablePriceRules)
     {
         foreach ($availablePriceRules as $rule) {
             if (isset($rule['id_dpd_price_rule']) && (int) $rule['id_dpd_price_rule'] === (int) $priceRuleId) {
