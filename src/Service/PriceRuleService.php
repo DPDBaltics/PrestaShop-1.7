@@ -392,8 +392,12 @@ class PriceRuleService
     {
         $availablePriceRules = $this->priceRuleRepository->findAllAvailableInShop($shopId);
 
+        if (!$availablePriceRules) {
+            return false;
+        }
+
         foreach ($priceRulesIds as $priceRuleId) {
-            if (!in_array($priceRuleId, $availablePriceRules)) {
+            if (!$this->doesCarrierHavePriceRule($priceRuleId, $availablePriceRules)) {
                 return false;
             }
 
@@ -428,5 +432,21 @@ class PriceRuleService
         }
 
         return true;
+    }
+
+    /**
+     * @param string $priceRuleId
+     * @param array|false $availablePriceRules
+     * @return bool
+     */
+    private function doesCarrierHavePriceRule($priceRuleId, $availablePriceRules)
+    {
+        foreach ($availablePriceRules as $rule) {
+            if (isset($rule['id_dpd_price_rule']) && $rule['id_dpd_price_rule'] === $priceRuleId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
