@@ -90,7 +90,8 @@ class ShipmentApiService
     public function createShipment($addressId, ShipmentData $shipmentData, $orderId)
     {
         $address = new Address($addressId);
-        $isCompany = $shipmentData->getCompany() ? true : false;
+
+        $isCompany = trim($shipmentData->getCompany()) ? true : false;
         $firstName = $shipmentData->getName();
         if ($isCompany) {
             $firstName = $shipmentData->getCompany();
