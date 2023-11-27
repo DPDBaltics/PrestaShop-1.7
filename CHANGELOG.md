@@ -153,4 +153,4 @@
 - Added additional validation
 
 ## [3.2.17]
-- Label printing bug fix
+- Label printing after changing shipment product bug fix
