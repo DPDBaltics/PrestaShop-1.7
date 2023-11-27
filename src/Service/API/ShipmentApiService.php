@@ -237,6 +237,7 @@ class ShipmentApiService
     private function setPudoData(ShipmentCreationRequest $shipmentCreationRequest, ShipmentData $shipmentData)
     {
         $shipmentCreationRequest->setParcelShopId($shipmentData->getSelectedPudoId());
+        $shipmentCreationRequest->setStreet($shipmentData->getDpdStreet());
 
         return $shipmentCreationRequest;
     }
