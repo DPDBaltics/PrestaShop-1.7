@@ -27,7 +27,6 @@
                     {$selectedPudo->getStreet()}
                 </div>
                 <input name="dpd-street" type="hidden" value="{$selectedPudo->getStreet()}">
-                </div>
             </div>
             <div class="form-row row dpd-form-group">
                 <label class="control-label col-lg-3 dpd-no-padding">{l s='Post code: ' mod='dpdbaltics'}</label>
