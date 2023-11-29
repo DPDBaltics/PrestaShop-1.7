@@ -120,6 +120,7 @@ class ShipmentDataFactory
             $shipmentData->setDpdCountry($dpdPudo->country_code);
             $shipmentData->setSelectedPudoIsoCode($dpdPudo->country_code);
             $shipmentData->setDpdZipCode($address->postcode);
+            $shipmentData->setDpdStreet($dpdPudo->street);
             $shipmentData->setSelectedPudoId($dpdPudo->pudo_id);
         }
 
