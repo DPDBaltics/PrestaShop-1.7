@@ -415,9 +415,10 @@ class ShipmentService
             $isoCode = $shipmentData->getSelectedPudoIsoCode();
             $city = $shipmentData->getCity();
             $street = $shipmentData->getDpdStreet();
+            $zipCode = $shipmentData->getDpdZipCode();
 
             try {
-                $this->pudoService->savePudoOrder($productId, $pudoId, $isoCode, $cartId, $city, $street);
+                $this->pudoService->savePudoOrder($productId, $pudoId, $isoCode, $cartId, $city, $street, $zipCode);
             } catch (Exception $e) {
                 $response['message'] = $this->module->l(
                     sprintf('Failed to save pudo order to database Error: %s', $e->getMessage(). 'ID cart: '. $order->id_cart)

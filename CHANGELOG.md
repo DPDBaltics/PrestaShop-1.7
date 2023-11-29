@@ -151,3 +151,6 @@
 ## [3.2.16]
 - Improved performance
 - Added additional validation
+
+## [3.2.17]
+- Label printing after changing shipment product bug fix
