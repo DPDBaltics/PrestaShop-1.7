@@ -17,34 +17,34 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
 <div class="col-lg-12 pudo-info-container">
-    <input class="hidden d-none form-control" name="selected-pudo-id" value="{$selectedPudo->getParcelShopId()}">
-    <input class="hidden d-none form-control" name="selected_pudo_iso_code" value="{$selectedPudo->getCountry()}">
+    <input class="hidden d-none form-control" name="selected-pudo-id" value="{$selectedPudo->getParcelShopId()|escape:'htmlall':'UTF-8'}">
+    <input class="hidden d-none form-control" name="selected_pudo_iso_code" value="{$selectedPudo->getCountry()|escape:'htmlall':'UTF-8'}">
     <div class="card-body">
         <div class="form-horizontal form-group">
             <div class="form-row row dpd-form-group">
                 <label class="control-label col-lg-3 dpd-no-padding">{l s='Address: ' mod='dpdbaltics'}</label>
                 <div class="address col-lg-9">
-                    {$selectedPudo->getStreet()}
+                    {$selectedPudo->getStreet()|escape:'htmlall':'UTF-8'}
                 </div>
-                <input name="dpd-street" type="hidden" value="{$selectedPudo->getStreet()}">
+                <input name="dpd-street" type="hidden" value="{$selectedPudo->getStreet()|escape:'htmlall':'UTF-8'}">
             </div>
             <div class="form-row row dpd-form-group">
                 <label class="control-label col-lg-3 dpd-no-padding">{l s='Post code: ' mod='dpdbaltics'}</label>
                 <div class="zip-code col-lg-9">
-                    {$selectedPudo->getPCode()}
+                    {$selectedPudo->getPCode()|escape:'htmlall':'UTF-8'}
                 </div>
-                <input name="dpd-zip-code" type="hidden" value="{$selectedPudo->getPCode()}">
+                <input name="dpd-zip-code" type="hidden" value="{$selectedPudo->getPCode()|escape:'htmlall':'UTF-8'}">
             </div>
             <div class="form-row row dpd-form-group">
                 <label class="control-label col-lg-3 dpd-no-padding">{l s='City: ' mod='dpdbaltics'}</label>
                 <div class="city col-lg-9">
-                    {$selectedPudo->getCity()}
+                    {$selectedPudo->getCity()|escape:'htmlall':'UTF-8'}
                 </div>
             </div>
             <div class="form-row row dpd-form-group">
                 <label class="control-label col-lg-3 dpd-no-padding ">{l s='Country: ' mod='dpdbaltics'}</label>
                 <div class="country col-lg-9">
-                    {$selectedPudo->getCountry()}
+                    {$selectedPudo->getCountry()|escape:'htmlall':'UTF-8'}
                 </div>
             </div>
             <div class="form-row row dpd-form-group">
@@ -61,7 +61,7 @@
                     <ul class="work-hours d-none hidden">
                         {l s='Working hours:' mod='dpdbaltics'}
                         {foreach $selectedPudo->getOpeningHours() as $workHours}
-                            <li>{$workHours->getWorkHoursFormatted()}</li>
+                            <li>{$workHours->getWorkHoursFormatted()|escape:'htmlall':'UTF-8'}</li>
                         {/foreach}
                     </ul>
                 </div>
