@@ -241,7 +241,7 @@ class PudoService
         ];
     }
 
-    public function savePudoOrder($productId, $pudoId, $isoCode, $cartId, $city, $street)
+    public function savePudoOrder($productId, $pudoId, $isoCode, $cartId, $city, $street, $zipCode)
     {
         $pudoOrderId = $this->pudoRepository->getIdByCart($cartId);
         $product = new DPDProduct($productId);
@@ -254,6 +254,7 @@ class PudoService
         $pudoOrder->id_cart = $cartId;
         $pudoOrder->city = $city;
         $pudoOrder->street = $street;
+        $pudoOrder->post_code = $zipCode;
         $pudoOrder->save();
     }
 
