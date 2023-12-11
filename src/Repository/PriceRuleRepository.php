@@ -73,12 +73,14 @@ class PriceRuleRepository extends AbstractEntityRepository
      *
      * @param Address $deliveryAddress
      * @param int $carrierReferenceId
+     * @param bool $includeCountryCheck
      * @return array price rules IDs
      * @throws PrestaShopDatabaseException
      */
     public function getByCarrierReference(
         Address $deliveryAddress,
-        $carrierReference
+        $carrierReference,
+        bool $includeCountryCheck = false
     ) {
         $query = new DbQuery();
         $query->select('prc.`id_dpd_price_rule`');
@@ -89,10 +91,26 @@ class PriceRuleRepository extends AbstractEntityRepository
             'prs',
             'prs.`id_dpd_price_rule` = prc.`id_dpd_price_rule`'
         );
+
+        /* param needed to filter out by countries to get specific price rules for that country address */
+        if ($includeCountryCheck) {
+            $query->innerJoin(
+                'dpd_price_rule_zone',
+                'prz',
+                'prc.`id_dpd_price_rule` = prz.`id_dpd_price_rule`'
+            );
+            $query->innerJoin(
+                'dpd_zone_range',
+                'zr',
+                'prz.`id_dpd_zone` = zr.`id_dpd_zone`'
+            );
+
+            $query->where('zr.`id_country`= ' . $deliveryAddress->id_country);
+        }
+
         $query->where('prc.`id_reference`="' . (int)$carrierReference . '" OR prc.`all_carriers`="1"');
         $query->where('pr.active = 1');
         $query->orderBy('pr.position ASC');
-
 
         if (Validate::isLoadedObject($deliveryAddress)) {
             if ($deliveryAddress->company) {
