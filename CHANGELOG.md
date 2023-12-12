@@ -154,3 +154,6 @@
 
 ## [3.2.17]
 - Label printing after changing shipment product bug fix
+
+## [3.2.18]
+- Ability to hide label print feature in orders list page
