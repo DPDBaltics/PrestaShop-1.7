@@ -157,3 +157,5 @@
 
 ## [3.2.18]
 - Ability to hide label print feature in orders list page
+- Vulnerability fix with development dependencies
+- Price rule bug fix to add additional filtration by country
