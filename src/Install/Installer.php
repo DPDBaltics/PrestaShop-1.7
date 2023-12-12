@@ -220,6 +220,7 @@ class Installer
             Config::IMPORT_LINES_SKIP => 1,
             Config::IMPORT_FIELD_SEPARATOR => ';',
             Config::IMPORT_DELETE_OLD_DATA => 0,
+            Config::HIDE_ORDERS_LABEL_PRINT_BUTTON => 0,
 
             /** On-board */
             Config::ON_BOARD_TURNED_ON => 1,
