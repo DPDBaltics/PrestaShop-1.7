@@ -154,3 +154,7 @@
 
 ## [3.2.17]
 - Label printing after changing shipment product bug fix
+
+## [3.2.18]
+- Vulnerability fix with development dependencies
+- Price rule bug fix to add additional filtration by country
