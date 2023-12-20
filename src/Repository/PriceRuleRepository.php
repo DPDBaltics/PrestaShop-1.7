@@ -93,7 +93,7 @@ class PriceRuleRepository extends AbstractEntityRepository
         );
 
         /* param needed to filter out by countries to get specific price rules for that country address */
-        if ($includeCountryCheck) {
+        if ($includeCountryCheck && $deliveryAddress->id_country) {
             $query->innerJoin(
                 'dpd_price_rule_zone',
                 'prz',
@@ -105,10 +105,10 @@ class PriceRuleRepository extends AbstractEntityRepository
                 'prz.`id_dpd_zone` = zr.`id_dpd_zone`'
             );
 
-            $query->where('zr.`id_country`= ' . $deliveryAddress->id_country);
+            $query->where('zr.`id_country`= ' . (int) $deliveryAddress->id_country);
         }
 
-        $query->where('prc.`id_reference`="' . (int)$carrierReference . '" OR prc.`all_carriers`="1"');
+        $query->where('prc.`id_reference`="' . (int) $carrierReference . '" OR prc.`all_carriers`="1"');
         $query->where('pr.active = 1');
         $query->orderBy('pr.position ASC');
 
