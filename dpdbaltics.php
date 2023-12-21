@@ -92,7 +92,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.17';
+        $this->version = '3.2.18';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -1207,12 +1207,18 @@ class DPDBaltics extends CarrierModule
 
     public function hookActionAdminOrdersListingFieldsModifier($params)
     {
+        if ((bool) Configuration::get(Config::HIDE_ORDERS_LABEL_PRINT_BUTTON)) {
+            return false;
+        }
+
         if (isset($params['select'])) {
             $params['select'] .= ' ,ds.`id_order` AS id_order_shipment ';
         }
+
         if (isset($params['join'])) {
             $params['join'] .= ' LEFT JOIN `' . _DB_PREFIX_ . 'dpd_shipment` ds ON ds.`id_order` = a.`id_order` ';
         }
+
         $params['fields']['id_order_shipment'] = [
             'title' => $this->l('DPD Label'),
             'align' => 'text-center',
@@ -1267,6 +1273,7 @@ class DPDBaltics extends CarrierModule
 
         $definition = $params['definition'];
 
+        if (!(bool) Configuration::get(Config::HIDE_ORDERS_LABEL_PRINT_BUTTON)) {
         $definition->getColumns()
             ->addAfter(
                 'date_add',
@@ -1276,6 +1283,7 @@ class DPDBaltics extends CarrierModule
                         'actions' => $this->getGridAction()
                     ])
             );
+        }
 
         $definition->getBulkActions()
             ->add(

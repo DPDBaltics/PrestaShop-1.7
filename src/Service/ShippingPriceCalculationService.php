@@ -56,7 +56,8 @@ class ShippingPriceCalculationService
 
         $priceRulesIds = $this->priceRuleRepository->getByCarrierReference(
             $deliveryAddress,
-            $carrier->id_reference
+            $carrier->id_reference,
+            true
         );
 
         $shippingCosts += $this->priceRuleService->applyPriceRuleForCarrier(
