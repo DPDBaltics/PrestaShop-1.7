@@ -28,8 +28,6 @@ use mysqli_result;
 use PDOStatement;
 use PrestaShopCollection;
 use PrestaShopDatabaseException;
-use PrestaShopException;
-use resource;
 
 class ProductRepository extends AbstractEntityRepository
 {
@@ -255,14 +253,12 @@ class ProductRepository extends AbstractEntityRepository
         return $this->db->getRow($query) ?: null;
     }
 
-
     /**
      * @param int $carrierReference
      * @param int $countryId
      *
      * @return array|bool|mysqli_result|PDOStatement|resource|null
      * @throws PrestaShopDatabaseException
-     * @throws PrestaShopException
      */
     public function checkIfCarrierIsAvailableInCountry(int $carrierReference, int $countryId)
     {
