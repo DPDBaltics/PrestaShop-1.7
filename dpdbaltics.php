@@ -475,6 +475,11 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
+        if (!$productRepo->checkIfCarrierIsAvailableInCountry((int) $carrier->id_reference, (int) $deliveryAddress->id_country)
+        ) {
+            return false;
+        }
+
         try {
             $isCarrierAvailableInShop = $productRepo->checkIfCarrierIsAvailableInShop($carrier->id_reference, $this->context->shop->id);
             if (empty($isCarrierAvailableInShop)) {
