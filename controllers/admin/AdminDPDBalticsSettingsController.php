@@ -39,6 +39,8 @@ require_once dirname(__DIR__).'/../vendor/autoload.php';
 
 class AdminDPDBalticsSettingsController extends AbstractAdminController
 {
+    private const FILE_NAME = 'AdminDPDBalticsSettingsController';
+
     public function init()
     {
         $parentReturn = parent::init();
@@ -105,6 +107,21 @@ class AdminDPDBalticsSettingsController extends AbstractAdminController
                 'fields' => [
                     Config::SHOW_CARRIERS_IN_PRODUCT_PAGE => [
                         'title' => $this->l('Show carrier options in product page'),
+                        'type' => 'bool',
+                        'validation' => 'isBool',
+                        'cast' => 'intval'
+                    ],
+                ],
+                'submit' => [
+                    'title' => $this->l('Save'),
+                ],
+            ],
+            'orders_page_configuration' => [
+                'title' => $this->l('Orders listing page configuration', self::FILE_NAME),
+                'icon' => 'dpd-icon-settings',
+                'fields' => [
+                    Config::HIDE_ORDERS_LABEL_PRINT_BUTTON => [
+                        'title' => $this->l('Hide print button in admin orders listing page'),
                         'type' => 'bool',
                         'validation' => 'isBool',
                         'cast' => 'intval'
