@@ -57,6 +57,8 @@ class PhonePrefixRepository extends AbstractEntityRepository
         $query = new DbQuery();
         $query->select('c.`call_prefix`');
         $query->from('country', 'c');
+        $query->where('active=1');
+
         $resource = Db::getInstance()->query($query);
         $result = [];
         while ($row = Db::getInstance()->nextRow($resource)) {
