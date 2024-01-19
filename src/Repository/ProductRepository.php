@@ -265,6 +265,10 @@ class ProductRepository extends AbstractEntityRepository
         $productId = $this->getProductIdByCarrierReference($carrierReference);
         $product = new DPDProduct($productId);
 
+        if ($product->all_zones) {
+            return ['id_dpd_product' => $productId];
+        }
+
         $query = new DbQuery();
         $query->select('dp.id_dpd_product');
         $query->from('dpd_product', 'dp');
