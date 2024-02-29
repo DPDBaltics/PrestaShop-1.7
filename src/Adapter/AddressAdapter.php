@@ -85,9 +85,10 @@ class AddressAdapter
 
         $postCode = preg_replace("/[^a-zA-Z0-9]+/", "", $postCode);
         // If C doesn't exist in zip code format - don't modify the zip code
-        if (false === $countryCodePosition) {
-            return $postCode;
-        }
+        //todo this check prevents from saving zip code to numeric not sure why c has to be checked
+//        if (false === $countryCodePosition) {
+//            return $postCode;
+//        }
 
         $countryCodeLength = Tools::strlen($country->iso_code);
         $countryCode = Tools::substr($postCode, $countryCodePosition, $countryCodeLength);

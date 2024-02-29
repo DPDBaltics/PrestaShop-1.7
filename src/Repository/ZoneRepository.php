@@ -24,6 +24,7 @@ namespace Invertus\dpdBaltics\Repository;
 use Address;
 use Country;
 use DbQuery;
+use Invertus\dpdBaltics\Adapter\AddressAdapter;
 use PrestaShopDatabaseException;
 
 class ZoneRepository extends AbstractEntityRepository
@@ -101,14 +102,16 @@ class ZoneRepository extends AbstractEntityRepository
     public function findZoneInRangeByAddress(Address $address)
     {
         $idCountry = $address->id_country ?: (int)\Configuration::get('PS_COUNTRY_DEFAULT');
-        $zipCode = $address->postcode;
+        $addressAdapter = new AddressAdapter();
+
+        $zipCode = $addressAdapter->getZipCodeByCountry($idCountry, $address->postcode);
 
         $query = new DbQuery();
         $query->select('dz.id_dpd_zone');
         $query->from('dpd_zone', 'dz');
         $query->leftJoin('dpd_zone_range', 'dzr', 'dzr.id_dpd_zone = dz.id_dpd_zone');
         $query->where('dzr.id_country = ' . (int)$idCountry);
-        $query->where('dzr.include_all_zip_codes = 1 OR (dzr.zip_code_from <= \'' . pSQL($zipCode) . '\' AND dzr.zip_code_to >= \'' . pSQL($zipCode) . '\')');
+        $query->where('dzr.include_all_zip_codes = 1 OR (dzr.zip_code_from_numeric <= \'' . pSQL($zipCode) . '\' AND dzr.zip_code_to_numeric >= \'' . pSQL($zipCode) . '\')');
 
         $result = $this->db->executeS($query);
 
