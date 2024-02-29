@@ -25,6 +25,7 @@ use Address;
 use Country;
 use DbQuery;
 use Invertus\dpdBaltics\Adapter\AddressAdapter;
+use Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate;
 use PrestaShopDatabaseException;
 
 class ZoneRepository extends AbstractEntityRepository
@@ -102,9 +103,7 @@ class ZoneRepository extends AbstractEntityRepository
     public function findZoneInRangeByAddress(Address $address)
     {
         $idCountry = $address->id_country ?: (int)\Configuration::get('PS_COUNTRY_DEFAULT');
-        $addressAdapter = new AddressAdapter();
-
-        $zipCode = $addressAdapter->getZipCodeByCountry($idCountry, $address->postcode);
+        $zipCode = ZoneRangeValidate::getNumericZipCode($address->postcode, $idCountry);
 
         $query = new DbQuery();
         $query->select('dz.id_dpd_zone');
