@@ -24,6 +24,18 @@ $(document).ready(function (){
         handlePhoneNumber($(this));
     });
 
+    // todo need event listener to trigger the checkout form and handle phone number
+    $('body').on('click', '#confirm_order', function(e) {
+        e.preventDefault();
+
+        if ($('.dpd-phone-block') !== undefined) {
+            if(!handlePhoneNumber($('.dpd-phone-block'))) {
+                return;
+            }
+        }
+
+    });
+
     $(document).on('click','.payment_module a', function (e){
         e.preventDefault();
 
@@ -82,3 +94,9 @@ function DPDdisplayMessageOpc(parent, template) {
     var $messageContainer = parent.find('.dpd-message-container');
     $messageContainer.html(template);
 }
+
+// Module "onepagecheckoutps" compatibility
+$(document).on('opc-load-review:completed', function() {
+    $('.delivery-option.selected .carrier-extra-content').show();
+});
+

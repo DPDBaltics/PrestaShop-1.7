@@ -168,7 +168,7 @@ class DPDBaltics extends CarrierModule
     public function hookActionFrontControllerSetMedia()
     {
         //TODO fillup this array when more modules are compatible with OPC
-        $onePageCheckoutControllers = ['supercheckout'];
+        $onePageCheckoutControllers = ['supercheckout', 'onepagecheckoutps'];
         $applicableControlelrs = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
         $currentController = !empty($this->context->controller->php_self) ? $this->context->controller->php_self : Tools::getValue('controller');
 
@@ -183,7 +183,9 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if (in_array($currentController, $onePageCheckoutControllers, true)) {
+        //todo for onepagecheckoutps module these are needed to be included as it handles phone number
+        // onepageps module controller is like in normal prestashop OrderController and some test are needed with normal flow
+//        if (in_array($currentController, $onePageCheckoutControllers, true)) {
             $this->context->controller->addJqueryPlugin('chosen');
 
             $this->context->controller->registerJavascript(
@@ -204,7 +206,7 @@ class DPDBaltics extends CarrierModule
                 ]
             );
 
-        }
+//        }
 
         /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
         $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
@@ -348,21 +350,23 @@ class DPDBaltics extends CarrierModule
                 return;
             }
         }
-        if (!Tools::getValue('dpd-phone')) {
-            $this->context->controller->errors[] =
-                $this->l('In order to use DPD Carrier you need to enter phone number');
-            $params['completed'] = false;
 
-            return;
-        }
-
-        if (!Tools::getValue('dpd-phone-area')) {
-            $this->context->controller->errors[] =
-                $this->l('In order to use DPD Carrier you need to enter phone area');
-            $params['completed'] = false;
-
-            return;
-        }
+        // todo thecheckout module triggers this hook when submiting the payment form
+//        if (!Tools::getValue('dpd-phone')) {
+//            $this->context->controller->errors[] =
+//                $this->l('In order to use DPD Carrier you need to enter phone number');
+//            $params['completed'] = false;
+//
+//            return;
+//        }
+//
+//        if (!Tools::getValue('dpd-phone-area')) {
+//            $this->context->controller->errors[] =
+//                $this->l('In order to use DPD Carrier you need to enter phone area');
+//            $params['completed'] = false;
+//
+//            return;
+//        }
 
         /** @var CarrierPhoneService $carrierPhoneService */
         $carrierPhoneService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.carrier_phone_service');
