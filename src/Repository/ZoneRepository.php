@@ -24,7 +24,6 @@ namespace Invertus\dpdBaltics\Repository;
 use Address;
 use Country;
 use DbQuery;
-use Invertus\dpdBaltics\Adapter\AddressAdapter;
 use Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate;
 use PrestaShopDatabaseException;
 
