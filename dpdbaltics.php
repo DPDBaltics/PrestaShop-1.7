@@ -92,7 +92,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.18';
+        $this->version = '3.2.19';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -203,7 +203,6 @@ class DPDBaltics extends CarrierModule
                     'priority' => 130
                 ]
             );
-
         }
 
         /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
@@ -278,7 +277,8 @@ class DPDBaltics extends CarrierModule
                 $googleApiService = $this->getModuleContainer('invertus.dpdbaltics.service.google_api_service');
                 $this->context->controller->registerJavascript(
                     'dpdbaltics-google-api',
-                    $googleApiService->getFormattedGoogleMapsUrl(), [
+                    $googleApiService->getFormattedGoogleMapsUrl(),
+                    [
                         'server' => 'remote'
                     ]
                 );
@@ -507,7 +507,7 @@ class DPDBaltics extends CarrierModule
         $parcelDistribution = \Configuration::get(Config::PARCEL_DISTRIBUTION);
         $maxAllowedWeight = Config::getDefaultServiceWeights($countryCode, $serviceCarrier['product_reference']);
 
-        if (!$cartWeightValidator->validate($cart, $parcelDistribution ,$maxAllowedWeight)) {
+        if (!$cartWeightValidator->validate($cart, $parcelDistribution, $maxAllowedWeight)) {
             return false;
         }
 
@@ -1150,7 +1150,6 @@ class DPDBaltics extends CarrierModule
 
     public function hookDisplayOrderDetail($params)
     {
-
         $isReturnServiceEnabled = Configuration::get(Config::PARCEL_RETURN);
         if (!$isReturnServiceEnabled) {
             return;
@@ -1279,7 +1278,7 @@ class DPDBaltics extends CarrierModule
         $definition = $params['definition'];
 
         if (!(bool) Configuration::get(Config::HIDE_ORDERS_LABEL_PRINT_BUTTON)) {
-        $definition->getColumns()
+            $definition->getColumns()
             ->addAfter(
                 'date_add',
                 (new ActionColumn('dpd_print_label'))
