@@ -137,7 +137,7 @@ function saveSelectedStreet(city, street) {
                 var coordinates = response.coordinates;
                 var $idReference = $parent.data('id');
                 $('.points-container').empty().append(response.template);
-
+                reselectDataPopover();
                 initMap(coordinates, true, response.selectedPudoId, false, $idReference);
                 isPudoPointSelected = true;
             }

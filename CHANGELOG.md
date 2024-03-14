@@ -159,3 +159,9 @@
 - Ability to hide label print feature in orders list page
 - Vulnerability fix with development dependencies
 - Price rule bug fix to add additional filtration by country
+
+## [3.2.19]
+- Carrier availability in country 
+- Phone input selections sorted by active countries in shop
+- Work hours pop up fix
+- Numeric post code improvements
