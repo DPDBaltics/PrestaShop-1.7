@@ -36,7 +36,11 @@ $(document).ready(function () {
     $(document).on('keyup', 'input[name="dpd-street"]', function () {
         var city = $('select[name="dpd-city"]').val();
         var street = $('input[name="dpd-street"]').val();
-        updateParcelBlock(city, street);
+        var selectedCarrier = $('select[name="dpd-city"]').closest('.dpd-pudo-container');
+
+        var idCarrier = selectedCarrier.attr('data-id');
+
+        updateParcelBlock(city, street, idCarrier);
     });
 
     if ($('.dpd-checkout-pickup-container').is(':visible')) {
@@ -75,12 +79,7 @@ $( document ).ajaxComplete(function( event, request, settings ) {
 });
 
 function updateStreetSelect(city) {
-
-    var $this = $(this);
-    var $pudoId = $this.data('id');
-    var $container = $this.closest('.dpd-pudo-container');
-    var $submitInput = $container.find('input[name="dpd-pudo-id"]');
-    var $idReference = $container.data('id');
+    var $container = $(this).closest('.dpd-pudo-container');
 
     $.ajax(dpdHookAjaxUrl, {
         type: 'POST',
@@ -152,13 +151,15 @@ function saveSelectedStreet(city, street) {
     });
 }
 
-function updateParcelBlock(city, street) {
+function updateParcelBlock(city, street, idCarrier) {
+
     $.ajax(dpdHookAjaxUrl, {
         type: 'POST',
         data: {
             'ajax': 1,
             'city': city,
             'street': street,
+            'id_carrier': idCarrier,
             'action': 'updateParcelBlock',
             'token': typeof prestashop !== 'undefined' ? prestashop.static_token : ''
         },
