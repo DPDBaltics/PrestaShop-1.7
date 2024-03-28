@@ -152,7 +152,6 @@ function saveSelectedStreet(city, street) {
 }
 
 function updateParcelBlock(city, street, idCarrier) {
-
     $.ajax(dpdHookAjaxUrl, {
         type: 'POST',
         data: {
