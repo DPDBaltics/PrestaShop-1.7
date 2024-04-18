@@ -1100,7 +1100,7 @@ class DPDBaltics extends CarrierModule
 
         if ($parcelPrintResponse->getStatus() === Config::API_SUCCESS_STATUS) {
             $this->updateOrderCarrier($idShipment);
-            return;
+            return $parcelPrintResponse;
         }
 
         return $parcelPrintResponse;
@@ -1117,7 +1117,7 @@ class DPDBaltics extends CarrierModule
             foreach ($shipmentIds as $shipmentId) {
                 $this->updateOrderCarrier($shipmentId);
             }
-            return;
+            return $parcelPrintResponse;
         }
 
         return $parcelPrintResponse;
@@ -1358,7 +1358,7 @@ class DPDBaltics extends CarrierModule
                 return;
             }
 
-            if (!empty($parcelPrintResponse->getErrLog())) {
+            if (isset($parcelPrintResponse) && !empty($parcelPrintResponse->getErrLog())) {
                 Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
             }
 
@@ -1383,7 +1383,7 @@ class DPDBaltics extends CarrierModule
                 return;
             }
 
-            if (!empty($parcelPrintResponse->getErrLog())) {
+            if (isset($parcelPrintResponse) && !empty($parcelPrintResponse->getErrLog())) {
                 Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
             }
 
