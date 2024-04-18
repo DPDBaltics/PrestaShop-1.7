@@ -260,7 +260,8 @@ class ProductRepository extends AbstractEntityRepository
      * @return array|bool|mysqli_result|PDOStatement|resource|null
      * @throws PrestaShopDatabaseException
      */
-    public function checkIfCarrierIsAvailableInCountry(int $carrierReference, int $countryId)
+
+    public function checkIfCarrierIsAvailableInCountry($carrierReference, $countryId)
     {
         $productId = $this->getProductIdByCarrierReference($carrierReference);
         $product = new DPDProduct($productId);
