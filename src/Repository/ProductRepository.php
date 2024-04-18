@@ -252,4 +252,42 @@ class ProductRepository extends AbstractEntityRepository
 
         return $this->db->getRow($query) ?: null;
     }
+
+    /**
+     * @param int $carrierReference
+     * @param int $countryId
+     *
+     * @return array|bool|mysqli_result|PDOStatement|resource|null
+     * @throws PrestaShopDatabaseException
+     */
+    public function checkIfCarrierIsAvailableInCountry($carrierReference, $countryId)
+    {
+        $productId = $this->getProductIdByCarrierReference($carrierReference);
+        $product = new DPDProduct($productId);
+
+        if ($product->all_zones) {
+            return ['id_dpd_product' => $productId];
+        }
+
+        $query = new DbQuery();
+        $query->select('dp.id_dpd_product');
+        $query->from('dpd_product', 'dp');
+
+        $query->leftJoin(
+            'dpd_product_zone',
+            'dpz',
+            'dp.`id_dpd_product` = dpz.`id_dpd_product`'
+        );
+
+        $query->leftJoin(
+            'dpd_zone_range',
+            'dzr',
+            'dzr.`id_dpd_zone` = dpz.`id_dpd_zone`'
+        );
+
+        $query->where('dp.id_reference= '.(int) $product->id_reference);
+        $query->where('dzr.id_country = '.(int) $countryId);
+
+        return $this->db->executeS($query);
+    }
 }
