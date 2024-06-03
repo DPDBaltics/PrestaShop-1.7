@@ -168,7 +168,7 @@ class DPDBaltics extends CarrierModule
     public function hookActionFrontControllerSetMedia()
     {
         //TODO fillup this array when more modules are compatible with OPC
-        $onePageCheckoutControllers = ['supercheckout', 'onepagecheckoutps'];
+        $onePageCheckoutControllers = ['supercheckout', 'onepagecheckoutps', 'thecheckout'];
         $applicableControlelrs = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
         $currentController = !empty($this->context->controller->php_self) ? $this->context->controller->php_self : Tools::getValue('controller');
 
@@ -186,25 +186,25 @@ class DPDBaltics extends CarrierModule
         //todo for onepagecheckoutps module these are needed to be included as it handles phone number
         // onepageps module controller is like in normal prestashop OrderController and some test are needed with normal flow
 //        if (in_array($currentController, $onePageCheckoutControllers, true)) {
-            $this->context->controller->addJqueryPlugin('chosen');
+        $this->context->controller->addJqueryPlugin('chosen');
 
-            $this->context->controller->registerJavascript(
-                'dpdbaltics-opc',
-                'modules/' . $this->name . '/views/js/front/order-opc.js',
-                [
+        $this->context->controller->registerJavascript(
+            'dpdbaltics-opc',
+            'modules/' . $this->name . '/views/js/front/order-opc.js',
+            [
                     'position' => 'bottom',
                     'priority' => 130
                 ]
-            );
+        );
 
-            $this->context->controller->registerJavascript(
-                'dpdbaltics-supercheckout',
-                'modules/' . $this->name . '/views/js/front/modules/supercheckout.js',
-                [
+        $this->context->controller->registerJavascript(
+            'dpdbaltics-supercheckout',
+            'modules/' . $this->name . '/views/js/front/modules/supercheckout.js',
+            [
                     'position' => 'bottom',
                     'priority' => 130
                 ]
-            );
+        );
 
 //        }
 
@@ -280,7 +280,8 @@ class DPDBaltics extends CarrierModule
                 $googleApiService = $this->getModuleContainer('invertus.dpdbaltics.service.google_api_service');
                 $this->context->controller->registerJavascript(
                     'dpdbaltics-google-api',
-                    $googleApiService->getFormattedGoogleMapsUrl(), [
+                    $googleApiService->getFormattedGoogleMapsUrl(),
+                    [
                         'server' => 'remote'
                     ]
                 );
@@ -351,22 +352,26 @@ class DPDBaltics extends CarrierModule
             }
         }
 
-        // todo thecheckout module triggers this hook when submiting the payment form
-//        if (!Tools::getValue('dpd-phone')) {
-//            $this->context->controller->errors[] =
-//                $this->l('In order to use DPD Carrier you need to enter phone number');
-//            $params['completed'] = false;
-//
-//            return;
-//        }
-//
-//        if (!Tools::getValue('dpd-phone-area')) {
-//            $this->context->controller->errors[] =
-//                $this->l('In order to use DPD Carrier you need to enter phone area');
-//            $params['completed'] = false;
-//
-//            return;
-//        }
+        //NOTE: thecheckout  triggers this hook without phone parameters the phone is saved with ajax request
+        if (Tools::getValue('module') === 'thecheckout') {
+            return;
+        }
+
+        if (!Tools::getValue('dpd-phone')) {
+            $this->context->controller->errors[] =
+                $this->l('In order to use DPD Carrier you need to enter phone number');
+            $params['completed'] = false;
+
+            return;
+        }
+
+        if (!Tools::getValue('dpd-phone-area')) {
+            $this->context->controller->errors[] =
+                $this->l('In order to use DPD Carrier you need to enter phone area');
+            $params['completed'] = false;
+
+            return;
+        }
 
         /** @var CarrierPhoneService $carrierPhoneService */
         $carrierPhoneService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.carrier_phone_service');
@@ -511,7 +516,7 @@ class DPDBaltics extends CarrierModule
         $parcelDistribution = \Configuration::get(Config::PARCEL_DISTRIBUTION);
         $maxAllowedWeight = Config::getDefaultServiceWeights($countryCode, $serviceCarrier['product_reference']);
 
-        if (!$cartWeightValidator->validate($cart, $parcelDistribution ,$maxAllowedWeight)) {
+        if (!$cartWeightValidator->validate($cart, $parcelDistribution, $maxAllowedWeight)) {
             return false;
         }
 
@@ -1154,7 +1159,6 @@ class DPDBaltics extends CarrierModule
 
     public function hookDisplayOrderDetail($params)
     {
-
         $isReturnServiceEnabled = Configuration::get(Config::PARCEL_RETURN);
         if (!$isReturnServiceEnabled) {
             return;
@@ -1283,7 +1287,7 @@ class DPDBaltics extends CarrierModule
         $definition = $params['definition'];
 
         if (!(bool) Configuration::get(Config::HIDE_ORDERS_LABEL_PRINT_BUTTON)) {
-        $definition->getColumns()
+            $definition->getColumns()
             ->addAfter(
                 'date_add',
                 (new ActionColumn('dpd_print_label'))

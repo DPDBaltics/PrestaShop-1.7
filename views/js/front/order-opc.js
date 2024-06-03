@@ -17,14 +17,12 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 var isPudoPointSelected = false;
-
 $(document).ready(function (){
 
     $(document).on('change', '.dpd-phone-block', function() {
         handlePhoneNumber($(this));
     });
 
-    // todo need event listener to trigger the checkout form and handle phone number
     $('body').on('click', '#confirm_order', function(e) {
         e.preventDefault();
 
@@ -98,5 +96,7 @@ function DPDdisplayMessageOpc(parent, template) {
 // Module "onepagecheckoutps" compatibility
 $(document).on('opc-load-review:completed', function() {
     $('.delivery-option.selected .carrier-extra-content').show();
+    handlePhoneNumber($('.dpd-phone-block'));
 });
+
 
