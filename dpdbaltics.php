@@ -18,7 +18,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
 use Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker;
 use Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder;
 use Invertus\dpdBaltics\Config\Config;
@@ -92,7 +91,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.18';
+        $this->version = '3.2.19';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -183,30 +182,27 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        //todo for onepagecheckoutps module these are needed to be included as it handles phone number
-        // onepageps module controller is like in normal prestashop OrderController and some test are needed with normal flow
-//        if (in_array($currentController, $onePageCheckoutControllers, true)) {
-        $this->context->controller->addJqueryPlugin('chosen');
+        if (in_array($currentController, $onePageCheckoutControllers, true) || Tools::getValue('module') === 'thecheckout') {
+            $this->context->controller->addJqueryPlugin('chosen');
 
-        $this->context->controller->registerJavascript(
-            'dpdbaltics-opc',
-            'modules/' . $this->name . '/views/js/front/order-opc.js',
-            [
+            $this->context->controller->registerJavascript(
+                'dpdbaltics-opc',
+                'modules/' . $this->name . '/views/js/front/order-opc.js',
+                [
                     'position' => 'bottom',
                     'priority' => 130
                 ]
-        );
+            );
 
-        $this->context->controller->registerJavascript(
-            'dpdbaltics-supercheckout',
-            'modules/' . $this->name . '/views/js/front/modules/supercheckout.js',
-            [
-                    'position' => 'bottom',
-                    'priority' => 130
-                ]
-        );
-
-//        }
+            $this->context->controller->registerJavascript(
+                'dpdbaltics-supercheckout',
+                'modules/' . $this->name . '/views/js/front/modules/supercheckout.js',
+                [
+                        'position' => 'bottom',
+                        'priority' => 130
+                    ]
+            );
+        }
 
         /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
         $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
