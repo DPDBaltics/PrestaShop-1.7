@@ -182,7 +182,10 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if (in_array($currentController, $onePageCheckoutControllers, true) || Tools::getValue('module') === 'thecheckout') {
+        /** @var \Invertus\dpdBaltics\Validate\Compatibility\OpcModuleCompatibilityValidator $opcModuleCompatibilityValidator */
+        $opcModuleCompatibilityValidator = $this->getModuleContainer('invertus.dpdbaltics.validator.opc_module_compatibility_validator');
+
+        if (in_array($currentController, $onePageCheckoutControllers, true) || $opcModuleCompatibilityValidator->isOpcModuleInUse()) {
             $this->context->controller->addJqueryPlugin('chosen');
 
             $this->context->controller->registerJavascript(
@@ -201,6 +204,15 @@ class DPDBaltics extends CarrierModule
                         'position' => 'bottom',
                         'priority' => 130
                     ]
+            );
+
+            $this->context->controller->registerStylesheet(
+                'dpdbaltics-opc',
+                'modules/' . $this->name . '/views/css/front/onepagecheckout.css',
+                [
+                    'position' => 'bottom',
+                    'priority' => 130
+                ]
             );
         }
 

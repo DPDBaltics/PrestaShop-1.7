@@ -1,0 +1,22 @@
+#phone-block-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.points-container .list-inline .row {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.panel-body .points-container .dpd-services-block {
+    width: 100%;
+}
+
+.panel-body .points-container  {
+    width: 340px;
+    margin-left: 18px;
+}
+
+.dpd-services-block .list-inline-item {
+    min-width: 370px;
+}
