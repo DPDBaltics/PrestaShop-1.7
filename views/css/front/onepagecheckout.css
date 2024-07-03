@@ -38,3 +38,26 @@
 .dpd-services-block .list-inline-item {
     min-width: 370px;
 }
+
+.carrier-extra-content {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 5px;
+}
+
+.dpd-phone-block {
+    padding-bottom: 0;
+}
+
+.chosen-container {
+    width: 100%;
+}
+
+.carrier-extra-content .chosen-select {
+    min-height: 49px;
+    height: 100%;
+}
+
+.dpd-checkout-delivery-time--container {
+    width: 100%;
+}
