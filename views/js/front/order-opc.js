@@ -61,7 +61,7 @@ function handlePhoneNumber(selector)
     var phone = selector.find('input[name="dpd-phone"]').val();
     var phoneArea = selector.find('select[name="dpd-phone-area"] option:selected').val();
 
-    // if empty then take it from address-fields input[name="phone"]
+    // if empty then take it from opc phone field
     if (phone === '') {
         phoneQuerySelectors.forEach(function (phoneSelector) {
             if ($(phoneSelector).val()) {
