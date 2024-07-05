@@ -18,9 +18,9 @@
  *}
 <div class="container dpd-checkout-delivery-time--container dpd-delivery-time-block">
     <div class="row form-group">
-        <div class="col-lg-6 col-12 col-sm-9">
+        <div class="{if !($isOpcCheckout)}col-lg-6 col-12 col-sm-9{/if}">
             <p>{l s='Desirable delivery time' mod='dpdbaltics'}</p></div>
-        <div class="col-lg-4 col-sm-12 dpd-input-wrapper dpd-select-wrapper hasValue small-padding-sm-right">
+        <div class="{if !($isOpcCheckout)}col-lg-4 col-sm-12 {/if}dpd-input-wrapper dpd-select-wrapper hasValue small-padding-sm-right">
             <select
                     class="chosen-select form-control-chosen"
                     name="dpd-delivery-time"
