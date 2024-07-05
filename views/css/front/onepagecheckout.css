@@ -51,6 +51,7 @@
 
 .chosen-container {
     width: 100% !important;
+    max-width: 290px;
 }
 
 .carrier-extra-content .chosen-select {
@@ -60,4 +61,9 @@
 
 .dpd-checkout-delivery-time--container {
     width: 100%;
+}
+
+.search-block-container {
+    padding-left: 15px;
+    padding-right: 15px;
 }
