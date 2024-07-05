@@ -217,7 +217,7 @@ class DPDBaltics extends CarrierModule
 
             Media::addJsDef([
                 'dpdbaltics' => [
-                    'isOnePageCheckout' => 1
+                    'isOnePageCheckout' => $opcModuleCompatibilityValidator->isOpcModuleInUse()
                 ]
             ]);
         }
