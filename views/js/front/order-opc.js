@@ -111,7 +111,6 @@ function DPDdisplayMessageOpc(parent, template) {
 
 // Module "onepagecheckoutps" compatibility
 $(document).on('opc-load-review:completed', function() {
-    $('.delivery-option.selected .carrier-extra-content').show();
     handlePhoneNumber($('.dpd-phone-block'));
 });
 
