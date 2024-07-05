@@ -1,0 +1,69 @@
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+#phone-block-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.points-container .list-inline .row {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.panel-body .points-container .dpd-services-block {
+    width: 100%;
+}
+
+.panel-body .points-container  {
+    width: 340px;
+    margin-left: 18px;
+}
+
+.dpd-services-block .list-inline-item {
+    min-width: 370px;
+}
+
+.carrier-extra-content {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 5px;
+}
+
+.dpd-phone-block {
+    padding-bottom: 0;
+}
+
+.chosen-container {
+    width: 100% !important;
+    max-width: 290px;
+}
+
+.carrier-extra-content .chosen-select {
+    min-height: 49px;
+    height: 100%;
+}
+
+.dpd-checkout-delivery-time--container {
+    width: 100%;
+}
+
+.search-block-container {
+    padding-left: 15px;
+    padding-right: 15px;
+}

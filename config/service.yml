@@ -18,6 +18,7 @@ services:
       - '@invertus.dpdbaltics.orm.entity_manager'
       - '@invertus.dpdbaltics.repository.phone_prefix_repository'
       - '@invertus.dpdbaltics.repository.order_repository'
+      - '@invertus.dpdbaltics.validator.opc_module_compatibility_validator'
 
   invertus.dpdbaltics.service.carrier.update_carrier_service:
     class: 'Invertus\dpdBaltics\Service\Carrier\UpdateCarrierService'

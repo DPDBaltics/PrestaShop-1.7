@@ -17,11 +17,27 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 var isPudoPointSelected = false;
+var phoneQuerySelectors = [
+    '#checkout #delivery-address [name="phone"]',
+    '.address-fields input[name="phone"]',
+    '#checkout [name="delivery_phone_mobile"]'
+];
 
 $(document).ready(function (){
 
     $(document).on('change', '.dpd-phone-block', function() {
         handlePhoneNumber($(this));
+    });
+
+    $('body').on('click', '#confirm_order', function(e) {
+        e.preventDefault();
+
+        if ($('.dpd-phone-block') !== undefined) {
+            if(!handlePhoneNumber($('.dpd-phone-block'))) {
+                return;
+            }
+        }
+
     });
 
     $(document).on('click','.payment_module a', function (e){
@@ -41,8 +57,18 @@ function handlePhoneNumber(selector)
     if (!$('.dpd-phone-block')) {
         return true;
     }
+
     var phone = selector.find('input[name="dpd-phone"]').val();
     var phoneArea = selector.find('select[name="dpd-phone-area"] option:selected').val();
+
+    // if empty then take it from opc phone field
+    if (phone === '') {
+        phoneQuerySelectors.forEach(function (phoneSelector) {
+            if ($(phoneSelector).val()) {
+                phone = $(phoneSelector).val();
+            }
+        });
+    }
 
     if (currentController === 'supercheckout') {
         saveSelectedPhoneNumberSuperCheckout(phone, phoneArea)
@@ -82,3 +108,13 @@ function DPDdisplayMessageOpc(parent, template) {
     var $messageContainer = parent.find('.dpd-message-container');
     $messageContainer.html(template);
 }
+
+// Module "onepagecheckoutps" compatibility
+$(document).on('opc-load-review:completed', function() {
+    handlePhoneNumber($('.dpd-phone-block'));
+});
+
+// Then address is being modified
+$(document).on('thecheckout_Address_Modified', function () {
+    handlePhoneNumber($('.dpd-phone-block'));
+});
