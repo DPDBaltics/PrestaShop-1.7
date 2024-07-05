@@ -214,6 +214,12 @@ class DPDBaltics extends CarrierModule
                     'priority' => 130
                 ]
             );
+
+            Media::addJsDef([
+                'dpdbaltics' => [
+                    'isOnePageCheckout' => $opcModuleCompatibilityValidator->isOpcModuleInUse()
+                ]
+            ]);
         }
 
         /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
@@ -272,7 +278,7 @@ class DPDBaltics extends CarrierModule
                 'dpdLockerMarkerPath' => $this->getPathUri() . 'views/img/locker.png',
                 'dpdHookAjaxUrl' => $this->context->link->getModuleLink($this->name, 'Ajax'),
                 'pudoSelectSuccess' => $this->l('Pick-up point selected'),
-                'dpd_carrier_ids' => $carrierIds
+                'dpd_carrier_ids' => $carrierIds,
             ]);
 
             $this->context->controller->registerStylesheet(
