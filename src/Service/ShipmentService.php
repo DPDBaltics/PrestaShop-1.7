@@ -221,16 +221,14 @@ class ShipmentService
     private function createNonDistributedShipment(Order $order, $idProduct, $isTestMode)
     {
         $products = $order->getProducts();
-        $parcelPrice = 0;
+        $parcelPrice = $order->getTotalPaid();
         $parcelWeight = 0;
-        $orderShippingCost = $order->total_shipping_tax_incl ?: 0;
+
         foreach ($products as $product) {
-            $parcelPrice += $this->calculateProductsPrice($product);
             $parcelWeight += $product['weight'] * $product['product_quantity'];
         }
 
         $parcelPrice = $this->calculateParcelPriceWithOrderDiscount($order, $parcelPrice);
-        $parcelPrice += $orderShippingCost;
         $shipment = $this->createShipment($order, $idProduct, $isTestMode, 1, $parcelWeight, $parcelPrice);
 
         if (!$shipment->id) {
