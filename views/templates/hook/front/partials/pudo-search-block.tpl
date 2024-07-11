@@ -19,10 +19,10 @@
 
 <div class="search-block-container">
         {if count($city_list) > 1}
-    <div class="col-xl-6 col-lg-6 col-sm-12 dpd-city-block dpd-select-wrapper dpd-input-wrapper">
+    <div class="{if !($isOpcCheckout)}col-xl-6 col-lg-6 col-sm-12 {/if}dpd-city-block dpd-select-wrapper dpd-input-wrapper">
     <select name="dpd-city" class="form-control-chosen chosen-select">
         {else}
-        <div class="col-xl-0 col-lg-0 col-sm-12 dpd-city-block dpd-select-wrapper">
+        <div class="{if !($isOpcCheckout)}col-xl-0 col-lg-0 col-sm-12 {/if}dpd-city-block dpd-select-wrapper">
         <select name="dpd-city" style="display: none">
         {/if}
             {if !empty($city_list)}
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="col-xl-6 col-lg-6 col-sm-12 dpd-city-block dpd-input-wrapper js-pudo-search-street">
+    <div class="{if !($isOpcCheckout)}col-xl-6 col-lg-6 col-sm-12 {/if}dpd-city-block dpd-input-wrapper js-pudo-search-street">
         {include file='module:dpdbaltics/views/templates/hook/front/partials/pudo-search-street.tpl'}
     </div>
 </div>

@@ -165,3 +165,6 @@
 - Phone input selections sorted by active countries in shop
 - Work hours pop up fix
 - Numeric post code improvements
+
+## [3.2.20]
+- One page checkout compatibility improvements

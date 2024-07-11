@@ -123,7 +123,7 @@
 .phone-block-hr,
 .delivery-time-hr
 {
-  padding-bottom: 2rem;
+  padding-bottom: 0;
 }
 
 
@@ -242,5 +242,9 @@ a.chosen-single:hover {
 
 .dpd-checkout-phone-container .chosen-container {
   width: 100%;
+}
+
+.dpd-delivery-time-block {
+  margin-top: 1rem;
 }
 
