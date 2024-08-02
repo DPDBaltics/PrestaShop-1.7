@@ -168,3 +168,5 @@
 
 ## [3.2.20]
 - One page checkout compatibility improvements
+- Multiple payment transaction and total price fix
+- Carriers error handling improvements
