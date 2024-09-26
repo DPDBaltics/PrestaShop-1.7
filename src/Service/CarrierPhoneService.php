@@ -106,7 +106,7 @@ class CarrierPhoneService
         );
 
         return $this->context->smarty->fetch(
-            $this->module->getLocalPath().'/views/templates/hook/front/carrier-phone-number.tpl'
+             'module:dpdbaltics/views/templates/hook/front/carrier-phone-number.tpl'
         );
     }
 

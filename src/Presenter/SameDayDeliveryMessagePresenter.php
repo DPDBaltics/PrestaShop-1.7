@@ -64,7 +64,7 @@ class SameDayDeliveryMessagePresenter
         );
 
         return $this->context->smarty->fetch(
-            $this->module->getLocalPath() . '/views/templates/hook/front/carrier-same-day-delivery-message.tpl'
+            'module:dpdbaltics/views/templates/hook/front/carrier-same-day-delivery-message.tpl'
         );
     }
 }
