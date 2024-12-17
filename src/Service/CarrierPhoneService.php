@@ -22,6 +22,7 @@ use Invertus\dpdBaltics\Repository\OrderRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
 use Invertus\dpdBaltics\Config\Config;
 use DPDOrderPhone;
+use Invertus\dpdBaltics\Validate\Compatibility\OpcModuleCompatibilityValidator;
 
 class CarrierPhoneService
 {
@@ -45,19 +46,25 @@ class CarrierPhoneService
      * @var OrderRepository
      */
     private $orderRepository;
+    /**
+     * @var OpcModuleCompatibilityValidator
+     */
+    private $opcModuleCompatibilityValidator;
 
     public function __construct(
         DPDBaltics $module,
         Context $context,
         EntityManager $entityManager,
         PhonePrefixRepository $phonePrefixRepository,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        OpcModuleCompatibilityValidator $opcModuleCompatibilityValidator
     ) {
         $this->module = $module;
         $this->context = $context;
         $this->entityManager = $entityManager;
         $this->phonePrefixRepository = $phonePrefixRepository;
         $this->orderRepository = $orderRepository;
+        $this->opcModuleCompatibilityValidator = $opcModuleCompatibilityValidator;
     }
 
     public function getCarrierPhoneTemplate($cartId, $carrierReference)
@@ -94,6 +101,7 @@ class CarrierPhoneService
                 'dpdPhoneArea' => $phoneData['mobile_phone_code_list'],
                 'contextPrefix' => Config::PHONE_CODE_PREFIX . $phonePrefix,
                 'isAbove177' => Config::isPrestashopVersionAbove177(),
+                'isOpcCheckout' => $this->opcModuleCompatibilityValidator->isOpcModuleInUse(),
             ]
         );
 

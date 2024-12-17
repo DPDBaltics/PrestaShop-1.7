@@ -18,7 +18,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
 use Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker;
 use Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder;
 use Invertus\dpdBaltics\Config\Config;
@@ -92,7 +91,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.19';
+        $this->version = '3.2.20';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -168,7 +167,7 @@ class DPDBaltics extends CarrierModule
     public function hookActionFrontControllerSetMedia()
     {
         //TODO fillup this array when more modules are compatible with OPC
-        $onePageCheckoutControllers = ['supercheckout'];
+        $onePageCheckoutControllers = ['supercheckout', 'onepagecheckoutps', 'thecheckout'];
         $applicableControlelrs = ['order', 'order-opc', 'ShipmentReturn', 'supercheckout'];
         $currentController = !empty($this->context->controller->php_self) ? $this->context->controller->php_self : Tools::getValue('controller');
 
@@ -183,7 +182,10 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if (in_array($currentController, $onePageCheckoutControllers, true)) {
+        /** @var \Invertus\dpdBaltics\Validate\Compatibility\OpcModuleCompatibilityValidator $opcModuleCompatibilityValidator */
+        $opcModuleCompatibilityValidator = $this->getModuleContainer('invertus.dpdbaltics.validator.opc_module_compatibility_validator');
+
+        if (in_array($currentController, $onePageCheckoutControllers, true) || $opcModuleCompatibilityValidator->isOpcModuleInUse()) {
             $this->context->controller->addJqueryPlugin('chosen');
 
             $this->context->controller->registerJavascript(
@@ -199,10 +201,25 @@ class DPDBaltics extends CarrierModule
                 'dpdbaltics-supercheckout',
                 'modules/' . $this->name . '/views/js/front/modules/supercheckout.js',
                 [
+                        'position' => 'bottom',
+                        'priority' => 130
+                    ]
+            );
+
+            $this->context->controller->registerStylesheet(
+                'dpdbaltics-opc',
+                'modules/' . $this->name . '/views/css/front/onepagecheckout.css',
+                [
                     'position' => 'bottom',
                     'priority' => 130
                 ]
             );
+
+            Media::addJsDef([
+                'dpdbaltics' => [
+                    'isOnePageCheckout' => $opcModuleCompatibilityValidator->isOpcModuleInUse()
+                ]
+            ]);
         }
 
         /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
@@ -261,7 +278,7 @@ class DPDBaltics extends CarrierModule
                 'dpdLockerMarkerPath' => $this->getPathUri() . 'views/img/locker.png',
                 'dpdHookAjaxUrl' => $this->context->link->getModuleLink($this->name, 'Ajax'),
                 'pudoSelectSuccess' => $this->l('Pick-up point selected'),
-                'dpd_carrier_ids' => $carrierIds
+                'dpd_carrier_ids' => $carrierIds,
             ]);
 
             $this->context->controller->registerStylesheet(
@@ -348,6 +365,12 @@ class DPDBaltics extends CarrierModule
                 return;
             }
         }
+
+        //NOTE: thecheckout  triggers this hook without phone parameters the phone is saved with ajax request
+        if (Tools::getValue('module') === 'thecheckout') {
+            return;
+        }
+
         if (!Tools::getValue('dpd-phone')) {
             $this->context->controller->errors[] =
                 $this->l('In order to use DPD Carrier you need to enter phone number');
@@ -1100,7 +1123,7 @@ class DPDBaltics extends CarrierModule
 
         if ($parcelPrintResponse->getStatus() === Config::API_SUCCESS_STATUS) {
             $this->updateOrderCarrier($idShipment);
-            return;
+            return $parcelPrintResponse;
         }
 
         return $parcelPrintResponse;
@@ -1117,7 +1140,7 @@ class DPDBaltics extends CarrierModule
             foreach ($shipmentIds as $shipmentId) {
                 $this->updateOrderCarrier($shipmentId);
             }
-            return;
+            return $parcelPrintResponse;
         }
 
         return $parcelPrintResponse;
@@ -1358,7 +1381,7 @@ class DPDBaltics extends CarrierModule
                 return;
             }
 
-            if (!empty($parcelPrintResponse->getErrLog())) {
+            if (isset($parcelPrintResponse) && !empty($parcelPrintResponse->getErrLog())) {
                 Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
             }
 
@@ -1383,7 +1406,7 @@ class DPDBaltics extends CarrierModule
                 return;
             }
 
-            if (!empty($parcelPrintResponse->getErrLog())) {
+            if (isset($parcelPrintResponse) && !empty($parcelPrintResponse->getErrLog())) {
                 Context::getContext()->controller->errors[] = $parcelPrintResponse->getErrLog();
             }
 

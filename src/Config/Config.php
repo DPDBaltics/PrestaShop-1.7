@@ -257,6 +257,9 @@ class Config
 
     const COUNTRY_ISO_CODES_WITH_MIXED_CHARACTERS = ['IE', 'GB', 'NL'];
 
+    // NOTE: Add OPC module tech name if payment option is compatible
+    public const DPD_OPC_MODULE_LIST = ['onepagecheckoutps', 'supercheckout', 'thecheckout'];
+
     const PRODUCT_NAME_B2B = [
         'LT' => 'Pristatymas privatiems asmenims',
         'EE' => 'DPD kuller',

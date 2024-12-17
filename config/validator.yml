@@ -41,3 +41,6 @@ services:
     arguments:
       - '@dpdbaltics'
       - '@invertus.dpdbaltics.repository.phone_repository'
+        
+  invertus.dpdbaltics.validator.opc_module_compatibility_validator:
+    class: 'Invertus\dpdBaltics\Validate\Compatibility\OpcModuleCompatibilityValidator'
