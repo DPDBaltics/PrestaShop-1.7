@@ -257,10 +257,14 @@ class DPDPriceRule extends ObjectModel
         /** @var DPDBaltics $module */
         $module = Module::getInstanceByName('dpdbaltics');
 
-        /** @var ZoneRepository $zoneRepo */
-        $zoneRepo = $module->getModuleContainer()->get('invertus.dpdbaltics.repository.zone_repository');
+        /** @var \Invertus\dpdBaltics\Verification\IsAddressInZone $isAddressInZone */
+        $isAddressInZone = $module->getModuleContainer('invertus.dpdbaltics.verification.is_address_in_zone');
 
-        return $zoneRepo->findZoneInRangeByAddress($address);
+        /** @var DPDZoneRepository $repo */
+        $repo = $module->getModuleContainer()->get('invertus.dpdbaltics.repository.dpdzone_repository');
+        $zonesIds = $repo->getZonesIdsByPriceRule($this->id);
+
+        return $isAddressInZone->verify($address, $zonesIds);
     }
 
     public function isApplicableByPrice($price, $idCurrency)
