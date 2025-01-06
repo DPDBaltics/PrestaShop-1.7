@@ -169,4 +169,8 @@
 ## [3.2.20]
 - One page checkout compatibility improvements
 - Multiple payment transaction and total price fix
+
+## [3.2.21]
+- Fixed label printing error and 0 goods price
+- Improved price calculation
 - Carriers error handling improvements
