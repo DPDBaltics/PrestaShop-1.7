@@ -60,15 +60,17 @@ class ShippingPriceCalculationService
             true
         );
 
-        $shippingCosts += $this->priceRuleService->applyPriceRuleForCarrier(
+        $result = $this->priceRuleService->applyPriceRuleForCarrier(
             $cart,
             $priceRulesIds,
             Context::getContext()->shop->id
         );
 
-        if (!$shippingCosts) {
+        if (!$result) {
             return false;
         }
+
+        $shippingCosts += $result;
 
         $shippingCosts += $this->applyAdditionalCosts($cart);
 
