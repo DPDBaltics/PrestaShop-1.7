@@ -25,6 +25,10 @@ use Cart;
 use Context;
 use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ShippingPriceCalculationService
 {
     /**

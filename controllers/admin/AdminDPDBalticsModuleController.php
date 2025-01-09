@@ -18,10 +18,13 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
 use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class AdminDPDBalticsModuleController extends ModuleAdminController
 {

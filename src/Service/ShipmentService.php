@@ -57,6 +57,10 @@ use Order;
 use OrderCarrier;
 use PrestaShop\Decimal\DecimalNumber;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ShipmentService
 {
 
