@@ -12,6 +12,10 @@
 
 namespace Invertus\dpdBaltics\Plugin\SearchBox;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 interface SearchBoxPluginInterface
 {
     /**

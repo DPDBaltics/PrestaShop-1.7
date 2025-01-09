@@ -29,6 +29,10 @@ use Invertus\dpdBalticsApi\Api\DTO\Request\ParcelPrintRequest;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelPrintResponse;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ParcelPrintFactory;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LabelApiService
 {
     /**

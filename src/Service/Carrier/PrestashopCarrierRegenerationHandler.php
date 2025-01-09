@@ -26,6 +26,10 @@ namespace Invertus\dpdBaltics\Service\Carrier;
 use Invertus\dpdBaltics\Exception\DpdCarrierException;
 use Invertus\dpdBaltics\Install\Installer;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PrestashopCarrierRegenerationHandler
 {
     private $moduleInstaller;

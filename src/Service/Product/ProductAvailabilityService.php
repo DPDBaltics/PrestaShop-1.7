@@ -32,6 +32,10 @@ use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Util\ProductUtility;
 use Invertus\dpdBaltics\Util\TimeZoneUtility;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductAvailabilityService
 {
     /**

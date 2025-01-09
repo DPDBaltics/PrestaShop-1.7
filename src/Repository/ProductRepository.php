@@ -29,6 +29,10 @@ use PDOStatement;
 use PrestaShopCollection;
 use PrestaShopDatabaseException;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductRepository extends AbstractEntityRepository
 {
     public function getAllProducts()

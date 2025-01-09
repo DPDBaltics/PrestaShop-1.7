@@ -30,6 +30,10 @@ use Invertus\dpdBalticsApi\Api\DTO\Response\CollectionRequestResponse;
 use Invertus\dpdBalticsApi\Factory\APIRequest\CollectionRequestFactory;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CollectionRequestService
 {
     const FILE_NAME = 'CollectionRequestService';

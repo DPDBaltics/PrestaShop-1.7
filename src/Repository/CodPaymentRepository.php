@@ -25,6 +25,10 @@ use Db;
 use DbQuery;
 use Invertus\dpdBaltics\Repository\AbstractEntityRepository;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * NOTICE OF LICENSE
  *
