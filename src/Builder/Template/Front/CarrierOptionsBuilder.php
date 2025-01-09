@@ -116,7 +116,7 @@ class CarrierOptionsBuilder
         ]);
 
         return $this->context->smarty->fetch(
-            $this->moduleLocalPath . 'views/templates/hook/front/product-page-carriers.tpl'
+            'module:dpdbaltics/views/templates/hook/front/product-page-carriers.tpl'
         );
     }
 }

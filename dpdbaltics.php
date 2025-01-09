@@ -700,7 +700,7 @@ class DPDBaltics extends CarrierModule
             );
 
             $return .= $this->context->smarty->fetch(
-                $this->getLocalPath() . '/views/templates/hook/front/pudo-points.tpl'
+                'module:dpdbaltics/views/templates/hook/front/pudo-points.tpl'
             );
         }
 
@@ -1219,7 +1219,7 @@ class DPDBaltics extends CarrierModule
             ]
         );
         $html = $this->context->smarty->fetch(
-            $this->getLocalPath() . 'views/templates/hook/front/order-detail.tpl'
+            'module:dpdbaltics/views/templates/hook/front/order-detail.tpl'
         );
 
         return $html;

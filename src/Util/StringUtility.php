@@ -37,7 +37,7 @@ class StringUtility
     }
 
     public static function trimString($message) {
-        return strlen($message) > self::REMARK_LIMIT ? substr($message,0,self::REMARK_LIMIT)."..." : $message;
+        return mb_strlen($message) > self::REMARK_LIMIT ? mb_substr($message, 0, self::REMARK_LIMIT) . "..." : $message;
     }
 
     public static function removeSpecialCharacters($string) {
