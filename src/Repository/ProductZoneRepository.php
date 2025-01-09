@@ -23,6 +23,10 @@ namespace Invertus\dpdBaltics\Repository;
 
 use DbQuery;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductZoneRepository extends AbstractEntityRepository
 {
     public function deleteProductZones($productId)

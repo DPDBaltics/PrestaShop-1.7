@@ -22,6 +22,10 @@ namespace Invertus\dpdBaltics\Infrastructure\Bootstrap\Uninstall;
 
 use Invertus\dpdBaltics\Infrastructure\Bootstrap\Exception\CouldNotUninstallModule;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class Uninstaller implements UninstallerInterface
 {
     private $moduleTabUninstaller;

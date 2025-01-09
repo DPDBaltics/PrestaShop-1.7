@@ -28,6 +28,10 @@ use Invertus\dpdBaltics\Config\Config;
 use Validate;
 use Configuration;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CurrentCountryProvider
 {
     private $context;

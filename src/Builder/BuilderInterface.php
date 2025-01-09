@@ -12,6 +12,10 @@
 
 namespace Invertus\dpdBaltics\Builder;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Interface DPDBuilderInterface - holds the interface required for builders to execute
  */

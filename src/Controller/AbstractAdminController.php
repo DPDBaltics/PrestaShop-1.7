@@ -34,6 +34,11 @@ use Media;
 use ModuleAdminController;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class AbstractAdminController extends ModuleAdminController
 {
     const FILENAME = 'DPDAbstractAdminController';

@@ -24,7 +24,9 @@ namespace Invertus\dpdBaltics\Validate\Weight;
 use Invertus\dpdBaltics\Config\Config;
 use Validate;
 
-
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class CartWeightValidator
 {

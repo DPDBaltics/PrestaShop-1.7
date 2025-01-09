@@ -18,13 +18,16 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Invertus\dpdBaltics\Service\API\LabelApiService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\ShipmentService;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontController
 {

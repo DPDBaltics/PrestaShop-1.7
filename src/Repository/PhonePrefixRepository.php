@@ -25,6 +25,10 @@ use Db;
 use DbQuery;
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PhonePrefixRepository extends AbstractEntityRepository
 {
     /**

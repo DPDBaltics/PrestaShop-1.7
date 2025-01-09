@@ -22,6 +22,11 @@ namespace Invertus\dpdBaltics\Core\Shared\Repository;
 
 use Invertus\dpdBaltics\Infrastructure\Repository\ReadOnlyCollectionRepositoryInterface;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 interface TabRepositoryInterface extends ReadOnlyCollectionRepositoryInterface
 {
 }

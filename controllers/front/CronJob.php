@@ -18,10 +18,13 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Provider\ZoneRangeProvider;
 use Invertus\dpdBaltics\Service\Import\API\ParcelShopImport;
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
 {

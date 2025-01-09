@@ -24,6 +24,10 @@ namespace Invertus\dpdBaltics\Repository;
 use DbQuery;
 use DPDOrderPhone;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PhoneRepository extends AbstractEntityRepository
 {
     public function getOrderPhoneIdByCartId($idCart)

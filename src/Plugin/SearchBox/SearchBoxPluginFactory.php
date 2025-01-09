@@ -15,6 +15,10 @@ namespace  Invertus\dpdBaltics\Plugin\SearchBox;
 use Module;
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class SearchBoxPluginFactory
 {
     /**

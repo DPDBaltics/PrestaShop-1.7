@@ -17,6 +17,11 @@ use Invertus\dpdBaltics\Collection\ZoneRangeObjectCollection;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ZoneRangeObject;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class ZoneAdapter
 {
     /**

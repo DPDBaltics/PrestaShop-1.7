@@ -32,6 +32,10 @@ use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Service\Carrier\CreateCarrierService;
 use PrestaShop\PrestaShop\Adapter\Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductService
 {
     /**

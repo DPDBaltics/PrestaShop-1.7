@@ -28,6 +28,10 @@ use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 use Symfony\Component\HttpFoundation\Response;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
 {
     const FILENAME = 'Ajax';

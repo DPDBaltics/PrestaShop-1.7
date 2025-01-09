@@ -23,6 +23,10 @@ namespace Invertus\dpdBaltics\Service;
 
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class TrackingService
 {
     const MAX_TRACKING_NUMBER_LENGTH= 59;

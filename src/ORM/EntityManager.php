@@ -15,6 +15,10 @@ namespace Invertus\dpdBaltics\ORM;
 use Db;
 use Exception;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Class DPDEntityManager
  */

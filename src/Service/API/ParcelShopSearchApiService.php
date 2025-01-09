@@ -27,6 +27,10 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBalticsApi\Api\DTO\Request\ParcelShopSearchRequest;
 use Invertus\dpdBalticsApi\Factory\APIRequest\ParcelShopSearchFactory;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ParcelShopSearchApiService
 {
     /**

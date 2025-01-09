@@ -16,6 +16,10 @@ use DPDBaltics;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardStepActionService;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardStepDataService;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 abstract class AbstractOnBoardStep implements OnBoardStepInterface
 {
     /**

@@ -29,6 +29,10 @@ use PrestaShopDatabaseException;
 use PrestaShopException;
 use Psr\Log\LoggerInterface;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class Logger implements LoggerInterface
 {
 

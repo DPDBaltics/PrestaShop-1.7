@@ -36,6 +36,10 @@ use Invertus\dpdBaltics\Repository\PudoRepository;
 use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Order;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ShipmentDataFactory
 {
     /**
