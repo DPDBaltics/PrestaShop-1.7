@@ -48,7 +48,7 @@ class ShippingPriceCalculationService
      * @param Cart $cart
      * @param Address $deliveryAddress
      *
-     * @return float
+     * @return float|false
      */
     public function calculate(Cart $cart, \Carrier $carrier, Address $deliveryAddress)
     {
@@ -60,11 +60,17 @@ class ShippingPriceCalculationService
             true
         );
 
-        $shippingCosts += $this->priceRuleService->applyPriceRuleForCarrier(
+        $result = $this->priceRuleService->applyPriceRuleForCarrier(
             $cart,
             $priceRulesIds,
             Context::getContext()->shop->id
         );
+
+        if (!$result) {
+            return false;
+        }
+
+        $shippingCosts += $result;
 
         $shippingCosts += $this->applyAdditionalCosts($cart);
 
