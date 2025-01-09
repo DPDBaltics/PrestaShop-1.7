@@ -14,6 +14,10 @@ namespace Invertus\dpdBaltics\Builder\Template;
 
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 interface TemplateBuilderInterface
 {
     /**

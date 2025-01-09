@@ -19,7 +19,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-
 /**
  * Class DPDCarrierImageBuilder - stores carrier images by associated carrier
  * @package src\Builder

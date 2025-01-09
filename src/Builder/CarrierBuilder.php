@@ -22,7 +22,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-
 /**
  * Class DPDCarrierBuilder - creates carrier
  */
