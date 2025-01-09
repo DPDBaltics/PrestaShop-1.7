@@ -4,6 +4,10 @@ namespace Invertus\dpdBaltics\Infrastructure\Bootstrap;
 
 use Invertus\dpdBaltics\Infrastructure\Adapter\ModuleFactory;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ModuleTabs
 {
     const FILE_NAME = 'TabService';

@@ -24,6 +24,10 @@ use PrestaShop\PrestaShop\Core\Grid\Action\Row\AbstractRowAction;
 use PrestaShop\PrestaShop\Core\Grid\Action\Row\AccessibilityChecker\AccessibilityCheckerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 final class LinkRowActionCustom extends AbstractRowAction
 {
     /**

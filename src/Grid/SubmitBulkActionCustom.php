@@ -24,6 +24,10 @@ use PrestaShop\PrestaShop\Core\Grid\Action\Bulk\AbstractBulkAction;
 use PrestaShop\PrestaShop\Core\Grid\Action\ModalOptions;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Class BulkAction holds data about single bulk action available in grid.
  */

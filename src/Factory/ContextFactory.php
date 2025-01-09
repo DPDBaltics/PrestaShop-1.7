@@ -23,6 +23,10 @@ namespace Invertus\dpdBaltics\Factory;
 use Context;
 use Country;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ContextFactory
 {
     public static function getContext()

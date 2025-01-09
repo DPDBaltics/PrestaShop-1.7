@@ -22,6 +22,10 @@ namespace Invertus\dpdBaltics\Infrastructure\Bootstrap\Install;
 
 use Invertus\dpdBaltics\Infrastructure\Bootstrap\Exception\CouldNotInstallModule;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 interface InstallerInterface
 {
     /**

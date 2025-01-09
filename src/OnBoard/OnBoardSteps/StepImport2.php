@@ -21,6 +21,10 @@ use Invertus\dpdBaltics\OnBoard\Objects\OnBoardFastMoveButton;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardParagraph;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardTemplateData;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class StepImport2 extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepImport2';

@@ -14,6 +14,11 @@ use Invertus\dpdBaltics\Repository\DPDZoneRepository;
 use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use Invertus\dpdBaltics\Repository\ZoneRepository;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 /**
  * Class DPDPriceRule
  */
