@@ -32,6 +32,10 @@ use Invertus\dpdBaltics\Repository\ProductShopRepository;
 use Invertus\dpdBaltics\Repository\ZoneRepository;
 use Language;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductExport implements ExportableInterface
 {
 

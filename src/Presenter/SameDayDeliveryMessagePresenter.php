@@ -26,6 +26,10 @@ use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Util\TimeZoneUtility;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class SameDayDeliveryMessagePresenter
 {
 

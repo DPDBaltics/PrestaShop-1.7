@@ -25,6 +25,10 @@ namespace Invertus\dpdBaltics\Repository;
 use DbQuery;
 use PaymentModule;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PaymentRepository extends AbstractEntityRepository
 {
     public function updatePriceRulePayments($idPriceRule, array $paymentMethods, $checkAll = 0)

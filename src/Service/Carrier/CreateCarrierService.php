@@ -36,6 +36,10 @@ use PrestaShopException;
 use Validate;
 use Zone;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * NOTICE OF LICENSE
  *

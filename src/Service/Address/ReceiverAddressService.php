@@ -40,6 +40,10 @@ use SmartyException;
 use State;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ReceiverAddressService
 {
 

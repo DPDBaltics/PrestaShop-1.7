@@ -23,6 +23,10 @@ namespace Invertus\dpdBaltics\Infrastructure\Bootstrap\Exception;
 use Invertus\dpdBaltics\Infrastructure\Exception\DpdException;
 use Invertus\dpdBaltics\Infrastructure\Exception\ExceptionCode;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 final class CouldNotUninstallModule extends DpdException
 {
     public static function failedToUninstallModuleTab(\Exception $exception, $moduleTab)

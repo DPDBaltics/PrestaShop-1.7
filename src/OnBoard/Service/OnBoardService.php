@@ -12,12 +12,15 @@
 
 namespace Invertus\dpdBaltics\OnBoard\Service;
 
-
 use Configuration;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\OnBoard\Builder\OnBoardBlockBuilder;
 use Invertus\dpdBaltics\OnBoard\Provider\OnBoardStepStrategyProvider;
 use Tools;
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class OnBoardService
 {

@@ -25,6 +25,10 @@ use Configuration;
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Class DPDSettingsExport is responsible returning settings data to be exported
  */

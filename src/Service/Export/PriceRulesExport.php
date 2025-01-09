@@ -31,6 +31,10 @@ use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use PaymentModule;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Class DPDPriceRulesExport is responsible for providing price rules data that needs to be exported
  */

@@ -24,6 +24,10 @@ namespace Invertus\dpdBaltics\Service;
 use DPDOrderDeliveryTime;
 use Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class OrderDeliveryTimeService
 {
     /**

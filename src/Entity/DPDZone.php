@@ -13,6 +13,10 @@
 use Invertus\dpdBaltics\Repository\ZoneRangeRepository;
 use Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Class DPDZone
  */

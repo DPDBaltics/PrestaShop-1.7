@@ -25,6 +25,10 @@ use DbQuery;
 use Db;
 use Invertus\dpdBalticsApi\Api\DTO\Object\ParcelShop;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ParcelShopRepository extends AbstractEntityRepository
 {
     public function deleteShopsByCountryCode($countryCode)

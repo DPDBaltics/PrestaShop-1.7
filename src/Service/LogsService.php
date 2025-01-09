@@ -27,6 +27,10 @@ use Invertus\dpdBaltics\Repository\LogsRepository;
 use PrestaShopDatabaseException;
 use PrestaShopException;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LogsService
 {
     const FILE_NAME = 'LogsService';

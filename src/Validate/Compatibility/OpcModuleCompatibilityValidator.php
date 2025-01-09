@@ -29,6 +29,10 @@ use Invertus\dpdBaltics\Util\NumberUtility;
 use Invertus\dpdBaltics\Util\StringUtility;
 use Module;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class OpcModuleCompatibilityValidator
 {
     public function isOpcModuleInUse(): bool

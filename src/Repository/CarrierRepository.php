@@ -24,6 +24,10 @@ namespace Invertus\dpdBaltics\Repository;
 use DbQuery;
 use PrestaShopDatabaseException;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CarrierRepository extends AbstractEntityRepository
 {
     /**

@@ -30,6 +30,10 @@ use Invertus\dpdBaltics\Repository\ShopRepository;
 use Shop;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AddressTemplatesImport implements ImportableInterface
 {
     const FILE_NAME = 'AddressTemplatesImport';

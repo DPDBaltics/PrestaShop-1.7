@@ -23,6 +23,10 @@ namespace Invertus\dpdBaltics\Repository;
 
 use DbQuery;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ShopRepository extends AbstractEntityRepository
 {
     public function removeServiceCarrierShops($productId)

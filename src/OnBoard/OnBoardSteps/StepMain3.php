@@ -18,6 +18,10 @@ use Invertus\dpdBaltics\OnBoard\Objects\OnBoardButton;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardParagraph;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardTemplateData;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class StepMain3 extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepMain3';

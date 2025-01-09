@@ -36,6 +36,10 @@ use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminDPDBalticsCourierRequestController extends AbstractAdminController
 {
     public function __construct()

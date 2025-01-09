@@ -26,6 +26,10 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Service\Product\ProductService;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CarrierUpdateHandler
 {
     /**

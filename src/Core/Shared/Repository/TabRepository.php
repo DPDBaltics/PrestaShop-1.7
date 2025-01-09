@@ -22,6 +22,11 @@ namespace Invertus\dpdBaltics\Core\Shared\Repository;
 
 use Invertus\dpdBaltics\Infrastructure\Repository\CollectionRepository;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class TabRepository extends CollectionRepository implements TabRepositoryInterface
 {
     public function __construct()

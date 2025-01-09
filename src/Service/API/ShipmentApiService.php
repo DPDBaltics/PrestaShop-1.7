@@ -38,6 +38,10 @@ use Invertus\dpdBaltics\Service\Email\Handler\ParcelTrackingEmailHandler;
 use Invertus\dpdBaltics\Util\StringUtility;
 use Message;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ShipmentApiService
 {
     /**

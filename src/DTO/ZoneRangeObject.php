@@ -14,6 +14,10 @@ namespace Invertus\dpdBaltics\DTO;
 
 use Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ZoneRangeObject
 {
     /**

@@ -24,6 +24,10 @@ namespace Invertus\dpdBaltics\Provider;
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ImportExportOptionsProvider
 {
 

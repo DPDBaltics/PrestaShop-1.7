@@ -22,6 +22,10 @@ namespace Invertus\dpdBaltics\Factory;
 
 use Exception;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ArrayFactory
 {
     /**

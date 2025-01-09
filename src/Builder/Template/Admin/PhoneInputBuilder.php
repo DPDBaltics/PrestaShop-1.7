@@ -24,6 +24,10 @@ namespace Invertus\dpdBaltics\Builder\Template\Admin;
 use DPDBaltics;
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PhoneInputBuilder
 {
     /**

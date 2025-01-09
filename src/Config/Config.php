@@ -28,6 +28,11 @@ use Invertus\dpdBaltics\Collection\DPDProductInstallCollection;
 use Invertus\dpdBaltics\DTO\DPDProductInstall;
 use Module;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class Config
 {
 

@@ -24,6 +24,10 @@ namespace Invertus\dpdBaltics\Service\Address;
 use Invertus\dpdBaltics\Repository\ShopRepository;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AddressTemplateService
 {
     /**

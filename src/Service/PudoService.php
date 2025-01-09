@@ -44,6 +44,10 @@ use Language;
 use Smarty;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PudoService
 {
     /** @var  array */

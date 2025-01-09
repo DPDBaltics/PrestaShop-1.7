@@ -19,6 +19,10 @@ use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Invertus\dpdBaltics\Infrastructure\Utility\VersionUtility;
 use Tab as PrestashopTab;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 final class ModuleTabInstaller implements InstallerInterface
 {
     private $module;

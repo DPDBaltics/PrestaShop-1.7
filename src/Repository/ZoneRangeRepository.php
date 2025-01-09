@@ -23,6 +23,10 @@ namespace Invertus\dpdBaltics\Repository;
 
 use DbQuery;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ZoneRangeRepository extends AbstractEntityRepository
 {
     public function findInZones(array $zoneIds, $countryId)

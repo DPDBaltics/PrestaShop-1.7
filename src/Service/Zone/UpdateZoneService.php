@@ -28,6 +28,10 @@ use Invertus\dpdBaltics\DTO\ZoneRangeObject;
 use Invertus\dpdBaltics\Exception\ZoneUpdateException;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class UpdateZoneService
 {
     /**
