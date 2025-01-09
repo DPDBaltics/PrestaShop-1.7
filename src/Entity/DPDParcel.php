@@ -10,6 +10,10 @@
  *  International Registered Trademark & Property of INVERTUS, UAB
  */
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class DPDParcel extends ObjectModel
 {
     const DISTRIBUTION_NONE = 'none';

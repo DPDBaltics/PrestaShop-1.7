@@ -14,6 +14,11 @@ namespace Invertus\dpdBaltics\Adapter;
 
 use Configuration;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class DPDConfigurationAdapter
 {
     public function get($key)

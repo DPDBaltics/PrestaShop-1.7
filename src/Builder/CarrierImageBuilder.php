@@ -15,6 +15,11 @@ namespace Invertus\dpdBaltics\Builder;
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 /**
  * Class DPDCarrierImageBuilder - stores carrier images by associated carrier
  * @package src\Builder
