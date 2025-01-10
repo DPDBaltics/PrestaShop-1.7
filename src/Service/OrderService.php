@@ -29,6 +29,10 @@ use Invertus\dpdBaltics\Repository\OrderRepository;
 use Order;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class OrderService
 {
     /**

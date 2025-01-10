@@ -26,6 +26,11 @@ use Invertus\dpdBalticsApi\Api\Configuration\ApiConfigurationInterface;
 use Invertus\dpdBalticsApi\ApiConfig\ApiConfig;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class ApiConfiguration implements ApiConfigurationInterface
 {
     public function getUrl()

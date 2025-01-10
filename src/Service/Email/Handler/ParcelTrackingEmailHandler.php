@@ -29,6 +29,10 @@ use Mail;
 use Module;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ParcelTrackingEmailHandler
 {
     /**

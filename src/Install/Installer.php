@@ -37,6 +37,10 @@ use Invertus\dpdBaltics\Service\Label\LabelPositionService;
 use Tools;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class Installer
 {
     const FILE_NAME = 'Installer';

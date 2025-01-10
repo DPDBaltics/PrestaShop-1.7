@@ -16,6 +16,11 @@ use ArrayAccess;
 use Invertus\dpdBaltics\DTO\ZoneRangeObject;
 use Iterator;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class ZoneRangeObjectCollection implements ArrayAccess, Iterator
 {
     /**

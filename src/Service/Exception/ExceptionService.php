@@ -26,6 +26,10 @@ use Exception;
 use Invertus\dpdBaltics\Validate\ShipmentData\Exception\InvalidShipmentDataField;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ExceptionService
 {
     const SHORT_CLASS_NAME = 'ExceptionService';

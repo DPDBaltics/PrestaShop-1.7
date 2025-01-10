@@ -15,6 +15,10 @@ namespace Invertus\dpdBaltics\Service;
 use Context;
 use Exception;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class DPDFlashMessageService
 {
     private $context;

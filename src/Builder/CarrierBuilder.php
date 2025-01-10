@@ -18,6 +18,10 @@ use PrestaShopDatabaseException;
 use PrestaShopException;
 use Shop;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Class DPDCarrierBuilder - creates carrier
  */

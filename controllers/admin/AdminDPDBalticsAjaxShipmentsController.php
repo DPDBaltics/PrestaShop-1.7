@@ -33,6 +33,10 @@ use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
 require_once dirname(__DIR__) . '/../vendor/autoload.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
 {
     protected $ajaxActions = ['save', 'save_and_print', 'updateAddressBlock', 'getProductPriceByID', 'print'];

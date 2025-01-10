@@ -30,6 +30,10 @@ use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use PrestaShopException;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class DeleteZoneService
 {
     const FILE_NAME = 'DeleteZoneService';

@@ -34,6 +34,10 @@ use Language;
 use Shop;
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LogBlockBuilder
 {
     /**

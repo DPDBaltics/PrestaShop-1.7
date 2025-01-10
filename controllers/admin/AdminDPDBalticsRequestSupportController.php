@@ -17,6 +17,10 @@ use Invertus\dpdBaltics\Service\LogsService;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminDPDBalticsRequestSupportController extends AbstractAdminController
 {
     public function postProcess()

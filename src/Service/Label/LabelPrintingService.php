@@ -32,6 +32,10 @@ use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ShipmentCreationResponse;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LabelPrintingService
 {
     /**

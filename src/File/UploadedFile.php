@@ -15,6 +15,10 @@ namespace Invertus\dpdBaltics\File;
 use Module;
 use RuntimeException;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Class DPDUploadedFile
  */

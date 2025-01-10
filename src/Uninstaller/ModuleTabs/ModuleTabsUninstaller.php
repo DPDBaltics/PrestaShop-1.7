@@ -25,6 +25,10 @@ use Invertus\psModuleTabs\Object\Tab as ModuleTab;
 use Invertus\psModuleTabs\Object\TabsCollection;
 use Tab;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ModuleTabsUninstaller
 {
     /**

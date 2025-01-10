@@ -19,6 +19,10 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Exception\ImportException;
 use Invertus\dpdBaltics\File\UploadedFile;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ImportProvider
 {
     const FILE_NAME = 'ImportProvider';

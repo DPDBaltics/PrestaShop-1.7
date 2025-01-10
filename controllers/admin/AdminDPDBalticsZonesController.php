@@ -27,6 +27,10 @@ use Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminDPDBalticsZonesController extends AbstractAdminController
 {
     /**

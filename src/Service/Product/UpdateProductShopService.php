@@ -26,6 +26,10 @@ use Exception;
 use Invertus\dpdBaltics\Exception\ProductUpdateException;
 use Invertus\dpdBaltics\Repository\ProductShopRepository;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class UpdateProductShopService
 {
     /**

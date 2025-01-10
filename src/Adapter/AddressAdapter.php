@@ -18,6 +18,11 @@ use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 /**
  * Class DPDAddressAdapter
  */

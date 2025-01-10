@@ -27,6 +27,10 @@ use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\PudoRepository;
 use PrestaShop\PrestaShop\Core\Foundation\IoC\Exception;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PudoValidate
 {
 

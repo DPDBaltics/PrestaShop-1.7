@@ -28,6 +28,10 @@ use Invertus\dpdBaltics\Repository\PhoneRepository;
 use Invertus\dpdBaltics\Util\NumberUtility;
 use Invertus\dpdBaltics\Util\StringUtility;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PhoneNumberValidator
 {
 

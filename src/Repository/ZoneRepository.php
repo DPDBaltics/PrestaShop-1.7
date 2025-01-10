@@ -27,6 +27,10 @@ use DbQuery;
 use Invertus\dpdBaltics\Validate\Zone\ZoneRangeValidate;
 use PrestaShopDatabaseException;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ZoneRepository extends AbstractEntityRepository
 {
     /**

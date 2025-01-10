@@ -22,6 +22,10 @@ use Invertus\dpdBaltics\OnBoard\Objects\OnBoardParagraph;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardProgressBar;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardTemplateData;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class StepManualZones6 extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepManualZones6';

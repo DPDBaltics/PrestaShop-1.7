@@ -15,6 +15,10 @@ namespace Invertus\dpdBaltics\Repository;
 use DbQuery;
 use DPDPudo;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PudoRepository extends AbstractEntityRepository
 {
     public function getIdByCart($cartId)

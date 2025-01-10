@@ -24,6 +24,10 @@ namespace Invertus\dpdBaltics\Validate\ShipmentData;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Invertus\dpdBaltics\Validate\ShipmentData\Exception\InvalidShipmentDataField;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ShipmentDataValidator
 {
     /**

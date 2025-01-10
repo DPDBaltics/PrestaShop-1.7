@@ -20,6 +20,10 @@
 
 namespace Invertus\dpdBaltics\Infrastructure\Exception;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 //NOTE class to define most used exception codes for our development.
 class ExceptionCode
 {

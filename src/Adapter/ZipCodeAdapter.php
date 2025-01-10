@@ -16,6 +16,11 @@ use Country;
 use Tools;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 /**
  * Class DPDZipCodeAdapter
  * @package src\Adapter

@@ -20,6 +20,10 @@
 
 namespace Invertus\dpdBaltics\Infrastructure\Utility;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ExceptionUtility
 {
     public static function toArray(\Exception $exception)

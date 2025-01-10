@@ -26,6 +26,10 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use PrestaShop\PrestaShop\Adapter\Country\CountryDataProvider;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CountryUtility
 {
     public static function isEstonia()

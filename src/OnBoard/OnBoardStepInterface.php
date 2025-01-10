@@ -12,6 +12,10 @@
 
 namespace Invertus\dpdBaltics\OnBoard;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 interface OnBoardStepInterface
 {
     /**

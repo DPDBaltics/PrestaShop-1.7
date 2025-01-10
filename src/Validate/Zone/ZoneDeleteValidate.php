@@ -19,6 +19,10 @@ use Invertus\dpdBaltics\ORM\EntityManager;
 use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ZoneDeleteValidate
 {
     /**

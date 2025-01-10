@@ -26,6 +26,9 @@ use DateTime;
 use DateTimeZone;
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 class TimeZoneUtility
 {
     public static function getBalticTimeZone($format = 'H:i')

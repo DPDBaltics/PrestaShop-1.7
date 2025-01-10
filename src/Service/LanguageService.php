@@ -14,6 +14,10 @@ namespace Invertus\dpdBaltics\Service;
 
 use Language;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LanguageService
 {
     public function getShopLanguagesIsoCodes()

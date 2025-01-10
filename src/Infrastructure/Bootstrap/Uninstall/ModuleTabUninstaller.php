@@ -25,6 +25,10 @@ use Invertus\dpdBaltics\Infrastructure\Bootstrap\Exception\CouldNotUninstallModu
 use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 use Tab as PrestashopTab;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ModuleTabUninstaller implements UninstallerInterface
 {
     private $moduleTabs;

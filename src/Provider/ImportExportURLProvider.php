@@ -17,6 +17,10 @@ use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ImportExportURLProvider
 {
     private $context;

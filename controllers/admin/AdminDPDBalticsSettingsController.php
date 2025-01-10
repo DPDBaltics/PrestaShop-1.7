@@ -18,7 +18,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
 use Invertus\dpdBaltics\Builder\Template\Admin\InfoBlockBuilder;
 use Invertus\dpdBaltics\Collection\DPDProductInstallCollection;
 use Invertus\dpdBaltics\Config\Config;
@@ -36,6 +35,10 @@ use Invertus\dpdBaltics\Service\Product\ProductService;
 use Invertus\dpdBaltics\Templating\InfoBlockRender;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class AdminDPDBalticsSettingsController extends AbstractAdminController
 {

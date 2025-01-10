@@ -28,6 +28,10 @@ use DPDZoneRange;
 use Invertus\dpdBaltics\Config\Config;
 use PrestaShopCollection;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ZoneExport implements ExportableInterface
 {
     const FILE_NAME = 'ZoneExport';

@@ -18,6 +18,10 @@ use Invertus\dpdBaltics\Service\Product\ProductAvailabilityService;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminDPDBalticsProductsAvailabilityController extends AbstractAdminController
 {
     public function __construct()

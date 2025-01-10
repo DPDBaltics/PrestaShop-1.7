@@ -43,6 +43,10 @@ use PaymentModule;
 use Shop;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PaymentService
 {
 

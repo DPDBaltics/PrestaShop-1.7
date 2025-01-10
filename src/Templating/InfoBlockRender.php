@@ -15,6 +15,10 @@ namespace  Invertus\dpdBaltics\Templating;
 use Invertus\dpdBaltics\Builder\Template\Admin\InfoBlockBuilder;
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class InfoBlockRender
 {
 

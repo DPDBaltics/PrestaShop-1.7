@@ -12,6 +12,10 @@
 
 namespace Invertus\dpdBaltics\Exception;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 use Exception;
 
 class ImportException extends Exception

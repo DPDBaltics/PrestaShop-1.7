@@ -25,6 +25,10 @@ use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Invertus\dpdBalticsApi\Api\DTO\Object\OpeningHours;
 use Invertus\dpdBalticsApi\Api\DTO\Object\ParcelShop;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ShopFactory
 {
     /**

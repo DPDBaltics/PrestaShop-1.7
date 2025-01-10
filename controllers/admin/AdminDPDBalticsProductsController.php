@@ -19,6 +19,10 @@ use Invertus\dpdBaltics\Service\Product\UpdateProductZoneService;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminDPDBalticsProductsController extends AbstractAdminController
 {
     public function __construct()

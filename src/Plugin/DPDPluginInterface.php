@@ -12,6 +12,10 @@
 
 namespace  Invertus\dpdBaltics\Plugin;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 interface DPDPluginInterface
 {
     public function getJs();

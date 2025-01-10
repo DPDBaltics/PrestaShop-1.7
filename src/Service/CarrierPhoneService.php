@@ -24,6 +24,10 @@ use Invertus\dpdBaltics\Config\Config;
 use DPDOrderPhone;
 use Invertus\dpdBaltics\Validate\Compatibility\OpcModuleCompatibilityValidator;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CarrierPhoneService
 {
     const LITHUANIA_FULL_PHONE_PREFIX = '370';

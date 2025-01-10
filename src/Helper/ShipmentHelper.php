@@ -16,6 +16,10 @@ use Configuration;
 use DPDShipment;
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ShipmentHelper
 {
     public function getReference($orderId, $orderReference)

@@ -25,6 +25,10 @@ use Context;
 use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class DeliveryTimePresenter
 {
     /**

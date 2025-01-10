@@ -34,6 +34,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class OrderLabelController extends FrameworkBundleAdminController
 {
     /**

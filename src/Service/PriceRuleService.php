@@ -39,6 +39,10 @@ use Smarty;
 use Tools;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PriceRuleService
 {
 

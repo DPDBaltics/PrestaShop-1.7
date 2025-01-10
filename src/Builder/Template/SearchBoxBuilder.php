@@ -26,6 +26,10 @@ use Invertus\dpdBaltics\Plugin\SearchBox\Chosen;
 use Invertus\dpdBaltics\Plugin\SearchBox\DPDSearchBoxPluginFactory;
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class SearchBoxBuilder
 {
     /**

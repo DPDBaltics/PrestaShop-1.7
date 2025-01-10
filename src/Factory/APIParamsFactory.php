@@ -27,6 +27,10 @@ use Invertus\dpdBaltics\Config\ApiConfiguration;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBalticsApi\Factory\APIParamsFactoryInterface;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class APIParamsFactory implements APIParamsFactoryInterface
 {
     /**

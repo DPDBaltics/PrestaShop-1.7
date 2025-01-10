@@ -14,6 +14,10 @@ namespace Invertus\dpdBaltics\OnBoard\Objects;
 
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class OnBoardFastMoveButton
 {
     /**

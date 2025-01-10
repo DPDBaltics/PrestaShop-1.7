@@ -17,6 +17,10 @@ use DPDBaltics;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Repository\ZoneRepository;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ExportProvider
 {
     const FILE_NAME = 'ExportProvider';

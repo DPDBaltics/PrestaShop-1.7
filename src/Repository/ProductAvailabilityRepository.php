@@ -14,6 +14,10 @@ namespace Invertus\dpdBaltics\Repository;
 
 use DbQuery;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductAvailabilityRepository extends AbstractEntityRepository
 {
     public function getProductAvailabilityByReference($dpdProductReference)

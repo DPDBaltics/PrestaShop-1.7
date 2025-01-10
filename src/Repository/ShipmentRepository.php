@@ -27,6 +27,10 @@ use DPDShipment;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ShipmentRepository extends AbstractEntityRepository
 {
     public function getIdByOrderId($idOrder)

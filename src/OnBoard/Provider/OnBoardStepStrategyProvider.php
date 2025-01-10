@@ -14,6 +14,10 @@ namespace Invertus\dpdBaltics\OnBoard\Provider;
 
 use Invertus\dpdBaltics\OnBoard\OnBoardStepInterface;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class OnBoardStepStrategyProvider
 {
     /**

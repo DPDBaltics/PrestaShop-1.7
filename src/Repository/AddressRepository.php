@@ -24,6 +24,10 @@ namespace Invertus\dpdBaltics\Repository;
 use DbQuery;
 use DPDAddressTemplate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AddressRepository extends AbstractEntityRepository
 {
     public function getAddressPhonesAndCodes($idAddressTemplate)

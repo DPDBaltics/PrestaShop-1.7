@@ -30,6 +30,10 @@ use Invertus\dpdBaltics\Service\LanguageService;
 use Invertus\dpdBaltics\Validate\Carrier\CarrierUpdateValidate;
 use Language;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class UpdateCarrierService
 {
     /**

@@ -18,7 +18,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
@@ -31,6 +30,10 @@ use Invertus\dpdBaltics\Templating\InfoBlockRender;
 use Invertus\dpdBaltics\Util\CountryUtility;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class AdminDPDBalticsShipmentSettingsController extends AbstractAdminController
 {

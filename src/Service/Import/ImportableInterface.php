@@ -12,6 +12,10 @@
 
 namespace Invertus\dpdBaltics\Service\Import;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 interface ImportableInterface
 {
     /**

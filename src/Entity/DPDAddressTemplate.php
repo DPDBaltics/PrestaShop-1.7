@@ -10,6 +10,10 @@
  * International Registered Trademark & Property of INVERTUS, UAB
  */
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class DPDAddressTemplate extends ObjectModel
 {
     const ADDRESS_TYPE_COLLECTION_REQUEST = 'collection_request';

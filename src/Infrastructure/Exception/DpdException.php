@@ -22,6 +22,10 @@ namespace Invertus\dpdBaltics\Infrastructure\Exception;
 
 use Invertus\dpdBaltics\Infrastructure\Utility\ExceptionUtility;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class DpdException extends \Exception
 {
     private $context;

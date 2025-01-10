@@ -20,6 +20,10 @@ use Language;
 use Square\Models\Order;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CarrierUpdateValidate
 {
     /**

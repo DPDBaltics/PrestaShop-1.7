@@ -12,6 +12,10 @@
 
 namespace  Invertus\dpdBaltics\Templating;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 interface DPDRenderableInterface
 {
     /**

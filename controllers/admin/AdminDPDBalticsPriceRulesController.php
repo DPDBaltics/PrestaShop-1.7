@@ -21,6 +21,10 @@ use Invertus\dpdBaltics\Service\PriceRuleService;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminDPDBalticsPriceRulesController extends AbstractAdminController
 {
     /** @var  DPDPriceRule */

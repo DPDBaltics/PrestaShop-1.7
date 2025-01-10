@@ -31,6 +31,10 @@ use PDOStatement;
 use PrestaShopDatabaseException;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PriceRuleRepository extends AbstractEntityRepository
 {
 

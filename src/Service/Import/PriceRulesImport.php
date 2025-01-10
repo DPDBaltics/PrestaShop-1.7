@@ -33,6 +33,10 @@ use Module;
 use PaymentModule;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class PriceRulesImport implements ImportableInterface
 {
     const FILE_NAME = 'PriceRulesImport';

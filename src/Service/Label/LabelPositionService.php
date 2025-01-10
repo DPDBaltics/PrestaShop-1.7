@@ -29,6 +29,10 @@ use DPDShipment;
 use Invertus\dpdBaltics\Config\Config;
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LabelPositionService
 {
     const FILE_NAME = 'LabelPositionService';

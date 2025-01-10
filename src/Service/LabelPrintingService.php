@@ -16,6 +16,10 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Service\API\LabelApiService;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelPrintResponse;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LabelPrintingService
 {
     private $labelApiService;

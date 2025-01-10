@@ -16,6 +16,9 @@ use Invertus\dpdBaltics\Repository\ShipmentRepository;
 
 use PrestaShop\PrestaShop\Core\Grid\Action\Row\AccessibilityChecker\AccessibilityCheckerInterface;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 final class PrintAccessibilityChecker implements AccessibilityCheckerInterface
 {
     /**

@@ -18,8 +18,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
-
 use Invertus\dpdBaltics\Builder\Template\Admin\PhoneInputBuilder;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Converter\FormDataConverter;
@@ -33,6 +31,10 @@ use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class AdminDPDBalticsCollectionRequestController extends AbstractAdminController
 {

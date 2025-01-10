@@ -32,6 +32,10 @@ use Invertus\dpdBaltics\Util\CountryUtility;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminDPDBalticsAddressTemplateController extends AbstractAdminController
 {
 

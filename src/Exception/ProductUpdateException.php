@@ -14,6 +14,10 @@ namespace Invertus\dpdBaltics\Exception;
 
 use Exception;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductUpdateException extends Exception
 {
 }

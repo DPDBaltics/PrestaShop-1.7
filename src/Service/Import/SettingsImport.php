@@ -29,6 +29,10 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Service\Export\SettingsExport;
 use Shop;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 /**
  * Class DPDSettingsImport is responsible for importing module settings
  */

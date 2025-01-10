@@ -29,6 +29,10 @@ use Invertus\dpdBalticsApi\Api\DTO\Request\CourierRequestRequest;
 use Invertus\dpdBalticsApi\Api\DTO\Response\courierRequestResponse;
 use Invertus\dpdBalticsApi\Factory\APIRequest\courierRequestFactory;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CourierRequestService
 {
 

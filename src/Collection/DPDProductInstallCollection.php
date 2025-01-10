@@ -16,6 +16,11 @@ use ArrayAccess;
 use Invertus\dpdBaltics\DTO\DPDProductInstall;
 use Iterator;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class DPDProductInstallCollection implements ArrayAccess, Iterator
 {
     /**

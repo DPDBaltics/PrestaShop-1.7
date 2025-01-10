@@ -23,6 +23,10 @@ declare(strict_types=1);
 
 namespace Invertus\dpdBaltics\Util;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class NumberUtility
 {
    public static function isValidPhone($number)

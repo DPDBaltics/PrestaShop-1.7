@@ -23,6 +23,10 @@ namespace Invertus\dpdBaltics\Repository;
 
 use DbQuery;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ReceiverAddressRepository extends AbstractEntityRepository
 {
     public function getAddressIdByOrderId($orderid)

@@ -32,6 +32,10 @@ use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use PrestaShopBundle\Controller\Admin\ProductController;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CarrierOptionsBuilder
 {
     /**

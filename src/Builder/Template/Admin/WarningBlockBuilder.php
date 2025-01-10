@@ -16,6 +16,10 @@ use DPDBaltics;
 use Invertus\dpdBaltics\Builder\Template\TemplateBuilderInterface;
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class WarningBlockBuilder implements TemplateBuilderInterface
 {
     /**

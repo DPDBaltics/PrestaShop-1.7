@@ -21,6 +21,10 @@
 
 namespace Invertus\dpdBaltics\Service\Export;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 interface ExportableInterface
 {
     /**

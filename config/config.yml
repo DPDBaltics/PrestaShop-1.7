@@ -16,6 +16,7 @@ imports:
   - { resource: command.yml }
   - { resource: presenter.yml }
   - { resource: templateRender.yml }
+  - { resource: verification.yml }
 
 services:
   _defaults:

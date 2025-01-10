@@ -22,6 +22,10 @@ use State;
 use Tools;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class GoogleApiService
 {
     public $geolocationApi;

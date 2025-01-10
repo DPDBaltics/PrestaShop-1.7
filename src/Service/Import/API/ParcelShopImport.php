@@ -31,6 +31,10 @@ use Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ParcelShopImport
 {
     const FILE_NAME = 'ParcelShopImport';

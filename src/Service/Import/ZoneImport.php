@@ -27,6 +27,10 @@ use Shop;
 use Smarty;
 use Validate;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ZoneImport implements ImportableInterface
 {
     const FILE_NAME = 'ZoneImport';

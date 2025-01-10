@@ -40,6 +40,10 @@ use Invertus\dpdBaltics\Templating\InfoBlockRender;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AdminDPDBalticsImportExportController extends AbstractAdminController
 {
     public function init()

@@ -17,6 +17,10 @@ use Media;
 use Module;
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class Chosen implements SearchBoxPluginInterface, PluginInterface
 {
     private $placeholderText;

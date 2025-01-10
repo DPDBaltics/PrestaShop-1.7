@@ -26,6 +26,11 @@ use Invertus\dpdBaltics\DTO\CourierRequestData;
 use Invertus\dpdBaltics\DTO\ShipmentData;
 use Symfony\Component\DependencyInjection\Container;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
+
 class FormDataConverter
 {
     public function convertShipmentFormDataToShipmentObj($formData)

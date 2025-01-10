@@ -28,6 +28,10 @@ use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Repository\AddressTemplateRepository;
 use PrestaShopCollection;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class AddressTemplatesExport implements ExportableInterface
 {
     const FILE_NAME = 'AddressTemplatesExport';

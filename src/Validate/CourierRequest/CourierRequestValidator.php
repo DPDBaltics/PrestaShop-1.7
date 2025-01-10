@@ -25,6 +25,10 @@ use DateTime;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\CourierRequestData;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CourierRequestValidator
 {
     public function validate(CourierRequestData $courierRequestData, $countryIso)

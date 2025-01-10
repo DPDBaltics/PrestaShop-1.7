@@ -23,6 +23,10 @@ namespace Invertus\dpdBaltics\Util;
 
 use Invertus\dpdBaltics\Config\Config;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductUtility
 {
     public static function hasAvailability($productReference) {

@@ -12,6 +12,10 @@
 
 namespace Invertus\dpdBaltics\OnBoard\Objects;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class OnBoardTemplateData
 {
     /**
