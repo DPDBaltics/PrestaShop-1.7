@@ -26,6 +26,10 @@ use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Util\CountryUtility;
 use Invertus\dpdBaltics\Util\StringUtility;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ParcelTrackingUrlFactory
 {
     /**

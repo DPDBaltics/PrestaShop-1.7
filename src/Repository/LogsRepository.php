@@ -26,6 +26,10 @@ use DbQuery;
 use PrestaShopDatabaseException;
 use PrestaShopException;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class LogsRepository extends AbstractEntityRepository
 {
     /**

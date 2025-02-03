@@ -35,6 +35,10 @@ use Shop;
 use Smarty;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ZipImport
 {
     /**

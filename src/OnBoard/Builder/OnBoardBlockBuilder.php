@@ -15,6 +15,10 @@ namespace Invertus\dpdBaltics\OnBoard\Builder;
 use DPDBaltics;
 use Smarty;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class OnBoardBlockBuilder
 {
     /**

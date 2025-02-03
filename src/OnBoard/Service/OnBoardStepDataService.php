@@ -21,6 +21,10 @@ use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\ZoneRepository;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class OnBoardStepDataService
 {
     /**

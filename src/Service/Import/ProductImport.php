@@ -33,6 +33,10 @@ use Invertus\dpdBaltics\Repository\ZoneRepository;
 use Invertus\dpdBaltics\Service\Export\ProductExport;
 use Language;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductImport implements ImportableInterface
 {
 

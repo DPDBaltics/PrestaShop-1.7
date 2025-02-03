@@ -18,27 +18,21 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-use Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker;
 use Invertus\dpdBaltics\Builder\Template\Front\CarrierOptionsBuilder;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Grid\LinkRowActionCustom;
 use Invertus\dpdBaltics\Grid\SubmitBulkActionCustom;
-use invertus\dpdbaltics\install\installer;
-use Invertus\dpdBaltics\Logger\Logger;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardService;
 use Invertus\dpdBaltics\Repository\AddressTemplateRepository;
 use Invertus\dpdBaltics\Repository\OrderRepository;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Invertus\dpdBaltics\Repository\PhonePrefixRepository;
-use Invertus\dpdBaltics\Repository\PriceRuleRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\PudoRepository;
 use Invertus\dpdBaltics\Repository\ReceiverAddressRepository;
 use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Invertus\dpdBaltics\Repository\ZoneRepository;
-use Invertus\dpdBaltics\Service\API\LabelApiService;
-use Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService;
 use Invertus\dpdBaltics\Service\CarrierPhoneService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\GoogleApiService;
@@ -46,7 +40,6 @@ use Invertus\dpdBaltics\Service\Label\LabelPositionService;
 use Invertus\dpdBaltics\Service\OrderService;
 use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBaltics\Service\Payment\PaymentService;
-use Invertus\dpdBaltics\Service\PriceRuleService;
 use Invertus\dpdBaltics\Service\PudoService;
 use Invertus\dpdBaltics\Service\ShipmentService;
 use Invertus\dpdBaltics\Service\ShippingPriceCalculationService;
@@ -58,16 +51,16 @@ use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelPrintResponse;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
 use Invertus\dpdBalticsApi\Factory\SerializerFactory;
-use PrestaShop\PrestaShop\Core\Grid\Action\Bulk\Type\SubmitBulkAction;
 use PrestaShop\PrestaShop\Core\Grid\Action\Row\RowActionCollection;
-use PrestaShop\PrestaShop\Core\Grid\Action\Row\Type\LinkRowAction;
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\ActionColumn;
-use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 
 class DPDBaltics extends CarrierModule
 {
@@ -91,7 +84,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.2.20';
+        $this->version = '3.2.21';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -548,7 +541,7 @@ class DPDBaltics extends CarrierModule
         /** @var ShippingPriceCalculationService $shippingPriceCalculationService */
         $shippingPriceCalculationService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.shipping_price_calculation_service');
 
-        return  $shippingPriceCalculationService->calculate($cart, $carrier, $deliveryAddress);
+        return $shippingPriceCalculationService->calculate($cart, $carrier, $deliveryAddress);
     }
 
     public function hookDisplayCarrierExtraContent($params)

@@ -22,6 +22,10 @@ namespace Invertus\dpdBaltics\Infrastructure\Repository;
 
 use PrestaShopCollection;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class CollectionRepository implements ReadOnlyCollectionRepositoryInterface
 {
     /**

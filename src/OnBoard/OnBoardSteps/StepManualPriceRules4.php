@@ -23,6 +23,10 @@ use Invertus\dpdBaltics\OnBoard\Objects\OnBoardProgressBar;
 use Invertus\dpdBaltics\OnBoard\Objects\OnBoardTemplateData;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class StepManualPriceRules4 extends AbstractOnBoardStep
 {
     const FILE_NAME = 'StepManualPriceRules4';

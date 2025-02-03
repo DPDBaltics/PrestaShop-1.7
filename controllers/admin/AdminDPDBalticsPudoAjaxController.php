@@ -18,7 +18,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
@@ -28,6 +27,10 @@ use Invertus\dpdBaltics\Repository\PudoRepository;
 use Invertus\dpdBaltics\Service\OrderService;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
 {

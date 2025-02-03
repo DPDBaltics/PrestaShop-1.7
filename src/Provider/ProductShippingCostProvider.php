@@ -34,6 +34,10 @@ use Invertus\dpdBaltics\Verification\IsAddressInZone;
 use Product;
 use Tools;
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 class ProductShippingCostProvider
 {
     /**

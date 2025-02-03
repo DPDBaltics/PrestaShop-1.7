@@ -20,11 +20,13 @@
 
 declare(strict_types=1);
 
-
 namespace Invertus\dpdBaltics\Service\Label;
 
-
 use Invertus\dpdBaltics\Adapter\LinkAdapter;
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
 class LabelUrlFormatter
 {
