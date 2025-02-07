@@ -24,6 +24,7 @@ use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Grid\LinkRowActionCustom;
 use Invertus\dpdBaltics\Grid\SubmitBulkActionCustom;
 use Invertus\dpdBaltics\OnBoard\Service\OnBoardService;
+use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Repository\AddressTemplateRepository;
 use Invertus\dpdBaltics\Repository\OrderRepository;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
@@ -40,13 +41,16 @@ use Invertus\dpdBaltics\Service\Label\LabelPositionService;
 use Invertus\dpdBaltics\Service\OrderService;
 use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBaltics\Service\Payment\PaymentService;
+use Invertus\dpdBaltics\Service\Product\ProductAvailabilityService;
 use Invertus\dpdBaltics\Service\PudoService;
 use Invertus\dpdBaltics\Service\ShipmentService;
 use Invertus\dpdBaltics\Service\ShippingPriceCalculationService;
 use Invertus\dpdBaltics\Service\TabService;
 use Invertus\dpdBaltics\Service\TrackingService;
 use Invertus\dpdBaltics\Util\CountryUtility;
+use Invertus\dpdBaltics\Util\ProductUtility;
 use Invertus\dpdBaltics\Validate\Carrier\PudoValidate;
+use Invertus\dpdBaltics\Validate\Weight\CartWeightValidator;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelPrintResponse;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
@@ -459,25 +463,28 @@ class DPDBaltics extends CarrierModule
      */
     public function getOrderShippingCostExternal($cart)
     {
-        // This method is still called when module is disabled so we need to do a manual check here
         if (!$this->active) {
             return false;
         }
 
+        /** @var ZoneRepository $zoneRepository */
+        $zoneRepository = $this->getModuleContainer('invertus.dpdbaltics.repository.zone_repository');
+
+        /** @var ProductRepository $productRepository */
+        $productRepository = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.product_repository');
+
+        /** @var ProductAvailabilityService $productAvailabilityService */
+        $productAvailabilityService = $this->getModuleContainer('invertus.dpdbaltics.service.product.product_availability_service');
+
+        /** @var CartWeightValidator $cartWeightValidator */
+        $cartWeightValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.weight.cart_weight_validator');
+
+        /** @var CurrentCountryProvider $currentCountryProvider */
+        $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+
         if ($this->context->controller->ajax && Tools::getValue('id_address_delivery')) {
             $cart->id_address_delivery = (int)Tools::getValue('id_address_delivery');
         }
-
-        /** @var ZoneRepository $zoneRepository */
-        /** @var ProductRepository $productRepo */
-        /** @var \Invertus\dpdBaltics\Service\Product\ProductAvailabilityService $productAvailabilityService */
-        /** @var \Invertus\dpdBaltics\Validate\Weight\CartWeightValidator $cartWeightValidator */
-        /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
-        $zoneRepository =  $this->getModuleContainer('invertus.dpdbaltics.repository.zone_repository');
-        $productRepo = $this->getModuleContainer()->get('invertus.dpdbaltics.repository.product_repository');
-        $productAvailabilityService = $this->getModuleContainer('invertus.dpdbaltics.service.product.product_availability_service');
-        $cartWeightValidator = $this->getModuleContainer('invertus.dpdbaltics.validate.weight.cart_weight_validator');
-        $currentCountryProvider = $this->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
 
         $deliveryAddress = new Address($cart->id_address_delivery);
 
@@ -491,18 +498,12 @@ class DPDBaltics extends CarrierModule
             return false;
         }
 
-        if (!$productRepo->checkIfCarrierIsAvailableInCountry((int) $carrier->id_reference, (int) $deliveryAddress->id_country)
-        ) {
+        if (!$productRepository->checkIfCarrierIsAvailableInCountry($carrier->id_reference, $deliveryAddress->id_country)) {
             return false;
         }
 
         try {
-            $isCarrierAvailableInShop = $productRepo->checkIfCarrierIsAvailableInShop($carrier->id_reference, $this->context->shop->id);
-            if (empty($isCarrierAvailableInShop)) {
-                return false;
-            }
-
-            $serviceCarrier = $productRepo->findProductByCarrierReference($carrier->id_reference);
+            $isCarrierAvailableInShop = (bool) $productRepository->checkIfCarrierIsAvailableInShop($carrier->id_reference, $this->context->shop->id);
         } catch (Exception $e) {
             $tplVars = [
                 'errorMessage' => $this->l('Something went wrong while collecting DPD carrier data'),
@@ -514,7 +515,9 @@ class DPDBaltics extends CarrierModule
             );
         }
 
-        if ((bool)$serviceCarrier['is_home_collection']) {
+        $serviceCarrier = $productRepository->findProductByCarrierReference($carrier->id_reference);
+
+        if (empty($isCarrierAvailableInShop) || $serviceCarrier['is_home_collection']) {
             return false;
         }
 
@@ -528,7 +531,7 @@ class DPDBaltics extends CarrierModule
         }
 
         if ($serviceCarrier['product_reference'] === Config::PRODUCT_TYPE_SAME_DAY_DELIVERY) {
-            $isSameDayAvailable = \Invertus\dpdBaltics\Util\ProductUtility::validateSameDayDelivery(
+            $isSameDayAvailable = ProductUtility::validateSameDayDelivery(
                 $countryCode,
                 $deliveryAddress->city
             );
