@@ -88,12 +88,10 @@ class ShippingPriceCalculationService
     private function applyAdditionalCosts(Cart $cart)
     {
         $products = $cart->getProducts();
-
         $additionalShippingCosts = 0.0;
-
         foreach ($products as $product) {
-            if ((float) $product['additional_shipping_cost']) {
-                $additionalShippingCosts += (float) $product['additional_shipping_cost'];
+            if ((float)$product['additional_shipping_cost']) {
+                $additionalShippingCosts += (float)$product['additional_shipping_cost'];
             }
         }
         return $additionalShippingCosts;
