@@ -75,8 +75,7 @@ class ProductRepository extends AbstractEntityRepository
     }
 
     /**
-     * @param $carrierReference
-     *
+     * @param $carrierId
      * @return array|bool|object|null
      */
     public function findProductByCarrierReference($carrierReference)
@@ -91,9 +90,8 @@ class ProductRepository extends AbstractEntityRepository
 
     /**
      *
-     * @param $carrierReference
+     * @param $idCarrier
      * @param $idShop
-     *
      * @return array|false|mysqli_result|PDOStatement|resource|null
      *
      * @throws PrestaShopDatabaseException
@@ -110,13 +108,13 @@ class ProductRepository extends AbstractEntityRepository
         );
         $query->where('sc.id_reference = '.(int)$carrierReference . ' AND (csp.id_shop = ' . (int)$idShop . ' OR all_shops = 1)');
 
-        return (bool) $this->db->executeS($query);
+        return $this->db->executeS($query);
     }
 
     public function updateProductsForPriceRule($idPriceRule, array $carriers, $checkAll = 0)
     {
         if (!$idPriceRule) {
-            return true;
+            return;
         }
 
         if (empty($carriers)) {
