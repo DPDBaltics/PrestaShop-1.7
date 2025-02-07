@@ -503,7 +503,7 @@ class DPDBaltics extends CarrierModule
         }
 
         try {
-            $isCarrierAvailableInShop = (bool) $productRepository->checkIfCarrierIsAvailableInShop($carrier->id_reference, $this->context->shop->id);
+            $isCarrierAvailableInShop = $productRepository->checkIfCarrierIsAvailableInShop($carrier->id_reference, $this->context->shop->id);
         } catch (Exception $e) {
             $tplVars = [
                 'errorMessage' => $this->l('Something went wrong while collecting DPD carrier data'),
