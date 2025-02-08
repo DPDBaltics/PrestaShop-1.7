@@ -77,12 +77,12 @@ class DPDBaltics extends CarrierModule
     public $id_carrier;
 
     /**
-     * Used to cache shipping costs because of
+     * Used to store shipping costs because of
      * multiple calls to getOrderShippingCost hook
      *
-     * @var array
+     * @var array<int> carrier_id => shipping_cost`
      */
-    private static $cachedShippingCosts = [];
+    private static $shippingCosts = [];
 
 
     public function __construct()
@@ -495,8 +495,8 @@ class DPDBaltics extends CarrierModule
 
         $carrier = new Carrier($this->id_carrier);
 
-        if (isset(self::$cachedShippingCosts[$carrier->id])) {
-            return self::$cachedShippingCosts[$carrier->id];
+        if (isset(self::$shippingCosts[$carrier->id])) {
+            return self::$shippingCosts[$carrier->id];
         }
 
         if (!$productAvailabilityService->checkIfCarrierIsAvailable($carrier->id_reference)) {
@@ -553,9 +553,9 @@ class DPDBaltics extends CarrierModule
         /** @var ShippingPriceCalculationService $shippingPriceCalculationService */
         $shippingPriceCalculationService = $this->getModuleContainer()->get('invertus.dpdbaltics.service.shipping_price_calculation_service');
 
-        self::$cachedShippingCosts[$carrier->id] = $shippingPriceCalculationService->calculate($cart, $carrier, $deliveryAddress);
+        self::$shippingCosts[$carrier->id] = $shippingPriceCalculationService->calculate($cart, $carrier, $deliveryAddress);
 
-        return self::$cachedShippingCosts[$carrier->id];
+        return self::$shippingCosts[$carrier->id];
     }
 
     public function hookDisplayCarrierExtraContent($params)
