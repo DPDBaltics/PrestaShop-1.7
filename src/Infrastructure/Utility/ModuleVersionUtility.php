@@ -31,7 +31,7 @@ class ModuleVersionUtility
     /** @var string */
     private $moduleVersion;
 
-    public function __construct($moduleVersion)
+    public function __construct(string $moduleVersion)
     {
         $this->moduleVersion = $moduleVersion;
     }
