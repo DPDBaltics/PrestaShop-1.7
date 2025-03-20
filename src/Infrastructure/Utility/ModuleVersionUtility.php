@@ -31,9 +31,9 @@ class ModuleVersionUtility
     /** @var string */
     private $moduleVersion;
 
-    public function __construct(DPDBaltics $module)
+    public function __construct($moduleVersion)
     {
-        $this->moduleVersion = $module->version;
+        $this->moduleVersion = $moduleVersion;
     }
 
     public function isVersionLatest(string $githubModuleVersion): bool
