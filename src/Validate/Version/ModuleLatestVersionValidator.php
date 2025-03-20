@@ -56,23 +56,43 @@ class ModuleLatestVersionValidator implements ValidatorInterface
         }
     }
 
+    /**
+     * Fetches the latest module version from the GitHub API.
+     *
+     * This function sends a request to the GitHub API to retrieve the latest release version.
+     * It ensures proper error handling for cURL failures and JSON decoding errors.
+     *
+     * @throws \RuntimeException If the cURL request fails.
+     * @throws \UnexpectedValueException If the API response is invalid or missing the expected data.
+     *
+     * @return string The latest module version (without the leading "v").
+     */
     private function getLatestModuleVersionGithub(): string
     {
-        try {
-            $request = curl_init();
-            curl_setopt($request, CURLOPT_URL, Config::DPD_GITHUB_REPO_RELEASE_LATEST_API_URL);
-            curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($request, CURLOPT_USERAGENT, 'PrestaShop');
-            $response = curl_exec($request);
+        $request = curl_init();
+
+        curl_setopt_array($request, [
+            CURLOPT_URL            => Config::DPD_GITHUB_REPO_RELEASE_LATEST_API_URL,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_USERAGENT      => 'PrestaShop',
+        ]);
+
+        $response = curl_exec($request);
+
+        if ($response === false) {
+            $errorMessage = curl_error($request);
             curl_close($request);
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \RuntimeException("cURL error: " . $errorMessage);
         }
 
-        unset($request);
+        curl_close($request);
 
-        $version = json_decode($response)->tag_name;
+        $decodedResponse = json_decode($response);
 
-        return preg_replace('/^v/', '', $version);
+        if (!isset($decodedResponse->tag_name)) {
+            throw new \UnexpectedValueException("Invalid response from GitHub API.");
+        }
+
+        return preg_replace('/^v/', '', $decodedResponse->tag_name);
     }
 }
