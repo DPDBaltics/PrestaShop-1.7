@@ -79,7 +79,7 @@ class ModuleLatestVersionValidator implements ValidatorInterface
 
         $response = curl_exec($request);
 
-        if ($response === false) {
+        if (false === $response) {
             $errorMessage = curl_error($request);
             curl_close($request);
             throw new \RuntimeException("cURL error: " . $errorMessage);
