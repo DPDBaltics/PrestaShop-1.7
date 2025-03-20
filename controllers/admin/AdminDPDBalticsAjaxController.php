@@ -35,16 +35,16 @@ class AdminDPDBalticsAjaxController extends AbstractAdminController
         $selectedCountry = Tools::getValue('country');
         switch ($selectedCountry) {
             case 'latvia' :
-                $this->ajaxRender(json_encode($importOnLoginService->importLatviaZones()));
-                die();
+                $this->ajaxDie(json_encode($importOnLoginService->importLatviaZones()));
+
                 break;
             case 'lithuania':
-                $this->ajaxRender(json_encode($importOnLoginService->importLithuaniaZones()));
-                die();
+                $this->ajaxDie(json_encode($importOnLoginService->importLithuaniaZones()));
+
                 break;
             default:
-                $this->ajaxRender();
-                die();
+                $this->ajaxDie();
+
                 break;
         }
     }
@@ -56,7 +56,6 @@ class AdminDPDBalticsAjaxController extends AbstractAdminController
 
         $countryId = Tools::getValue('countryId');
         $countryIso = Country::getIsoById($countryId);
-        $this->ajaxRender(json_encode($parcelShopImport->importParcelShops($countryIso)));
-        die();
+        $this->ajaxDie(json_encode($parcelShopImport->importParcelShops($countryIso)));
     }
 }
