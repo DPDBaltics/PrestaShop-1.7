@@ -19,6 +19,7 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdbaltics\Controller\AbstractFrontController;
 use Invertus\dpdBaltics\Provider\ZoneRangeProvider;
 use Invertus\dpdBaltics\Service\Import\API\ParcelShopImport;
 
@@ -26,7 +27,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
+class DpdbalticsCronJobModuleFrontController extends AbstractFrontController
 {
     public function postProcess()
     {
@@ -34,11 +35,10 @@ class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
 
         $token = Tools::getValue('token');
         if ($token !== Configuration::get(Config::DPDBALTICS_HASH_TOKEN)) {
-            $this->ajaxRender([
+            $this->ajaxDie([
                 'success' => false,
                 'message' => 'wrong token'
             ]);
-            exit;
         }
 
         $action = Tools::getValue('action');
@@ -54,8 +54,7 @@ class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
                     foreach ($countriesInZoneRange as $country) {
                         $response = $parcelShopImport->importParcelShops($country);
                         if (isset($response['success']) && !$response['success']) {
-                            $this->ajaxRender(json_encode($response));
-                            exit;
+                            $this->ajaxDie(json_encode($response));
                         }
                     }
                 } else {
@@ -63,13 +62,12 @@ class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
                     foreach ($countries as $country) {
                         $response = $parcelShopImport->importParcelShops($country['iso_code']);
                         if (isset($response['success']) && !$response['success']) {
-                            $this->ajaxRender(json_encode($response));
-                            exit;
+                            $this->ajaxDie(json_encode($response));
                         }
                     }
                 }
-                $this->ajaxRender(json_encode($response));
-                exit;
+                $this->ajaxDie(json_encode($response));
+
                 break;
             default:
                 return;

@@ -240,4 +240,11 @@ class AbstractAdminController extends ModuleAdminController
             unset($this->context->cookie->{$type});
         }
     }
+
+    protected function ajaxDie($value = null, $controller = null, $method = null)
+    {
+        parent::ajaxRender($value, $controller, $method);
+
+        exit();
+    }
 }
