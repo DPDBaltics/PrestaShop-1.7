@@ -178,3 +178,5 @@
 
 ## [3.2.22]
 - Removed PUDO default preselection
+- Fixed Logger
+- Added warning when module is out of date
