@@ -87,7 +87,7 @@ class PriceRuleRepository extends AbstractEntityRepository
         bool $includeCountryCheck = false
     ) {
         $query = new DbQuery();
-        $query->select('prc.`id_dpd_price_rule`');
+        $query->select('DISTINCT prc.`id_dpd_price_rule`');
         $query->from('dpd_price_rule_carrier', 'prc');
         $query->innerJoin('dpd_price_rule', 'pr', 'pr.id_dpd_price_rule = prc.id_dpd_price_rule');
         $query->innerJoin(
