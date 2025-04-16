@@ -106,7 +106,7 @@ class PriceRuleRepository extends AbstractEntityRepository
             $query->innerJoin(
                 'dpd_zone_range',
                 'zr',
-                'prz.`id_dpd_zone` = zr.`id_dpd_zone`'
+                'prz.`id_dpd_zone` = zr.`id_dpd_zone` OR prz.all_zones = 1'
             );
 
             $query->where('zr.`id_country`= ' . (int) $deliveryAddress->id_country);
