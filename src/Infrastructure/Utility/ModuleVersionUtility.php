@@ -38,6 +38,6 @@ class ModuleVersionUtility
 
     public function isVersionLatest(string $githubModuleVersion): bool
     {
-        return version_compare($this->moduleVersion, $githubModuleVersion, '=');
+        return version_compare($this->moduleVersion, $githubModuleVersion, '>=');
     }
 }
