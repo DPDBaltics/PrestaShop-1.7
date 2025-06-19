@@ -6,7 +6,7 @@ class AbstractFrontController extends \ModuleFrontController
 {
     protected function ajaxDie($value = null, $controller = null, $method = null)
     {
-        parent::ajaxDie($value, $controller, $method);
+        parent::ajaxRender($value, $controller, $method);
 
         exit();
     }

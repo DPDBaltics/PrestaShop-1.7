@@ -11,7 +11,7 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
-use Invertus\dpdbaltics\Controller\AbstractFrontController;
+use Invertus\dpdBaltics\Controller\AbstractFrontController;
 use Invertus\dpdBaltics\Exception\DpdCarrierException;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
