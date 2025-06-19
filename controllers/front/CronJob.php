@@ -19,7 +19,7 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
-use Invertus\dpdbaltics\Controller\AbstractFrontController;
+use Invertus\dpdBaltics\Controller\AbstractFrontController;
 use Invertus\dpdBaltics\Provider\ZoneRangeProvider;
 use Invertus\dpdBaltics\Service\Import\API\ParcelShopImport;
 

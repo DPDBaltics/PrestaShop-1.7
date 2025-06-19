@@ -1,6 +1,6 @@
 <?php
 
-namespace Invertus\dpdbaltics\Controller;
+namespace Invertus\dpdBaltics\Controller;
 
 class AbstractFrontController extends \ModuleFrontController
 {

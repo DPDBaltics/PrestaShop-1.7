@@ -249,7 +249,7 @@ class AbstractAdminController extends ModuleAdminController
 
         exit();
     }
-  
+
     private function checkCanUpdateModule()
     {
         /** @var ModuleLatestVersionValidator $moduleVersionValidator */
