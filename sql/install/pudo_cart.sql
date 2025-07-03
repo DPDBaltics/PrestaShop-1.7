@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS `PREFIX_dpd_pudo_cart` (
   `post_code` VARCHAR(10) NOT NULL,
   `id_carrier` int(11) UNSIGNED NOT NULL,
   `pudo_id` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX (`id`, `id_cart`, `id_carrier`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

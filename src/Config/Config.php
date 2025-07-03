@@ -265,6 +265,9 @@ class Config
     // NOTE: Add OPC module tech name if payment option is compatible
     public const DPD_OPC_MODULE_LIST = ['onepagecheckoutps', 'supercheckout', 'thecheckout'];
 
+    public const DPD_GITHUB_REPO_RELEASE_LATEST_API_URL = 'https://api.github.com/repos/DPDBaltics/PrestaShop/releases/latest';
+    public const DPD_GITHUB_REPO_RELEASE_LATEST_DOWNLOAD_URL = 'https://github.com/DPDBaltics/PrestaShop/releases/latest/download/dpdbaltics.zip';
+
     const PRODUCT_NAME_B2B = [
         'LT' => 'Pristatymas privatiems asmenims',
         'EE' => 'DPD kuller',

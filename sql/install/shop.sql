@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_dpd_shop` (
   `phone` varchar(64) NOT NULL,
   `longitude` decimal(20,6) NOT NULL,
   `latitude` decimal(20,6) NOT NULL,
-  PRIMARY KEY (`id_dpd_shop`)
+  PRIMARY KEY (`id_dpd_shop`),
+  INDEX (`id_dpd_shop`, `parcel_shop_id`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 

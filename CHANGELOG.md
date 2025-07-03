@@ -161,7 +161,7 @@
 - Price rule bug fix to add additional filtration by country
 
 ## [3.2.19]
-- Carrier availability in country 
+- Carrier availability in country
 - Phone input selections sorted by active countries in shop
 - Work hours pop up fix
 - Numeric post code improvements
@@ -175,3 +175,9 @@
 - Improved price calculation
 - Fixed issues with carrier shown as "Free" when it is not needed to display
 - Carriers error handling improvements
+
+## [3.2.22]
+- Removed PUDO default preselection
+- Fixed Logger
+- Added warning when module have outdated version
+- Improved module performance
