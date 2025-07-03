@@ -123,7 +123,6 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
                     ));
                 }
                 $this->ajaxDie(json_encode(['status' => true]));
-
                 break;
             case 'updateStreetSelect':
                 $city = Tools::getValue('city');
@@ -151,7 +150,6 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
                     ));
                 }
                 $this->ajaxDie(json_encode(['status' => true]));
-
                 break;
             case 'updateParcelBlock':
                 $street = Tools::getValue('street');
