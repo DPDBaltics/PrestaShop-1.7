@@ -140,13 +140,13 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
         $this->_select = 'GROUP_CONCAT(DISTINCT c.iso_code) AS `countries`,';
         $this->_select .= 'COUNT(dzr.id_dpd_zone_range) AS `ranges_count`,';
 
-        $this->_select .= 'IF(COUNT(dzr.id_dpd_zone_range) = SUM(dzr.include_all_zip_codes), "' . $allZones . '", 
-        IF(SUM(dzr.include_all_zip_codes) = 0 AND SUM(dzr.zip_code_from_numeric) = SUM(dzr.zip_code_to_numeric), 
+        $this->_select .= 'IF(COUNT(dzr.id_dpd_zone_range) = SUM(dzr.include_all_zip_codes), "' . $allZones . '",
+        IF(SUM(dzr.include_all_zip_codes) = 0 AND SUM(dzr.zip_code_from_numeric) = SUM(dzr.zip_code_to_numeric),
         "' . $oneZone . '", "' . $limitedZones . '")
         ) AS `inclusion_type`,
         ';
 
-        $this->_select .= 'IF(COUNT(dzr.id_dpd_zone_range) = SUM(dzr.include_all_zip_codes), 
+        $this->_select .= 'IF(COUNT(dzr.id_dpd_zone_range) = SUM(dzr.include_all_zip_codes),
         "'.pSQL(Config::COLOR_ALL_ZONES).'",
         IF(SUM(dzr.include_all_zip_codes) = 0 AND SUM(dzr.zip_code_from_numeric) = SUM(dzr.zip_code_to_numeric),
         "'.pSQL(Config::COLOR_ONE_ZONE).'", "'.pSQL(Config::COLOR_LIMITED_ZONES).'")
@@ -231,8 +231,7 @@ class AdminDPDBalticsZonesController extends AbstractAdminController
             $response['error'] = $e->getMessage();
         }
 
-        $this->ajaxRender(json_encode($response));
-        die();
+        $this->ajaxDie(json_encode($response));
     }
 
     public function processDelete()
