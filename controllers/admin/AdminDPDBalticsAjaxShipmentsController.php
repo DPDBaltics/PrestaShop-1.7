@@ -169,8 +169,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                             'carrierPhoneTemplate' => ''
                         ]
                     );
-                    $this->ajaxRender($response);
-                    exit;
+                    $this->ajaxDie($response);
                 }
                 /** @var \Invertus\dpdBaltics\Service\CarrierPhoneService $carrierPhoneService */
                 $carrierPhoneService = $this->module->getModuleContainer('invertus.dpdbaltics.service.carrier_phone_service');
@@ -179,8 +178,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                     'carrierPhoneTemplate' => $carrierPhoneService->getCarrierPhoneTemplate($idCart, $carrier->id_reference)
                 ];
                 $response = json_encode($response);
-                $this->ajaxRender($response);
-                exit;
+                $this->ajaxDie($response);
                 break;
             default:
                 break;
@@ -229,8 +227,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
     {
         $response = json_encode($response);
 
-        $this->ajaxRender($response);
-        exit;
+        $this->ajaxDie($response);
     }
 
     private function changeReceiverAddressBlock($receiverAddressData, $orderId)
