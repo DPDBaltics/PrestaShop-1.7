@@ -152,6 +152,12 @@ class OrderLabelController extends FrameworkBundleAdminController
     {
         try {
             $parcelPrintResponse = $this->module->printLabel($shipmentId);
+
+            if (!empty($parcelPrintResponse->getErrLog())) {
+                return $this->redirectWithError('admin_orders_index', $parcelPrintResponse->getErrLog());
+            }
+
+            return new Response();
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
@@ -163,18 +169,18 @@ class OrderLabelController extends FrameworkBundleAdminController
         } catch (\Exception $e) {
             return $this->redirectWithError('admin_orders_index',$this->module->l('Failed to print label: ') . $e->getMessage());
         }
-
-        if (!empty($parcelPrintResponse->getErrLog())) {
-            return $this->redirectWithError('admin_orders_index', $parcelPrintResponse->getErrLog());
-        }
-
-        return null;
     }
 
     private function printMultipleLabels($shipmentIds)
     {
         try {
             $parcelPrintResponse = $this->module->printMultipleLabels($shipmentIds);
+
+            if (!empty($parcelPrintResponse->getErrLog())) {
+                return $this->redirectWithError('admin_orders_index',$parcelPrintResponse->getErrLog());
+            }
+
+            return new Response();
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
@@ -186,12 +192,6 @@ class OrderLabelController extends FrameworkBundleAdminController
         } catch (\Exception $e) {
             return $this->redirectWithError('admin_orders_index',$this->module->l('Failed to print label: ') . $e->getMessage());
         }
-
-        if (!empty($parcelPrintResponse->getErrLog())) {
-            return $this->redirectWithError('admin_orders_index',$parcelPrintResponse->getErrLog());
-        }
-
-        return null;
     }
 
     private function redirectWithError($route, $error)
