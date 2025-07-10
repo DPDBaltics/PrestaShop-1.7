@@ -147,6 +147,14 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
         $cronJobText =
             $this->l('You can setup cronjob with: ' . $href);
 
+        $cliCronCommand = 'php ';
+        $cliCronCommand .= '"' . _PS_MODULE_DIR_ . $this->module->name . DIRECTORY_SEPARATOR . 'cron.php" ';
+        $cliCronCommand .= ' "token=' . Configuration::get(Config::DPDBALTICS_HASH_TOKEN) . '&action=updateParcelShops"';
+
+
+        $cliCronJobText =
+            $this->l('You can set up a CLI cron job using:: ' . $cliCronCommand);
+
         if (Shop::CONTEXT_GROUP == $shopContext) {
             $info = $this->l('Data will be imported to all group shops');
         } elseif (Shop::CONTEXT_ALL == $shopContext) {
@@ -286,6 +294,8 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
                             $infoBlockRender->getInfoBlockTemplate($importParcelsInfoBlockText) .
                             $break .
                             $infoBlockRender->getInfoBlockTemplate($cronJobText) .
+                            $break .
+                            $infoBlockRender->getInfoBlockTemplate($cliCronJobText) .
                             $break .
                             $this->getWarningBlockTemplate($importParcelsWarningBlockText),
                         'class' => 'hidden',
