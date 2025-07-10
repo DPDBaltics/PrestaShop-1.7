@@ -19,6 +19,7 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdbaltics\Controller\AbstractFrontController;
 use Invertus\dpdBaltics\Repository\ShipmentRepository;
 use Invertus\dpdBaltics\Service\API\LabelApiService;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
@@ -29,7 +30,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class DpdbalticsShipmentReturnModuleFrontController extends ModuleFrontController
+class DpdbalticsShipmentReturnModuleFrontController extends AbstractFrontController
 {
     const FILENAME = 'ShipmentReturn';
     const DEFAULT_LABEL_TEMPLATE_ID = 1;

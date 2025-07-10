@@ -19,6 +19,7 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Controller\AbstractFrontController;
 use Invertus\dpdBaltics\Provider\ZoneRangeProvider;
 use Invertus\dpdBaltics\Service\Import\API\ParcelShopImport;
 
@@ -26,7 +27,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
+class DpdbalticsCronJobModuleFrontController extends AbstractFrontController
 {
     public function postProcess()
     {
@@ -66,6 +67,7 @@ class DpdbalticsCronJobModuleFrontController extends ModuleFrontController
                     }
                 }
                 $this->ajaxDie(json_encode($response));
+
                 break;
             default:
                 return;

@@ -175,7 +175,7 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                 $carrierPhoneService = $this->module->getModuleContainer('invertus.dpdbaltics.service.carrier_phone_service');
 
                 $response = [
-                    'carrierPhoneTemplate' => $carrierPhoneService->getCarrierPhoneTemplate($idCart)
+                    'carrierPhoneTemplate' => $carrierPhoneService->getCarrierPhoneTemplate($idCart, $carrier->id_reference)
                 ];
                 $response = json_encode($response);
                 $this->ajaxDie($response);
