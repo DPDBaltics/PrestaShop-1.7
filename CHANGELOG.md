@@ -181,3 +181,7 @@
 - Fixed Logger
 - Added warning when module have outdated version
 - Improved module performance
+
+## [3.2.23]
+- Added PrestaShop 9 compatibility
+- Fixed issue with price rule "All"
