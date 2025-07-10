@@ -91,7 +91,6 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
                             'template' => $this->getMessageTemplate('danger'),
                         ]
                     ));
-                    exit;
                 }
                 $this->ajaxDie(json_encode($response));
                 break;
