@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Invertus\dpdBaltics\Service\Label;
 
+use Context;
+use Configuration;
 use Invertus\dpdBaltics\Adapter\LinkAdapter;
 
 if (!defined('_PS_VERSION_')) {
@@ -72,13 +74,13 @@ class LabelUrlFormatter
 
         if (isset($parsedUrl['scheme'], $parsedUrl['host'])) {
             // Ensure the scheme is HTTPS if SSL is enabled
-            if (\Configuration::get('PS_SSL_ENABLED') && $parsedUrl['scheme'] !== 'https') {
+            if (Configuration::get('PS_SSL_ENABLED') && $parsedUrl['scheme'] !== 'https') {
                 $url = preg_replace('/^http:/i', 'https:', $url);
             }
             return $url;
         }
 
-        $baseUrl = rtrim(\Context::getContext()->shop->getBaseURL(true), '/');
+        $baseUrl = rtrim(Context::getContext()->shop->getBaseURL(true), '/');
 
         return $baseUrl . $url;
     }
