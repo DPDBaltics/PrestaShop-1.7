@@ -71,9 +71,14 @@ class LabelUrlFormatter
         $parsedUrl = parse_url($url);
 
         if (isset($parsedUrl['scheme'], $parsedUrl['host'])) {
+            // Ensure the scheme is HTTPS if SSL is enabled
+            if (\Configuration::get('PS_SSL_ENABLED') && $parsedUrl['scheme'] !== 'https') {
+                $url = preg_replace('/^http:/i', 'https:', $url);
+            }
             return $url;
         }
 
-        return rtrim(\Context::getContext()->shop->getBaseURL(), '/') . $url;
+        $baseUrl = rtrim(\Context::getContext()->shop->getBaseURL(true), '/');
+        return $baseUrl . $url;
     }
 }
