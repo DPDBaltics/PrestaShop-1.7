@@ -79,6 +79,7 @@ class LabelUrlFormatter
         }
 
         $baseUrl = rtrim(\Context::getContext()->shop->getBaseURL(true), '/');
+
         return $baseUrl . $url;
     }
 }
