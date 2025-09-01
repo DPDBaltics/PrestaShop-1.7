@@ -255,7 +255,6 @@ class AbstractAdminController extends ModuleAdminController
         /** @var ModuleLatestVersionValidator $moduleVersionValidator */
         $moduleVersionValidator = $this->module->getModuleContainer()->get('invertus.dpdbaltics.validator.module_latest_version_validator');
 
-        $isModuleVersionLatest = false; // Initialize variable to prevent undefined variable error
         try {
             $isModuleVersionLatest = $moduleVersionValidator->validate();
         } catch (\Exception $e) {
