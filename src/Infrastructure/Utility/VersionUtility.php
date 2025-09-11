@@ -50,4 +50,5 @@ class VersionUtility
     {
         return version_compare(_PS_VERSION_, $version, '=');
     }
+
 }
