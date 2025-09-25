@@ -185,3 +185,4 @@
 ## [3.3.0]
 - Added PrestaShop 9 compatibility
 - Fixed issue with price rule "All"
+- Fixed other minor issues
