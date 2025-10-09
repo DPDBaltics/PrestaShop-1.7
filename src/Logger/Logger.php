@@ -46,7 +46,7 @@ class Logger implements LoggerInterface
     /**
      * System is unusable.
      *
-     * @param string $message
+     * @param \Stringable|string $message
      * @param array $context
      *
      * @return void

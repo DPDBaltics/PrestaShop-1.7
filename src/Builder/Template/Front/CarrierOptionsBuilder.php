@@ -26,6 +26,7 @@ use Carrier;
 use Configuration;
 use Context;
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Infrastructure\Adapter\ToolsAdapter;
 use Invertus\dpdBaltics\Provider\ProductShippingCostProvider;
 use Invertus\dpdBaltics\Repository\CarrierRepository;
 use Invertus\dpdBaltics\Repository\PriceRuleRepository;
@@ -95,16 +96,14 @@ class CarrierOptionsBuilder
         }
 
         foreach ($dpdCarriers as $key => $dpdCarrier) {
-            $productShippingCost = Tools::displayPrice(
-                $this->productShippingCostProvider->getProductShippingCost($dpdCarrier['id_reference'], $idAddress)
-            );
+            $shippingCost = $this->productShippingCostProvider->getProductShippingCost($dpdCarrier['id_reference'], $idAddress);
 
-            if (!$productShippingCost) {
+            if (!$shippingCost) {
                 unset($dpdCarriers[$key]);
-
                 continue;
             }
 
+            $productShippingCost = ToolsAdapter::displayPrice($shippingCost, $this->context);
             $dpdCarriers[$key]['shipping_cost'] = $productShippingCost;
 
             $carrier = Carrier::getCarrierByReference($dpdCarrier['id_reference']);

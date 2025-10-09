@@ -11,28 +11,19 @@
  */
 
 use Invertus\dpdBaltics\Config\Config;
+use Invertus\dpdBaltics\Controller\AbstractFrontController;
 use Invertus\dpdBaltics\Exception\DpdCarrierException;
-use Invertus\dpdBaltics\Provider\CurrentCountryProvider;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
 use Invertus\dpdBaltics\Repository\ProductRepository;
 use Invertus\dpdBaltics\Repository\PudoRepository;
-use Invertus\dpdBaltics\Repository\ShipmentRepository;
-use Invertus\dpdBaltics\Service\API\LabelApiService;
-use Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService;
-use Invertus\dpdBaltics\Service\Exception\ExceptionService;
-use Invertus\dpdBaltics\Service\GoogleApiService;
 use Invertus\dpdBaltics\Service\Parcel\ParcelShopService;
 use Invertus\dpdBaltics\Service\PudoService;
-use Invertus\dpdBaltics\Service\ShipmentService;
-use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
-use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
-use Symfony\Component\HttpFoundation\Response;
 
 if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class DpdBalticsAjaxModuleFrontController extends ModuleFrontController
+class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
 {
     const FILENAME = 'Ajax';
 

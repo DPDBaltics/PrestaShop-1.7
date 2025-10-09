@@ -109,7 +109,7 @@ class AdminDPDBalticsPudoAjaxController extends AbstractAdminController
         $pudoOrder->city = $city;
         $pudoOrder->street = $street;
         $pudoOrder->post_code = $postCode;
-        $this->ajaxDie($pudoOrder->save());
+        $this->ajaxDie(json_encode($pudoOrder->save()));
     }
 
     private function getPudoSearch(Cart $cart)

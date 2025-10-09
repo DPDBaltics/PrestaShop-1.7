@@ -87,7 +87,7 @@ class PriceRuleRepository extends AbstractEntityRepository
         bool $includeCountryCheck = false
     ) {
         $query = new DbQuery();
-        $query->select('prc.`id_dpd_price_rule`');
+        $query->select('DISTINCT prc.`id_dpd_price_rule`');
         $query->from('dpd_price_rule_carrier', 'prc');
         $query->innerJoin('dpd_price_rule', 'pr', 'pr.id_dpd_price_rule = prc.id_dpd_price_rule');
         $query->innerJoin(
@@ -106,7 +106,7 @@ class PriceRuleRepository extends AbstractEntityRepository
             $query->innerJoin(
                 'dpd_zone_range',
                 'zr',
-                'prz.`id_dpd_zone` = zr.`id_dpd_zone`'
+                'prz.`id_dpd_zone` = zr.`id_dpd_zone` OR prz.all_zones = 1'
             );
 
             $query->where('zr.`id_country`= ' . (int) $deliveryAddress->id_country);

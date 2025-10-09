@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Invertus\dpdBaltics\Service\Label;
 
+use Context;
+use Configuration;
 use Invertus\dpdBaltics\Adapter\LinkAdapter;
 
 if (!defined('_PS_VERSION_')) {
@@ -30,6 +32,7 @@ if (!defined('_PS_VERSION_')) {
 
 class LabelUrlFormatter
 {
+    /** @var LinkAdapter */
     private $linkAdapter;
 
     public function __construct(LinkAdapter $linkAdapter)
@@ -50,14 +53,33 @@ class LabelUrlFormatter
         ]);
     }
 
+    /**
+     * Format URL for saving & printing label
+     *
+     * @note Additional logic with is used to be compatible with PrestaShop 9
+     *
+     * @return string URL
+     */
     public function formatJsLabelSaveAndPrintUrl()
     {
-        return $this->linkAdapter->getUrlSmarty([
+        $url = $this->linkAdapter->getUrlSmarty([
             'entity' => 'sf',
             'route' => 'dpdbaltics_save_and_download_printed_label_order_view',
             'sf-params' => [
                 'orderId' => 'orderId_',
             ]
         ]);
+
+        $parsedUrl = parse_url($url);
+
+        if (isset($parsedUrl['scheme'], $parsedUrl['host'])) {
+            // Ensure the scheme is HTTPS if SSL is enabled
+            if (Configuration::get('PS_SSL_ENABLED') && $parsedUrl['scheme'] !== 'https') {
+                $url = preg_replace('/^http:/i', 'https:', $url);
+            }
+            return $url;
+        }
+
+        return rtrim(\Context::getContext()->shop->getBaseURL(true), '/') . $url;
     }
 }

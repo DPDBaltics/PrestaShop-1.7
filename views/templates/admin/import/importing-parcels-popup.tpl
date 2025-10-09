@@ -49,7 +49,7 @@
                 </button>
 
                 <button type="button"
-                        class="btn btn-primary import-parcels-button">{l s='update' mod='dpdbaltics'}</button>
+                        class="btn btn-primary import-parcels-button">{l s='Update' mod='dpdbaltics'}</button>
             </div>
         </div>
     </div>

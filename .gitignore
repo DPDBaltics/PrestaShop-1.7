@@ -4,3 +4,5 @@
 .env
 /var
 config.xml
+.DS_Store
+*.zip

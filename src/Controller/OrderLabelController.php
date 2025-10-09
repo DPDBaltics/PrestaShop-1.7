@@ -21,16 +21,14 @@
 
 namespace Invertus\dpdBaltics\Controller;
 
-use Invertus\dpdBaltics\Converter\FormDataConverter;
+use Invertus\dpdBaltics\Infrastructure\Utility\VersionUtility;
 use Invertus\dpdBaltics\Service\Exception\ExceptionService;
 use Invertus\dpdBaltics\Service\Label\LabelPrintingService;
 use Invertus\dpdBaltics\Service\ShipmentService;
 use Invertus\dpdBaltics\Util\ServerGlobalsUtility;
 use Invertus\dpdBalticsApi\Exception\DPDBalticsAPIException;
-use Order;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tools;
 
@@ -48,7 +46,9 @@ class OrderLabelController extends FrameworkBundleAdminController
 
     public function __construct()
     {
-        parent::__construct();
+        if (VersionUtility::isPsVersionLessThan('9.0.0')) {
+            parent::__construct();
+        }
 
         $this->module = \Module::getInstanceByName('dpdbaltics');
     }
@@ -152,6 +152,12 @@ class OrderLabelController extends FrameworkBundleAdminController
     {
         try {
             $parcelPrintResponse = $this->module->printLabel($shipmentId);
+
+            if (!empty($parcelPrintResponse->getErrLog())) {
+                return $this->redirectWithError('admin_orders_index', $parcelPrintResponse->getErrLog());
+            }
+
+            return new Response();
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
@@ -163,18 +169,18 @@ class OrderLabelController extends FrameworkBundleAdminController
         } catch (\Exception $e) {
             return $this->redirectWithError('admin_orders_index',$this->module->l('Failed to print label: ') . $e->getMessage());
         }
-
-        if (!empty($parcelPrintResponse->getErrLog())) {
-            return $this->redirectWithError('admin_orders_index', $parcelPrintResponse->getErrLog());
-        }
-
-        return null;
     }
 
     private function printMultipleLabels($shipmentIds)
     {
         try {
             $parcelPrintResponse = $this->module->printMultipleLabels($shipmentIds);
+
+            if (!empty($parcelPrintResponse->getErrLog())) {
+                return $this->redirectWithError('admin_orders_index',$parcelPrintResponse->getErrLog());
+            }
+
+            return new Response();
         } catch (DPDBalticsAPIException $e) {
             /** @var ExceptionService $exceptionService */
             $exceptionService = $this->module->getModuleContainer('invertus.dpdbaltics.service.exception.exception_service');
@@ -186,12 +192,6 @@ class OrderLabelController extends FrameworkBundleAdminController
         } catch (\Exception $e) {
             return $this->redirectWithError('admin_orders_index',$this->module->l('Failed to print label: ') . $e->getMessage());
         }
-
-        if (!empty($parcelPrintResponse->getErrLog())) {
-            return $this->redirectWithError('admin_orders_index',$parcelPrintResponse->getErrLog());
-        }
-
-        return null;
     }
 
     private function redirectWithError($route, $error)
