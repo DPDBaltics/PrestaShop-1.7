@@ -26,7 +26,6 @@ use Carrier;
 use Configuration;
 use Customer;
 use DPDOrderDeliveryTime;
-use DPDOrderPhone;
 use DPDProduct;
 use DPDPudo;
 use DPDShipment;

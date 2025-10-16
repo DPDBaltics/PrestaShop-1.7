@@ -23,7 +23,6 @@ namespace Invertus\dpdBaltics\Service\API;
 
 use Address;
 use Country;
-use DPDAddressTemplate;
 use DPDProduct;
 use Invertus\dpdBaltics\Adapter\AddressAdapter;
 use Invertus\dpdBaltics\Config\Config;
