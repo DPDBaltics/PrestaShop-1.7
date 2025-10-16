@@ -167,8 +167,18 @@ class ShipmentApiService
 
         if ($shipmentData->getDeliveryTime()) {
             $timeFrames = explode('-', $shipmentData->getDeliveryTime());
-            $shipmentCreationRequest->setTimeFrameFrom($timeFrames[0]);
-            $shipmentCreationRequest->setTimeFrameTo($timeFrames[1]);
+            if (count($timeFrames) === 2) {
+                // Format should be HH:mm (e.g., "18:00", "22:00")
+                $timeFrom = trim($timeFrames[0]);
+                $timeTo = trim($timeFrames[1]);
+
+                // Validate HH:mm format
+                if (preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $timeFrom) &&
+                    preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $timeTo)) {
+                    $shipmentCreationRequest->setTimeFrameFrom($timeFrom);
+                    $shipmentCreationRequest->setTimeFrameTo($timeTo);
+                }
+            }
         }
         $shipmentCreator = $this->shipmentCreationFactory->makeShipmentCreation();
 
