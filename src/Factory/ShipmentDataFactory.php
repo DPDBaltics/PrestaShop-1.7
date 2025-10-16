@@ -105,7 +105,7 @@ class ShipmentDataFactory
         /** Delivery Time */
         $deliveryTimeId = $this->orderDeliveryTimeRepository->getOrderDeliveryIdByCartId($order->id_cart);
         if ($deliveryTimeId) {
-            $orderDeliveryTime = new \DPDOrderDeliveryTime($deliveryTimeId);
+            $orderDeliveryTime = new DPDOrderDeliveryTime($deliveryTimeId);
             if ($orderDeliveryTime->delivery_time) {
                 $shipmentData->setDeliveryTime($orderDeliveryTime->delivery_time);
             }
