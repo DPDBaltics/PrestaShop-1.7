@@ -46,11 +46,13 @@ class ParcelUpdateService
         $this->parcelShopRepository = $parcelShopRepository;
     }
 
-    public function updateParcels(array $parcels, $countryCode)
+    public function updateParcels(array $parcels, $countryCode, $deleteExisting = true)
     {
-        $isDeleteSuccess = $this->parcelShopRepository->deleteShopsByCountryCode($countryCode);
-        if (!$isDeleteSuccess) {
-            return false;
+        if ($deleteExisting) {
+            $isDeleteSuccess = $this->parcelShopRepository->deleteShopsByCountryCode($countryCode);
+            if (!$isDeleteSuccess) {
+                return false;
+            }
         }
 
         foreach ($parcels as $parcel) {

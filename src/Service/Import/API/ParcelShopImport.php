@@ -64,6 +64,12 @@ class ParcelShopImport
 
     public function importParcelShops($selectedCountry)
     {
+        // Use batch import for countries with large datasets
+        if ($this->shouldUseBatchImport($selectedCountry)) {
+            return $this->importParcelShopsInBatches($selectedCountry);
+        }
+
+        // Use traditional single-request import for smaller countries
         /** @var ParcelShopSearchResponse $shops */
         $shops = $this->apiService->getAllCountryParcels(
             $selectedCountry,
@@ -98,6 +104,110 @@ class ParcelShopImport
                 'success' => true,
                 'success_message' => $this->module->l('Successfully updated parcel shops', self::FILE_NAME)
             ];
+    }
+
+    /**
+     * Import parcel shops in batches using postal code filtering
+     * Used for countries with large datasets to avoid timeout issues
+     *
+     * @param string $selectedCountry Country ISO code
+     * @return array Result array with success status and message
+     */
+    public function importParcelShopsInBatches($selectedCountry)
+    {
+        $postalPrefixes = $this->getPostalPrefixes($selectedCountry);
+        $totalBatches = count($postalPrefixes);
+        $importedShops = 0;
+        $errors = [];
+
+        // First pass: Import basic shop data without opening hours (faster, smaller response)
+        foreach ($postalPrefixes as $index => $prefix) {
+            try {
+                /** @var ParcelShopSearchResponse $shops */
+                $shops = $this->apiService->getCountryParcelsByPostalPrefix(
+                    $selectedCountry,
+                    Config::FETCH_PUDO_POINT,
+                    0 // Skip opening hours in first pass
+                );
+
+                if ($shops->getStatus() === Config::API_RESPONSE_ERROR_STATUS) {
+                    $errors[] = sprintf(
+                        'Batch %d/%d (prefix: %s) failed: %s',
+                        $index + 1,
+                        $totalBatches,
+                        $prefix,
+                        $shops->getErrLog()
+                    );
+                    continue;
+                }
+
+                // Don't delete all shops on first batch only
+                $deleteExisting = ($index === 0);
+                $this->parcelUpdateService->updateParcels(
+                    $shops->getParcelShops(),
+                    $selectedCountry,
+                    $deleteExisting
+                );
+
+                $importedShops += count($shops->getParcelShops());
+            } catch (Exception $e) {
+                $errors[] = sprintf(
+                    'Batch %d/%d (prefix: %s) exception: %s',
+                    $index + 1,
+                    $totalBatches,
+                    $prefix,
+                    $e->getMessage()
+                );
+            }
+        }
+
+        if (!empty($errors)) {
+            return [
+                'success' => false,
+                'error' => sprintf(
+                    $this->module->l('Imported %d shops with errors: %s', self::FILE_NAME),
+                    $importedShops,
+                    implode('; ', $errors)
+                )
+            ];
+        }
+
+        return [
+            'success' => true,
+            'success_message' => sprintf(
+                $this->module->l('Successfully imported %d parcel shops in %d batches', self::FILE_NAME),
+                $importedShops,
+                $totalBatches
+            )
+        ];
+    }
+
+    /**
+     * Determine if country should use batch import
+     *
+     * @param string $countryIso Country ISO code
+     * @return bool
+     */
+    private function shouldUseBatchImport($countryIso)
+    {
+        // Countries with large datasets that benefit from batch import
+        $batchCountries = ['PL']; // Poland
+        return in_array($countryIso, $batchCountries);
+    }
+
+    /**
+     * Get postal code prefixes for batch import
+     *
+     * @param string $countryIso Country ISO code
+     * @return array Array of postal code prefixes
+     */
+    private function getPostalPrefixes($countryIso)
+    {
+        $prefixes = [
+            'PL' => ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], // Poland: 00-xxx to 99-xxx
+        ];
+
+        return $prefixes[$countryIso] ?? [];
     }
 
 }

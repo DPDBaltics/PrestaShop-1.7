@@ -67,6 +67,41 @@ class ParcelShopSearchApiService
         return $response;
     }
 
+    /**
+     * Get country parcels filtered by postal code prefix
+     * Used for batch importing large datasets (e.g., Poland)
+     *
+     * @param string $iso Country ISO code
+     * @param int $fetchPudoPoints Include PUDO points (0/1)
+     * @param int $retrieveOpeningHours Include opening hours (0/1)
+     * @param string|null $postalCodePrefix Postal code prefix to filter by (e.g., "0", "1", "00", "01")
+     * @return mixed
+     */
+    public function getCountryParcelsByPostalPrefix(
+        $iso,
+        $fetchPudoPoints,
+        $retrieveOpeningHours,
+        $postalCodePrefix = null
+    ) {
+        $requestBody = $this->createParcelSearchRequest(
+            $iso,
+            $fetchPudoPoints,
+            $retrieveOpeningHours,
+            null,
+            $postalCodePrefix,
+            null
+        );
+        $parcelShopSearch = $this->parcelShopSearchFactory->makeParcelShopSearch();
+
+        $response = $parcelShopSearch->parcelShopSearch($requestBody);
+
+        if ($response->getStatus() === Config::API_SUCCESS_STATUS && is_array($response->getParcelShops())) {
+            return $response;
+        }
+
+        return $response;
+    }
+
     private function createParcelSearchRequest(
         $iso,
         $fetchPudoPoints,
