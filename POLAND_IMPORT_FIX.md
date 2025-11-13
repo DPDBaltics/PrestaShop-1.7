@@ -9,16 +9,16 @@ Poland parcel shop imports were timing out due to the large number of parcel sho
 - Splits Poland import into 10 batches based on postal code prefixes (0-9)
 - Each batch fetches only parcels with postal codes starting with that digit
 - Example: Batch 1 fetches 00-xxx to 09-xxx, Batch 2 fetches 10-xxx to 19-xxx, etc.
+- **Each batch completes within the existing 20-second API timeout**
 
-### 2. Two-Phase Import Strategy
+### 2. Two-Phase Import Strategy (Critical for Performance)
 - **Phase 1**: Import basic shop data WITHOUT opening hours
   - Reduces API response size by approximately 75%
   - Opening hours field set to `retrieveOpeningHours=0`
+  - **This is essential** - without this, even batched requests would timeout
 - **Phase 2**: (Future enhancement) Opening hours can be added later if needed
 
-### 3. API Timeout Increase
-- Increased API client timeout from 20 seconds to 120 seconds
-- Provides additional safety margin for batch imports
+**Note**: API timeout remains at 20 seconds (cannot be modified in merchant environments). The batch + no-opening-hours strategy ensures each request completes within this limit.
 
 ## Implementation Details
 
@@ -49,32 +49,6 @@ private function getPostalPrefixes($countryIso)
 - No changes to existing functionality for smaller countries
 - Same import button and user experience
 
-## Required Manual Change (Vendor File)
-
-⚠️ **IMPORTANT**: The following vendor file is gitignored and requires manual update:
-
-**File**: `vendor/invertus/dpdbaltics-api/src/Factory/APIRequest/ApiClient.php`
-
-**Change line 51-54**:
-```php
-// OLD (20 seconds)
-public function getTimeout()
-{
-    return 20;
-}
-
-// NEW (120 seconds)
-public function getTimeout()
-{
-    // Increased from 20 to 120 seconds to handle large responses (e.g., Poland parcel shops)
-    return 120;
-}
-```
-
-**Why manual?**: This file is in the `vendor/` directory which is gitignored. After running `composer install` or `composer update`, you'll need to manually apply this change.
-
-**Alternative**: Consider creating a patch file or forking the `invertus/dpdbaltics-api` package with this change.
-
 ## Files Modified
 
 1. **src/Service/API/ParcelShopSearchApiService.php**
@@ -93,9 +67,7 @@ public function getTimeout()
 
 ### Manual Testing
 
-1. **Apply vendor file change** (see above)
-
-2. **Test Poland Import**:
+1. **Test Poland Import**:
    - Log into PrestaShop admin
    - Navigate to DPD Baltics module configuration
    - Go to Import/Export section
@@ -158,9 +130,10 @@ public function getTimeout()
 
 ### Issue: Still timing out on Poland import
 **Solution**:
-1. Verify vendor file timeout change was applied
-2. Check server PHP `max_execution_time` setting (should be > 120s)
-3. Consider more granular batching (2-digit prefixes)
+1. Verify `retrieveOpeningHours=0` is set in batch import (critical for performance)
+2. Check if API is returning data for postal prefix (test with single prefix)
+3. Consider more granular batching (2-digit prefixes like "00", "01", etc.)
+4. Check network connectivity and DPD API status
 
 ### Issue: Duplicate shops in database
 **Solution**:
