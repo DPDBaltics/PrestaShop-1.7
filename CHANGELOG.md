@@ -186,3 +186,6 @@
 - Added PrestaShop 9 compatibility
 - Fixed issue with price rule "All"
 - Fixed other minor issues
+
+## [3.3.1]
+- Fixed incorrect COD label amount when discount code is applied
