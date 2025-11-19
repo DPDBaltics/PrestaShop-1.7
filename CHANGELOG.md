@@ -182,6 +182,10 @@
 - Added warning when module have outdated version
 - Improved module performance
 
+## [3.3.1] - 2025-11-19
+### Fixed
+- Fixed incorrect COD label amount when discount code is applied
+
 ## [3.3.0]
 - Added PrestaShop 9 compatibility
 - Fixed issue with price rule "All"
