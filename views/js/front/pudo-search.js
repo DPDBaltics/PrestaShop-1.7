@@ -30,7 +30,9 @@ $(document).ready(function () {
     $(document).on('change', 'select[name="dpd-street"]', function () {
         var city = $('select[name="dpd-city"]').val();
         var street = $('select[name="dpd-street"]').val();
-        saveSelectedStreet(city, street);
+        if (street) {
+            saveSelectedStreet(city, street);
+        }
     });
 
     $(document).on('keyup', 'input[name="dpd-street"]', function () {
@@ -100,8 +102,10 @@ function updateStreetSelect(city) {
                 $streetSelectDiv.empty().append(response.template);
                 $('select.chosen-select').chosen({inherit_select_classes: true});
                 var street = $('select[name="dpd-street"]').val();
-                saveSelectedStreet(city, street);
-                isPudoPointSelected = true;
+                if (street) {
+                    saveSelectedStreet(city, street);
+                    isPudoPointSelected = true;
+                }
             }
         },
         error: function (response) {
