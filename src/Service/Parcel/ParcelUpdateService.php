@@ -18,16 +18,13 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
-
 namespace Invertus\dpdBaltics\Service\Parcel;
 
-use DPDShop;
-use DPDShopWorkHours;
+use Db;
 use EntityAddException;
-use Exception;
 use Invertus\dpdBaltics\Repository\ParcelShopRepository;
-use Invertus\dpdBalticsApi\Api\DTO\Object\OpeningHours;
 use Invertus\dpdBalticsApi\Api\DTO\Object\ParcelShop;
+use Psr\Log\LoggerInterface;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -35,88 +32,184 @@ if (!defined('_PS_VERSION_')) {
 
 class ParcelUpdateService
 {
+    const BATCH_SIZE = 100;
 
     /**
      * @var ParcelShopRepository
      */
     private $parcelShopRepository;
 
-    public function __construct(ParcelShopRepository $parcelShopRepository)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(ParcelShopRepository $parcelShopRepository, LoggerInterface $logger)
     {
         $this->parcelShopRepository = $parcelShopRepository;
+        $this->logger = $logger;
     }
 
+    /**
+     * Update parcels using batch insert for better performance
+     *
+     * @param array $parcels
+     * @param string $countryCode
+     * @return bool
+     * @throws EntityAddException
+     */
     public function updateParcels(array $parcels, $countryCode)
     {
         $isDeleteSuccess = $this->parcelShopRepository->deleteShopsByCountryCode($countryCode);
+
         if (!$isDeleteSuccess) {
+            $this->logger->error(sprintf(
+                '[ParcelUpdate] FAILED to delete existing shops for %s',
+                $countryCode
+            ));
             return false;
         }
 
+        $shopsBatch = [];
+        $workHoursBatch = [];
+
         foreach ($parcels as $parcel) {
-            if ($parcel instanceof ParcelShop) {
-                $this->addParcelShop($parcel);
-            } else {
-                $parcelShop = $this->resetParcelObject($parcel);
-                $this->addParcelShop($parcelShop);
+            if (!($parcel instanceof ParcelShop)) {
+                $parcel = $this->resetParcelObject($parcel);
+            }
+
+            $shopsBatch[] = $this->prepareShopData($parcel);
+
+            $openingHours = $parcel->getOpeningHours();
+            if (is_array($openingHours) && !empty($openingHours)) {
+                foreach ($openingHours as $openingHoursItem) {
+                    $workHoursBatch[] = $this->prepareWorkHoursData($parcel->getParcelShopId(), $openingHoursItem);
+                }
+            }
+
+            if (count($shopsBatch) >= self::BATCH_SIZE) {
+                $this->insertShopsBatch($shopsBatch);
+                $shopsBatch = [];
+            }
+
+            if (count($workHoursBatch) >= self::BATCH_SIZE * 7) {
+                $this->insertWorkHoursBatch($workHoursBatch);
+                $workHoursBatch = [];
             }
         }
 
-        return true;
-    }
-
-    public function addParcelShop(ParcelShop $parcel)
-    {
-        $parcelShop = new DPDShop();
-        $parcelShop->parcel_shop_id = $parcel->getParcelShopId();
-        $parcelShop->company = $parcel->getCompany();
-        $parcelShop->country = $parcel->getCountry();
-        $parcelShop->city = $parcel->getCity();
-        $parcelShop->p_code = $parcel->getPCode();
-        $parcelShop->street = $parcel->getStreet();
-        $parcelShop->email = $parcel->getEmail();
-        $parcelShop->phone = $parcel->getPhone();
-        $parcelShop->longitude = $parcel->getLongitude();
-        $parcelShop->latitude = $parcel->getLatitude();
-
-        try {
-            $parcelShop->add();
-        } catch (Exception $e) {
-            throw new EntityAddException(
-                'Failed to add parcel shop',
-                EntityAddException::DPD_PARCEL_SHOP_EXCEPTION,
-                $e
-            );
+        if (!empty($shopsBatch)) {
+            $this->insertShopsBatch($shopsBatch);
         }
 
-        foreach ($parcel->getOpeningHours() as $openingHours) {
-            $parcelShopWorkHours = new DPDShopWorkHours();
-            $parcelShopWorkHours->parcel_shop_id = $parcel->getParcelShopId();
-            $parcelShopWorkHours->week_day = $openingHours->weekday;
-            $parcelShopWorkHours->open_morning = $openingHours->openMorning;
-            $parcelShopWorkHours->close_morning = $openingHours->closeMorning;
-            $parcelShopWorkHours->open_afternoon = $openingHours->openAfternoon;
-            $parcelShopWorkHours->close_afternoon = $openingHours->closeAfternoon;
-
-            try {
-                $parcelShopWorkHours->add();
-            } catch (Exception $e) {
-                throw new EntityAddException(
-                    'Failed to add parcel shop work hours',
-                    EntityAddException::DPD_PARCEL_SHOP_WORK_HOURS_EXCEPTION,
-                    $e
-                );
-            }
+        if (!empty($workHoursBatch)) {
+            $this->insertWorkHoursBatch($workHoursBatch);
         }
 
         return true;
     }
 
     /**
-     *This function is needed for prestashop versions below 1704 as API response loses object instance
+     * Prepare shop data for batch insert
+     *
+     * @param ParcelShop $parcel
+     * @return array
+     */
+    private function prepareShopData(ParcelShop $parcel)
+    {
+        return [
+            'parcel_shop_id' => pSQL($parcel->getParcelShopId()),
+            'company' => pSQL($parcel->getCompany()),
+            'country' => pSQL($parcel->getCountry()),
+            'city' => pSQL($parcel->getCity()),
+            'p_code' => pSQL($parcel->getPCode()),
+            'street' => pSQL($parcel->getStreet()),
+            'email' => pSQL($parcel->getEmail()),
+            'phone' => pSQL($parcel->getPhone()),
+            'longitude' => pSQL($parcel->getLongitude()),
+            'latitude' => pSQL($parcel->getLatitude()),
+        ];
+    }
+
+    /**
+     * Prepare work hours data for batch insert
+     *
+     * @param string $parcelShopId
+     * @param object $openingHours
+     * @return array
+     */
+    private function prepareWorkHoursData($parcelShopId, $openingHours)
+    {
+        return [
+            'parcel_shop_id' => pSQL($parcelShopId),
+            'week_day' => pSQL($openingHours->weekday),
+            'open_morning' => pSQL($openingHours->openMorning),
+            'close_morning' => pSQL($openingHours->closeMorning),
+            'open_afternoon' => pSQL($openingHours->openAfternoon),
+            'close_afternoon' => pSQL($openingHours->closeAfternoon),
+        ];
+    }
+
+    /**
+     * Insert shops batch
+     *
+     * @param array $batch
+     * @throws EntityAddException
+     */
+    private function insertShopsBatch(array $batch)
+    {
+        if (empty($batch)) {
+            return;
+        }
+
+        $result = Db::getInstance()->insert('dpd_shop', $batch);
+
+        if (!$result) {
+            $this->logger->error(sprintf(
+                '[ParcelUpdate] FAILED to insert shops batch | Batch size: %d | DB error: %s',
+                count($batch),
+                Db::getInstance()->getMsgError()
+            ));
+
+            throw new EntityAddException(
+                'Failed to add parcel shops batch: ' . Db::getInstance()->getMsgError(),
+                EntityAddException::DPD_PARCEL_SHOP_EXCEPTION
+            );
+        }
+    }
+
+    /**
+     * Insert work hours batch
+     *
+     * @param array $batch
+     * @throws EntityAddException
+     */
+    private function insertWorkHoursBatch(array $batch)
+    {
+        if (empty($batch)) {
+            return;
+        }
+
+        $result = Db::getInstance()->insert('dpd_shop_work_hours', $batch);
+
+        if (!$result) {
+            $this->logger->error(sprintf(
+                '[ParcelUpdate] FAILED to insert work hours batch | Batch size: %d | DB error: %s',
+                count($batch),
+                Db::getInstance()->getMsgError()
+            ));
+
+            throw new EntityAddException(
+                'Failed to add parcel shop work hours batch: ' . Db::getInstance()->getMsgError(),
+                EntityAddException::DPD_PARCEL_SHOP_WORK_HOURS_EXCEPTION
+            );
+        }
+    }
+
+    /**
+     * This function is needed for prestashop versions below 1704 as API response loses object instance
      *
      * @param $parcel
-     *
      * @return ParcelShop
      */
     private function resetParcelObject($parcel)
