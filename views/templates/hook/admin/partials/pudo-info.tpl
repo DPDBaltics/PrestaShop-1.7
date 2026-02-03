@@ -16,6 +16,7 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  *}
+{if $selectedPudo}
 <div class="col-lg-12 pudo-info-container">
     <input class="hidden d-none form-control" name="selected-pudo-id" value="{$selectedPudo->getParcelShopId()|escape:'htmlall':'UTF-8'}">
     <input class="hidden d-none form-control" name="selected_pudo_iso_code" value="{$selectedPudo->getCountry()|escape:'htmlall':'UTF-8'}">
@@ -69,3 +70,12 @@
         </div>
     </div>
 </div>
+{else}
+<div class="col-lg-12 pudo-info-container">
+    <div class="card-body">
+        <div class="alert alert-info">
+            {l s='No pickup point selected' mod='dpdbaltics'}
+        </div>
+    </div>
+</div>
+{/if}

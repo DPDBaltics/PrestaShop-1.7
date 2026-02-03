@@ -109,9 +109,9 @@
         </ul>
     </div>
 {else}
-    <div class="dpd-services-block">
-        <div class="alert alert-warning">
-            {l s='No pickup points found' mod='dpdbaltics'}
+    <div class="dpd-services-block dpd-no-pudo-message">
+        <div class="alert alert-info">
+            {l s='Select a city to view pickup points' mod='dpdbaltics'}
         </div>
     </div>
 {/if}
