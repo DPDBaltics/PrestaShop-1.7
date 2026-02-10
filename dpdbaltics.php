@@ -214,6 +214,12 @@ class DPDBaltics extends CarrierModule
                     'isOnePageCheckout' => $opcModuleCompatibilityValidator->isOpcModuleInUse()
                 ]
             ]);
+        } else {
+            Media::addJsDef([
+                'dpdbaltics' => [
+                    'isOnePageCheckout' => false
+                ]
+            ]);
         }
 
         /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
