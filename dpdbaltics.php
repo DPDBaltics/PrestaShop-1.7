@@ -214,6 +214,12 @@ class DPDBaltics extends CarrierModule
                     'isOnePageCheckout' => $opcModuleCompatibilityValidator->isOpcModuleInUse()
                 ]
             ]);
+        } else {
+            Media::addJsDef([
+                'dpdbaltics' => [
+                    'isOnePageCheckout' => false
+                ]
+            ]);
         }
 
         /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
@@ -958,9 +964,10 @@ class DPDBaltics extends CarrierModule
         $hasParcelShops = false;
         if ($parcelShops) {
             if ($selectedPudo->pudo_id) {
-                $selectedPudoService = $parcelShopService->getParcelShopByShopId($selectedPudo->pudo_id)[0];
+                $pudoShops = $parcelShopService->getParcelShopByShopId($selectedPudo->pudo_id);
+                $selectedPudoService = !empty($pudoShops) ? $pudoShops[0] : null;
             } else {
-                $selectedPudoService = $parcelShops[0];
+                $selectedPudoService = isset($parcelShops[0]) ? $parcelShops[0] : null;
             }
             $hasParcelShops = true;
         }

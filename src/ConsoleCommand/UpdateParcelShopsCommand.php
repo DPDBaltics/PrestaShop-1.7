@@ -23,15 +23,12 @@ namespace Invertus\dpdBaltics\ConsoleCommand;
 use Country;
 use Invertus\dpdBaltics\Provider\ZoneRangeProvider;
 use Invertus\dpdBaltics\Service\Import\API\ParcelShopImport;
+use Module;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
 
 /**
  * CLI command for importing parcel shops.
@@ -45,36 +42,31 @@ if (!defined('_PS_VERSION_')) {
  */
 class UpdateParcelShopsCommand extends Command
 {
+    protected static $defaultName = 'dpdbaltics:update-parcel-shops';
+
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
     private $logger;
 
     /**
-     * @var ParcelShopImport
+     * @var ParcelShopImport|null
      */
     private $parcelShopImport;
 
     /**
-     * @var ZoneRangeProvider
+     * @var ZoneRangeProvider|null
      */
     private $zoneRangeProvider;
 
-    public function __construct(
-        LoggerInterface $logger,
-        ParcelShopImport $parcelShopImport,
-        ZoneRangeProvider $zoneRangeProvider
-    ) {
-        parent::__construct();
-        $this->logger = $logger;
-        $this->parcelShopImport = $parcelShopImport;
-        $this->zoneRangeProvider = $zoneRangeProvider;
-    }
+    /**
+     * @var \DPDBaltics|null
+     */
+    private $module;
 
     protected function configure()
     {
         $this
-            ->setName('dpdbaltics:update-parcel-shops')
             ->setDescription('Import/update DPD parcel shops from API')
             ->addOption(
                 'country',
@@ -106,8 +98,36 @@ EOF
             );
     }
 
+    /**
+     * Initialize services from the module's container.
+     */
+    private function initServices()
+    {
+        if ($this->module !== null) {
+            return;
+        }
+
+        $this->module = Module::getInstanceByName('dpdbaltics');
+
+        if (!$this->module) {
+            throw new \RuntimeException('DPD Baltics module is not installed or not active.');
+        }
+
+        $this->parcelShopImport = $this->module->getService('invertus.dpdbaltics.service.import.api.parcel_shop_import');
+        $this->zoneRangeProvider = $this->module->getService('invertus.dpdbaltics.provider.zone_range_provider');
+        $this->logger = $this->module->getService('invertus.dpdbaltics.logger.logger');
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Initialize services from module's container
+        try {
+            $this->initServices();
+        } catch (\Exception $e) {
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            return 1;
+        }
+
         $country = $input->getOption('country');
         $all = $input->getOption('all');
 
@@ -167,11 +187,13 @@ EOF
                 $output->writeln(sprintf('<error>ERROR</error> (%ss)', $elapsed));
                 $output->writeln(sprintf('  <error>%s</error>', $e->getMessage()));
 
-                $this->logger->error(sprintf(
-                    '[CLI] Import failed for %s: %s',
-                    $countryCode,
-                    $e->getMessage()
-                ));
+                if ($this->logger) {
+                    $this->logger->error(sprintf(
+                        '[CLI] Import failed for %s: %s',
+                        $countryCode,
+                        $e->getMessage()
+                    ));
+                }
             }
 
             $output->writeln('');

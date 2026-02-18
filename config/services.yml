@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    public: true
+    autowire: false
+    autoconfigure: false
+
+  Invertus\dpdBaltics\ConsoleCommand\UpdateParcelShopsCommand:
+    class: 'Invertus\dpdBaltics\ConsoleCommand\UpdateParcelShopsCommand'
+    tags:
+      - { name: 'console.command' }
