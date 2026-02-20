@@ -182,6 +182,9 @@
 - Added warning when module have outdated version
 - Improved module performance
 
+## [3.3.1]
+- Fixed shipment creation failing for accounts requiring Predict SMS service
+
 ## [3.3.0]
 - Added PrestaShop 9 compatibility
 - Fixed issue with price rule "All"
