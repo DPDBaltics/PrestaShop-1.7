@@ -75,7 +75,7 @@ $_MODULE['<{dpdbaltics}prestashop>markers-list_91b442d385b54e1418d81adc34871053'
 $_MODULE['<{dpdbaltics}prestashop>markers-list_f4ec5f57bd4d31b803312d873be40da9'] = 'Keisti';
 $_MODULE['<{dpdbaltics}prestashop>markers-list_b689ff1685e45b92f4cbff6570d96647'] = 'Darbo valandos:';
 $_MODULE['<{dpdbaltics}prestashop>markers-list_6b9d52ad995244cbf32d9cc75aadbded'] = 'Nerasta jokių atsiėmimo taškų';
-$_MODULE['<{dpdbaltics}prestashop>admin-order_48300820b47f97208960c55d476de0d1'] = 'dpdbaltics laivyba';
+$_MODULE['<{dpdbaltics}prestashop>admin-order_48300820b47f97208960c55d476de0d1'] = 'dpdbaltics siuntimas';
 $_MODULE['<{dpdbaltics}prestashop>admin-order_5e34f5e134425db6f1d6a68370aab105'] = '[išplėsti]';
 $_MODULE['<{dpdbaltics}prestashop>admin-order_ed5c01a46e47055b81a911c21915af84'] = 'BANDYMO UŽSAKYMAS';
 $_MODULE['<{dpdbaltics}prestashop>admin-order_6bb311efd788bb4b3123896667e767a7'] = 'Siuntimas';

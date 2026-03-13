@@ -962,13 +962,13 @@ class DPDBaltics extends CarrierModule
         /** @var null|\Invertus\dpdBalticsApi\Api\DTO\Object\ParcelShop $selectedPudoService */
         $selectedPudoService = null;
         $hasParcelShops = false;
-        if ($parcelShops) {
-            if ($selectedPudo->pudo_id) {
-                $pudoShops = $parcelShopService->getParcelShopByShopId($selectedPudo->pudo_id);
-                $selectedPudoService = !empty($pudoShops) ? $pudoShops[0] : null;
-            } else {
-                $selectedPudoService = isset($parcelShops[0]) ? $parcelShops[0] : null;
-            }
+        if ($selectedPudo->pudo_id) {
+            $pudoShops = $parcelShopService->getParcelShopByShopId($selectedPudo->pudo_id);
+            $selectedPudoService = !empty($pudoShops) ? $pudoShops[0] : null;
+        } elseif ($parcelShops) {
+            $selectedPudoService = isset($parcelShops[0]) ? $parcelShops[0] : null;
+        }
+        if ($selectedPudoService || $parcelShops) {
             $hasParcelShops = true;
         }
 
