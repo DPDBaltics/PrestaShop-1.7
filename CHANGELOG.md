@@ -189,8 +189,12 @@
 - Added Poland parcel shop import support with batch processing
 - Fixed null pointer errors when accessing parcel shop data
 - Fixed JS variable undefined on standard checkout preventing pickup point selection
+- Fixed shipment creation failing for accounts requiring Predict SMS service
 
 ## [3.3.0]
 - Added PrestaShop 9 compatibility
 - Fixed issue with price rule "All"
 - Fixed other minor issues
+
+## [3.3.1]
+- Fixed incorrect COD label amount when discount code is applied
