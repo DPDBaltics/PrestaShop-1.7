@@ -182,6 +182,14 @@
 - Added warning when module have outdated version
 - Improved module performance
 
+## [3.3.1]
+- Fixed parcelshop info not displaying in backoffice order view when customer city differs from parcelshop city
+- Fixed shipment creation overwriting parcelshop address data with customer address data
+- Fixed Lithuanian and Latvian translations for shipping label in admin order panel
+- Added Poland parcel shop import support with batch processing
+- Fixed null pointer errors when accessing parcel shop data
+- Fixed JS variable undefined on standard checkout preventing pickup point selection
+
 ## [3.3.0]
 - Added PrestaShop 9 compatibility
 - Fixed issue with price rule "All"

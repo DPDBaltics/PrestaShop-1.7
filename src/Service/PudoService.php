@@ -256,9 +256,18 @@ class PudoService
         $pudoOrder->id_carrier = $carrier->id;
         $pudoOrder->country_code = $countryCode;
         $pudoOrder->id_cart = $cartId;
-        $pudoOrder->city = $city;
-        $pudoOrder->street = $street;
-        $pudoOrder->post_code = $zipCode;
+
+        $pudoShop = DPDShop::getShopByPudoId($pudoId);
+        if ($pudoShop && $pudoShop->id) {
+            $pudoOrder->city = $pudoShop->city;
+            $pudoOrder->street = $pudoShop->street;
+            $pudoOrder->post_code = $pudoShop->p_code;
+        } else {
+            $pudoOrder->city = $city;
+            $pudoOrder->street = $street;
+            $pudoOrder->post_code = $zipCode;
+        }
+
         $pudoOrder->save();
     }
 
