@@ -234,6 +234,7 @@ class ShipmentApiService
         $shipmentCreationRequest->setOrderNumber3($shipmentData->getReference4());
         $shipmentCreationRequest->setWeight($shipmentData->getWeight());
         $shipmentCreationRequest->setIdmSmsNumber($shipmentData->getPhone());
+        $shipmentCreationRequest->setPredict('y');
         $shipmentCreationRequest->setOrderNumber($shipmentData->getReference1());
 
         return $shipmentCreationRequest;
