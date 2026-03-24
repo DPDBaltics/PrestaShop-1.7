@@ -88,7 +88,7 @@ class AddressAdapter
     {
         $countryCodePosition = $this->getCountryCodePosition($country);
 
-        $postCode = preg_replace("/[^a-zA-Z0-9]+/", "", $postCode);
+        $postCode = preg_replace("/[^a-zA-Z0-9]+/", "", $postCode ?? '');
         // If C doesn't exist in zip code format - don't modify the zip code
         if (false === $countryCodePosition) {
             return $postCode;
@@ -120,7 +120,7 @@ class AddressAdapter
     /** Changes zip code format from pudo service to the one used in prestashop as based on country and returns it*/
     public function getFormattedZipCodePudoToPrestashop($iso, $zipCode)
     {
-        $zipCode = preg_replace("/[^a-zA-Z0-9]+/", "", $zipCode);
+        $zipCode = preg_replace("/[^a-zA-Z0-9]+/", "", $zipCode ?? '');
         $country = new Country(Country::getByIso($iso));
         $formattedZipCode = $zipCode;
         $isoAdded = false;
@@ -153,6 +153,6 @@ class AddressAdapter
             return str_replace(' ', '', $postCode);
         }
 
-        return preg_replace('/[^0-9]/', '', $postCode);
+        return preg_replace('/[^0-9]/', '', $postCode ?? '');
     }
 }
