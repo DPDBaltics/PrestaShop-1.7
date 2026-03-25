@@ -20,6 +20,7 @@ services:
       - '@invertus.dpdbaltics.repository.order_repository'
       - '@invertus.dpdbaltics.repository.shipment_repository'
       - '@invertus.dpdbaltics.repository.pudo_repository'
+      - '@invertus.dpdbaltics.repository.order_delivery_time_repository'
 
   invertus.dpdbaltics.factory.shop_factory:
     class: 'Invertus\dpdBaltics\Factory\ShopFactory'
