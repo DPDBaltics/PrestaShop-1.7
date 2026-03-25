@@ -144,7 +144,7 @@ class ShipmentApiService
             $shipmentCreationRequest->setName2($address->lastname);
         }
 
-        $shipmentCreationRequest = $this->setNotRequiredData($shipmentCreationRequest, $shipmentData);
+        $shipmentCreationRequest = $this->setNotRequiredData($shipmentCreationRequest, $shipmentData, $parcelType);
 
         if ($dpdProduct->is_cod) {
             $shipmentCreationRequest->setCodAmount($shipmentData->getGoodsPrice());
@@ -167,7 +167,7 @@ class ShipmentApiService
             $shipmentCreationRequest->setDnoteReference($shipmentData->getDpdDocumentReturnNumber());
         }
 
-        if ($shipmentData->getDeliveryTime()) {
+        if (Config::productHasDeliveryTime($parcelType) && $shipmentData->getDeliveryTime()) {
             $timeFrames = explode('-', $shipmentData->getDeliveryTime());
             if (count($timeFrames) === 2) {
                 // Format should be HH:mm (e.g., "18:00", "22:00")
@@ -231,23 +231,25 @@ class ShipmentApiService
             $customer->email,
             1
         );
-        $shipmentCreationRequest = $this->setNotRequiredData($shipmentCreationRequest, $shipmentData);
+        $shipmentCreationRequest = $this->setNotRequiredData($shipmentCreationRequest, $shipmentData, $parcelType);
 
         $shipmentCreator = $this->shipmentCreationFactory->makeShipmentCreation();
 
         return $shipmentCreator->createShipment($shipmentCreationRequest);
     }
 
-    private function setNotRequiredData(ShipmentCreationRequest $shipmentCreationRequest, ShipmentData $shipmentData)
+    private function setNotRequiredData(ShipmentCreationRequest $shipmentCreationRequest, ShipmentData $shipmentData, $parcelType)
     {
         $shipmentCreationRequest->setOrderNumber($shipmentData->getReference1());
         $shipmentCreationRequest->setOrderNumber1($shipmentData->getReference2());
         $shipmentCreationRequest->setOrderNumber2($shipmentData->getReference3());
         $shipmentCreationRequest->setOrderNumber3($shipmentData->getReference4());
         $shipmentCreationRequest->setWeight($shipmentData->getWeight());
-        $shipmentCreationRequest->setIdmSmsNumber($shipmentData->getPhone());
-        $shipmentCreationRequest->setPredict('y');
-        $shipmentCreationRequest->setOrderNumber($shipmentData->getReference1());
+
+        if (Config::productHasDeliveryTime($parcelType)) {
+            $shipmentCreationRequest->setIdmSmsNumber($shipmentData->getPhone());
+            $shipmentCreationRequest->setPredict('y');
+        }
 
         return $shipmentCreationRequest;
     }
