@@ -48,11 +48,72 @@ class AdminDPDBalticsAjaxController extends AbstractAdminController
 
     public function ajaxProcessImportParcels()
     {
+        $countryId = Tools::getValue('countryId');
+        $countryIso = Country::getIsoById($countryId);
+
+        // Validate country
+        if (empty($countryIso)) {
+            $this->ajaxDie(json_encode([
+                'success' => false,
+                'error' => $this->module->l('Invalid country selected', 'AdminDPDBalticsAjaxController')
+            ]));
+            return;
+        }
+
+        $countryIso = strtoupper($countryIso);
+
         /** @var ParcelShopImport $parcelShopImport */
         $parcelShopImport = $this->module->getModuleContainer('invertus.dpdbaltics.service.import.api.parcel_shop_import');
 
-        $countryId = Tools::getValue('countryId');
-        $countryIso = Country::getIsoById($countryId);
-        $this->ajaxDie(json_encode($parcelShopImport->importParcelShops($countryIso)));
+        try {
+            $result = $parcelShopImport->importParcelShops($countryIso);
+            $this->ajaxDie(json_encode($result));
+        } catch (\Exception $e) {
+            $this->handleImportError($e, $countryIso);
+        } catch (\Error $e) {
+            $this->handleImportError($e, $countryIso);
+        }
     }
+
+    /**
+     * Handle import errors with helpful messages for timeout scenarios.
+     *
+     * @param \Exception|\Error $e
+     * @param string $countryIso
+     */
+    private function handleImportError($e, $countryIso)
+    {
+        $errorMsg = $e->getMessage();
+        $isTimeout = stripos($errorMsg, 'timeout') !== false
+            || stripos($errorMsg, 'execution time') !== false
+            || stripos($errorMsg, 'Maximum execution') !== false;
+
+        if ($isTimeout) {
+            $this->ajaxDie(json_encode($this->buildCronRequiredResponse($countryIso)));
+        } else {
+            $this->ajaxDie(json_encode([
+                'success' => false,
+                'error' => $e instanceof \Error
+                    ? 'PHP Error: ' . $errorMsg
+                    : 'Error: ' . $errorMsg
+            ]));
+        }
+    }
+
+    /**
+     * Build response for when cron is required (timeout or large country).
+     *
+     * @param string $countryIso
+     * @return array
+     */
+    private function buildCronRequiredResponse($countryIso)
+    {
+        return [
+            'success' => false,
+            'error' => $this->module->l('This country requires automatic updates.', 'AdminDPDBalticsAjaxController'),
+            'requires_cron' => true,
+            'cron_command' => 'php bin/console dpdbaltics:update-parcel-shops --country=' . $countryIso
+        ];
+    }
+
 }

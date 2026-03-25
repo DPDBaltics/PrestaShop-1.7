@@ -108,15 +108,18 @@ class ShipmentApiService
         $hasAddressFields = (bool) !$postCode || !$firstName || !$address->city || !$country;
 
         // Post code might be wrong in order adress, so we set terminal post code instead
+        $selectedParcel = null;
         if ($shipmentData->isPudo()) {
             $parcel = $this->parcelShopService->getParcelShopByShopId($shipmentData->getSelectedPudoId());
-            $selectedParcel = is_array($parcel) ? reset($parcel) : $parcel;
-            $postCode = $selectedParcel->getPCode();
-            $address->address1 = $selectedParcel->getStreet();
+            $selectedParcel = is_array($parcel) && !empty($parcel) ? reset($parcel) : $parcel;
+            if ($selectedParcel && is_object($selectedParcel)) {
+                $postCode = $selectedParcel->getPCode();
+                $address->address1 = $selectedParcel->getStreet();
+            }
         }
 
         // IF prestashop allows, we take selected parcel terminal address in case information is missing in checkout address in specific cases.
-        if (($hasAddressFields) && $shipmentData->isPudo()) {
+        if (($hasAddressFields) && $shipmentData->isPudo() && $selectedParcel && is_object($selectedParcel)) {
             $firstName = $selectedParcel->getCompany();
             $address->address1 = $selectedParcel->getStreet();
             $address->city = $selectedParcel->getCity();
@@ -197,7 +200,7 @@ class ShipmentApiService
             $address1 = $selectedPudo->street;
             $city = $selectedPudo->city;
             $countryIso = $selectedPudo->country_code;
-            $postCode = $selectedPudo->post_code;
+            $postCode = preg_replace('/[^0-9]/', '', $selectedPudo->post_code);
         } else {
             $address1 = $address->address1;
             $city = $address->city;
