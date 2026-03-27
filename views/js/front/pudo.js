@@ -157,9 +157,9 @@ $(document).ready(function () {
         $(document).on('click', '.dpd-pudo-select', selectPickupPointEvent);
     }
 
-    // $(document).on('change', 'select[name="dpd-city"]',function (){
-    //     searchPudoServicesEvent($(this));
-    // });
+    $(document).on('change', 'select[name="dpd-city"]', function () {
+        searchPudoServicesEvent($(this));
+    });
 
     function resizeMapEvent(e) {
         for (var idReference in dpdMap) {
