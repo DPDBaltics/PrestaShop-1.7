@@ -199,3 +199,4 @@
 - Fixed automatic PUDO point pre-selection in LIST mode
 - Fixed PUDO shipment CSS styling
 - Added timeframes to shipment request
+- Fixed phone area code, city and street select width rendering as 0px when switching carriers in checkout
