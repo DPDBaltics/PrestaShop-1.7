@@ -18,6 +18,7 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
+use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
 use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 
@@ -130,6 +131,106 @@ class AdminDPDBalticsLogsController extends AbstractAdminController
             return '--';
         }
         return htmlspecialchars($endpoint, ENT_QUOTES, 'UTF-8');
+    }
+
+    public function processExport($textDelimiter = '"')
+    {
+        if (ob_get_level() && ob_get_length() > 0) {
+            ob_clean();
+        }
+
+        $fileName = sprintf('dpdbaltics_logs_%s.csv', date('Y-m-d_His'));
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=' . $fileName);
+        header('Cache-Control: no-store, no-cache');
+
+        $fd = fopen('php://output', 'wb');
+
+        $storeInfo = [
+            'PrestaShop Version' => _PS_VERSION_,
+            'PHP Version' => phpversion(),
+            'Module Version' => $this->module->version,
+            'MySQL Version' => Db::getInstance()->getVersion(),
+            'Shop URL' => $this->context->shop ? $this->context->shop->getBaseURL(true) : '',
+            'Shop Name' => Configuration::get('PS_SHOP_NAME'),
+        ];
+
+        $moduleConfigurations = [
+            'Test mode' => Configuration::get(Config::SHIPMENT_TEST_MODE) ? 'Yes' : 'No',
+            'API country' => Configuration::get(Config::WEB_SERVICE_COUNTRY),
+            'Track logs' => Configuration::get(Config::TRACK_LOGS) ? 'Yes' : 'No',
+        ];
+
+        $psSettings = [
+            'Default country' => Configuration::get('PS_COUNTRY_DEFAULT'),
+            'Default currency' => Configuration::get('PS_CURRENCY_DEFAULT'),
+            'Default language' => Configuration::get('PS_LANG_DEFAULT'),
+            'Round mode' => Configuration::get('PS_PRICE_ROUND_MODE'),
+            'Round type' => Configuration::get('PS_ROUND_TYPE'),
+            'PHP memory limit' => ini_get('memory_limit'),
+        ];
+
+        fputcsv($fd, array_keys($storeInfo), ';', $textDelimiter);
+        fputcsv($fd, array_values($storeInfo), ';', $textDelimiter);
+        fputcsv($fd, [], ';', $textDelimiter);
+
+        $moduleConfigInfo = "**Module configurations:**\n";
+        foreach ($moduleConfigurations as $key => $value) {
+            $moduleConfigInfo .= '- ' . $key . ': ' . $value . "\n";
+        }
+
+        $psSettingsInfo = "**Prestashop settings:**\n";
+        foreach ($psSettings as $key => $value) {
+            $psSettingsInfo .= '- ' . $key . ': ' . $value . "\n";
+        }
+
+        fputcsv($fd, [$moduleConfigInfo], ';', $textDelimiter);
+        fputcsv($fd, [$psSettingsInfo], ';', $textDelimiter);
+        fputcsv($fd, [], ';', $textDelimiter);
+
+        fputcsv($fd, [
+            $this->module->l('ID', self::FILE_NAME),
+            $this->module->l('Severity', self::FILE_NAME),
+            $this->module->l('Message', self::FILE_NAME),
+            $this->module->l('Request', self::FILE_NAME),
+            $this->module->l('Response', self::FILE_NAME),
+            $this->module->l('Context', self::FILE_NAME),
+            $this->module->l('Date', self::FILE_NAME),
+        ], ';', $textDelimiter);
+
+        $rows = Db::getInstance()->executeS(
+            'SELECT id_dpd_log, request, response, status, date_add FROM `' . _DB_PREFIX_ . pSQL($this->table) . '` ORDER BY id_dpd_log ASC'
+        );
+        if ($rows === false) {
+            $rows = [];
+        }
+
+        foreach ($rows as $row) {
+            $message = (string) ($row['response'] ?? '');
+            $decodedRes = $message !== '' ? json_decode($message, true) : null;
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decodedRes) && isset($decodedRes['message'])) {
+                $message = (string) $decodedRes['message'];
+            }
+
+            $endpoint = '';
+            $decodedReq = isset($row['request']) ? json_decode((string) $row['request'], true) : null;
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decodedReq) && !empty($decodedReq['endpoint'])) {
+                $endpoint = basename(strtok((string) $decodedReq['endpoint'], '?'));
+            }
+
+            fputcsv($fd, [
+                $row['id_dpd_log'],
+                $row['status'],
+                $message,
+                $row['request'],
+                $row['response'],
+                $endpoint,
+                $row['date_add'],
+            ], ';', $textDelimiter);
+        }
+
+        fclose($fd);
+        exit;
     }
 
     public function displayAjaxGetLog()
