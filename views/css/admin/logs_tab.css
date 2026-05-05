@@ -9,12 +9,40 @@
  * International Registered Trademark & Property of INVERTUS, UAB
  */
 table.dpd_log td {
-    word-break: break-all;
+    word-break: break-word;
     vertical-align: middle;
 }
 
 .button {
     cursor: pointer;
+}
+
+.dpd-log-severity {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #ffffff;
+    background: #6b7280;
+    white-space: nowrap;
+}
+
+.dpd-log-severity-1 {
+    background: #dc3545;
+}
+
+.dpd-log-severity-2 {
+    background: #f0ad4e;
+}
+
+.dpd-log-severity-3 {
+    background: #0d6efd;
+}
+
+.dpd-log-severity-4 {
+    background: #6c757d;
 }
 
 .log-modal-overlay {
@@ -37,8 +65,9 @@ table.dpd_log td {
 
 .log-modal-window {
     position: relative;
-    width: 60%;
-    margin: 5% auto;
+    width: 90%;
+    max-width: 880px;
+    margin: 5vh auto;
 
     background: #ffffff;
     border-radius: 0.5em;
@@ -59,18 +88,45 @@ table.dpd_log td {
 }
 
 .log-modal-title {
+    position: relative;
     color: #111827;
-    padding: 10px 15px;
-    border-bottom: solid 1px #e0e0e0;
+    padding: 14px 48px;
+    border-bottom: solid 1px #e5e7eb;
     pointer-events: all;
     display: flex;
+    align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
 
+.log-modal-title-text {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.log-modal-close {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    font-size: 24px;
+    line-height: 1;
+    color: #6b7280;
+    padding: 0 6px;
+    cursor: pointer;
+}
+
+.log-modal-close:hover {
+    color: #111827;
+}
+
 .log-modal-content {
-    padding: 15px;
-    flex: 1;
+    padding: 18px;
+    flex: 1 1 auto;
     overflow: auto;
 }
 
@@ -78,6 +134,13 @@ table.dpd_log td {
     white-space: pre-wrap;
     word-break: break-all;
     margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    color: #111827;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 16px;
 }
 
 .log-modal-content-spinner {

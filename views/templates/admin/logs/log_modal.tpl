@@ -23,13 +23,14 @@
 
     <div class="log-modal-window">
         <div class="log-modal-title">
-            <h4>
+            <h4 class="log-modal-title-text">
                 {if $log_information_type === 'request'}
                     {$log_id|escape:'htmlall':'UTF-8'}: {l s='Request data' mod='dpdbaltics'}
                 {elseif $log_information_type === 'response'}
                     {$log_id|escape:'htmlall':'UTF-8'}: {l s='Response data' mod='dpdbaltics'}
                 {/if}
             </h4>
+            <button type="button" class="log-modal-close js-log-modal-close" aria-label="Close">&times;</button>
         </div>
 
         <div class="log-modal-content">

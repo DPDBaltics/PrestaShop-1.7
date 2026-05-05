@@ -75,6 +75,63 @@ class AdminDPDBalticsLogsController extends AbstractAdminController
         return $this->getDisplayButton($data['id_dpd_log'], $response, self::LOG_INFORMATION_TYPE_RESPONSE);
     }
 
+    public function printSeverity($severity, $data)
+    {
+        $level = strtolower((string) $severity);
+        $levelMap = [
+            'emergency' => 1, 'alert' => 1, 'critical' => 1, 'error' => 1,
+            'warning' => 2,
+            'notice' => 3, 'info' => 3,
+            'debug' => 4,
+        ];
+        $num = isset($levelMap[$level]) ? $levelMap[$level] : null;
+        $cssClass = $num ? 'dpd-log-severity dpd-log-severity-' . $num : 'dpd-log-severity';
+        $label = $level !== '' ? ucfirst($level) : '--';
+
+        return sprintf(
+            '<span class="%s">%s</span>',
+            htmlspecialchars($cssClass, ENT_QUOTES, 'UTF-8'),
+            $num ? sprintf('%d &middot; %s', $num, htmlspecialchars($label, ENT_QUOTES, 'UTF-8')) : htmlspecialchars($label, ENT_QUOTES, 'UTF-8')
+        );
+    }
+
+    public function printMessage($message, $data)
+    {
+        if ($message === null || $message === '') {
+            return '--';
+        }
+        $value = (string) $message;
+        $decoded = json_decode($value, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded) && isset($decoded['message'])) {
+            $value = (string) $decoded['message'];
+        }
+        $clean = trim(preg_replace('/\s+/', ' ', strip_tags($value)));
+        if (function_exists('mb_strlen') && mb_strlen($clean) > 90) {
+            $clean = mb_substr($clean, 0, 87) . '...';
+        }
+        return htmlspecialchars($clean, ENT_QUOTES, 'UTF-8');
+    }
+
+    public function printContext($context, $data)
+    {
+        if ($context === null || $context === '') {
+            return '--';
+        }
+        $endpoint = '';
+        $decoded = json_decode((string) $context, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded) && !empty($decoded['endpoint'])) {
+            $endpoint = (string) $decoded['endpoint'];
+        } else {
+            $endpoint = (string) $context;
+        }
+        $endpoint = strtok($endpoint, '?');
+        $endpoint = $endpoint !== false ? basename($endpoint) : '';
+        if ($endpoint === '') {
+            return '--';
+        }
+        return htmlspecialchars($endpoint, ENT_QUOTES, 'UTF-8');
+    }
+
     public function displayAjaxGetLog()
     {
         $logId = (int) Tools::getValue('log_id');
@@ -99,6 +156,7 @@ class AdminDPDBalticsLogsController extends AbstractAdminController
     private function initList()
     {
         $this->list_no_link = true;
+        $this->_select = 'a.status AS severity, a.response AS message, a.request AS context';
 
         $this->fields_list = [
             'id_dpd_log' => [
@@ -106,6 +164,21 @@ class AdminDPDBalticsLogsController extends AbstractAdminController
                 'align' => 'text-center',
                 'class' => 'fixed-width-xs',
                 'havingFilter' => true,
+            ],
+            'severity' => [
+                'title' => $this->module->l('Severity (1-4)', self::FILE_NAME),
+                'align' => 'text-center',
+                'callback' => 'printSeverity',
+                'search' => false,
+                'orderby' => false,
+                'remove_onclick' => true,
+            ],
+            'message' => [
+                'title' => $this->module->l('Message', self::FILE_NAME),
+                'callback' => 'printMessage',
+                'search' => false,
+                'orderby' => false,
+                'remove_onclick' => true,
             ],
             'request' => [
                 'title' => $this->module->l('Request', self::FILE_NAME),
@@ -123,12 +196,15 @@ class AdminDPDBalticsLogsController extends AbstractAdminController
                 'search' => false,
                 'remove_onclick' => true,
             ],
-            'status' => [
-                'title' => $this->module->l('Status', self::FILE_NAME),
-                'havingFilter' => true,
+            'context' => [
+                'title' => $this->module->l('Context', self::FILE_NAME),
+                'callback' => 'printContext',
+                'search' => false,
+                'orderby' => false,
+                'remove_onclick' => true,
             ],
             'date_add' => [
-                'title' => $this->module->l('Created date', self::FILE_NAME),
+                'title' => $this->module->l('Date', self::FILE_NAME),
                 'align' => 'right',
                 'type' => 'datetime',
                 'havingFilter' => true,

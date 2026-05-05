@@ -9,9 +9,15 @@
  * International Registered Trademark & Property of INVERTUS, UAB
  */
 $(document).ready(function () {
-    $('.log-modal-overlay').on('click', function (event) {
+    $(document).on('click', '.log-modal-overlay, .js-log-modal-close', function (event) {
         $('.modal.open').removeClass('open');
         event.preventDefault();
+    });
+
+    $(document).on('keydown', function (event) {
+        if (event.key === 'Escape') {
+            $('.modal.open').removeClass('open');
+        }
     });
 
     $('.js-log-button').on('click', function (event) {
