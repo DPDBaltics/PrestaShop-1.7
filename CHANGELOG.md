@@ -186,3 +186,4 @@
 - Added PrestaShop 9 compatibility
 - Fixed issue with price rule "All"
 - Fixed other minor issues
+- Improved Logs section by collapsing request/response into a modal viewer to fix table overflow on long URLs

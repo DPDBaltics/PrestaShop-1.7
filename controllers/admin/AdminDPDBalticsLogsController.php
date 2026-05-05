@@ -19,7 +19,7 @@
  */
 
 use Invertus\dpdBaltics\Controller\AbstractAdminController;
-use Invertus\dpdBaltics\Logger\Logger;
+use Invertus\dpdBaltics\Infrastructure\Bootstrap\ModuleTabs;
 
 require_once dirname(__DIR__).'/../vendor/autoload.php';
 
@@ -29,6 +29,11 @@ if (!defined('_PS_VERSION_')) {
 
 class AdminDPDBalticsLogsController extends AbstractAdminController
 {
+    const FILE_NAME = 'AdminDPDBalticsLogsController';
+
+    const LOG_INFORMATION_TYPE_REQUEST = 'request';
+    const LOG_INFORMATION_TYPE_RESPONSE = 'response';
+
     public function __construct()
     {
         $this->className = 'DPDProduct';
@@ -46,6 +51,50 @@ class AdminDPDBalticsLogsController extends AbstractAdminController
         unset($this->toolbar_btn['new']);
     }
 
+    public function setMedia($isNewTheme = false)
+    {
+        parent::setMedia($isNewTheme);
+
+        Media::addJsDef([
+            'dpdbaltics' => [
+                'logsUrl' => $this->context->link->getAdminLink(ModuleTabs::ADMIN_LOGS_CONTROLLER),
+            ],
+        ]);
+
+        $this->addCSS($this->module->getPathUri() . 'views/css/admin/logs_tab.css');
+        $this->addJS($this->module->getPathUri() . 'views/js/admin/log.js');
+    }
+
+    public function printRequestButton($request, $data)
+    {
+        return $this->getDisplayButton($data['id_dpd_log'], $request, self::LOG_INFORMATION_TYPE_REQUEST);
+    }
+
+    public function printResponseButton($response, $data)
+    {
+        return $this->getDisplayButton($data['id_dpd_log'], $response, self::LOG_INFORMATION_TYPE_RESPONSE);
+    }
+
+    public function displayAjaxGetLog()
+    {
+        $logId = (int) Tools::getValue('log_id');
+        $log = new DPDLog($logId);
+
+        if (!Validate::isLoadedObject($log)) {
+            $this->ajaxDie(json_encode([
+                'error' => true,
+                'message' => $this->module->l('No log information found.', self::FILE_NAME),
+            ]));
+        }
+
+        $this->ajaxDie(json_encode([
+            'error' => false,
+            'log' => [
+                self::LOG_INFORMATION_TYPE_REQUEST => $log->request,
+                self::LOG_INFORMATION_TYPE_RESPONSE => $log->response,
+            ],
+        ]));
+    }
 
     private function initList()
     {
@@ -53,30 +102,53 @@ class AdminDPDBalticsLogsController extends AbstractAdminController
 
         $this->fields_list = [
             'id_dpd_log' => [
-                'title' => $this->module->l('ID'),
-                'type' => 'text',
-                'havingFilter' => true
+                'title' => $this->module->l('ID', self::FILE_NAME),
+                'align' => 'text-center',
+                'class' => 'fixed-width-xs',
+                'havingFilter' => true,
             ],
             'request' => [
-                'title' => $this->module->l('request'),
-                'type' => 'text',
-                'havingFilter' => true
+                'title' => $this->module->l('Request', self::FILE_NAME),
+                'align' => 'text-center',
+                'callback' => 'printRequestButton',
+                'orderby' => false,
+                'search' => false,
+                'remove_onclick' => true,
             ],
             'response' => [
-                'title' => $this->module->l('response'),
-                'type' => 'text',
-                'havingFilter' => true
+                'title' => $this->module->l('Response', self::FILE_NAME),
+                'align' => 'text-center',
+                'callback' => 'printResponseButton',
+                'orderby' => false,
+                'search' => false,
+                'remove_onclick' => true,
             ],
             'status' => [
-                'title' => $this->module->l('status'),
-                'type' => 'text',
-                'havingFilter' => true
+                'title' => $this->module->l('Status', self::FILE_NAME),
+                'havingFilter' => true,
             ],
             'date_add' => [
-                'title' => $this->module->l('Created date'),
+                'title' => $this->module->l('Created date', self::FILE_NAME),
+                'align' => 'right',
                 'type' => 'datetime',
-                'havingFilter' => true
-            ]
+                'havingFilter' => true,
+            ],
         ];
+    }
+
+    private function getDisplayButton($logId, $data, $logInformationType)
+    {
+        if (empty($data)) {
+            return '--';
+        }
+
+        $this->context->smarty->assign([
+            'log_id' => $logId,
+            'log_information_type' => $logInformationType,
+        ]);
+
+        return $this->context->smarty->fetch(
+            $this->module->getLocalPath() . 'views/templates/admin/logs/log_modal.tpl'
+        );
     }
 }
