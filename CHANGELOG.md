@@ -199,3 +199,4 @@
 - Fixed automatic PUDO point pre-selection in LIST mode
 - Fixed PUDO shipment CSS styling
 - Added timeframes to shipment request
+- Fixed DPDBaltics menu item disappearing from sidebar when navigating to module pages
