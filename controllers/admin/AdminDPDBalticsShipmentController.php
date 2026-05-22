@@ -49,12 +49,15 @@ class AdminDPDBalticsShipmentController extends AbstractAdminController
     private function initList()
     {
         $this->list_no_link = true;
+        $this->_defaultOrderBy = 'id_dpd_shipment';
+        $this->_defaultOrderWay = 'DESC';
 
         $this->fields_list = [
             'tracking_number' => [
                 'title' => $this->module->l('Tracking number'),
                 'type' => 'text',
-                'havingFilter' => true
+                'havingFilter' => true,
+                'order_key' => 'oc!tracking_number',
             ],
             'date_print' => [
                 'title' => $this->module->l('Printing date'),
@@ -69,17 +72,20 @@ class AdminDPDBalticsShipmentController extends AbstractAdminController
             'receiver_name' => [
                 'title' => $this->module->l('Receiver'),
                 'type' => 'text',
-                'havingFilter' => true
+                'havingFilter' => true,
+                'order_key' => 'c!lastname',
             ],
             'address1' => [
                 'title' => $this->module->l('Address'),
                 'type' => 'text',
-                'havingFilter' => true
+                'havingFilter' => true,
+                'order_key' => 'addr!address1',
             ],
             'city' => [
                 'title' => $this->module->l('City'),
                 'type' => 'text',
-                'havingFilter' => true
+                'havingFilter' => true,
+                'order_key' => 'addr!city',
             ],
             'reference1' => [
                 'title' => $this->module->l('Cust Ref 1'),

@@ -186,3 +186,7 @@
 - Added PrestaShop 9 compatibility
 - Fixed issue with price rule "All"
 - Fixed other minor issues
+
+## [3.3.1]
+- Fixed sorting on Shipment list columns from joined tables (Tracking number, Receiver, Address, City)
+- Changed default sort on Shipment list to show latest shipments first
