@@ -188,6 +188,8 @@
 - Fixed other minor issues
 
 ## [3.3.1]
+- Fixed sorting on Shipment list columns from joined tables (Tracking number, Receiver, Address, City)
+- Changed default sort on Shipment list to show latest shipments first
 - Fixed incorrect COD label amount when discount code is applied
 - Fixed parcelshop info not displaying in backoffice order view when customer city differs from parcelshop city
 - Fixed shipment creation overwriting parcelshop address data with customer address data
