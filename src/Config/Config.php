@@ -160,6 +160,8 @@ class Config
 
     const FETCH_PUDO_POINT = 1;
     const RETRIEVE_OPENING_HOURS = 1;
+    const SKIP_OPENING_HOURS = 0;
+    const COUNTRIES_SKIP_OPENING_HOURS = ['PL'];
 
     const MAXIMUM_PUDO_POINTS_IN_MAP = 30;
 

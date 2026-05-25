@@ -23,7 +23,6 @@ namespace Invertus\dpdBaltics\Service\API;
 
 use Address;
 use Country;
-use DPDAddressTemplate;
 use DPDProduct;
 use Invertus\dpdBaltics\Adapter\AddressAdapter;
 use Invertus\dpdBaltics\Config\Config;
@@ -108,15 +107,18 @@ class ShipmentApiService
         $hasAddressFields = (bool) !$postCode || !$firstName || !$address->city || !$country;
 
         // Post code might be wrong in order adress, so we set terminal post code instead
+        $selectedParcel = null;
         if ($shipmentData->isPudo()) {
             $parcel = $this->parcelShopService->getParcelShopByShopId($shipmentData->getSelectedPudoId());
-            $selectedParcel = is_array($parcel) ? reset($parcel) : $parcel;
-            $postCode = $selectedParcel->getPCode();
-            $address->address1 = $selectedParcel->getStreet();
+            $selectedParcel = is_array($parcel) && !empty($parcel) ? reset($parcel) : $parcel;
+            if ($selectedParcel && is_object($selectedParcel)) {
+                $postCode = $selectedParcel->getPCode();
+                $address->address1 = $selectedParcel->getStreet();
+            }
         }
 
         // IF prestashop allows, we take selected parcel terminal address in case information is missing in checkout address in specific cases.
-        if (($hasAddressFields) && $shipmentData->isPudo()) {
+        if (($hasAddressFields) && $shipmentData->isPudo() && $selectedParcel && is_object($selectedParcel)) {
             $firstName = $selectedParcel->getCompany();
             $address->address1 = $selectedParcel->getStreet();
             $address->city = $selectedParcel->getCity();
@@ -142,7 +144,7 @@ class ShipmentApiService
             $shipmentCreationRequest->setName2($address->lastname);
         }
 
-        $shipmentCreationRequest = $this->setNotRequiredData($shipmentCreationRequest, $shipmentData);
+        $shipmentCreationRequest = $this->setNotRequiredData($shipmentCreationRequest, $shipmentData, $parcelType);
 
         if ($dpdProduct->is_cod) {
             $shipmentCreationRequest->setCodAmount($shipmentData->getGoodsPrice());
@@ -165,10 +167,20 @@ class ShipmentApiService
             $shipmentCreationRequest->setDnoteReference($shipmentData->getDpdDocumentReturnNumber());
         }
 
-        if ($shipmentData->getDeliveryTime()) {
+        if (Config::productHasDeliveryTime($parcelType) && $shipmentData->getDeliveryTime()) {
             $timeFrames = explode('-', $shipmentData->getDeliveryTime());
-            $shipmentCreationRequest->setTimeFrameFrom($timeFrames[0]);
-            $shipmentCreationRequest->setTimeFrameTo($timeFrames[1]);
+            if (count($timeFrames) === 2) {
+                // Format should be HH:mm (e.g., "18:00", "22:00")
+                $timeFrom = trim($timeFrames[0]);
+                $timeTo = trim($timeFrames[1]);
+
+                // Validate HH:mm format
+                if (preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $timeFrom) &&
+                    preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/', $timeTo)) {
+                    $shipmentCreationRequest->setTimeFrameFrom($timeFrom);
+                    $shipmentCreationRequest->setTimeFrameTo($timeTo);
+                }
+            }
         }
         $shipmentCreator = $this->shipmentCreationFactory->makeShipmentCreation();
 
@@ -197,7 +209,7 @@ class ShipmentApiService
             $address1 = $selectedPudo->street;
             $city = $selectedPudo->city;
             $countryIso = $selectedPudo->country_code;
-            $postCode = $selectedPudo->post_code;
+            $postCode = preg_replace('/[^0-9]/', '', $selectedPudo->post_code);
         } else {
             $address1 = $address->address1;
             $city = $address->city;
@@ -219,22 +231,25 @@ class ShipmentApiService
             $customer->email,
             1
         );
-        $shipmentCreationRequest = $this->setNotRequiredData($shipmentCreationRequest, $shipmentData);
+        $shipmentCreationRequest = $this->setNotRequiredData($shipmentCreationRequest, $shipmentData, $parcelType);
 
         $shipmentCreator = $this->shipmentCreationFactory->makeShipmentCreation();
 
         return $shipmentCreator->createShipment($shipmentCreationRequest);
     }
 
-    private function setNotRequiredData(ShipmentCreationRequest $shipmentCreationRequest, ShipmentData $shipmentData)
+    private function setNotRequiredData(ShipmentCreationRequest $shipmentCreationRequest, ShipmentData $shipmentData, $parcelType)
     {
         $shipmentCreationRequest->setOrderNumber($shipmentData->getReference1());
         $shipmentCreationRequest->setOrderNumber1($shipmentData->getReference2());
         $shipmentCreationRequest->setOrderNumber2($shipmentData->getReference3());
         $shipmentCreationRequest->setOrderNumber3($shipmentData->getReference4());
         $shipmentCreationRequest->setWeight($shipmentData->getWeight());
-        $shipmentCreationRequest->setIdmSmsNumber($shipmentData->getPhone());
-        $shipmentCreationRequest->setOrderNumber($shipmentData->getReference1());
+
+        if (Config::productHasDeliveryTime($parcelType)) {
+            $shipmentCreationRequest->setIdmSmsNumber($shipmentData->getPhone());
+            $shipmentCreationRequest->setPredict('y');
+        }
 
         return $shipmentCreationRequest;
     }

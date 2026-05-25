@@ -44,22 +44,24 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-7">
-                            <p
-                                    class="clearfix dpd-more-information expand"
-                                    tabindex="0"
-                                    data-trigger="focus"
-                                    data-expand="{l s='more information' mod='dpdbaltics'}"
-                                    data-collapse="{l s='less information' mod='dpdbaltics'}"
-                                    data-toggle="popover"
-                                    data-placement="right"
-                                    data-html="true"
-                                    data-container=".dpd-pudo-container"
-                                    title="{l s='Working hours' mod='dpdbaltics'}"
-                                    data-content="{include file='module:dpdbaltics/views/templates/hook/front/partials/working-hours.tpl' workingHours=$service->getOpeningHours()}{if isset($service->extraInfo)}{$service->extraInfo}{/if}">
-                                {l s='more information' mod='dpdbaltics'}
-                            </p>
-                        </div>
+                        {if $service->getCountry() != 'PL'}
+                            <div class="col-lg-7">
+                                <p
+                                        class="clearfix dpd-more-information expand"
+                                        tabindex="0"
+                                        data-trigger="focus"
+                                        data-expand="{l s='more information' mod='dpdbaltics'}"
+                                        data-collapse="{l s='less information' mod='dpdbaltics'}"
+                                        data-toggle="popover"
+                                        data-placement="right"
+                                        data-html="true"
+                                        data-container=".dpd-pudo-container"
+                                        title="{l s='Working hours' mod='dpdbaltics'}"
+                                        data-content="{include file='module:dpdbaltics/views/templates/hook/front/partials/working-hours.tpl' workingHours=$service->getOpeningHours()}{if isset($service->extraInfo)}{$service->extraInfo}{/if}">
+                                    {l s='more information' mod='dpdbaltics'}
+                                </p>
+                            </div>
+                        {/if}
                         <div class="col-lg-5">
                             <button
                                     class="dpd-action-button btn btn-secondary button button-medium dpd-pudo-select"
@@ -107,9 +109,9 @@
         </ul>
     </div>
 {else}
-    <div class="dpd-services-block">
-        <div class="alert alert-warning">
-            {l s='No pickup points found' mod='dpdbaltics'}
+    <div class="dpd-services-block dpd-no-pudo-message">
+        <div class="alert alert-info">
+            {l s='Select a city to view pickup points' mod='dpdbaltics'}
         </div>
     </div>
 {/if}

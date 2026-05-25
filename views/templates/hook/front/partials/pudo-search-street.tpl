@@ -27,6 +27,9 @@
     <div class="dpd-select-wrapper">
         <select name="dpd-street" class="chosen-select form-control-chosen">
             {if !empty($street_list)}
+                {if !isset($selected_street) || !$selected_street}
+                    <option selected value="">{l s='Please select a street' mod='dpdbaltics'}</option>
+                {/if}
                 {foreach from=$street_list key=company item=street}
                     <option {if isset($selected_street) && $selected_street === $street}selected{/if}
                             value="{$street|escape:'htmlall':'UTF-8'}">

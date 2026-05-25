@@ -232,7 +232,6 @@ class ShipmentService
             $parcelWeight += $product['weight'] * $product['product_quantity'];
         }
 
-        $goodsPrice = $this->calculateParcelPriceWithOrderDiscount($order, $goodsPrice);
         $shipment = $this->createShipment($order, $idProduct, $isTestMode, 1, $parcelWeight, $goodsPrice);
 
         if (!$shipment->id) {

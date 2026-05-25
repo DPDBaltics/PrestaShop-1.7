@@ -27,18 +27,33 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+/**
+ * @deprecated Use CLI command instead for reliable imports without timeout issues:
+ *             php bin/console dpdbaltics:update-parcel-shops --all
+ *
+ * This HTTP-based cron endpoint may timeout for large countries (PL).
+ * The CLI command has no timeout limitations.
+ */
 class DpdbalticsCronJobModuleFrontController extends AbstractFrontController
 {
     public function postProcess()
     {
-        set_time_limit(0);
+        // Note: We intentionally do NOT use set_time_limit() here because:
+        // 1. It doesn't work on many servers (disabled in php.ini)
+        // 2. wget/curl have their own timeout limits anyway
+        // For reliable imports, use CLI: php bin/console dpdbaltics:update-parcel-shops --all
 
-        $token = Tools::getValue('token');
-        if ($token !== Configuration::get(Config::DPDBALTICS_HASH_TOKEN)) {
-            $this->ajaxDie([
+        $token = (string) Tools::getValue('token');
+        $expectedToken = Configuration::get(Config::DPDBALTICS_HASH_TOKEN);
+
+        // Use hash_equals to prevent timing attacks
+        // Ensure both values are strings for PHP 8 compatibility
+        if (empty($expectedToken) || empty($token) || !hash_equals((string) $expectedToken, $token)) {
+            $this->ajaxDie(json_encode([
                 'success' => false,
-                'message' => 'wrong token'
-            ]);
+                'message' => 'Invalid token'
+            ]));
+            return;
         }
 
         $action = Tools::getValue('action');
@@ -49,6 +64,8 @@ class DpdbalticsCronJobModuleFrontController extends AbstractFrontController
                 /** @var  ZoneRangeProvider $zoneRangeProvider */
                 $zoneRangeProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.zone_range_provider');
                 $countriesInZoneRange = $zoneRangeProvider->getAllZoneRangesCountryIsoCodes();
+
+                $response = ['success' => true, 'message' => 'No countries to import'];
 
                 if ($countriesInZoneRange) {
                     foreach ($countriesInZoneRange as $country) {
@@ -70,7 +87,10 @@ class DpdbalticsCronJobModuleFrontController extends AbstractFrontController
 
                 break;
             default:
-                return;
+                $this->ajaxDie(json_encode([
+                    'success' => false,
+                    'message' => 'Unknown action. For parcel shop import, use CLI: php bin/console dpdbaltics:update-parcel-shops --all'
+                ]));
         }
     }
 }

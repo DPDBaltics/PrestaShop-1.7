@@ -7,26 +7,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -   name: Checkout
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
 
       -   name: Cache vendor folder
-          uses: actions/cache@v1
+          uses: actions/cache@v4
           with:
             path: vendor
-            key: php-${{ hashFiles('composer.lock') }}
+            key: php-${{ hashFiles('composer.json') }}
 
       -   name: Cache composer folder
-          uses: actions/cache@v1
+          uses: actions/cache@v4
           with:
             path: ~/.composer/cache
             key: php-composer-cache
 
-      -   run: composer install
+      -   run: composer install --ignore-platform-reqs
 
       -   name: Run auto indexing
           run: php vendor/bin/autoindex
 
-      -   uses: stefanzweifel/git-auto-commit-action@v4
+      -   uses: stefanzweifel/git-auto-commit-action@v5
           with:
             commit_message: Adding auto indexes
 
@@ -36,26 +36,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -   name: Checkout
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
 
       -   name: Cache vendor folder
-          uses: actions/cache@v1
+          uses: actions/cache@v4
           with:
             path: vendor
-            key: php-${{ hashFiles('composer.lock') }}
+            key: php-${{ hashFiles('composer.json') }}
 
       -   name: Cache composer folder
-          uses: actions/cache@v1
+          uses: actions/cache@v4
           with:
             path: ~/.composer/cache
             key: php-composer-cache
 
-      -   run: composer install
+      -   run: composer install --ignore-platform-reqs
 
       - name: Adding licenses
         run: vendor/bin/header-stamp --license=assets/afl.txt --exclude=vendor,node_modules
 
-      -   uses: stefanzweifel/git-auto-commit-action@v4
+      -   uses: stefanzweifel/git-auto-commit-action@v5
           with:
             commit_message: Automatic license addition applying
 
