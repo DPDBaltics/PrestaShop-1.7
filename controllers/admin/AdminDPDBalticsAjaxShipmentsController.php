@@ -105,6 +105,14 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                     $carrierId = (int) Tools::getValue('carrier_id');
                     $carrier = new Carrier($carrierId);
                 }
+
+                $countryCode = null;
+                if (Validate::isLoadedObject($order)) {
+                    /** @var \Invertus\dpdBaltics\Provider\CurrentCountryProvider $currentCountryProvider */
+                    $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+                    $countryCode = $currentCountryProvider->getCountryIsoCodeByAddress($order->id_address_delivery);
+                }
+
                 /** @var PudoService $pudoService */
                 $pudoService = $this->module->getModuleContainer('invertus.dpdbaltics.service.pudo_service');
                 try {
@@ -112,7 +120,8 @@ class AdminDPDBalticsAjaxShipmentsController extends AbstractAdminController
                         $pudoService->searchPudoServices(
                             $cityName,
                             $carrier->id_reference,
-                            $cartId
+                            $cartId,
+                            $countryCode
                         )
                     );
                 } catch (Exception $e) {

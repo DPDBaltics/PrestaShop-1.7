@@ -187,3 +187,17 @@
 - Fixed issue with price rule "All"
 - Fixed other minor issues
 - Improved Logs section by collapsing request/response into a modal viewer to fix table overflow on long URLs
+
+## [3.3.1]
+- Fixed incorrect COD label amount when discount code is applied
+- Fixed parcelshop info not displaying in backoffice order view when customer city differs from parcelshop city
+- Fixed shipment creation overwriting parcelshop address data with customer address data
+- Fixed Lithuanian and Latvian translations for shipping label in admin order panel
+- Added Poland parcel shop import support with batch processing
+- Fixed null parameter deprecation in AddressAdapter preg_replace calls
+- Fixed shipment creation failing for accounts requiring Predict SMS service
+- Fixed additional validation for supercheckout module using currentcontroller variable
+- Fixed automatic PUDO point pre-selection in LIST mode
+- Fixed PUDO shipment CSS styling
+- Added timeframes to shipment request
+- Fixed DPDBaltics menu item disappearing from sidebar when navigating to module pages

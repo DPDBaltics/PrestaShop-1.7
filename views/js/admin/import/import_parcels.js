@@ -24,6 +24,7 @@ $(window).load(function () {
   $('.import-parcels-button').click(function () {
     $.ajax(dpdAjaxUrl, {
       method: 'POST',
+      timeout: 360000, // 6 minutes - allows for API call (120s) + parsing + DB operations
       data: {
         ajax: 1,
         countryId: countryId,
@@ -36,11 +37,29 @@ $(window).load(function () {
         loadImport();
       },
       success: function(response) {
-        response = JSON.parse(response);
-        if (response.success) {
-          showSuccessMessage(response.success_message);
+        try {
+          if (typeof response === 'string') {
+            response = JSON.parse(response);
+          }
+          if (response.success) {
+            showSuccessMessage(response.success_message);
+          } else if (response.requires_cron) {
+            showCronRequiredModal(response.cron_command);
+          } else {
+            showErrorMessage(response.error || 'Unknown error occurred');
+          }
+        } catch (e) {
+          showErrorMessage('Failed to parse server response: ' + e.message);
+        }
+      },
+      error: function(xhr, status, error) {
+        if (status === 'timeout' || xhr.status === 500 || xhr.status === 504) {
+          // Server timeout - show cron modal
+          showCronRequiredModal('php bin/console dpdbaltics:update-parcel-shops --all');
+        } else if (xhr.status === 0) {
+          showErrorMessage('Network error. Please check your connection.');
         } else {
-          showErrorMessage(response.error);
+          showErrorMessage('Import failed: ' + (error || status || 'Unknown error'));
         }
       },
       complete: function () {
@@ -65,6 +84,12 @@ $(window).load(function () {
 
   function stopLoadImport() {
     clearInterval(toggleInterval);
+  }
+
+  function showCronRequiredModal(cronCommand) {
+    var $modal = $('#import-cron-required-modal');
+    $('#cron-command-display').text(cronCommand || 'php bin/console dpdbaltics:update-parcel-shops --all');
+    $modal.modal('show');
   }
 
   function nextOnBoardStep(nextStep) {

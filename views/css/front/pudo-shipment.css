@@ -146,6 +146,7 @@
   border-radius: 4px;
   width: 100%;
   background-color: white;
+  -webkit-appearance: none !important;
 }
 
 .search-block-container .form-control {

@@ -136,16 +136,7 @@ class AdminDPDBalticsImportExportController extends AbstractAdminController
             $this->module->getLocalPath() . 'views/templates/admin/partials/break.tpl'
         );
 
-        $href = $this->context->link->getModuleLink(
-            $this->module->name,
-            'CronJob',
-            [
-                'action' => 'updateParcelShops',
-                'token' => Configuration::get(Config::DPDBALTICS_HASH_TOKEN)
-            ]
-        );
-        $cronJobText =
-            $this->module->l('You can setup cronjob with: ' . $href);
+        $cronJobText = $this->module->l('For large countries (e.g. Poland), we recommend automatic daily updates via cron:') . ' php bin/console dpdbaltics:update-parcel-shops --all';
 
         if (Shop::CONTEXT_GROUP == $shopContext) {
             $info = $this->module->l('Data will be imported to all group shops');
