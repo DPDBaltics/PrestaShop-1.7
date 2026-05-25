@@ -178,10 +178,78 @@ class Logger implements LoggerInterface
         }
 
         $log = new DPDLog();
-        $log->response = $message;
-        $log->request = !empty($context['request']) ? $this->logsService->hideUsernameAndPasswordFromRequest($context['request']) : null;
+        $log->response = $this->encodeResponse($level, $message, $context);
+        $log->request = !empty($context['request'])
+            ? $this->encodeRequest($this->logsService->hideUsernameAndPasswordFromRequest($context['request']))
+            : null;
         $log->status = $level;
 
         $log->add();
+    }
+
+    private function encodeRequest($raw): ?string
+    {
+        if ($raw === null || $raw === '') {
+            return null;
+        }
+
+        if (is_array($raw)) {
+            return $this->jsonEncode($raw);
+        }
+
+        $rawString = (string) $raw;
+        $parsed = parse_url($rawString);
+
+        if (!$parsed || empty($parsed['scheme']) || empty($parsed['host'])) {
+            return $this->jsonEncode(['raw' => $rawString]);
+        }
+
+        $endpoint = $parsed['scheme'] . '://' . $parsed['host'];
+        if (isset($parsed['path'])) {
+            $endpoint .= $parsed['path'];
+        }
+
+        $params = [];
+        if (!empty($parsed['query'])) {
+            parse_str($parsed['query'], $params);
+            if (array_key_exists('password', $params)) {
+                $params['password'] = '***';
+            }
+            if (array_key_exists('username', $params) && $params['username'] !== '') {
+                $params['username'] = '***';
+            }
+        }
+
+        return $this->jsonEncode([
+            'endpoint' => $endpoint,
+            'params' => $params,
+        ]);
+    }
+
+    private function encodeResponse($level, $message, array $context): ?string
+    {
+        $payload = [
+            'level' => (string) $level,
+        ];
+
+        $decoded = is_string($message) ? json_decode($message, true) : null;
+        if (json_last_error() === JSON_ERROR_NONE && (is_array($decoded) || is_object($decoded))) {
+            $payload['body'] = $decoded;
+        } else {
+            $payload['message'] = is_scalar($message) || $message === null ? (string) $message : $message;
+        }
+
+        $extra = $context;
+        unset($extra['request']);
+        if (!empty($extra)) {
+            $payload['context'] = $extra;
+        }
+
+        return $this->jsonEncode($payload);
+    }
+
+    private function jsonEncode($value): string
+    {
+        return json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 }
