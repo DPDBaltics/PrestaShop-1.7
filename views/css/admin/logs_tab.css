@@ -1,0 +1,182 @@
+/**
+ * Copyright since 2007 PrestaShop SA and Contributors
+ * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    PrestaShop SA and Contributors <contact@prestashop.com>
+ * @copyright Since 2007 PrestaShop SA and Contributors
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+ */
+table.dpd_log td {
+    word-break: break-word;
+    vertical-align: middle;
+}
+
+.button {
+    cursor: pointer;
+}
+
+.dpd-log-severity {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #ffffff;
+    background: #6b7280;
+    white-space: nowrap;
+}
+
+.dpd-log-severity-1 {
+    background: #dc3545;
+}
+
+.dpd-log-severity-2 {
+    background: #f0ad4e;
+}
+
+.dpd-log-severity-3 {
+    background: #0d6efd;
+}
+
+.dpd-log-severity-4 {
+    background: #6c757d;
+}
+
+.log-modal-overlay {
+    transition: opacity 0.2s ease-out;
+    pointer-events: none;
+    background: rgba(15, 23, 42, 0.8);
+    position: fixed;
+    opacity: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 1040;
+}
+
+.modal.open .log-modal-overlay {
+    pointer-events: all;
+    opacity: 0.5;
+}
+
+.log-modal-window {
+    position: relative;
+    width: 90%;
+    max-width: 880px;
+    margin: 5vh auto;
+
+    background: #ffffff;
+    border-radius: 0.5em;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    pointer-events: all;
+    text-align: left;
+    max-height: 90vh;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    z-index: 1050;
+}
+
+.modal.open {
+    display: block;
+}
+
+.log-modal-title {
+    position: relative;
+    color: #111827;
+    padding: 14px 48px;
+    border-bottom: solid 1px #e5e7eb;
+    pointer-events: all;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.log-modal-title-text {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.log-modal-close {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    font-size: 24px;
+    line-height: 1;
+    color: #6b7280;
+    padding: 0 6px;
+    cursor: pointer;
+}
+
+.log-modal-close:hover {
+    color: #111827;
+}
+
+.log-modal-content {
+    padding: 18px;
+    flex: 1 1 auto;
+    overflow: auto;
+}
+
+.log-modal-content-data {
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    color: #111827;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 14px 16px;
+}
+
+.log-modal-content-spinner {
+    min-height: 200px;
+}
+
+.log-modal-content-spinner:not(.hidden) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.log-modal-content-spinner::after {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 2px solid #f3f3f3;
+    border-top: 3px solid #DC0032;
+    border-radius: 100%;
+    will-change: transform;
+    animation: dpd-log-spin 1s infinite linear;
+}
+
+@keyframes dpd-log-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
