@@ -50,7 +50,7 @@ class ParcelShopRepository extends AbstractEntityRepository
     public function getShopsByCity($country, $city)
     {
         $query = new DbQuery();
-        $query->select('*');
+        $query->select('s.*');
         $query->from('dpd_shop', 's');
         $query->where('s.`country` = "' . pSQL($country) . '" AND s.`city` = "' . pSQL($city) . '"');
 
@@ -60,11 +60,9 @@ class ParcelShopRepository extends AbstractEntityRepository
     public function getShopsByShopId($shopId)
     {
         $query = new DbQuery();
-        $query->select('*');
+        $query->select('s.*');
         $query->from('dpd_shop', 's');
-        $query->innerJoin('dpd_shop_work_hours', 'wh', 's.parcel_shop_id = wh.parcel_shop_id');
         $query->where('s.`parcel_shop_id` = "' . pSQL($shopId) . '"');
-        $query->groupBy('s.parcel_shop_id');
 
         return $this->db->executeS($query);
     }

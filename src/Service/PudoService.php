@@ -186,31 +186,29 @@ class PudoService
         return true;
     }
 
-    public function searchPudoServices($city, $carrierId, $cartId)
+    public function searchPudoServices($city, $carrierId, $cartId, $countryCode = null)
     {
-        $cart = null;
+        if (!$countryCode) {
+            $cart = null;
 
-        if ($cartId) {
-            $cart = new Cart($cartId);
+            if ($cartId) {
+                $cart = new Cart($cartId);
+            }
+            /** @var CurrentCountryProvider $currentCountryProvider */
+            $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
+            $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
         }
-        /** @var CurrentCountryProvider $currentCountryProvider */
-        $currentCountryProvider = $this->module->getModuleContainer('invertus.dpdbaltics.provider.current_country_provider');
-        $countryCode = $currentCountryProvider->getCurrentCountryIsoCode($cart);
 
         /** @var ParcelShopService $parcelShopService */
-        /** @var PudoService $pudoService */
-        $parcelShopService= $this->module->getModuleContainer('invertus.dpdbaltics.service.parcel.parcel_shop_service');
-        $pudoService = $this->module->getModuleContainer('invertus.dpdbaltics.service.pudo_service');
+        $parcelShopService = $this->module->getModuleContainer('invertus.dpdbaltics.service.parcel.parcel_shop_service');
 
         /** @var ParcelShop[] $parcelShops */
         $parcelShops = $parcelShopService->getParcelShopsByCountryAndCity($countryCode, $city);
 
-        $pudoServices = $pudoService->setPudoServiceTypes($parcelShops);
-        $pudoServices = $pudoService->formatPudoServicesWorkHours($pudoServices);
+        $pudoServices = $this->setPudoServiceTypes($parcelShops);
+        $pudoServices = $this->formatPudoServicesWorkHours($pudoServices);
 
-        /** @var PudoRepository $pudoRepo */
-        $pudoRepo = $this->module->getModuleContainer('invertus.dpdbaltics.repository.pudo_repository');
-        $pudoId = $pudoRepo->getIdByCart($cartId);
+        $pudoId = $this->pudoRepository->getIdByCart($cartId);
         $selectedPudo = new DPDPudo($pudoId);
 
         $this->smarty->assign(
