@@ -21,15 +21,13 @@
 
 namespace Invertus\dpdBaltics\Service\Import\API;
 
-use Configuration;
 use DPDBaltics;
 use EntityAddException;
-use Exception;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\Service\API\ParcelShopSearchApiService;
 use Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService;
 use Invertus\dpdBalticsApi\Api\DTO\Response\ParcelShopSearchResponse;
-use Tools;
+use Psr\Log\LoggerInterface;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -43,61 +41,170 @@ class ParcelShopImport
      * @var ParcelShopSearchApiService
      */
     private $apiService;
+
     /**
      * @var ParcelUpdateService
      */
     private $parcelUpdateService;
+
     /**
      * @var DPDBaltics
      */
     private $module;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     public function __construct(
         ParcelShopSearchApiService $apiService,
         ParcelUpdateService $parcelUpdateService,
-        DPDBaltics $module
+        DPDBaltics $module,
+        LoggerInterface $logger
     ) {
         $this->apiService = $apiService;
         $this->parcelUpdateService = $parcelUpdateService;
         $this->module = $module;
+        $this->logger = $logger;
     }
 
+    /**
+     * Import parcel shops for a country.
+     *
+     * @param string $selectedCountry Country ISO code
+     * @return array
+     */
     public function importParcelShops($selectedCountry)
     {
+        $startTime = microtime(true);
+
+        $retrieveOpeningHours = $this->shouldRetrieveOpeningHours($selectedCountry);
+
         /** @var ParcelShopSearchResponse $shops */
         $shops = $this->apiService->getAllCountryParcels(
             $selectedCountry,
             Config::FETCH_PUDO_POINT,
-            Config::RETRIEVE_OPENING_HOURS
+            $retrieveOpeningHours
         );
+
+        $apiTime = round(microtime(true) - $startTime, 2);
+
         if ($shops->getStatus() === Config::API_RESPONSE_ERROR_STATUS) {
-            return
-                [
-                    'success' => false,
-                    'error' => sprintf($this->module->l('Failed to update parcel shops: %s', self::FILE_NAME), $shops->getErrLog())
-                ];
-        }
-        try {
-            $this->parcelUpdateService->updateParcels($shops->getParcelShops(), $selectedCountry);
-        } catch (EntityAddException $e) {
-            return
-                [
-                    'success' => false,
-                    'error' => $e->getMessage()
-                ];
-        } catch (\Error $e) {
-            return
-                [
-                    'success' => false,
-                    'error' => $e->getMessage()
-                ];
+            $this->logger->error(sprintf(
+                '[ParcelImport] API ERROR for %s | Error: %s | API took: %ss',
+                $selectedCountry,
+                $shops->getErrLog(),
+                $apiTime
+            ));
+
+            return [
+                'success' => false,
+                'error' => sprintf($this->module->l('Failed to update parcel shops: %s', self::FILE_NAME), $shops->getErrLog())
+            ];
         }
 
-        return
-            [
-                'success' => true,
-                'success_message' => $this->module->l('Successfully updated parcel shops', self::FILE_NAME)
+        $parcelShops = $shops->getParcelShops();
+
+        if ($parcelShops === null || !is_array($parcelShops)) {
+            $this->logger->error(sprintf(
+                '[ParcelImport] API returned NO DATA for %s | API took: %ss',
+                $selectedCountry,
+                $apiTime
+            ));
+
+            return [
+                'success' => false,
+                'error' => sprintf($this->module->l('Failed to update parcel shops: API returned no data for country %s', self::FILE_NAME), $selectedCountry)
             ];
+        }
+
+        $parcelCount = count($parcelShops);
+        $dbStartTime = microtime(true);
+
+        try {
+            $this->parcelUpdateService->updateParcels($parcelShops, $selectedCountry);
+        } catch (EntityAddException $e) {
+            $totalTime = round(microtime(true) - $startTime, 2);
+            $dbTime = round(microtime(true) - $dbStartTime, 2);
+
+            $this->logger->error(sprintf(
+                '[ParcelImport] DATABASE ERROR for %s | Error: %s | DB time: %ss | Total time: %ss',
+                $selectedCountry,
+                $e->getMessage(),
+                $dbTime,
+                $totalTime
+            ));
+
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        } catch (\Exception $e) {
+            $totalTime = round(microtime(true) - $startTime, 2);
+            $dbTime = round(microtime(true) - $dbStartTime, 2);
+
+            $this->logger->error(sprintf(
+                '[ParcelImport] EXCEPTION for %s | Type: %s | Error: %s | DB time: %ss | Total time: %ss',
+                $selectedCountry,
+                get_class($e),
+                $e->getMessage(),
+                $dbTime,
+                $totalTime
+            ));
+
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        } catch (\Error $e) {
+            $totalTime = round(microtime(true) - $startTime, 2);
+            $dbTime = round(microtime(true) - $dbStartTime, 2);
+
+            $this->logger->error(sprintf(
+                '[ParcelImport] PHP ERROR for %s | Type: %s | Error: %s | File: %s:%d | DB time: %ss | Total time: %ss',
+                $selectedCountry,
+                get_class($e),
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine(),
+                $dbTime,
+                $totalTime
+            ));
+
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        }
+
+        $totalTime = round(microtime(true) - $startTime, 2);
+
+        return [
+            'success' => true,
+            'success_message' => sprintf(
+                $this->module->l('Successfully imported %d parcel shops in %ss', self::FILE_NAME),
+                $parcelCount,
+                $totalTime
+            )
+        ];
     }
 
+    /**
+     * Check if opening hours should be retrieved for this country.
+     * Large countries may timeout when retrieving opening hours due to API limits.
+     *
+     * @param string $countryIso
+     * @return int
+     */
+    private function shouldRetrieveOpeningHours($countryIso)
+    {
+        $countryIso = strtoupper($countryIso);
+
+        if (in_array($countryIso, Config::COUNTRIES_SKIP_OPENING_HOURS, true)) {
+            return Config::SKIP_OPENING_HOURS;
+        }
+
+        return Config::RETRIEVE_OPENING_HOURS;
+    }
 }

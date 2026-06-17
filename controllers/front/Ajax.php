@@ -84,7 +84,7 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
                 try {
                     $response = $this->searchPudoServices($countryCode, $city, $carrierId, $cartId);
                 } catch (Exception $e) {
-                    $this->messages[] = $this->module->l('Parcel shop search failed!');
+                    $this->messages[] = $this->module->l('Parcel shop search failed!', self::FILENAME);
                     $this->ajaxDie(json_encode(
                         [
                             'status' => false,
@@ -157,7 +157,7 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
                 try {
                     $response = $this->searchPudoServices($countryCode, $city, $carrierId, $cartId, $street);
                 } catch (Exception $e) {
-                    $this->messages[] = $this->module->l('Parcel shop search failed!');
+                    $this->messages[] = $this->module->l('Parcel shop search failed!', self::FILENAME);
                     $this->ajaxDie(json_encode(
                         [
                             'status' => false,
@@ -250,7 +250,7 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
         );
 
         if (!$addPudoCartOrderStatus) {
-            $this->messages[] = $this->l('Failed to save pickup point.');
+            $this->messages[] = $this->l('Failed to save pickup point.', self::FILENAME);
             $this->ajaxDie(json_encode([
                 'template' => $this->getMessageTemplate('danger'),
                 'status' => false
@@ -375,24 +375,24 @@ class DpdBalticsAjaxModuleFrontController extends AbstractFrontController
      */
     private function setErrorMessage($exception)
     {
-        switch ($exception->getMessage()) {
+        switch ($exception->getCode()) {
             case Config::ERROR_COULD_NOT_SAVE_PHONE_NUMBER:
-                $this->messages[] = $this->module->l('Could not save phone number');
+                $this->messages[] = $this->module->l('Could not save phone number', self::FILENAME);
                 break;
             case Config::ERROR_BAD_PHONE_NUMBER_PREFIX:
-                $this->messages[] = $this->module->l('Phone number prefix is empty');
+                $this->messages[] = $this->module->l('Phone number prefix is empty', self::FILENAME);
                 break;
             case Config::ERROR_PHONE_EMPTY:
-                $this->messages[] = $this->module->l('Phone number is empty');
+                $this->messages[] = $this->module->l('Phone number is empty', self::FILENAME);
                 break;
             case Config::ERROR_PHONE_HAS_INVALID_CHARACTERS:
-                $this->messages[] = $this->module->l('Phone number contains invalid characters');
+                $this->messages[] = $this->module->l('Phone number contains invalid characters', self::FILENAME);
                 break;
             case Config::ERROR_PHONE_HAS_INVALID_LENGTH:
-                $this->messages[] = $this->module->l('Phone number length is invalid');
+                $this->messages[] = $this->module->l('Phone number length is invalid', self::FILENAME);
                 break;
             case Config::ERROR_INVALID_PUDO_TERMINAL:
-                $this->messages[] = $this->module->l('Pudo point is missing, please select valid terminal point');
+                $this->messages[] = $this->module->l('Pudo point is missing, please select valid terminal point', self::FILENAME);
                 break;
             default:
                 $this->messages[] = $exception->getMessage();

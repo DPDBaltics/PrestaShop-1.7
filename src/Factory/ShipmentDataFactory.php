@@ -25,12 +25,13 @@ use Address;
 use Carrier;
 use Configuration;
 use Customer;
-use DPDOrderPhone;
+use DPDOrderDeliveryTime;
 use DPDProduct;
 use DPDPudo;
 use DPDShipment;
 use Invertus\dpdBaltics\Config\Config;
 use Invertus\dpdBaltics\DTO\ShipmentData;
+use Invertus\dpdBaltics\Repository\OrderDeliveryTimeRepository;
 use Invertus\dpdBaltics\Repository\OrderRepository;
 use Invertus\dpdBaltics\Repository\PudoRepository;
 use Invertus\dpdBaltics\Repository\ShipmentRepository;
@@ -55,14 +56,21 @@ class ShipmentDataFactory
      */
     private $pudoRepository;
 
+    /**
+     * @var OrderDeliveryTimeRepository
+     */
+    private $orderDeliveryTimeRepository;
+
     public function __construct(
         OrderRepository $orderRepository,
         ShipmentRepository $shipmentRepository,
-        PudoRepository $pudoRepository
+        PudoRepository $pudoRepository,
+        OrderDeliveryTimeRepository $orderDeliveryTimeRepository
     ) {
         $this->orderRepository = $orderRepository;
         $this->shipmentRepository = $shipmentRepository;
         $this->pudoRepository = $pudoRepository;
+        $this->orderDeliveryTimeRepository = $orderDeliveryTimeRepository;
     }
 
     public function getShipmentDataByIdOrder($orderId)
@@ -92,6 +100,15 @@ class ShipmentDataFactory
 
         if (isset($dpdOrderPhone['phone'])) {
             $shipmentData->setPhone($dpdOrderPhone['phone']);
+        }
+
+        /** Delivery Time */
+        $deliveryTimeId = $this->orderDeliveryTimeRepository->getOrderDeliveryIdByCartId($order->id_cart);
+        if ($deliveryTimeId) {
+            $orderDeliveryTime = new DPDOrderDeliveryTime($deliveryTimeId);
+            if ($orderDeliveryTime->delivery_time) {
+                $shipmentData->setDeliveryTime($orderDeliveryTime->delivery_time);
+            }
         }
 
         /** Shipment */

@@ -16,6 +16,13 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
+
+// Fix for PrestaShop 8.x and 9.x compatibility
+// currentController global variable was removed in PS 1.7.7+ and doesn't exist in PS 8/9
+if (typeof window.currentController === 'undefined') {
+    window.currentController = '';
+}
+
 function isDPdCarrierSelected() {
     if (document.querySelector('.supercheckout_shipping_option:checked')) {
         var selectedCarrierValue = parseInt(document.querySelector('.supercheckout_shipping_option:checked').value);

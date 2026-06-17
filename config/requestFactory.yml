@@ -30,7 +30,7 @@ services:
 
 
   invertus.dpdbaltics_api.factory.apirequest.parcel_shop_search_factory:
-    class: 'Invertus\dpdBalticsApi\Factory\APIRequest\ParcelShopSearchFactory'
+    class: 'Invertus\dpdBaltics\Factory\APIRequest\ExtendedParcelShopSearchFactory'
     arguments:
       - '@invertus.dpdbaltics.logger.logger'
       - '@invertus.dpdbaltics.factory.apiparams_factory'

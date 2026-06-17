@@ -223,7 +223,7 @@ services:
     class: 'Invertus\dpdBaltics\Service\Parcel\ParcelUpdateService'
     arguments:
       - '@invertus.dpdbaltics.repository.parcel_shop_repository'
-
+      - '@invertus.dpdbaltics.logger.logger'
   invertus.dpdbaltics.service.parcel.parcel_shop_service:
     class: 'Invertus\dpdBaltics\Service\Parcel\ParcelShopService'
     arguments:
@@ -249,8 +249,9 @@ services:
       - '@invertus.dpdbaltics.service.api.parcel_shop_search_api_service'
       - '@invertus.dpdbaltics.service.parcel.parcel_update_service'
       - '@dpdbaltics'
+      - '@invertus.dpdbaltics.logger.logger'
 
-      # AccessibilityChecker
+  # AccessibilityChecker
   invertus.dpdbaltics.grid.row.print_accessibility_checker:
     class: 'Invertus\dpdBaltics\Grid\Row\PrintAccessibilityChecker'
     arguments:
@@ -283,6 +284,7 @@ services:
     arguments:
       - '@invertus.dpdbaltics.factory.parcel_tracking_url_factory'
       - '@dpdbaltics'
+      - '@invertus.dpdbaltics.logger.logger'
 
   invertus.dpdbaltics.service.label_printing_service:
     class: 'Invertus\dpdBaltics\Service\LabelPrintingService'

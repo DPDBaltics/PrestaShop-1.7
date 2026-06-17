@@ -85,7 +85,7 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.3.0';
+        $this->version = '3.3.1';
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
@@ -212,6 +212,12 @@ class DPDBaltics extends CarrierModule
             Media::addJsDef([
                 'dpdbaltics' => [
                     'isOnePageCheckout' => $opcModuleCompatibilityValidator->isOpcModuleInUse()
+                ]
+            ]);
+        } else {
+            Media::addJsDef([
+                'dpdbaltics' => [
+                    'isOnePageCheckout' => false
                 ]
             ]);
         }
@@ -956,12 +962,13 @@ class DPDBaltics extends CarrierModule
         /** @var null|\Invertus\dpdBalticsApi\Api\DTO\Object\ParcelShop $selectedPudoService */
         $selectedPudoService = null;
         $hasParcelShops = false;
-        if ($parcelShops) {
-            if ($selectedPudo->pudo_id) {
-                $selectedPudoService = $parcelShopService->getParcelShopByShopId($selectedPudo->pudo_id)[0];
-            } else {
-                $selectedPudoService = $parcelShops[0];
-            }
+        if ($selectedPudo->pudo_id) {
+            $pudoShops = $parcelShopService->getParcelShopByShopId($selectedPudo->pudo_id);
+            $selectedPudoService = !empty($pudoShops) ? $pudoShops[0] : null;
+        } elseif ($parcelShops) {
+            $selectedPudoService = isset($parcelShops[0]) ? $parcelShops[0] : null;
+        }
+        if ($selectedPudoService || $parcelShops) {
             $hasParcelShops = true;
         }
 

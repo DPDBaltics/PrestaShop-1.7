@@ -54,3 +54,38 @@
         </div>
     </div>
 </div>
+
+<div id="import-cron-required-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    <i class="icon-info-circle"></i>
+                    {l s='Automatic Update Required' mod='dpdbaltics'}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <p><strong>{l s='This country has many pick-up points and requires automatic updates.' mod='dpdbaltics'}</strong></p>
+                    <p>{l s='Due to server limitations, large countries cannot be updated through the browser. Please set up automatic updates using the cron job below.' mod='dpdbaltics'}</p>
+                </div>
+
+                <div class="panel panel-default" style="margin-top: 15px;">
+                    <div class="panel-heading">
+                        <strong>{l s='Cron Job Setup' mod='dpdbaltics'}</strong>
+                    </div>
+                    <div class="panel-body">
+                        <p>{l s='Add this command to your server\'s cron scheduler to run daily:' mod='dpdbaltics'}</p>
+                        <pre id="cron-command-display" style="background: #f5f5f5; padding: 10px; border-radius: 4px; word-break: break-all;"></pre>
+                        <small class="text-muted">{l s='Example: Run daily at 2:00 AM' mod='dpdbaltics'}</small>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{l s='Got it' mod='dpdbaltics'}</button>
+            </div>
+        </div>
+    </div>
+</div>

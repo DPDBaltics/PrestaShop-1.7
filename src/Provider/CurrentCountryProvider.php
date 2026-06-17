@@ -95,7 +95,7 @@ class CurrentCountryProvider
      *
      * @return string|null
      */
-    private function getCountryIsoCodeByAddress($idAddress)
+    public function getCountryIsoCodeByAddress($idAddress)
     {
         $address = new Address($idAddress);
 

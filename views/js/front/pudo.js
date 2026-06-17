@@ -107,10 +107,16 @@ $(document).ready(function () {
                 return;
             }
 
+            var $extraContent = $(params.deliveryOption).next('.carrier-extra-content');
+
             //Js to open extra content failed from theme, doing it manually.
-            if (params.deliveryOption.length > 0 && !$(params.deliveryOption).next('.carrier-extra-content').is(':visible') && !dpdbaltics.isOnePageCheckout) {
+            if (params.deliveryOption.length > 0 && !$extraContent.is(':visible') && !dpdbaltics.isOnePageCheckout) {
                 $('.carrier-extra-content').hide();
-                $(params.deliveryOption).next('.carrier-extra-content').slideDown();
+                $extraContent.slideDown(400, function () {
+                    DPDrefreshChosenSelects($extraContent);
+                });
+            } else {
+                DPDrefreshChosenSelects($extraContent);
             }
 
             var deliveryOption = params.deliveryOption;
@@ -157,9 +163,9 @@ $(document).ready(function () {
         $(document).on('click', '.dpd-pudo-select', selectPickupPointEvent);
     }
 
-    // $(document).on('change', 'select[name="dpd-city"]',function (){
-    //     searchPudoServicesEvent($(this));
-    // });
+    $(document).on('change', 'select[name="dpd-city"]', function () {
+        searchPudoServicesEvent($(this));
+    });
 
     function resizeMapEvent(e) {
         for (var idReference in dpdMap) {
@@ -698,6 +704,38 @@ function DPDremoveMessage(parent) {
 function dpdHidePopOversEvent() {
     $('.dpd-more-information').each(function () {
         $(this).popover('hide');
+    });
+}
+
+/**
+ * Re-initialize Chosen widgets inside the given container so they pick up the
+ * correct width once the carrier extra content is visible. Without this,
+ * Chosen instances initialized while the parent was hidden render at 0px.
+ * Retries while the container is still hidden (theme animations, OPC modules).
+ */
+function DPDrefreshChosenSelects($container, attempts) {
+    if (!$container || !$container.length || typeof $.fn.chosen !== 'function') {
+        return;
+    }
+
+    attempts = attempts || 0;
+
+    if (!$container.is(':visible') || $container.outerWidth() === 0) {
+        if (attempts >= 10) {
+            return;
+        }
+        setTimeout(function () {
+            DPDrefreshChosenSelects($container, attempts + 1);
+        }, 100);
+        return;
+    }
+
+    $container.find('select.chosen-select').each(function () {
+        var $select = $(this);
+        if ($select.data('chosen')) {
+            $select.chosen('destroy');
+        }
+        $select.chosen({inherit_select_classes: true});
     });
 }
 
