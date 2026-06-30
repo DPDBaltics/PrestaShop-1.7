@@ -14,8 +14,8 @@ jobs:
           fetch-depth: 0
       - name: build
         run: |
-          composer install --no-dev --optimize-autoloader --classmap-authoritative
-          composer dump-autoload --no-dev --optimize --classmap-authoritative
+          composer install --no-dev --optimize-autoloader --classmap-authoritative --ignore-platform-reqs
+          composer dump-autoload --no-dev --optimize --classmap-authoritative --ignore-platform-reqs
           rm -rf .git .github tests vendor.zip .gitignore
           mkdir dpdbaltics
           rsync -Rr ./ ./dpdbaltics
