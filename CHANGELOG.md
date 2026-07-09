@@ -204,3 +204,8 @@
 - Added timeframes to shipment request
 - Fixed phone area code, city and street select width rendering as 0px when switching carriers in checkout
 - Fixed DPDBaltics menu item disappearing from sidebar when navigating to module pages
+
+## [3.3.2]
+- Improved shipment creation error message to be a clear, readable sentence
+- Improved DPD API authentication error to explain that the API credentials in Basic Settings were rejected
+- Fixed shipment creation error messages not being translated to the shop language
