@@ -204,3 +204,6 @@
 - Added timeframes to shipment request
 - Fixed phone area code, city and street select width rendering as 0px when switching carriers in checkout
 - Fixed DPDBaltics menu item disappearing from sidebar when navigating to module pages
+
+## [3.3.2]
+- Fixed module checkout CSS overriding theme focus styles on personal information and address form fields
