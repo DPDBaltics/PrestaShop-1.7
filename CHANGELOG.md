@@ -204,3 +204,7 @@
 - Added timeframes to shipment request
 - Fixed phone area code, city and street select width rendering as 0px when switching carriers in checkout
 - Fixed DPDBaltics menu item disappearing from sidebar when navigating to module pages
+
+## [3.3.2]
+- Fixed checkout pickup point selection returning a 500 error when the selected city and street do not match an imported pickup point
+- Fixed pickup point error messages not being displayed in checkout when a request fails
