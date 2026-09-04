@@ -36,6 +36,10 @@
         "invertus/dpdbaltics-api": "dev-developer",
         "invertus/psmoduletabs": "dev-develop",
         "symfony/console": "^3.4",
+        "symfony/debug": "^3.4",
+        "symfony/property-access": "^3.4",
+        "symfony/property-info": "^3.4",
+        "symfony/serializer": "^3.4",
         "prestashop/decimal": "^1.4"
     },
     "require-dev": {

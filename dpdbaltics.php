@@ -65,6 +65,12 @@ if (!defined('_PS_VERSION_')) {
 class DPDBaltics extends CarrierModule
 {
     /**
+     * Lowest PHP version the bundled dependencies are resolved against.
+     * Must stay in sync with the "php" requirement and config.platform.php in composer.json.
+     */
+    const MINIMUM_PHP_VERSION = '5.6';
+
+    /**
      * Symfony DI Container
      **/
     private $moduleContainer;
@@ -96,6 +102,16 @@ class DPDBaltics extends CarrierModule
 
     public function install()
     {
+        if (version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '<')) {
+            $this->_errors[] = sprintf(
+                $this->l('This module requires PHP %s or newer. Your server is running PHP %s. Please upgrade PHP before installing.'),
+                self::MINIMUM_PHP_VERSION,
+                PHP_VERSION
+            );
+
+            return false;
+        }
+
         if (!parent::install()) {
             return false;
         }

@@ -204,3 +204,8 @@
 - Added timeframes to shipment request
 - Fixed phone area code, city and street select width rendering as 0px when switching carriers in checkout
 - Fixed DPDBaltics menu item disappearing from sidebar when navigating to module pages
+
+## [3.3.2]
+- Fixed 3.3.1 breaking shops on PHP below 8.1 by constraining the bundled Symfony dependencies to versions the module supports
+- Added a PHP version check on install so an unsupported PHP version is refused with a clear message instead of taking the shop offline
+- Fixed the release build ignoring the declared PHP platform version and resolving untested dependency versions
