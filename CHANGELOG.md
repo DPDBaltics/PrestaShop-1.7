@@ -204,3 +204,7 @@
 - Added timeframes to shipment request
 - Fixed phone area code, city and street select width rendering as 0px when switching carriers in checkout
 - Fixed DPDBaltics menu item disappearing from sidebar when navigating to module pages
+
+## [3.3.2]
+- Fixed pick-up point import reporting any server error as "this country has many pick-up points", which hid the real failure
+- Fixed the suggested cron command to target the selected country instead of updating every country
