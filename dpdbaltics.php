@@ -96,13 +96,27 @@ class DPDBaltics extends CarrierModule
         $this->need_instance = 0;
         parent::__construct();
 
-        $this->autoLoad();
-        $this->compile();
+        if ($this->isPhpVersionSupported()) {
+            $this->autoLoad();
+            $this->compile();
+        }
+    }
+
+    /**
+     * The bundled dependencies and part of this module's own code are parsed only by PHP
+     * MINIMUM_PHP_VERSION and newer. autoLoad() would fatal in vendor/composer/platform_check.php
+     * before install() could report anything, so the check has to gate the constructor too.
+     *
+     * @return bool
+     */
+    private function isPhpVersionSupported()
+    {
+        return version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');
     }
 
     public function install()
     {
-        if (version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '<')) {
+        if (!$this->isPhpVersionSupported()) {
             $this->_errors[] = sprintf(
                 $this->l('This module requires PHP %s or newer. Your server is running PHP %s. Please upgrade PHP before installing.'),
                 self::MINIMUM_PHP_VERSION,
