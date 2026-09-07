@@ -1,7 +1,8 @@
 # DPDbaltics official#
 
 ### Prerequisites ###
-* PHP 5.6 or above
+* PHP 7.1 or above
+* PrestaShop 1.7.4 or above
 * Composer
 
 ### Installation ###

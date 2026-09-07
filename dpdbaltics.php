@@ -68,7 +68,7 @@ class DPDBaltics extends CarrierModule
      * Lowest PHP version the bundled dependencies are resolved against.
      * Must stay in sync with the "php" requirement and config.platform.php in composer.json.
      */
-    const MINIMUM_PHP_VERSION = '5.6';
+    const MINIMUM_PHP_VERSION = '7.1';
 
     /**
      * Symfony DI Container
@@ -91,8 +91,8 @@ class DPDBaltics extends CarrierModule
         $this->author = 'Invertus';
         $this->tab = 'shipping_logistics';
         $this->description = 'DPD Baltics shipping integration';
-        $this->version = '3.3.1';
-        $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
+        $this->version = '3.3.2';
+        $this->ps_versions_compliancy = ['min' => '1.7.4.0', 'max' => _PS_VERSION_];
         $this->need_instance = 0;
         parent::__construct();
 
