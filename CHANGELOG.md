@@ -204,3 +204,10 @@
 - Added timeframes to shipment request
 - Fixed phone area code, city and street select width rendering as 0px when switching carriers in checkout
 - Fixed DPDBaltics menu item disappearing from sidebar when navigating to module pages
+
+## [3.3.2]
+- Fixed all DPD API calls failing with a fatal error on every supported PHP version, caused by mismatched Symfony dependency versions in the 3.3.1 build
+- Added a PHP version check on install so an unsupported PHP version is refused with a clear message instead of taking the shop offline
+- Fixed the release build ignoring the declared PHP platform version and resolving untested dependency versions
+- Fixed the pull request indexing and licensing workflow committing a regenerated composer.lock together with its own changes
+- Changed the declared minimum requirements to PHP 7.1 and PrestaShop 1.7.4, which is what the module has required since 2021
